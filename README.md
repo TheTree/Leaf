@@ -1,4 +1,6 @@
-== Endpoints ==
+  Endpoints
+
+
 ```
 GetCampaignDetails: "https://stats.svc.halowaypoint.com/{language}/players/{gamertag}/{game}/servicerecord/campaign"
 GetCommendations: "https://stats.svc.halowaypoint.com/{language}/players/{gamertag}/{game}/commendations"
@@ -24,5 +26,5 @@ GetUserAchievements: "https://haloplayer.svc.halowaypoint.com/HaloPlayer/GetUser
 GetWarGameDetails: "https://stats.svc.halowaypoint.com/{language}/players/{gamertag}/{game}/servicerecord/wargames"
 ```
 
-== History ==
+History
 Help from Xerax finding the endpoint. All future development by myself.
