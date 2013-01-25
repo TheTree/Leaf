@@ -12,10 +12,8 @@ class Home extends H4_Controller {
     }
     function index() {
                 
-        // load challenges
-        $tmp = $this->library->get_challenges();
         
-        $this->template->set('tmp', $tmp);
+        $this->template->set('challenges', $this->library->get_challenges());
         $this->template->build('pages/home');
     }
     

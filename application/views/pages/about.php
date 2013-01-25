@@ -27,5 +27,15 @@
                 </p>
             </div>
         </div>
+        <h4>Sources </h4>
+        <div class="well well-large">
+                <ul class="unstyled">
+                    <li><a href="http://twitter.github.com/bootstrap/">Bootstrap</a> -> Base template system</li>
+                    <li><a href="http://bootswatch.com/cosmo/">Cosmo</a> -> Metro looking theme</li>
+                    <li><a href="http://jquery.com/">jQuery</a> -> All the beautiful JS</li>
+                    <li><a href="http://ellislab.com/codeigniter">Code Igniter</a> -> PHP Framework</li>
+                    <li><a href="http://philsturgeon.co.uk/blog/category/codeigniter">Phil Sturgeon</a> -> CI Plugins (Template, Cache, Curl)</li>
+                </ul>
+        </div>
     </div>
 </div>
