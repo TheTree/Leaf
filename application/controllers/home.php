@@ -12,13 +12,17 @@ class Home extends H4_Controller {
     }
     function index() {
                 
-        
+        $this->template->title("Leaf .:. Halo 4 Stats");
         $this->template->set('challenges', $this->library->get_challenges());
         $this->template->build('pages/home');
     }
     
     function home() {
         $this->template->build('pages/home');
+    }
+    
+    function news() {
+        $this->template->build("pages/comingsoon");
     }
 }
 

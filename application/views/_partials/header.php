@@ -10,11 +10,12 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </a>
-                    <a class="brand" href="<?= base_url(); ?>">Halo 4 Stats</a>
+                    <a class="brand" href="<?= base_url(); ?>">Leaf</a>
                     <div class="nav-collapse collapse">
                         <ul class="nav">
-                            <li><a href="#">News</a></li>
-                            <li><a href="#">Stats</a></li>
+                            <li><a href="<?= base_url('news'); ?>">News</a></li>
+                            <li><a href="<?= base_url('stats'); ?>">Stats</a></li>
+                            <li><a href="<?= base_url('compare'); ?>">Compare</a></li>
                             <li><a href="<?= base_url('about'); ?>">About</a></li>
                         </ul>
                         <ul class="nav pull-right">
