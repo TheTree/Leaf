@@ -1,4 +1,5 @@
 == Endpoints ==
+```
 GetCampaignDetails: "https://stats.svc.halowaypoint.com/{language}/players/{gamertag}/{game}/servicerecord/campaign"
 GetCommendations: "https://stats.svc.halowaypoint.com/{language}/players/{gamertag}/{game}/commendations"
 GetCustomGameDetails: "https://stats.svc.halowaypoint.com/{language}/players/{gamertag}/{game}/servicerecord/custom"
@@ -21,6 +22,7 @@ GetSpartanImage: "https://spartans.svc.halowaypoint.com/players/{gamertag}/{game
 GetSpartanOpsDetails: "https://stats.svc.halowaypoint.com/{language}/players/{gamertag}/{game}/servicerecord/spartanops"
 GetUserAchievements: "https://haloplayer.svc.halowaypoint.com/HaloPlayer/GetUserAchievements?titleId=1297287449"
 GetWarGameDetails: "https://stats.svc.halowaypoint.com/{language}/players/{gamertag}/{game}/servicerecord/wargames"
+```
 
 == History ==
 Help from Xerax finding the endpoint. All future development by myself.
