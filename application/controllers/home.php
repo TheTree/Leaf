@@ -11,6 +11,11 @@ class Home extends H4_Controller {
                 ->build("pages/about");
     }
     function index() {
+                
+        // load challenges
+        $tmp = $this->library->get_challenges();
+        
+        $this->template->set('tmp', $tmp);
         $this->template->build('pages/home');
     }
     

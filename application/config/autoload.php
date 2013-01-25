@@ -52,8 +52,8 @@ $autoload['packages'] = array();
 |	$autoload['libraries'] = array('database', 'session', 'xmlrpc');
 */
 
-$autoload['libraries'] = array('/phil/template','/phil/cache', #phil libs
-        'database','form_validation','session','encrypt','email','pagination','image_lib');
+$autoload['libraries'] = array('/phil/template','/phil/cache','/phil/curl', #phil libs
+        'database','form_validation','session','encrypt','email','pagination','image_lib','library');
 
 
 /*

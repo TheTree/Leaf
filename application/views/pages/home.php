@@ -1,1 +1,1 @@
-ye
+<?= output($tmp); ?>
