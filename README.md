@@ -1,4 +1,4 @@
-  Endpoints
+# Endpoints
 
 
 ```
@@ -26,5 +26,7 @@ GetUserAchievements: "https://haloplayer.svc.halowaypoint.com/HaloPlayer/GetUser
 GetWarGameDetails: "https://stats.svc.halowaypoint.com/{language}/players/{gamertag}/{game}/servicerecord/wargames"
 ```
 
-History
-Help from Xerax finding the endpoint. All future development by myself.
+# History
+Help from Xerax finding the endpoints. All future development by myself.
+
+peaches <3
