@@ -38,7 +38,10 @@
 |
 */
 
+// basic pages
+$route['about'] = "home/about";
 
+// other
 $route['default_controller'] = "home";
 $route['404_override'] = '';
 

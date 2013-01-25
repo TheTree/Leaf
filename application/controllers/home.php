@@ -6,6 +6,10 @@ class Home extends H4_Controller {
         parent::__construct();
     }
     
+    function about() {
+        $this->template
+                ->build("pages/about");
+    }
     function index() {
         $this->template->build('pages/home');
     }
