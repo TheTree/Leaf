@@ -37,5 +37,14 @@ define('FOPEN_WRITE_CREATE_STRICT',				'xb');
 define('FOPEN_READ_WRITE_CREATE_STRICT',		'x+b');
 
 
+/**
+ * URLs
+ */
+define('LIVE_URL', 'ibotpeaches.com/stats'); # LIVE, ONLY PUSHED WHEN FUCKING TESTED
+define('STAGE_URL', 'ibotpeaches.com'); # Stage Site. Testing site.
+define('LOCAL_URL', 'localhost'); # When working locally.
+
+
+
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */

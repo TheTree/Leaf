@@ -1,4 +1,24 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+if (!isset($_SERVER['SERVER_NAME'])) {
+    $active_group = 'stage';
+} else {
+    switch ($_SERVER['SERVER_NAME']) {
+        case LIVE_URL:
+            $active_group = 'live';
+            break;
+        case STAGE_URL:
+            $active_group = 'stage';
+            break;
+        case LOCAL_URL:
+            $active_group = 'local';
+            break;
+        default:
+            echo 'Unable to get settings to open Database!';
+            exit();
+    }
+}
+
 /*
 | -------------------------------------------------------------------
 | DATABASE CONNECTIVITY SETTINGS
@@ -45,24 +65,58 @@
 | the active record class
 */
 
-$active_group = 'default';
 $active_record = TRUE;
 
-$db['default']['hostname'] = 'localhost';
-$db['default']['username'] = '';
-$db['default']['password'] = '';
-$db['default']['database'] = '';
-$db['default']['dbdriver'] = 'mysql';
-$db['default']['dbprefix'] = '';
-$db['default']['pconnect'] = TRUE;
-$db['default']['db_debug'] = TRUE;
-$db['default']['cache_on'] = FALSE;
-$db['default']['cachedir'] = '';
-$db['default']['char_set'] = 'utf8';
-$db['default']['dbcollat'] = 'utf8_general_ci';
-$db['default']['swap_pre'] = '';
-$db['default']['autoinit'] = TRUE;
-$db['default']['stricton'] = FALSE;
+// LIVE SITE. Details hidden due to security. DONT TOUCH
+$db['live']['hostname'] = 'localhost';
+$db['live']['username'] = '';
+$db['live']['password'] = '';
+$db['live']['database'] = '';
+$db['live']['dbdriver'] = 'mysql';
+$db['live']['dbprefix'] = '';
+$db['live']['pconnect'] = TRUE;
+$db['live']['db_debug'] = TRUE;
+$db['live']['cache_on'] = FALSE;
+$db['live']['cachedir'] = '';
+$db['live']['char_set'] = 'utf8';
+$db['live']['dbcollat'] = 'utf8_general_ci';
+$db['live']['swap_pre'] = '';
+$db['live']['autoinit'] = TRUE;
+$db['live']['stricton'] = FALSE;
+
+// Stage Site ibotpeaches.com. DONT TOUCH
+$db['stage']['hostname'] = 'localhost';
+$db['stage']['username'] = '';
+$db['stage']['password'] = '';
+$db['stage']['database'] = '';
+$db['stage']['dbdriver'] = 'mysql';
+$db['stage']['dbprefix'] = '';
+$db['stage']['pconnect'] = TRUE;
+$db['stage']['db_debug'] = TRUE;
+$db['stage']['cache_on'] = FALSE;
+$db['stage']['cachedir'] = '';
+$db['stage']['char_set'] = 'utf8';
+$db['stage']['dbcollat'] = 'utf8_general_ci';
+$db['stage']['swap_pre'] = '';
+$db['stage']['autoinit'] = TRUE;
+$db['stage']['stricton'] = FALSE;
+
+// local site. 
+$db['local']['hostname'] = 'localhost';
+$db['local']['username'] = 'h4';
+$db['local']['password'] = 'test';
+$db['local']['database'] = 'h4';
+$db['local']['dbdriver'] = 'mysql';
+$db['local']['dbprefix'] = '';
+$db['local']['pconnect'] = TRUE;
+$db['local']['db_debug'] = TRUE;
+$db['local']['cache_on'] = FALSE;
+$db['local']['cachedir'] = '';
+$db['local']['char_set'] = 'utf8';
+$db['local']['dbcollat'] = 'utf8_general_ci';
+$db['local']['swap_pre'] = '';
+$db['local']['autoinit'] = TRUE;
+$db['local']['stricton'] = FALSE;
 
 
 /* End of file database.php */
