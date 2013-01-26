@@ -9,11 +9,15 @@ class Library {
     // urls @todo Abstract to config/
     public $emblem_url = "https://emblems.svc.halowaypoint.com/h4/emblems/{EMBLEM}?size=120";
     public $spartan_url = "https://spartans.svc.halowaypoint.com/players/{GAMERTAG}/h4/spartans/fullbody?target=medium";
+    public $rank_url = "https://assets.halowaypoint.com/games/h4/ranks/v1/large/{RANK}";
 
     function __construct() {
         $this->_ci = & get_instance();
         $this->lang = "english";
         $this->game = "h4";
+        
+        // output some to template
+        $this->_ci->template->set('rank_url', $this->rank_url);
     }
 
     // ---------------------------------------------------------------
@@ -254,6 +258,10 @@ class Library {
         return $this->_ci->stat_m->update_or_insert_gamertag($hashed, array(
                     'Gamertag' => urldecode($gt),
                     'HashedGamertag' => $hashed,
+                    'Rank' => $service_record['RankName'],
+                    'RankImage' => substr($service_record['RankImageUrl']['AssetUrl'], 7),
+                    'Specialization' => $this->find_current_specialization($service_record['Specializations']),
+                    'SpecializationLevel' => $this->find_current_specialization($service_record['Specializations'], "Level"),
                     'Expiration' => intval(time()),
                     'KDRatio' => $service_record['GameModes'][2]['KDRatio'],
                     'Xp' => $service_record['XP'],
@@ -262,6 +270,7 @@ class Library {
                     'TotalGameWins' => $service_record['GameModes'][2]['TotalGamesWon'],
                     'TotalGameQuits' => intval($service_record['GameModes'][2]['TotalGamesStarted'] - $service_record['GameModes'][2]['TotalGamesCompleted']),
                     'NextRankStartXP' => $service_record['NextRankStartXP'],
+                    'RankStartXP' => $service_record['RankStartXP'],
                     'TotalCommendationProgress' => floatval($service_record['TotalCommendationProgress']),
                     'TotalLoadoutItemsPurchased' => intval($service_record['TotalLoadoutItemsPurchased']),
                     'TotalMedalsEarned' => intval($service_record['GameModes'][2]['TotalMedals']),
@@ -287,6 +296,21 @@ class Library {
             log_message('error', 'We could not find this tag: ' . $str);
             return 0;
         }
+    }
+    
+    /**
+     * find_current_specializations
+     * 
+     * Loops through `specializations` looking for IsCurrent. Returns its name.
+     * @param type $data
+     */
+    public function find_current_specialization($data, $type = "Name") {
+        foreach ($data as $spec) {
+            if ($spec['IsCurrent'] == true) {
+                return $spec[$type];
+            }
+        }
+        return "No Spec";
     }
     
     /**

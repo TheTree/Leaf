@@ -1,9 +1,17 @@
-/* 
-    Document   : default
-    Created on : Jan 24, 2013, 8:55:09 PM
-    Author     : root
-    Description:
-        Purpose of the stylesheet follows.
-*/
-
-
+.row_title {
+    display: inline-block;
+    float: left;
+    font-weight: bold;
+    padding-right: 10px;
+    text-align: right;
+    width: 115px;
+}
+.row_data {
+    display: inline-block;
+}
+.pad10{
+    margin-top: 10px;
+}
+.p12{
+    font-size: 18px;
+}
