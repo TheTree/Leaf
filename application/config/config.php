@@ -7,7 +7,7 @@ if (!isset($_SERVER['SERVER_NAME'])) {
 } else {
     switch ($_SERVER['SERVER_NAME']) {
         case LIVE_URL:
-            $config['base_url'] = 'http://' . LIVE_URL;
+            $config['base_url'] = 'http://' . LIVE_URL . "/stats";
             $config['active_group'] = "live";
             break;
         case STAGE_URL:

@@ -1,5 +1,4 @@
 <div class="row-fluid">
-
     <div class="span7">
         <h2>History</h2>
         <div class="well well-large">

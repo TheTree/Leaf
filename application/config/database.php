@@ -69,9 +69,9 @@ $active_record = TRUE;
 
 // LIVE SITE. Details hidden due to security. DONT TOUCH
 $db['live']['hostname'] = 'localhost';
-$db['live']['username'] = '';
-$db['live']['password'] = '';
-$db['live']['database'] = '';
+$db['live']['username'] = 'ibotpeac_stats';
+$db['live']['password'] = 'lXN61GgHCXud';
+$db['live']['database'] = 'ibotpeac_stats';
 $db['live']['dbdriver'] = 'mysql';
 $db['live']['dbprefix'] = '';
 $db['live']['pconnect'] = TRUE;

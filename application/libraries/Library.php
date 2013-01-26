@@ -111,7 +111,7 @@ class Library {
      * @return boolean
      */
     public function check_status($resp) {
-        if (isset($resp['StatusCode']) && $resp['StatusCode'] == 0) {
+        if (isset($resp['StatusCode']) && ($resp['StatusCode'] == 0 || $resp['StatusCode'] == 1)) {
             return $resp;
         } else {
             log_message('error', 'API Down: ' . $resp['StatusReason']);
@@ -136,7 +136,7 @@ class Library {
         $this->_ci->curl->option('HTTPHEADER', array('Accept: application/json'));
 
         // make the url
-        $url = "https://stats.svc.halowaypoint.com/" . $this->lang . "/" . $this->game . $paras;
+        $url = "https://stats.svc.halowaypoint.com/" . $paras;
 
         // resp
         $resp = json_decode($this->_ci->curl->simple_get($url), true);
@@ -145,6 +145,11 @@ class Library {
         return $this->check_status($resp);
     }
 
+    /**
+     * get_challenges
+     * 
+     * @return type
+     */
     public function get_challenges() {
 
         // check Cache
@@ -152,7 +157,7 @@ class Library {
 
         // check if cache exists.
         if ($resp == false) {
-            $resp = $this->fix_date($this->get_url("/challenges"), "BeginDate,EndDate", "Challenges");
+            $resp = $this->fix_date($this->get_url($this->lang . "/" . $this->game . "/challenges"), "BeginDate,EndDate", "Challenges");
             $this->_ci->cache->write($resp, 'current_challenges');
         } else {
 
@@ -165,5 +170,99 @@ class Library {
 
         return $resp;
     }
+    
+    /**
+     * 
+     * @param type $gt
+     */
+    public function get_profile($gt) {
+        
+        if (strlen(urldecode($gt)) > 15) {
+            show_error("wtf. This is more than 15 chars. This isn't a gamertag.");
+        } else {
+            
+            // get hashed name
+            $hashed = "profile_" . md5(trim(urlencode($gt)));
+            
+            // check cache
+            $resp = $this->_ci->cache->get($hashed);
+            
+            if ($resp == false) {
+                
+                 // grab new data
+                  $resp = $this->grab_profile_data($gt);
+                  
+                  if ($resp == false)  {
+                      show_error("stop. This isn't an Xbox Live (Halo 4) account.");
+                  }
+                  $this->_ci->cache->write($resp, $hashed);
+            } else {
+                
+                // check for expiration
+                if ($resp['Expiration'] > time()) {
+                    $this->_ci->cache->delete($hashed);
+                    return $this->get_profile($gt);
+                } else {
+                    return $resp;
+                }
+            }
+        }
+        
+    }
+    
+    /**
+     * 
+     * @param type $gt
+     */
+    public function grab_profile_data($gt) {
+        
+        // lets grab service record
+        $service_record = $this->check_status($this->get_url($this->lang . "/players/" . trim(urlencode($gt)).  "/" . $this->game . "/servicerecord"));
+        
+        if ($service_record == false) {
+            return false;
+        }
+        
+        $hashed = md5(trim(urlencode($gt)));
+        
+        // get ready for a dump of data
+        return $this->_ci->stat_m->update_or_insert_gamertag($hashed, array(
+            'Gamertag' => urldecode($gt),
+            'HashedGamertag' => $hashed,
+            'Expiration' => intval(time()),
+            'KDRatio' => $service_record['GameModes'][2]['KDRatio'],
+            'Xp' => $service_record['XP'],
+            'SpartanPoints' => $service_record['SpartanPoints'],
+            'TotalChallengesCompleted' => $service_record['TotalChallengesCompleted'],
+            'TotalGameWins' => $service_record['GameModes'][2]['TotalGamesWon'],
+            'TotalGameQuits' => intval($service_record['GameModes'][2]['TotalGamesStarted'] - $service_record['GameModes'][2]['TotalGamesCompleted']),
+            'NextRankStartXP' => $service_record['NextRankStartXP'],
+            'TotalCommendationProgress' => floatval($service_record['TotalCommendationProgress']),
+            'TotalLoadoutItemsPurchased' => intval($service_record['TotalLoadoutItemsPurchased']),
+            'TotalMedalsEarned' => intval($service_record['GameModes'][2]['TotalMedals']),
+            'TotalGameplay' => $this->adjust_date($service_record['GameModes'][2]['TotalDuration']),
+            'TotalKills' => intval($service_record['GameModes'][2]['TotalKills']),
+            'TotalDeaths' => intval($service_record['GameModes'][2]['TotalDeaths']),
+            'TotalGamesStarted' => intval($service_record['GameModes'][2]['TotalGamesStarted']),
+            'ServiceTag' => $service_record['ServiceTag']
+            ));
+    }
+    
+    /**
+     * adjust_date
+     * 
+     * Takes form P3DT4H18M45S into seconds.
+     * @param type $str
+     * @return int
+     */
+    public function adjust_date($str) {
+        if (preg_match('/(?P<days>[0-9]*).(?P<hours>[0-9]*):(?P<minutes>[0-9]*):(?P<seconds>[0-9]*)/', $str, $regs)) {
+            return (($regs['days'] * 86400) + ($regs['hours'] * 3600) + ($regs['minutes'] * 60) + $regs['seconds']);
+        } else {
+           log_message('error', 'We could not find this tag: ' . $str);
+           return 0;
+        }
+    }
+    
 
 }
