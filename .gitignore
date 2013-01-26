@@ -1,6 +1,7 @@
 /nbproject/private/
 /application/logs/*.php
 /application/cache/
+/uploads/
 
 #Linux
 *~

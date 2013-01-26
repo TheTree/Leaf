@@ -5,6 +5,10 @@ class Library {
     public $ci;
     public $lang;
     public $game;
+    
+    // urls @todo Abstract to config/
+    public $emblem_url = "https://emblems.svc.halowaypoint.com/h4/emblems/{EMBLEM}?size=120";
+    public $spartan_url = "https://spartans.svc.halowaypoint.com/players/{GAMERTAG}/h4/spartans/fullbody?target=medium";
 
     function __construct() {
         $this->_ci = & get_instance();
@@ -172,7 +176,12 @@ class Library {
     }
 
     /**
+     * get_profile
      * 
+     * 1) Checks for file-based cache.
+     * 2) Returns if less than 1 hr old
+     * 3) If not, pulls from API. Dumps into dB.
+     * 4) Caches into file system for 1hr.
      * @param type $gt
      */
     public function get_profile($gt, $errors = true) {
@@ -192,7 +201,7 @@ class Library {
             // check cache
             $resp = $this->_ci->cache->get($hashed);
 
-            if ($resp == false) {
+            if ($resp == false || ENVIRONMENT == "development") {
 
                 // grab new data
                 $resp = $this->grab_profile_data($gt);
@@ -219,6 +228,9 @@ class Library {
     }
 
     /**
+     * grab_profile_data
+     * 
+     * Pulls directly from the API. Stores into dB
      * 
      * @param type $gt
      */
@@ -231,7 +243,11 @@ class Library {
             return false;
         }
 
+        // make hashed name
         $hashed = md5(trim(urlencode($gt)));
+        
+        // lets do the URL work
+        $this->build_spartan_with_emblem($hashed, substr_replace($service_record['EmblemImageUrl']['AssetUrl'], "", -12), $gt);
 
         // get ready for a dump of data
         return $this->_ci->stat_m->update_or_insert_gamertag($hashed, array(
@@ -269,6 +285,54 @@ class Library {
         } else {
             log_message('error', 'We could not find this tag: ' . $str);
             return 0;
+        }
+    }
+
+    /**
+     * emblem
+     * 
+     * @param type $hashed
+     * @param type $emblem
+     * @param type $gamertag
+     */
+    public function build_spartan_with_emblem($hashed, $emblem, $gamertag) {
+        
+        // load path helper, setup vars
+        $this->_ci->load->helper("path");
+        $spartan_path = absolute_path('uploads/spartans/' . $hashed . "/tmp") . "/spartan.png";
+        $emblem_path = absolute_path('uploads/spartans/' . $hashed . "/tmp/") . "emblem.png";
+        
+        // lets try and make a folder. check first :p
+        if (!(is_dir(absolute_path('uploads/spartans/' . $hashed . "/tmp")))) {
+            mkdir(absolute_path('uploads/spartans/' . $hashed . "/tmp"), 0777, true);
+        }
+
+        // download 2 images in there, (emblem and spartan). Ignore all errors. Check afterwards
+        $emblem = @file_get_contents(str_replace("{EMBLEM}",$emblem,$this->emblem_url));
+        @file_put_contents($emblem_path, $emblem);
+        
+        $spartan = @file_get_contents(str_replace("{GAMERTAG}", $gamertag, $this->spartan_url));
+        @file_put_contents($spartan_path, $spartan);
+        
+        // cleanup
+        unset($emblem);
+        unset($spartan);
+        
+        // check if both files are there.
+        if (file_exists($spartan_path) &&  file_exists($emblem_path)) {
+            
+            // we got em both. Lets merge them.
+            $config = array();
+            $config['source_image'] = $spartan_path;
+            $config['wm_type'] = "overlay";
+            $config['wm_overlay_path'] = $emblem_path;
+            $config['wm_opacity'] = 0;
+            $config['quality'] = "100%";
+            $config['wm_x_transp'] = 1;
+            $config['wm_y_transp'] = 1;
+            $config['wm_hor_alignment'] = "right";
+            $this->_ci->image_lib->initialize($config);
+            $this->_ci->image_lib->watermark();
         }
     }
 
