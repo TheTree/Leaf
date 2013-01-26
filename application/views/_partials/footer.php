@@ -1,8 +1,8 @@
 </div>
-<div class="contained-fluid modal-footer navbar navbar-fixed-bottom">
+<div class="contained-fluid navbar navbar-fixed-bottom">
     <span class="pull-left">
         <? if (ENVIRONMENT == "development"): ?>
-            Report Problems <a href="https://github.com/iBotPeaches/Halo4_Stats"> Here.</a>
+            Report Problems <a href="https://github.com/iBotPeaches/Leaf"> Here.</a>
         <? else: ?>
             <small><a href="#legalStuff" role="button" class="btn" data-toggle="modal">Leaf</a></small>
         <? endif; ?>

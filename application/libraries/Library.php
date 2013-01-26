@@ -200,7 +200,7 @@ class Library {
         } else {
 
             // get hashed name
-            $hashed = "profile_" . md5(trim(urlencode($gt)));
+            $hashed = "profile_" . md5(trim(urlencode(strtolower($gt))));
 
             // check cache
             $resp = $this->_ci->cache->get($hashed);
@@ -242,7 +242,7 @@ class Library {
     public function grab_profile_data($gt) {
 
         // lets grab service record
-        $service_record = $this->check_status($this->get_url($this->lang . "/players/" . trim(urlencode($gt)) . "/" . $this->game . "/servicerecord"));
+        $service_record = $this->check_status($this->get_url($this->lang . "/players/" . trim(urlencode(strtolower($gt))) . "/" . $this->game . "/servicerecord"));
 
         if ($service_record == false) {
             return false;

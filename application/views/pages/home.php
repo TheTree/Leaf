@@ -1,8 +1,18 @@
 <div class="row-fluid">
     <div class="span7">
-        <h2>yer</h2>
         <div class="well well-large">
-            test
+            <p class="lead">
+                Welcome to Leaf.
+            </p><p>Halo 4 Stats that don't suck.</p>
+        </div>
+        <div class="well well-large">
+            <?= form_open('home/index', array('class' => 'form-search')); ?>
+            <div class="control-group <? if (form_error('gamertag') != null): ?>error<? endif; ?>">
+                <input type="text" class="input-xlarge" name="gamertag" id="gamertag" placeholder="Enter your gamertag">
+                <button type="submit" class="btn btn-primary">Load Stats</button>
+                <? if (form_error('gamertag') != null): ?><br /><span class="help-inline"><?= form_error('gamertag') ?></span><? endif; ?>
+            </div>
+            <?= form_close(); ?>
         </div>
     </div>
     <div class="span5">
