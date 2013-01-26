@@ -935,6 +935,7 @@ class CI_Image_lib {
 		if ($wm_img_type == 3 AND function_exists('imagealphablending'))
 		{
 			@imagealphablending($src_img, TRUE);
+                                                      @imagesavealpha($src_img, TRUE);
 		}
 
 		// Set RGB values for text and shadow

@@ -214,6 +214,7 @@ class Library {
                     }
                 }
                 $this->_ci->cache->write($resp, $hashed);
+                return $resp;
             } else {
 
                 // check for expiration
@@ -287,6 +288,25 @@ class Library {
             return 0;
         }
     }
+    
+    /**
+     * return_spartan_url
+     * 
+     * Tries and find's local Spartan. Otherwise returns url to it.
+     * @param type $hashed
+     * @param type $gt
+     */
+    public function return_spartan_url($hashed, $gt) {
+        
+        // load path helper, setup vars
+        $this->_ci->load->helper("path");
+        
+        if (file_exists(absolute_path('uploads/spartans/' . $hashed) . "/spartan.png")) {
+            return base_url('uploads/spartans/' . $hashed) . "/spartan.png";
+        } else {
+            return str_replace("{GAMERTAG}", urlencode($gt), $this->spartan_url);
+        }
+    }
 
     /**
      * emblem
@@ -299,7 +319,7 @@ class Library {
         
         // load path helper, setup vars
         $this->_ci->load->helper("path");
-        $spartan_path = absolute_path('uploads/spartans/' . $hashed . "/tmp") . "/spartan.png";
+        $spartan_path = absolute_path('uploads/spartans/' . $hashed) . "/spartan.png";
         $emblem_path = absolute_path('uploads/spartans/' . $hashed . "/tmp/") . "emblem.png";
         
         // lets try and make a folder. check first :p
@@ -326,14 +346,14 @@ class Library {
             $config['source_image'] = $spartan_path;
             $config['wm_type'] = "overlay";
             $config['wm_overlay_path'] = $emblem_path;
-            $config['wm_opacity'] = 0;
             $config['quality'] = "100%";
-            $config['wm_x_transp'] = 1;
-            $config['wm_y_transp'] = 1;
             $config['wm_hor_alignment'] = "right";
             $this->_ci->image_lib->initialize($config);
             $this->_ci->image_lib->watermark();
         }
+        
+        // delete tmp dir
+        delete_files(absolute_path('uploads/spartans/' . $hashed . "/tmp/"), true);
     }
 
 }
