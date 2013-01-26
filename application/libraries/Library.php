@@ -15,7 +15,7 @@ class Library {
     // ---------------------------------------------------------------
     // 3rd Party
     // ---------------------------------------------------------------
-    
+
     /**
      * A function for making time periods readable
      *
@@ -170,34 +170,43 @@ class Library {
 
         return $resp;
     }
-    
+
     /**
      * 
      * @param type $gt
      */
-    public function get_profile($gt) {
-        
+    public function get_profile($gt, $errors = true) {
+
         if (strlen(urldecode($gt)) > 15) {
-            show_error("wtf. This is more than 15 chars. This isn't a gamertag.");
+
+            if ($errors) {
+                show_error("wtf. This is more than 15 chars. This isn't a gamertag.");
+            } else {
+                return false;
+            }
         } else {
-            
+
             // get hashed name
             $hashed = "profile_" . md5(trim(urlencode($gt)));
-            
+
             // check cache
             $resp = $this->_ci->cache->get($hashed);
-            
+
             if ($resp == false) {
-                
-                 // grab new data
-                  $resp = $this->grab_profile_data($gt);
-                  
-                  if ($resp == false)  {
-                      show_error("stop. This isn't an Xbox Live (Halo 4) account.");
-                  }
-                  $this->_ci->cache->write($resp, $hashed);
+
+                // grab new data
+                $resp = $this->grab_profile_data($gt);
+
+                if ($resp == false) {
+                    if ($errors) {
+                        show_error("stop. This isn't an Xbox Live (Halo 4) account.");
+                    } else {
+                        return false;
+                    }
+                }
+                $this->_ci->cache->write($resp, $hashed);
             } else {
-                
+
                 // check for expiration
                 if ($resp['Expiration'] > time()) {
                     $this->_ci->cache->delete($hashed);
@@ -207,47 +216,46 @@ class Library {
                 }
             }
         }
-        
     }
-    
+
     /**
      * 
      * @param type $gt
      */
     public function grab_profile_data($gt) {
-        
+
         // lets grab service record
-        $service_record = $this->check_status($this->get_url($this->lang . "/players/" . trim(urlencode($gt)).  "/" . $this->game . "/servicerecord"));
-        
+        $service_record = $this->check_status($this->get_url($this->lang . "/players/" . trim(urlencode($gt)) . "/" . $this->game . "/servicerecord"));
+
         if ($service_record == false) {
             return false;
         }
-        
+
         $hashed = md5(trim(urlencode($gt)));
-        
+
         // get ready for a dump of data
         return $this->_ci->stat_m->update_or_insert_gamertag($hashed, array(
-            'Gamertag' => urldecode($gt),
-            'HashedGamertag' => $hashed,
-            'Expiration' => intval(time()),
-            'KDRatio' => $service_record['GameModes'][2]['KDRatio'],
-            'Xp' => $service_record['XP'],
-            'SpartanPoints' => $service_record['SpartanPoints'],
-            'TotalChallengesCompleted' => $service_record['TotalChallengesCompleted'],
-            'TotalGameWins' => $service_record['GameModes'][2]['TotalGamesWon'],
-            'TotalGameQuits' => intval($service_record['GameModes'][2]['TotalGamesStarted'] - $service_record['GameModes'][2]['TotalGamesCompleted']),
-            'NextRankStartXP' => $service_record['NextRankStartXP'],
-            'TotalCommendationProgress' => floatval($service_record['TotalCommendationProgress']),
-            'TotalLoadoutItemsPurchased' => intval($service_record['TotalLoadoutItemsPurchased']),
-            'TotalMedalsEarned' => intval($service_record['GameModes'][2]['TotalMedals']),
-            'TotalGameplay' => $this->adjust_date($service_record['GameModes'][2]['TotalDuration']),
-            'TotalKills' => intval($service_record['GameModes'][2]['TotalKills']),
-            'TotalDeaths' => intval($service_record['GameModes'][2]['TotalDeaths']),
-            'TotalGamesStarted' => intval($service_record['GameModes'][2]['TotalGamesStarted']),
-            'ServiceTag' => $service_record['ServiceTag']
-            ));
+                    'Gamertag' => urldecode($gt),
+                    'HashedGamertag' => $hashed,
+                    'Expiration' => intval(time()),
+                    'KDRatio' => $service_record['GameModes'][2]['KDRatio'],
+                    'Xp' => $service_record['XP'],
+                    'SpartanPoints' => $service_record['SpartanPoints'],
+                    'TotalChallengesCompleted' => $service_record['TotalChallengesCompleted'],
+                    'TotalGameWins' => $service_record['GameModes'][2]['TotalGamesWon'],
+                    'TotalGameQuits' => intval($service_record['GameModes'][2]['TotalGamesStarted'] - $service_record['GameModes'][2]['TotalGamesCompleted']),
+                    'NextRankStartXP' => $service_record['NextRankStartXP'],
+                    'TotalCommendationProgress' => floatval($service_record['TotalCommendationProgress']),
+                    'TotalLoadoutItemsPurchased' => intval($service_record['TotalLoadoutItemsPurchased']),
+                    'TotalMedalsEarned' => intval($service_record['GameModes'][2]['TotalMedals']),
+                    'TotalGameplay' => $this->adjust_date($service_record['GameModes'][2]['TotalDuration']),
+                    'TotalKills' => intval($service_record['GameModes'][2]['TotalKills']),
+                    'TotalDeaths' => intval($service_record['GameModes'][2]['TotalDeaths']),
+                    'TotalGamesStarted' => intval($service_record['GameModes'][2]['TotalGamesStarted']),
+                    'ServiceTag' => $service_record['ServiceTag']
+                ));
     }
-    
+
     /**
      * adjust_date
      * 
@@ -259,10 +267,9 @@ class Library {
         if (preg_match('/(?P<days>[0-9]*).(?P<hours>[0-9]*):(?P<minutes>[0-9]*):(?P<seconds>[0-9]*)/', $str, $regs)) {
             return (($regs['days'] * 86400) + ($regs['hours'] * 3600) + ($regs['minutes'] * 60) + $regs['seconds']);
         } else {
-           log_message('error', 'We could not find this tag: ' . $str);
-           return 0;
+            log_message('error', 'We could not find this tag: ' . $str);
+            return 0;
         }
     }
-    
 
 }
