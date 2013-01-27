@@ -7,17 +7,15 @@ class Library {
     public $game;
     
     // urls @todo Abstract to config/
-    public $emblem_url = "https://emblems.svc.halowaypoint.com/h4/emblems/{EMBLEM}?size=120";
+    public $emblem_url = "https://emblems.svc.halowaypoint.com/h4/emblems/{EMBLEM}?size={SIZE}";
     public $spartan_url = "https://spartans.svc.halowaypoint.com/players/{GAMERTAG}/h4/spartans/fullbody?target=medium";
-    public $rank_url = "https://assets.halowaypoint.com/games/h4/ranks/v1/large/{RANK}";
+    public $rank_url = "https://assets.halowaypoint.com/games/h4/ranks/v1/{SIZE}/{RANK}";
+    public $medal_url = "https://assets.halowaypoint.com/games/h4/medals/v1/{SIZE}/{MEDAL}";
 
     function __construct() {
         $this->_ci = & get_instance();
         $this->lang = "english";
         $this->game = "h4";
-        
-        // output some to template
-        $this->_ci->template->set('rank_url', $this->rank_url);
     }
 
     // ---------------------------------------------------------------
@@ -165,6 +163,8 @@ class Library {
 
         // check if cache exists.
         if ($resp == false) {
+            
+            // fixes date, gets url via api
             $resp = $this->fix_date($this->get_url($this->lang . "/" . $this->game . "/challenges"), "BeginDate,EndDate", "Challenges");
             $this->_ci->cache->write($resp, 'current_challenges');
         } else {
@@ -322,21 +322,21 @@ class Library {
      * @param type $image
      * @return boolean
      */
-    public function return_image_url($type, $image) {
+    public function return_image_url($type, $image, $size) {
         
         // switch for Type
         switch ($type) {
             
             case "Emblem":
-                $path = "uploads/emblems";
-                $image_path = "/" . $image . ".png";
-                $url = str_replace("{EMBLEM}", $image, $this->emblem_url);
+                $path = "uploads/emblems/" . $size;
+                $image_path =  "/" . $image . ".png";
+                $url = str_replace("{SIZE}", $size, str_replace("{EMBLEM}", $image, $this->emblem_url));
                 break;
             
             case "Rank":
-                $path = "uploads/ranks";
+                $path = "uploads/ranks/" . $size;
                 $image_path = "/" . $image;
-                $url = str_replace("{RANK}", $image, $this->rank_url);
+                $url = str_replace("{SIZE}", $size, str_replace("{RANK}", $image, $this->rank_url));
                 break;
                 
             default:
@@ -394,7 +394,7 @@ class Library {
         }
 
         // download 2 images in there, (emblem and spartan). Ignore all errors. Check afterwards
-        $emblem = @file_get_contents($this->return_image_url("Emblem", $emblem));
+        $emblem = @file_get_contents($this->return_image_url("Emblem", $emblem, "120"));
         @file_put_contents($emblem_path, $emblem);
         
         $spartan = @file_get_contents(str_replace("{GAMERTAG}", $gamertag, $this->spartan_url));

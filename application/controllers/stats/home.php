@@ -21,7 +21,7 @@ class Home extends H4_Controller {
         $data = $this->library->get_profile($gamertag);
         
         $data['SpartanURL'] = $this->library->return_spartan_url($data['HashedGamertag'], $gamertag);
-        $data['RankImage'] = $this->library->return_image_url("Rank", $data['RankImage']);
+        $data['RankImage'] = $this->library->return_image_url("Rank", $data['RankImage'], "large");
         
         //  output gt, build template
         $this->template->title("Leaf .:. " . urldecode($gamertag));
