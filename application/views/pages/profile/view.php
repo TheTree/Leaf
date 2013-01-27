@@ -3,8 +3,8 @@
         <h2><?= urldecode($gamertag); ?> <small><?= $data['ServiceTag']; ?></small></h2>
         <div class="pagination-centered">
             <img src="<?= $data['SpartanURL']; ?>" class="img-polaroid" />
-            <div class="well well-large btn btn-primary pad10">
-                <img src="<?= str_replace("{RANK}", $data['RankImage'], $rank_url); ?>" />
+            <div class="well well-large btn btn-primary pad10 w150">
+                <img src="<?= $data['RankImage']; ?>" />
                 <?= $data['Specialization']; ?> - <?= $data['SpecializationLevel']; ?>
             </div>
         </div>
@@ -31,6 +31,7 @@
                     <span class="row_title">Total Quits</span>
                     <span class="row_data"><?= number_format($data['TotalGameQuits']); ?></span>
                 </li>
+                <hr>
                 <li>
                     <span class="row_title">Total Medals</span>
                     <span class="row_data"><?= number_format($data['TotalMedalsEarned']); ?></span>
@@ -46,6 +47,18 @@
                 <li>
                     <span class="row_title">KD Ratio</span>
                     <span class="row_data"><?= round(floatval($data['KDRatio']), 3); ?></span>
+                </li>
+                <li>
+                    <span class="row_title">Spartan Points</span>
+                    <span class="row_data"><?= number_format($data['SpartanPoints']); ?></span>
+                </li>
+                <li>
+                    <span class="row_title">Items Purchased</span>
+                    <span class="row_data"><?= number_format($data['TotalLoadoutItemsPurchased']); ?></span>
+                </li>
+                <li>
+                    <span class="row_title">Challenges Completed</span>
+                    <span class="row_data"><?= number_format($data['TotalChallengesCompleted']); ?></span>
                 </li>
             </ul>
         </div>

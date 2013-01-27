@@ -314,6 +314,47 @@ class Library {
     }
     
     /**
+     * return_image_url
+     * 
+     * Checks if this image exists locally. If so, uses it. Otherwise pulls from API
+     * 
+     * @param type $type
+     * @param type $image
+     * @return boolean
+     */
+    public function return_image_url($type, $image) {
+        
+        // switch for Type
+        switch ($type) {
+            
+            case "Emblem":
+                $path = "uploads/emblems";
+                $image_path = "/" . $image . ".png";
+                $url = str_replace("{EMBLEM}", $image, $this->emblem_url);
+                break;
+            
+            case "Rank":
+                $path = "uploads/ranks";
+                $image_path = "/" . $image;
+                $url = str_replace("{RANK}", $image, $this->rank_url);
+                break;
+                
+            default:
+                log_message('error', 'Type: ' . $type . " not found in our `return_image_url` Library");
+                return false;
+        }
+        
+        // check for the file locally
+        if (file_exists(absolute_path($path) . $image_path)) {
+            return base_url($path . $image_path);
+        } else {
+            $_stream = @file_get_contents($url);
+            @file_put_contents(absolute_path($path) . $image_path, $_stream);
+            return base_url($path . $image_path);
+        }
+    }
+    
+    /**
      * return_spartan_url
      * 
      * Tries and find's local Spartan. Otherwise returns url to it.
@@ -349,10 +390,11 @@ class Library {
         // lets try and make a folder. check first :p
         if (!(is_dir(absolute_path('uploads/spartans/' . $hashed . "/tmp")))) {
             mkdir(absolute_path('uploads/spartans/' . $hashed . "/tmp"), 0777, true);
+            write_file(absolute_path('uploads/spartans/' . $hashed) . "index.html", $this->get_anti_dir_trav());
         }
 
         // download 2 images in there, (emblem and spartan). Ignore all errors. Check afterwards
-        $emblem = @file_get_contents(str_replace("{EMBLEM}",$emblem,$this->emblem_url));
+        $emblem = @file_get_contents($this->return_image_url("Emblem", $emblem));
         @file_put_contents($emblem_path, $emblem);
         
         $spartan = @file_get_contents(str_replace("{GAMERTAG}", $gamertag, $this->spartan_url));
@@ -378,6 +420,17 @@ class Library {
         
         // delete tmp dir
         delete_files(absolute_path('uploads/spartans/' . $hashed . "/tmp/"), true);
+        rmdir(absolute_path('uploads/spartans/' . $hashed . "/tmp"));
+    }
+    
+    /**
+     * get anti_dir_traversal
+     */
+    public function get_anti_dir_trav() {
+        
+        // load config var
+        $this->_ci->config->load('security');
+        return $this->_ci->config->item('anti_tranversal_data');
     }
 
 }
