@@ -2,6 +2,7 @@
 /application/logs/*.php
 /application/cache/
 /uploads/
+/application/config/database.php
 
 #Linux
 *~
