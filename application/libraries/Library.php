@@ -190,7 +190,7 @@ class Library {
      */
     public function get_profile($gt, $errors = true) {
 
-        if (strlen(urldecode($gt)) > 15) {
+        if (strlen(urldecode($gt)) >= 15) {
 
             if ($errors) {
                 show_error("wtf. This is more than 15 chars. This isn't a gamertag.");
@@ -254,6 +254,8 @@ class Library {
         // lets do the URL work
         $this->build_spartan_with_emblem($hashed, substr_replace($service_record['EmblemImageUrl']['AssetUrl'], "", -12), $gt);
 
+        $medal_data = $this->get_medal_data($service_record['TopMedals']);
+        
         // get ready for a dump of data
         return $this->_ci->stat_m->update_or_insert_gamertag($hashed, array(
                     'Gamertag' => urldecode($gt),
@@ -263,6 +265,7 @@ class Library {
                     'Specialization' => $this->find_current_specialization($service_record['Specializations']),
                     'SpecializationLevel' => $this->find_current_specialization($service_record['Specializations'], "Level"),
                     'Expiration' => intval(time()),
+                    'MedalData' => @serialize($medal_data),
                     'KDRatio' => $service_record['GameModes'][2]['KDRatio'],
                     'Xp' => $service_record['XP'],
                     'SpartanPoints' => $service_record['SpartanPoints'],
@@ -338,6 +341,12 @@ class Library {
                 $image_path = "/" . $image;
                 $url = str_replace("{SIZE}", $size, str_replace("{RANK}", $image, $this->rank_url));
                 break;
+            
+            case "Medal";
+                $path = "uploads/medals/" . $size;
+                $image_path = "/" . $image;
+                $url = str_replace("{SIZE}", $size, str_replace("{MEDAL}", $image, $this->medal_url));
+                break;
                 
             default:
                 log_message('error', 'Type: ' . $type . " not found in our `return_image_url` Library");
@@ -349,11 +358,17 @@ class Library {
             return base_url($path . $image_path);
         } else {
             $_stream = @file_get_contents($url);
-            @file_put_contents(absolute_path($path) . $image_path, $_stream);
-            return base_url($path . $image_path);
+
+            // check if we got the file
+            if ($_stream == "") {
+                return $url;
+            } else {
+                @file_put_contents(absolute_path($path) . $image_path, $_stream);
+                return base_url($path . $image_path);
+            }
         }
     }
-    
+
     /**
      * return_spartan_url
      * 
@@ -371,6 +386,46 @@ class Library {
         } else {
             return str_replace("{GAMERTAG}", urlencode($gt), $this->spartan_url);
         }
+    }
+    
+    /**
+     * get_medal_data
+     * 
+     * Extracts from api `TopMedals` into serialized form
+     * @param type $medals
+     * @return type
+     */
+    public function get_medal_data($medals) {
+        $rtr_arr = array();
+        $x = 0;
+        
+        // loop top medals, extract data.
+        foreach($medals as $medal) {
+            $rtr_arr[$x++] = array(
+                'Id' => intval($medal['Id']),
+                'Name' => $medal['Name'],
+                'Count' => intval($medal['TotalMedals']),
+                'Description' => $medal['Description'],
+                'ImageUrl' => str_replace("{size}/", null, $medal['ImageUrl']['AssetUrl'])
+            );
+        }
+        
+        return $rtr_arr;
+    }
+    
+    /**
+     * return_medals
+     * 
+     * Parses url into real url of image.
+     * @param type $data
+     */
+    public function return_medals($data) {
+        $data = @unserialize($data);
+        
+        foreach ($data as $key => $item) {
+            $data[$key]['ImageUrl'] = $this->return_image_url("Medal", $data[$key]['ImageUrl'], "large");
+        }
+        return $data;
     }
 
     /**

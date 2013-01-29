@@ -1,3 +1,15 @@
+<script type="text/javascript">
+    // setup func
+    function set(id, con, title) {
+        $("#" + id).popover({
+            title: title.toString(),
+            content: con.toString(),
+            trigger: 'hover',
+            placement: 'top',
+            delay: {show: 25, hide: 200}
+        });
+    }
+</script>
 <div class="row-fluid">
     <div class="span3">
         <h2><?= urldecode($gamertag); ?> <small><?= $data['ServiceTag']; ?></small></h2>
@@ -12,16 +24,16 @@
 
     <div class="span9">
         <br /><br />
-            <? if ($data['NextRankStartXP'] == 0): ?>
-                Specialization: <?= $data['Specialization']; ?> Completed
-            <? else: ?>
-                <?= number_format($data['NextRankStartXP'] - $data['Xp']); ?> XP till next level (<?= round(floatval(($data['Xp'] - $data['RankStartXP'])  / ($data['NextRankStartXP'] - $data['RankStartXP'])) * 100); ?>% complete)
-            <? endif; ?>
+        <? if ($data['NextRankStartXP'] == 0): ?>
+            Specialization: <?= $data['Specialization']; ?> Completed
+        <? else: ?>
+            <?= number_format($data['NextRankStartXP'] - $data['Xp']); ?> XP till next level (<?= round(floatval(($data['Xp'] - $data['RankStartXP']) / ($data['NextRankStartXP'] - $data['RankStartXP'])) * 100); ?>% complete)
+        <? endif; ?>
         <div class="progress progress-striped">
             <? if ($data['NextRankStartXP'] == 0): ?>
                 <div class="bar" style="width: 100%;"></div>
             <? else: ?>
-                <div class="bar" style="width: <?= floatval(($data['Xp'] - $data['RankStartXP'])  / ($data['NextRankStartXP'] - $data['RankStartXP'])) * 100; ?>%;"></div>
+                <div class="bar" style="width: <?= floatval(($data['Xp'] - $data['RankStartXP']) / ($data['NextRankStartXP'] - $data['RankStartXP'])) * 100; ?>%;"></div>
             <? endif; ?>
         </div>
         <strong>Basic Stats</strong>
@@ -69,6 +81,17 @@
                     <span class="row_data"><?= number_format($data['TotalChallengesCompleted']); ?></span>
                 </li>
             </ul>
+        </div>
+    </div>
+
+    <div class="span9">
+        <strong>Medals</strong>
+        <div class="well well-large h150">
+            <div class="pagination-centered">
+                <? foreach ($data['MedalData'] as $medal): ?>
+                        <img src="<?= $medal['ImageUrl']; ?>" class="img-polaroid " id="photo_<?= $medal['Id']; ?>" onMouseOver="set('photo_<?= $medal['Id']; ?>', '<?= addslashes($medal['Description']); ?>', '<?= $medal['Name']; ?> - Amt: <?= $medal['Count']; ?>');" />
+                <? endforeach; ?>
+            </div>
         </div>
     </div>
 </div>
