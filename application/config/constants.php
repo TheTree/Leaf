@@ -40,8 +40,8 @@ define('FOPEN_READ_WRITE_CREATE_STRICT',		'x+b');
 /**
  * URLs
  */
-define('LIVE_URL', 'ibotpeaches.com'); # LIVE, ONLY PUSHED WHEN FUCKING TESTED
-define('STAGE_URL', 'test.com'); # Stage Site. Testing site.
+define('LIVE_URL', 'leafapp.co'); # LIVE, ONLY PUSHED WHEN FUCKING TESTED
+define('STAGE_URL', 'ibotpeaches.com'); # Stage Site. Testing site.
 define('LOCAL_URL', 'localhost'); # When working locally.
 
 /**
