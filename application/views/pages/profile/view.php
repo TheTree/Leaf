@@ -6,7 +6,7 @@
             content: con.toString(),
             trigger: 'hover',
             placement: 'top',
-            delay: {show: 25, hide: 200}
+            delay: {show: 0, hide: 25}
         });
     }
 </script>
