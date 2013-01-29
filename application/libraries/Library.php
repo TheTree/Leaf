@@ -190,7 +190,7 @@ class Library {
      */
     public function get_profile($gt, $errors = true) {
 
-        if (strlen(urldecode($gt)) >= 15) {
+        if (strlen(urldecode($gt)) > 15) { // silly peaches
 
             if ($errors) {
                 show_error("wtf. This is more than 15 chars. This isn't a gamertag.");
