@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Compare extends H4_Controller {
+class Compare extends IBOT_Controller {
 
     public function __construct() {
         parent::__construct();

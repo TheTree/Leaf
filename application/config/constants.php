@@ -44,7 +44,10 @@ define('LIVE_URL', 'ibotpeaches.com'); # LIVE, ONLY PUSHED WHEN FUCKING TESTED
 define('STAGE_URL', 'test.com'); # Stage Site. Testing site.
 define('LOCAL_URL', 'localhost'); # When working locally.
 
-
+/**
+ * TIME
+ */
+define('DAY_IN_SECONDS', 3600);
 
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */

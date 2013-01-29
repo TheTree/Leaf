@@ -1,6 +1,6 @@
 <?php
 
-class H4_Controller extends CI_Controller {
+class IBOT_Controller extends CI_Controller {
 
     function __construct() {
         parent::__construct();

@@ -3,7 +3,7 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class Home extends H4_Controller {
+class Home extends IBOT_Controller {
 
     public function __construct() {
         parent::__construct();
@@ -24,7 +24,7 @@ class Home extends H4_Controller {
         if ($this->form_validation->run() == FALSE) {
             $this->template->build('pages/home');
         } else {
-            redirect(base_url("/gt/" . str_replace("+", " ",$this->input->post('gamertag'))));
+            redirect(base_url("/gt/" . str_replace(" ", "_",$this->input->post('gamertag'))));
         }
         $this->template->title("Leaf .:. Halo 4 Stats");
         $this->template->set('challenges', $this->library->get_challenges());

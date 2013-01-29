@@ -74,5 +74,27 @@ class Stat_model extends IBOT_Model {
             return false;
         }
     }
+    
+    /**
+     * get_gamertag
+     * 
+     * Returns every field from `ci_gamertags`
+     * @param type $hashed
+     * @return boolean
+     */
+    public function get_gamertag_data($hashed) {
+        $resp = $this->db
+                ->get_where('ci_gamertags', array(
+                    'HashedGamertag' => $hashed
+                ));
+        
+        $resp = $resp->row_array();
+        
+        if (isset($resp['HashedGamertag']) && is_array($resp)) {
+            return $resp;
+        } else {
+            return false;
+        }
+    }
 
 }

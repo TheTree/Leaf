@@ -240,6 +240,18 @@ class Library {
      * @param type $gt
      */
     public function grab_profile_data($gt) {
+        
+         // make hashed name
+        $hashed = md5(trim(urlencode($gt)));
+        
+        // grab from db, if null continue
+        $resp = $this->_ci->stat_m->get_gamertag_data($hashed);
+        
+        if (isset($resp['Expiration']) && is_array($resp)) {
+            if (intval($resp['Expiration']) > intval(time())) {
+                return $resp;
+            }
+        }
 
         // lets grab service record
         $service_record = $this->check_status($this->get_url($this->lang . "/players/" . trim(urlencode(strtolower($gt))) . "/" . $this->game . "/servicerecord"));
@@ -247,9 +259,6 @@ class Library {
         if ($service_record == false) {
             return false;
         }
-
-        // make hashed name
-        $hashed = md5(trim(urlencode($gt)));
         
         // lets do the URL work
         $this->build_spartan_with_emblem($hashed, substr_replace($service_record['EmblemImageUrl']['AssetUrl'], "", -12), $gt);
@@ -264,7 +273,7 @@ class Library {
                     'RankImage' => substr($service_record['RankImageUrl']['AssetUrl'], 7),
                     'Specialization' => $this->find_current_specialization($service_record['Specializations']),
                     'SpecializationLevel' => $this->find_current_specialization($service_record['Specializations'], "Level"),
-                    'Expiration' => intval(time()),
+                    'Expiration' => intval(time() + DAY_IN_SECONDS),
                     'MedalData' => @serialize($medal_data),
                     'KDRatio' => $service_record['GameModes'][2]['KDRatio'],
                     'Xp' => $service_record['XP'],
@@ -281,7 +290,9 @@ class Library {
                     'TotalKills' => intval($service_record['GameModes'][2]['TotalKills']),
                     'TotalDeaths' => intval($service_record['GameModes'][2]['TotalDeaths']),
                     'TotalGamesStarted' => intval($service_record['GameModes'][2]['TotalGamesStarted']),
-                    'ServiceTag' => $service_record['ServiceTag']
+                    'ServiceTag' => $service_record['ServiceTag'],
+                    'LastUpdate' => intval(time()),
+                    'InactiveCounter' => intval(0)
                 ));
     }
 
