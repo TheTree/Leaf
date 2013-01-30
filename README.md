@@ -26,7 +26,7 @@ GetUserAchievements: "https://haloplayer.svc.halowaypoint.com/HaloPlayer/GetUser
 GetWarGameDetails: "https://stats.svc.halowaypoint.com/{language}/players/{gamertag}/{game}/servicerecord/wargames"
 ```
 
-# History
-Help from Xerax finding the endpoints. All future development by myself.
+## History
+endpoints from alex and james (www.auntiedot.net).
 
 peaches <3
