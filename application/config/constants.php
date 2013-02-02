@@ -49,5 +49,10 @@ define('LOCAL_URL', 'localhost'); # When working locally.
  */
 define('DAY_IN_SECONDS', 3600);
 
+/**
+ * MAX_HALO_RANK
+ */
+define('MAX_HALO_RANK', 130);
+
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */

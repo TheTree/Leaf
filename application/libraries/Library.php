@@ -190,7 +190,7 @@ class Library {
      */
     public function get_profile($gt, $errors = true) {
 
-        if (strlen(urldecode($gt)) > 15) { // silly peaches
+        if (strlen(urldecode($gt)) > 15) {
 
             if ($errors) {
                 show_error("wtf. This is more than 15 chars. This isn't a gamertag.");
@@ -260,10 +260,14 @@ class Library {
             return false;
         }
         
-        // lets do the URL work
+        // lets do the URL work, and medal
         $this->build_spartan_with_emblem($hashed, substr_replace($service_record['EmblemImageUrl']['AssetUrl'], "", -12), $gt);
-
         $medal_data = $this->get_medal_data($service_record['TopMedals']);
+        
+        // check for lvl 130
+        if ($service_record['NextRankId'] == 0) {
+            $service_record['NextRankStartXP'] = 0;
+        }
         
         // get ready for a dump of data
         return $this->_ci->stat_m->update_or_insert_gamertag($hashed, array(
