@@ -40,12 +40,16 @@
 
 // basic pages
 $route['about'] = "home/about";
-$route['news'] = "home/news";
+
+$route['news'] = "news/index";
+$route['news/create'] = "news/index/create";
 $route['stats'] = "stats/home/index";
 $route['compare'] = "stats/compare/index";
 
 // variable pages
 $route['gt/(:any)'] = "stats/home/gt/$1";
+$route['news/(:num)'] = "news/index/index/$1";
+$route['news/view/(:num)'] = "news/index/view/$1";
 
 // other
 $route['default_controller'] = "home";

@@ -78,6 +78,24 @@ class Library {
     // ---------------------------------------------------------------
 
     /**
+     * is_active
+     * 
+     * Determines if passed $item is equal to navigation
+     * 
+     * @param type $item
+     * @return type
+     */
+    public function is_active($item) {
+        if (uri_string() == "") {
+            $uri_string = "home";
+        } else {
+            $uri_string = uri_string();
+        }
+
+        return strpos($uri_string, $item) !== FALSE ? 'active' : '';
+    }
+    
+    /**
      * fix_date
      * 
      * Pass the full response from 343,

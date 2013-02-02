@@ -13,10 +13,10 @@
                     <a class="brand" href="<?= base_url(); ?>">Leaf</a>
                     <div class="nav-collapse collapse">
                         <ul class="nav">
-                            <li><a href="<?= base_url('news'); ?>">News</a></li>
-                            <li><a href="<?= base_url('stats'); ?>">Stats</a></li>
-                            <li><a href="<?= base_url('compare'); ?>">Compare</a></li>
-                            <li><a href="<?= base_url('about'); ?>">About</a></li>
+                            <li class="<? if ($this->library->is_active("news")): ?> active<? endif; ?>"><a href="<?= base_url('news'); ?>">News</a></li>
+                            <li class="<? if ($this->library->is_active("stats")): ?> active<? endif; ?>"><a href="<?= base_url('stats'); ?>">Stats</a></li>
+                            <li class="<? if ($this->library->is_active("compare")): ?> active<? endif; ?>"><a href="<?= base_url('compare'); ?>">Compare</a></li>
+                            <li class="<? if ($this->library->is_active("about")): ?> active<? endif; ?>"><a href="<?= base_url('about'); ?>">About</a></li>
                         </ul>
                         <ul class="nav pull-right">
                             <li><a href="http://twitter.com/iBotPeaches" rel="nofollow" target="_blank">Made with &hearts; iBotPeaches</a></li>

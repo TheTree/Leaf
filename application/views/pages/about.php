@@ -16,13 +16,15 @@
             meh. Tweet me. We can add more stuff.
             <br /><br />
             <strong>Can I have the source? </strong><br />
-            The source looks like crap. Its rushed. So no.
+            In due time. Once I clean it up. It'll be on Github.
             <br /><br />
             <strong>Can you swim in spent fuel water? </strong><br />
             I've got no clue. These <a href="http://what-if.xkcd.com/29/">guys</a> do though.
             <br />
             
-        </div>
+        </div> 
+        <br />
+        
     </div>
     <div class="span5">
         <h2>me</h2>
@@ -44,6 +46,10 @@
                     im peaches ye.
                 </p>
             </div>
+        </div>
+        <h4>Kudos</h4>
+        <div class="well well-large">
+            Thanks to the folks (Alex & James) @ <a href="http://auntiedot.net/" target="_blank">Auntiedot</a> for major API research.
         </div>
         <h4>Sources </h4>
         <div class="well well-large">

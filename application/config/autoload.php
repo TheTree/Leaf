@@ -65,7 +65,7 @@ $autoload['libraries'] = array('/phil/template','/phil/cache','/phil/curl', #phi
 |	$autoload['helper'] = array('url', 'file');
 */
 
-$autoload['helper'] = array('url','form','string','output','security','email','file','language','html');
+$autoload['helper'] = array('url','form','string','output','security','email','file','language','html','text');
 
 
 /*

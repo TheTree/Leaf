@@ -27,14 +27,10 @@ class Home extends IBOT_Controller {
             redirect(base_url("/gt/" . str_replace(" ", "_",$this->input->post('gamertag'))));
         }
         $this->template->title("Leaf .:. Halo 4 Stats");
+        $this->template->set("recent_news", $this->news_m->get_newest_article());
         $this->template->set('challenges', $this->library->get_challenges());
         $this->template->build('pages/home');
     }
-
-    function news() {
-        $this->template->build("pages/comingsoon");
-    }
-
 }
 
 /* End of file welcome.php */
