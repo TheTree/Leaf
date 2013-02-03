@@ -386,6 +386,7 @@ class Library {
                 return false;
         }
         
+        log_message('debug', base_url($path . $image_path));
         // check for the file locally
         if (file_exists(absolute_path($path) . $image_path)) {
             return base_url($path . $image_path);
@@ -506,6 +507,7 @@ class Library {
             $this->_ci->image_lib->initialize($config);
             $this->_ci->image_lib->watermark();
             
+        } else {
             log_message('debug', 'spartan: ' . $spartan_path);
             log_message('debug', 'emblem: ' . $emblem_path);
         }

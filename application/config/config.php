@@ -1,10 +1,10 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 date_default_timezone_set('America/Kentucky/Louisville');
 
-if (!isset($_SERVER['SERVER_NAME'])) {
+if (PHP_SAPI == 'cli') {
     // Quick fix for CLI (Commandline requestions) used for cron?!
-    $config['base_url'] = 'http://' . LOCAL_URL . '/h4';
-    $config['active_group'] = "local";
+    $config['base_url'] = 'http://' . LIVE_URL;
+    $config['active_group'] = "live";
 } else {
     switch ($_SERVER['SERVER_NAME']) {
         case LIVE_URL:
