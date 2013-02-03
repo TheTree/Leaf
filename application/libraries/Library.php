@@ -390,13 +390,14 @@ class Library {
         if (file_exists(absolute_path($path) . $image_path)) {
             return base_url($path . $image_path);
         } else {
-            $_stream = @file_get_contents($url);
+            $_stream = file_get_contents($url);
 
             // check if we got the file
             if ($_stream == "") {
                 return $url;
             } else {
-                @file_put_contents(absolute_path($path) . $image_path, $_stream);
+                file_put_contents(absolute_path($path) . $image_path, $_stream);
+                chmod(absolute_path($path) . $image_path, 0777);
                 return base_url($path . $image_path);
             }
         }
@@ -482,11 +483,11 @@ class Library {
         }
 
         // download 2 images in there, (emblem and spartan). Ignore all errors. Check afterwards
-        $emblem = @file_get_contents($this->return_image_url("Emblem", $emblem, "120"));
-        @file_put_contents($emblem_path, $emblem);
+        $emblem = file_get_contents($this->return_image_url("Emblem", $emblem, "120"));
+        file_put_contents($emblem_path, $emblem);
         
-        $spartan = @file_get_contents(str_replace("{GAMERTAG}", $gamertag, $this->spartan_url));
-        @file_put_contents($spartan_path, $spartan);
+        $spartan = file_get_contents(str_replace("{GAMERTAG}", $gamertag, $this->spartan_url));
+        file_put_contents($spartan_path, $spartan);
         
         // cleanup
         unset($emblem);
@@ -510,7 +511,7 @@ class Library {
         }
         
         // delete tmp dir
-        delete_files(absolute_path('uploads/spartans/' . $hashed . "/tmp/"), true);
+        delete_files(absolute_path('uploads/spartans/' . $hashed . "/tmp/"), false);
         rmdir(absolute_path('uploads/spartans/' . $hashed . "/tmp"));
     }
     
