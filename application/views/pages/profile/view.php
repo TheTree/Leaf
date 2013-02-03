@@ -19,6 +19,16 @@
     </div>
     <div class="span9">
         <br /><br />
+        <? if ($msg != false): ?>
+            <div class="alert alert-info">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                    <? if ($msg == "enabled"): ?>
+                    <strong>Hey</strong> We've updated your stats :) 
+                    <? else: ?>
+                    <strong>Hey</strong> Sorry. Your not ready for a stat update :(
+                    <? endif; ?>
+            </div>
+        <? endif; ?>
         <?= $template['_partials']['block_progression']; ?>
         <?= $template['_partials']['block_basicstats']; ?>
     </div>

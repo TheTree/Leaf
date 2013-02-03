@@ -136,5 +136,28 @@ class Stat_model extends IBOT_Model {
         }
                 
     }
+    
+    /**
+     * get_expiration_date
+     * 
+     * @param type $hashed
+     * @return boolean
+     */
+    public function get_expiration_date($hashed) {
+        $resp = $this->db
+                ->select("Expiration")
+                ->limit(1)
+                ->get_where("ci_gamertags", array(
+                    'HashedGamertag' => $hashed
+                ));
+        
+        $resp = $resp->row_array();
+        
+        if (isset($resp['Expiration']) && is_array($resp)) {
+            return $resp;
+        } else {
+            return false;
+        }
+    }
 
 }

@@ -34,10 +34,37 @@ class Home extends IBOT_Controller {
                 ->set_partial('block_progression', '_partials/profile/block_progression')
                 ->set_partial('block_medals','_partials/profile/block_medals')
                 ->title("Leaf .:. " . urldecode($gamertag))
+                ->set('msg', $this->session->flashdata("recache"))
                 ->set('gamertag', $gamertag)
                 ->set('data', $data)
                 ->build("pages/profile/view");
         
+    }
+    
+    public function recache_gt($gamertag = "") {
+        
+         // convert _ to %20 (space)
+        $gamertag = str_replace("_", "%20", $gamertag);
+        $hashed = md5(trim(urlencode($gamertag)));
+        
+        // lets see if they need a recache.
+        $data = $this->stat_m->get_expiration_date($hashed);
+        
+        if (is_array($data)) {
+            if (($data['Expiration'] - THREE_HOURS_IN_SECONDS + HOUR_IN_SECONDS) < time()) {
+                $data = $this->library->get_profile($gamertag, false, true);
+                
+                // set cache
+                $this->session->set_flashdata("recache", "enabled");
+            } else {
+                $this->session->set_flashdata("recache", "disabled");
+            }
+            
+            // redirect out of here
+            redirect(base_url("gt/" . str_replace("%20", "_",$gamertag)));
+        } else {
+            show_error("This isn't a gamertag.");
+        }
     }
     
 }

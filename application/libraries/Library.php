@@ -206,7 +206,7 @@ class Library {
      * 4) Caches into file system for 1hr.
      * @param type $gt
      */
-    public function get_profile($gt, $errors = true) {
+    public function get_profile($gt, $errors = true, $force = false) {
 
         if (strlen(urldecode($gt)) > 15) {
 
@@ -223,7 +223,7 @@ class Library {
             // check cache
             $resp = $this->_ci->cache->get($hashed);
 
-            if ($resp == false || ENVIRONMENT == "development") {
+            if ($resp == false || ENVIRONMENT == "development" || $force == true) {
 
                 // grab new data
                 $resp = $this->grab_profile_data($gt);
