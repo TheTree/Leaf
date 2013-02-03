@@ -2,7 +2,7 @@
 
 class Library {
 
-    public $ci;
+    protected $_ci;
     public $lang;
     public $game;
     
@@ -504,6 +504,9 @@ class Library {
             $config['wm_hor_alignment'] = "right";
             $this->_ci->image_lib->initialize($config);
             $this->_ci->image_lib->watermark();
+            
+            log_message('debug', 'spartan: ' . $spartan_path);
+            log_message('debug', 'emblem: ' . $emblem_path);
         }
         
         // delete tmp dir

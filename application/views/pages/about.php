@@ -15,6 +15,9 @@
             <strong>Any new features? </strong><br />
             meh. Tweet me. We can add more stuff.
             <br /><br />
+            <strong>My medals aren't right?</strong><br />
+            It counts from everything. Not just matchmaking. 343 bug. not me.
+            <br /><br />
             <strong>Can I have the source? </strong><br />
             In due time. Once I clean it up. It'll be on Github.
             <br /><br />

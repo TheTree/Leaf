@@ -30,3 +30,4 @@ GetWarGameDetails: "https://stats.svc.halowaypoint.com/{language}/players/{gamer
 endpoints from alex and james (www.auntiedot.net).
 
 peaches <3
+

@@ -1,4 +1,5 @@
-<?php
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+if (PHP_SAPI != 'cli') { exit('You cannot access this directly in the browser CLI only!'); }
 
 /**
  * Description of cron
@@ -6,18 +7,10 @@
  * /usr/local/bin/php -f /home/ibotpeac/public_html/stats/cron para1 para2 para3
  * @author Connor Tumbleson <connor.tumbleson@gmail.com>
  */
-class Cron extends IBOT_Controller {
-
-    //put your code here
+class Cron_task extends IBOT_Controller {
 
     function __construct() {
         parent::__construct();
-
-        // this controller can only be called from the command line
-        if (!$this->input->is_cli_request()) {
-            show_error('Direct access is not allowed');
-        }
-        
     }
     
     function update_gamertags() {
@@ -29,18 +22,20 @@ class Cron extends IBOT_Controller {
         $_previous = $this->cache->get('cron_lastid');
         $_max = $this->cache->get('cron_maxid');
         
-        log_message('debug', 'Previous: ' . intval($_previous));
-        log_message('debug', 'Max: ' . intval($_max));
+        if (intval($_previous) >= intval($_max)) {
+            $_max = 0;
+        }
         
         // check if its null
         if (intval($_max) == 0 || intval($_previous) == 0) {
-            $_max = $this->stat_m->count_gamertags();
+            $_max = $this->stat_m->count_gamertags(true);
             $this->cache->write($_max, 'cron_maxid');
             
             $_previous = 0;
         }
+        
          // Lets load eh 10 people who are expired
-        $results = $this->stat_m->cron_gamertag($_previous, $_max);
+        $results = $this->stat_m->cron_gamertag($_previous, intval(5));
         
         if (is_array($results) && count($results) > 0) {
             foreach ($results as $result) {
@@ -59,10 +54,8 @@ class Cron extends IBOT_Controller {
             }
             
             // store new data
-            $this->cache->write($result['id'], 'cron_lastid');
-        }
-        
+            $cache_write = $this->cache->write($result['id'], 'cron_lastid');
+            echo $cache_write;
+        }  
     }
-
 }
-?>

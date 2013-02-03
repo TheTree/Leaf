@@ -107,7 +107,12 @@ class Stat_model extends IBOT_Model {
      * 
      * @return type
      */
-    public function count_gamertags() {
+    public function count_gamertags($active = false) {
+        
+        if ($active) {
+            $this->db->where("Expiration <", time());
+        }
+        
         return $this->db->count_all_results('ci_gamertags');
     }
     
@@ -148,7 +153,8 @@ class Stat_model extends IBOT_Model {
                 ->select("Expiration")
                 ->limit(1)
                 ->get_where("ci_gamertags", array(
-                    'HashedGamertag' => $hashed
+                    'HashedGamertag' => $hashed,
+                    'InactiveCounter <' => intval(40)
                 ));
         
         $resp = $resp->row_array();

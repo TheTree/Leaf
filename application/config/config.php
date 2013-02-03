@@ -3,7 +3,7 @@ date_default_timezone_set('America/Kentucky/Louisville');
 
 if (!isset($_SERVER['SERVER_NAME'])) {
     // Quick fix for CLI (Commandline requestions) used for cron?!
-    $config['base_url'] = 'https://localhost/h4';
+    $config['base_url'] = 'http://' . LOCAL_URL . '/h4';
     $config['active_group'] = "local";
 } else {
     switch ($_SERVER['SERVER_NAME']) {
