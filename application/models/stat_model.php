@@ -4,6 +4,8 @@ class Stat_model extends IBOT_Model {
 
     function __construct() {
         parent::__construct();
+        
+        log_message('debug', 'Stat_modal loaded');
     }
 
     /**
@@ -17,6 +19,9 @@ class Stat_model extends IBOT_Model {
 
         // check for update
         if (($_tmp = $this->account_exists($hash)) != false) {
+            
+            // unset InactiveCounter
+            unset($data['InactiveCounter']);
             $this->update_account($hash, $data);
         } else {
             $this->insert_account($data);
@@ -95,6 +100,41 @@ class Stat_model extends IBOT_Model {
         } else {
             return false;
         }
+    }
+    
+    /**
+     * count_gamertags
+     * 
+     * @return type
+     */
+    public function count_gamertags() {
+        return $this->db->count_all_results('ci_gamertags');
+    }
+    
+    /**
+     * cron_gamertags
+     * 
+     * Grabs data based on previous run.
+     * @param type $start
+     * @param type $max
+     * @return boolean
+     */
+    public function cron_gamertag($start, $max) {
+        $resp = $this->db
+                ->select('HashedGamertag,Xp,id,InactiveCounter,Gamertag')
+                ->limit(intval($max),intval($start))
+                ->get_where('ci_gamertags', array(
+                    'Expiration <' => time() 
+                ));
+        
+        $resp = $resp->result_array();
+        
+        if (is_array($resp)) {
+            return $resp;
+        } else {
+            return false;
+        }
+                
     }
 
 }

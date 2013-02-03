@@ -295,7 +295,7 @@ class Library {
                     'RankImage' => substr($service_record['RankImageUrl']['AssetUrl'], 7),
                     'Specialization' => $this->find_current_specialization($service_record['Specializations']),
                     'SpecializationLevel' => $this->find_current_specialization($service_record['Specializations'], "Level"),
-                    'Expiration' => intval(time() + DAY_IN_SECONDS),
+                    'Expiration' => intval(time() + THREE_HOURS_IN_SECONDS),
                     'MedalData' => @serialize($medal_data),
                     'KDRatio' => $service_record['GameModes'][2]['KDRatio'],
                     'Xp' => $service_record['XP'],

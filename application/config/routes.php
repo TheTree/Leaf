@@ -40,7 +40,7 @@
 
 // basic pages
 $route['about'] = "home/about";
-
+$route['cron'] = "cron/cron/update_gamertags"; 
 $route['news'] = "news/index";
 $route['news/create'] = "news/index/create";
 $route['stats'] = "stats/home/index";
