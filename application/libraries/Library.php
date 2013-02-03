@@ -235,7 +235,7 @@ class Library {
                         return false;
                     }
                 }
-                $this->_ci->cache->write($resp, $hashed);
+                $this->_ci->cache->write($resp, $hashed, 3600);
                 return $resp;
             } else {
 
