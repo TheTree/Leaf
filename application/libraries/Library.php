@@ -226,7 +226,7 @@ class Library {
             if ($resp == false || ENVIRONMENT == "development" || $force == true) {
 
                 // grab new data
-                $resp = $this->grab_profile_data($gt);
+                $resp = $this->grab_profile_data($gt,$force);
 
                 if ($resp == false) {
                     if ($errors) {
@@ -257,7 +257,7 @@ class Library {
      * 
      * @param type $gt
      */
-    public function grab_profile_data($gt) {
+    public function grab_profile_data($gt, $force = false) {
         
          // make hashed name
         $hashed = md5(trim(urlencode($gt)));
@@ -266,7 +266,7 @@ class Library {
         $resp = $this->_ci->stat_m->get_gamertag_data($hashed);
         
         if (isset($resp['Expiration']) && is_array($resp)) {
-            if (intval($resp['Expiration']) > intval(time())) {
+            if (intval($resp['Expiration']) > intval(time()) && $force == false) {
                 return $resp;
             }
         }
