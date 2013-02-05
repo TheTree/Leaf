@@ -518,6 +518,15 @@ class Library {
     }
     
     /**
+     * 
+     * @param type $field
+     * @param type $asc
+     */
+    public function get_top_5_leaderboard($field, $asc = false) {
+        return $this->_ci->stat_m->get_top_5($field, $asc);
+    }
+    
+    /**
      * get anti_dir_traversal
      */
     public function get_anti_dir_trav() {

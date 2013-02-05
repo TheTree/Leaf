@@ -12,7 +12,22 @@ class Home extends IBOT_Controller {
     }
     
     public function index() {
-        $this->template->build("pages/comingsoon");
+        
+        // lets start grabbing data w/ caches
+        $stats = array();
+        
+        $stats['TotalKills'] = $this->cache->model('stat_m','get_top_5', array('TotalKills', false), 3600);
+        $stats['TotalDeaths'] = $this->cache->model('stat_m', 'get_top_5', array('TotalDeaths', true), 3600);
+        $stats['KDRatio'] = $this->cache->model('stat_m', 'get_top_5', array('KDRatio', false), 3600);
+        $stats['TimePlayed'] = $this->cache->model('stat_m', 'get_top_5', array('TotalGameplay', false), 3600);
+        $stats['TotalMedals'] = $this->cache->model('stat_m', 'get_top_5', array('TotalMedalsEarned', false), 3600);
+        $stats['ChallengesCompleted'] = $this->cache->model('stat_m', 'get_top_5', array('TotalChallengesCompleted', false), 3600);
+        
+        // build w/ data
+        $this->template
+                ->title("Leaf .:. Leaderboards")
+                ->set("stats", $stats)
+                ->build("pages/leaderboard/home");
     }
     
     public function gt($gamertag = "") {

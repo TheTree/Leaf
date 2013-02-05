@@ -165,5 +165,30 @@ class Stat_model extends IBOT_Model {
             return false;
         }
     }
+    
+    /**
+     * get_top_5
+     * @param type $field
+     * @param type $asc
+     * @return boolean
+     */
+    public function get_top_5($field, $asc) {
+        
+        $resp = $this->db
+                ->select("Gamertag,ServiceTag," . $field)
+                ->limit(5)
+                ->order_by($field, ($asc == true ? "asc" : "desc"))
+                ->get_where('ci_gamertags', array(
+                    'TotalGamesStarted >' => intval(100)));
+        
+        $resp = $resp->result_array();
+        
+        if (is_array($resp) && count($resp) > 0) {
+            return $resp;
+        } else {
+            return false;
+        }
+                
+    }
 
 }

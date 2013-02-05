@@ -14,7 +14,7 @@
                     <div class="nav-collapse collapse">
                         <ul class="nav">
                             <li class="<? if ($this->library->is_active("news")): ?> active<? endif; ?>"><a href="<?= base_url('news'); ?>">News</a></li>
-                            <li class="<? if ($this->library->is_active("stats")): ?> active<? endif; ?>"><a href="<?= base_url('stats'); ?>">Stats</a></li>
+                            <li class="<? if ($this->library->is_active("stats")): ?> active<? endif; ?>"><a href="<?= base_url('stats'); ?>">Leaderboards</a></li>
                             <li class="<? if ($this->library->is_active("compare")): ?> active<? endif; ?>"><a href="<?= base_url('compare'); ?>">Compare</a></li>
                             <li class="<? if ($this->library->is_active("about")): ?> active<? endif; ?>"><a href="<?= base_url('about'); ?>">About</a></li>
                         </ul>
