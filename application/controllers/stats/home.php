@@ -25,6 +25,7 @@ class Home extends IBOT_Controller {
         
         // build w/ data
         $this->template
+                ->set_partial('total_kills', '_partials/leaderboards/total_kills')
                 ->title("Leaf .:. Leaderboards")
                 ->set("stats", $stats)
                 ->build("pages/leaderboard/home");

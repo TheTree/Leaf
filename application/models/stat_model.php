@@ -190,5 +190,27 @@ class Stat_model extends IBOT_Model {
         }
                 
     }
+    
+    /**
+     * get_last_5
+     * 
+     * Returns last 5 made accounts.
+     * @return boolean
+     */
+    public function get_last_5() {
+        $resp = $this->db
+                ->select("Gamertag,ServiceTag,Rank")
+                ->order_by("id", "desc")
+                ->limit(5)
+                ->get('ci_gamertags');
+        
+        $resp = $resp->result_array();
+        
+        if (is_array($resp) && count($resp) > 0) {
+            return $resp;
+        } else {
+            return false;
+        }
+    }
 
 }
