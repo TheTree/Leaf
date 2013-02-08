@@ -1,4 +1,4 @@
-<img src="<?= $data['SpartanURL']; ?>" class="img-polaroid" />
+<img src="<?= $data['SpartanURL']; ?>" width="211px" height="418px" class="img-polaroid" />
 <div class="well well-large btn btn-primary pad10 w150">
     <img src="<?= $data['RankImage']; ?>" />
     <?= $data['Specialization']; ?> - <?= $data['SpecializationLevel']; ?>
