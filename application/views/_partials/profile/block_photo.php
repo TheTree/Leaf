@@ -4,7 +4,7 @@
     <?= $data['Specialization']; ?> - <?= $data['SpecializationLevel']; ?>
 </div>
 <br />
-<? if (($data['Expiration'] - THREE_HOURS_IN_SECONDS + HOUR_IN_SECONDS) < time()): ?>
+<? if ((($data['Expiration'] - THREE_HOURS_IN_SECONDS + HOUR_IN_SECONDS) < time()) && $data['InactiveCounter'] < 40): ?>
     <a href="<?= base_url('gt/' . str_replace(" ", "_",$data['Gamertag']) . "/recache"); ?>" class="btn btn-success btn-large">Recache</a>
 <? endif; ?>
  

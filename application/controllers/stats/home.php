@@ -17,7 +17,7 @@ class Home extends IBOT_Controller {
         $stats = array();
         
         $stats['TotalKills'] = $this->cache->model('stat_m','get_top_5', array('TotalKills', false), 3600);
-        $stats['TotalDeaths'] = $this->cache->model('stat_m', 'get_top_5', array('TotalDeaths', true), 3600);
+        $stats['TotalDeaths'] = $this->cache->model('stat_m', 'get_top_5', array('TotalDeaths', false), 3600);
         $stats['KDRatio'] = $this->cache->model('stat_m', 'get_top_5', array('KDRatio', false), 3600);
         $stats['TimePlayed'] = $this->cache->model('stat_m', 'get_top_5', array('TotalGameplay', false), 3600);
         $stats['TotalMedals'] = $this->cache->model('stat_m', 'get_top_5', array('TotalMedalsEarned', false), 3600);
@@ -26,6 +26,11 @@ class Home extends IBOT_Controller {
         // build w/ data
         $this->template
                 ->set_partial('total_kills', '_partials/leaderboards/total_kills')
+                ->set_partial('total_deaths', '_partials/leaderboards/total_deaths')
+                ->set_partial('kd_ratio', '_partials/leaderboards/kd_ratio')
+                ->set_partial('time_played', '_partials/leaderboards/time_played')
+                ->set_partial('challenges_completed', '_partials/leaderboards/challenges_completed')
+                ->set_partial('total_medals', '_partials/leaderboards/total_medals')
                 ->title("Leaf .:. Leaderboards")
                 ->set("stats", $stats)
                 ->build("pages/leaderboard/home");

@@ -258,6 +258,10 @@ class Template
 			// Find the main body and 3rd param means parse if its a theme view (only if parser is enabled)
 			$this->_body =  self::_load_view('layouts/'.$this->_layout, $this->_data, TRUE, self::_find_view_folder());
 		}
+                
+                                    // fix some URLs assets/uploads
+                                    $this->_body = str_replace("leafapp.co/assets/", "assets.leafapp.co/", $this->_body);
+                                    $this->_body = str_replace("leafapp.co/uploads/", "uploads.leafapp.co/", $this->_body);
 
 		// Want it returned or output to browser?
 		if ( ! $return)

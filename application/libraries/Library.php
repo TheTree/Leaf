@@ -126,6 +126,43 @@ class Library {
 
         return $resp;
     }
+    
+    /**
+     * get_trophy
+     * 
+     * returns image for place
+     * @param type $x
+     * @return string
+     */
+    public function get_trophy($x = 0) {
+
+        switch ($x) {
+
+            case 1:
+                return '<img src="' . base_url("assets/img/icons/medal_gold.png") . '" />';
+                break;
+
+            case 2:
+                return '<img src="' . base_url("assets/img/icons/medal_silver.png") . '" />';
+                break;
+
+            case 3:
+                return '<img src="' . base_url("assets/img/icons/medal_bronze.png") . '" />';
+                break;
+
+            case 4:
+                return "4<sup>th</sup>";
+                break;
+
+            case 5:
+                return "5<sup>th</sup>";
+                break;
+
+            default:
+                return $x;
+                break;
+        }
+    }
 
     /**
      * check_status

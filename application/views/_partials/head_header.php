@@ -10,6 +10,7 @@
     <script type="text/javascript">
         var _gaq = _gaq || [];
         _gaq.push(['_setAccount', 'UA-3737795-12']);
+        _gaq.push(['_setDomainName', 'leafapp.co']);
         _gaq.push(['_trackPageview']);
 
         (function() {

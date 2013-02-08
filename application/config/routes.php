@@ -45,6 +45,7 @@ $route['news'] = "news/index";
 $route['news/create'] = "news/index/create";
 $route['stats'] = "stats/home/index";
 $route['compare'] = "stats/compare/index";
+$route['leaderboards'] = "stats/home/index";
 
 // variable pages
 $route['gt/(:any)/recache'] = "stats/home/recache_gt/$1";
