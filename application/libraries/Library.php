@@ -450,7 +450,7 @@ class Library {
 
             case "CSR":
                 $path = "uploads/csr/" . $size;
-                $image_path = "/" . $image;
+                $image_path = "/" . $image . ".png";
                 $url = str_replace("{SIZE}", $size, str_replace("{CSR}", $image, $this->csr_url));
                 break;
                 

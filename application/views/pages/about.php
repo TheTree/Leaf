@@ -9,6 +9,12 @@
             <strong>Why should I come here? </strong><br />
             I don't care if you do or don't. Its about 2.2mb less clutter than HaloWaypoint, and we only track Matchmaking to prevent abuse.
             <br /><br />
+            <strong>How often can I update my stats?</strong><br />
+            The system auto does it every 3 hours for you. Otherwise you are allowed every 10 minutes.
+            <br /><br />
+            <strong>What about old accounts that don't play Halo anymore?</strong><br />
+            Once an account has 40 re-caches, that didn't change anything. We deem that account "frozen", and thus don't update it automatically.
+            <br /><br />
             <strong>I have a complaint! </strong><br />
             meh. Tweet me. We will go from there.
            <br /><br />

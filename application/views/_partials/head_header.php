@@ -3,7 +3,7 @@
     <title><?= $template['title']; ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="description" content="Halo 4 Stat Tracking provided by LeafApp">
+    <meta name="description" content="Halo 4 Stat Tracking provided by LeafApp, including Halo 4 CSR">
     <?= link_tag('assets/css/bootstrap/bootstrap.min.css'); ?>
     <?= link_tag('assets/css/bootstrap/bootstrap-responsive.min.css'); ?>
     <?= link_tag('assets/css/default.css'); ?>

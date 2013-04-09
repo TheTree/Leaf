@@ -32,7 +32,7 @@ class Home extends IBOT_Controller {
                 ->set_partial("challenges", "_partials/homepage/challenges")
                 ->set_partial("news_block", "_partials/homepage/news_block")
                 ->set_partial("recent_gamertags", "_partials/homepage/recent_gamertags")
-                ->set("recent_players", $this->cache->model("stat_m", 'get_last_5', array()), 1800)
+                ->set("recent_players", $this->cache->model("stat_m", 'get_last_5', array()), 30)
                 ->set("recent_news", $this->news_m->get_newest_article())
                 ->set('challenges', $this->library->get_challenges())
                 ->build('pages/home');

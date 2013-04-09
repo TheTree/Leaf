@@ -68,8 +68,8 @@ class Home extends IBOT_Controller {
         
          // convert _ to %20 (space)
         $gamertag = str_replace("_", "%20", $gamertag);
-        $hashed = md5(trim(urlencode($gamertag)));
         $seo_gamertag = $this->library->get_seo_gamertag($gamertag);
+        $hashed = $this->library->get_hashed_seo_gamertag($seo_gamertag);
         
         // lets see if they need a recache.
         $data = $this->stat_m->get_expiration_date($hashed);
@@ -87,6 +87,9 @@ class Home extends IBOT_Controller {
             // redirect out of here
             redirect(base_url("gt/" . str_replace("%20", "_",$gamertag)));
         } else {
+            mail("ibotpeaches@gmail.com",'error', 'Below account could not verify existance before recaching');
+            mail("ibotpeaches@gmail.com",'error', $seo_gamertag);
+            mail("ibotpeaches@gmail.com",'error', $hashed);
             show_error("This isn't a gamertag.");
         }
     }

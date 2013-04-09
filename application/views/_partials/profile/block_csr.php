@@ -1,8 +1,8 @@
 <strong>Competitive Skill Rank</strong>
-<div class="well well-large h400">
+<div class="well well-large">
     <div class="pagination-centered">
             <? foreach ($data['SkillData'] as $csr): ?>
-                <a href="#" data-toggle="tooltop" title="<?= $csr['Playlist']; ?>" rel="tooltip" data-placement="top"> <img class="" src="<?= $csr['ImageUrl']; ?>" /></a>
+                <span data-toggle="tooltop" title="<?= $csr['Playlist']; ?>" rel="tooltip" data-placement="top"> <img class="" src="<?= $csr['ImageUrl']; ?>" /></span>
             <? endforeach; ?>
     </div>
 </div>
