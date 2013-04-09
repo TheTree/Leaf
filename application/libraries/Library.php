@@ -11,6 +11,7 @@ class Library {
     public $spartan_url = "https://spartans.svc.halowaypoint.com/players/{GAMERTAG}/h4/spartans/fullbody?target=medium";
     public $rank_url = "https://assets.halowaypoint.com/games/h4/ranks/v1/{SIZE}/{RANK}";
     public $medal_url = "https://assets.halowaypoint.com/games/h4/medals/v1/{SIZE}/{MEDAL}";
+    public $csr_url = "https://assets.halowaypoint.com/games/h4/csr/v1/{SIZE}/{CSR}.png";
 
     function __construct() {
         $this->_ci = & get_instance();
@@ -190,7 +191,7 @@ class Library {
      * 
      * Takes the url along w/ language / game, parameter is just paras of the URL
      * @param type $paras
-     * @return type
+     * @return string
      */
     private function get_url($paras) {
 
@@ -419,18 +420,23 @@ class Library {
                 $url = str_replace("{SIZE}", $size, str_replace("{RANK}", $image, $this->rank_url));
                 break;
             
-            case "Medal";
+            case "Medal":
                 $path = "uploads/medals/" . $size;
                 $image_path = "/" . $image;
                 $url = str_replace("{SIZE}", $size, str_replace("{MEDAL}", $image, $this->medal_url));
+                break;
+
+            case "CSR":
+                $path = "uploads/csr/" . $size;
+                $image_path = "/" . $image;
+                $url = str_repplace("{SIZE}", $size, str_replace("{CSR}", $image, $this->csr_url));
                 break;
                 
             default:
                 log_message('error', 'Type: ' . $type . " not found in our `return_image_url` Library");
                 return FALSE;
         }
-        
-        log_message('debug', base_url($path . $image_path));
+
         // check for the file locally
         if (file_exists(absolute_path($path) . $image_path)) {
             return base_url($path . $image_path);

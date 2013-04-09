@@ -19,7 +19,7 @@
             It counts from everything. Not just matchmaking. 343 bug. not me.
             <br /><br />
             <strong>Can I have the source? </strong><br />
-            In due time. Once I clean it up. It'll be on Github.
+            <a href="https://github.com/iBotPeaches/Leaf" rel="nofollow">GitHub</a>
             <br /><br />
             <strong>Can you swim in spent fuel water? </strong><br />
             I've got no clue. These <a href="http://what-if.xkcd.com/29/">guys</a> do though.
