@@ -31,8 +31,9 @@ class Library {
      * @param       int     number of seconds elapsed
      * @param       string  which time periods to display
      * @param       bool    whether to show zero time periods
+     * @return      string
      */
-    function time_duration($seconds, $use = null, $zeros = false) {
+    function time_duration($seconds, $use = NULL, $zeros = FALSE) {
         // Define time periods
         $periods = array(
             'years' => 31556926,
@@ -48,7 +49,7 @@ class Library {
         $seconds = (float) $seconds;
         $segments = array();
         foreach ($periods as $period => $value) {
-            if ($use && strpos($use, $period[0]) === false) {
+            if ($use && strpos($use, $period[0]) === FALSE) {
                 continue;
             }
             $count = floor($seconds / $value);
@@ -94,20 +95,20 @@ class Library {
 
         return strpos($uri_string, $item) !== FALSE ? 'active' : '';
     }
-    
+
     /**
      * fix_date
-     * 
      * Pass the full response from 343,
-     * @param type $resp (raw array json)
-     * @param type $keys (array keys that need date fixed)
-     * @param type $part (Portion where loop starts ex "Challenges")
+     *
+     * @param type         $resp (raw array json)
+     * @param string|\type $keys (array keys that need date fixed)
+     * @param string|\type $part (Portion where loop starts ex "Challenges")
      * @return type
      */
     public function fix_date($resp, $keys = "", $part = "") {
 
-        if ($resp == false) {
-            return false;
+        if ($resp == FALSE) {
+            return FALSE;
         }
 
         // blows keys into array
@@ -119,19 +120,19 @@ class Library {
             // loop for every date to change
             foreach ($keys as $key_pair) {
                 if (isset($item[$key_pair])) {
-                    $resp[$part][$key][$key_pair] = strtotime($item[$key_pair], true);
+                    $resp[$part][$key][$key_pair] = strtotime($item[$key_pair], TRUE);
                 }
             }
         }
 
         return $resp;
     }
-    
+
     /**
      * get_trophy
-     * 
      * returns image for place
-     * @param type $x
+     *
+     * @param int|\type $x
      * @return string
      */
     public function get_trophy($x = 0) {
@@ -176,7 +177,7 @@ class Library {
             return $resp;
         } else {
             log_message('error', 'API Down: ' . $resp['StatusReason']);
-            return false;
+            return FALSE;
         }
     }
 
@@ -200,7 +201,7 @@ class Library {
         $url = "https://stats.svc.halowaypoint.com/" . $paras;
 
         // resp
-        $resp = json_decode($this->_ci->curl->simple_get($url), true);
+        $resp = json_decode($this->_ci->curl->simple_get($url), TRUE);
 
         // check it
         return $this->check_status($resp);
@@ -217,7 +218,7 @@ class Library {
         $resp = $this->_ci->cache->get('current_challenges');
 
         // check if cache exists.
-        if ($resp == false) {
+        if ($resp == FALSE) {
             
             // fixes date, gets url via api
             $resp = $this->fix_date($this->get_url($this->lang . "/" . $this->game . "/challenges"), "BeginDate,EndDate", "Challenges");
@@ -236,21 +237,24 @@ class Library {
 
     /**
      * get_profile
-     * 
      * 1) Checks for file-based cache.
      * 2) Returns if less than 1 hr old
      * 3) If not, pulls from API. Dumps into dB.
      * 4) Caches into file system for 1hr.
+     *
      * @param type $gt
+     * @param bool $errors
+     * @param bool $force
+     * @return type data
      */
-    public function get_profile($gt, $errors = true, $force = false) {
+    public function get_profile($gt, $errors = TRUE, $force = FALSE) {
 
         if (strlen(urldecode($gt)) > 15) {
 
             if ($errors) {
                 show_error("wtf. This is more than 15 chars. This isn't a gamertag.");
             } else {
-                return false;
+                return FALSE;
             }
         } else {
 
@@ -260,16 +264,16 @@ class Library {
             // check cache
             $resp = $this->_ci->cache->get($hashed);
 
-            if ($resp == false || ENVIRONMENT == "development" || $force == true) {
+            if ($resp == FALSE || ENVIRONMENT == "development" || $force == TRUE) {
 
                 // grab new data
                 $resp = $this->grab_profile_data($gt,$force);
 
-                if ($resp == false) {
+                if ($resp == FALSE) {
                     if ($errors) {
                         show_error("stop. This isn't an Xbox Live (Halo 4) account.");
                     } else {
-                        return false;
+                        return FALSE;
                     }
                 }
                 $this->_ci->cache->write($resp, $hashed, 3600);
@@ -289,12 +293,13 @@ class Library {
 
     /**
      * grab_profile_data
-     * 
      * Pulls directly from the API. Stores into dB
-     * 
+     *
      * @param type $gt
+     * @param bool $force
+     * @return array|bool
      */
-    public function grab_profile_data($gt, $force = false) {
+    public function grab_profile_data($gt, $force = FALSE) {
         
          // make hashed name
         $hashed = md5(trim(urlencode($gt)));
@@ -303,7 +308,7 @@ class Library {
         $resp = $this->_ci->stat_m->get_gamertag_data($hashed);
         
         if (isset($resp['Expiration']) && is_array($resp)) {
-            if (intval($resp['Expiration']) > intval(time()) && $force == false) {
+            if (intval($resp['Expiration']) > intval(time()) && $force == FALSE) {
                 return $resp;
             }
         }
@@ -311,8 +316,8 @@ class Library {
         // lets grab service record
         $service_record = $this->check_status($this->get_url($this->lang . "/players/" . trim(urlencode(strtolower($gt))) . "/" . $this->game . "/servicerecord"));
 
-        if ($service_record == false) {
-            return false;
+        if ($service_record == FALSE) {
+            return FALSE;
         }
         
         // lets do the URL work, and medal
@@ -370,29 +375,31 @@ class Library {
             return 0;
         }
     }
-    
+
     /**
      * find_current_specializations
-     * 
      * Loops through `specializations` looking for IsCurrent. Returns its name.
-     * @param type $data
+     *
+     * @param type   $data
+     * @param string $type
+     * @return string
      */
     public function find_current_specialization($data, $type = "Name") {
         foreach ($data as $spec) {
-            if ($spec['IsCurrent'] == true) {
+            if ($spec['IsCurrent'] == TRUE) {
                 return $spec[$type];
             }
         }
         return "No Spec";
     }
-    
+
     /**
      * return_image_url
-     * 
      * Checks if this image exists locally. If so, uses it. Otherwise pulls from API
-     * 
+     *
      * @param type $type
      * @param type $image
+     * @param      $size
      * @return boolean
      */
     public function return_image_url($type, $image, $size) {
@@ -420,7 +427,7 @@ class Library {
                 
             default:
                 log_message('error', 'Type: ' . $type . " not found in our `return_image_url` Library");
-                return false;
+                return FALSE;
         }
         
         log_message('debug', base_url($path . $image_path));
@@ -447,6 +454,7 @@ class Library {
      * Tries and find's local Spartan. Otherwise returns url to it.
      * @param type $hashed
      * @param type $gt
+     * @return mixed|string
      */
     public function return_spartan_url($hashed, $gt) {
         
@@ -478,7 +486,7 @@ class Library {
                 'Name' => $medal['Name'],
                 'Count' => intval($medal['TotalMedals']),
                 'Description' => $medal['Description'],
-                'ImageUrl' => str_replace("{size}/", null, $medal['ImageUrl']['AssetUrl'])
+                'ImageUrl' => str_replace("{size}/", NULL, $medal['ImageUrl']['AssetUrl'])
             );
         }
         
@@ -490,6 +498,7 @@ class Library {
      * 
      * Parses url into real url of image.
      * @param type $data
+     * @return mixed
      */
     public function return_medals($data) {
         $data = @unserialize($data);
@@ -516,7 +525,7 @@ class Library {
         
         // lets try and make a folder. check first :p
         if (!(is_dir(absolute_path('uploads/spartans/' . $hashed . "/tmp")))) {
-            mkdir(absolute_path('uploads/spartans/' . $hashed . "/tmp"), 0777, true);
+            mkdir(absolute_path('uploads/spartans/' . $hashed . "/tmp"), 0777, TRUE);
             write_file(absolute_path('uploads/spartans/' . $hashed) . "index.html", $this->get_anti_dir_trav());
         }
 
@@ -550,16 +559,16 @@ class Library {
         }
         
         // delete tmp dir
-        delete_files(absolute_path('uploads/spartans/' . $hashed . "/tmp/"), false);
+        delete_files(absolute_path('uploads/spartans/' . $hashed . "/tmp/"), FALSE);
         rmdir(absolute_path('uploads/spartans/' . $hashed . "/tmp"));
     }
-    
+
     /**
-     * 
-     * @param type $field
-     * @param type $asc
+     * @param type       $field
+     * @param bool|\type $asc
+     * @return
      */
-    public function get_top_5_leaderboard($field, $asc = false) {
+    public function get_top_5_leaderboard($field, $asc = FALSE) {
         return $this->_ci->stat_m->get_top_5($field, $asc);
     }
     
