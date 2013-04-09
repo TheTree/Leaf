@@ -243,13 +243,17 @@ class Library {
      * 3) If not, pulls from API. Dumps into dB.
      * 4) Caches into file system for 1hr.
      *
-     * @param type $gt
-     * @param bool $errors
-     * @param bool $force
+     * @param type   $gt
+     * @param bool   $errors
+     * @param bool   $force
+     * @param string $seo_gamertag
      * @return type data
      */
-    public function get_profile($gt, $errors = TRUE, $force = FALSE) {
+    public function get_profile($gt, $errors = TRUE, $force = FALSE, $seo_gamertag = "") {
 
+        if ($seo_gamertag == "") {
+            $seo_gamertag = $this->get_seo_gamertag($gt);
+        }
         if (strlen(urldecode($gt)) > 15) {
 
             if ($errors) {
@@ -260,7 +264,7 @@ class Library {
         } else {
 
             // get hashed name
-            $hashed = "profile_" . md5(trim(urlencode(strtolower($gt))));
+            $hashed = "profile_" . $this->get_hashed_seo_gamertag($seo_gamertag);
 
             // check cache
             $resp = $this->_ci->cache->get($hashed);
@@ -268,7 +272,7 @@ class Library {
             if ($resp == FALSE || ENVIRONMENT == "development" || $force == TRUE) {
 
                 // grab new data
-                $resp = $this->grab_profile_data($gt,$force);
+                $resp = $this->grab_profile_data($gt,$force, $seo_gamertag);
 
                 if ($resp == FALSE) {
                     if ($errors) {
@@ -292,19 +296,32 @@ class Library {
         }
     }
 
+    public function get_seo_gamertag($gt) {
+        return preg_replace('/\s+/', '_', strtolower(urldecode($gt)));
+    }
+
+    public function get_hashed_seo_gamertag($seo_gt) {
+        return md5(trim($seo_gt));
+    }
+
     /**
      * grab_profile_data
      * Pulls directly from the API. Stores into dB
      *
-     * @param type $gt
-     * @param bool $force
+     * @param type   $gt
+     * @param bool   $force
+     * @param string $seo_gamertag
      * @return array|bool
      */
-    public function grab_profile_data($gt, $force = FALSE) {
-        
-         // make hashed name
-        $hashed = md5(trim(urlencode($gt)));
-        
+    public function grab_profile_data($gt, $force = FALSE, $seo_gamertag = "") {
+
+        if ($seo_gamertag == "") {
+            $seo_gamertag = $this->get_seo_gamertag($gt);
+        }
+
+        // make hashed name
+        $hashed = $this->get_hashed_seo_gamertag($seo_gamertag);
+
         // grab from db, if null continue
         $resp = $this->_ci->stat_m->get_gamertag_data($hashed);
         
@@ -324,6 +341,9 @@ class Library {
         // lets do the URL work, and medal
         $this->build_spartan_with_emblem($hashed, substr_replace($service_record['EmblemImageUrl']['AssetUrl'], "", -12), $gt);
         $medal_data = $this->get_medal_data($service_record['TopMedals']);
+
+        // get skill stuff
+        $skill_data = $this->get_skill_data($service_record['SkillRanks'], $service_record['TopSkillRank']);
         
         // check for lvl 130
         if ($service_record['NextRankId'] == 0) {
@@ -334,12 +354,14 @@ class Library {
         return $this->_ci->stat_m->update_or_insert_gamertag($hashed, array(
                     'Gamertag' => urldecode($gt),
                     'HashedGamertag' => $hashed,
+                    'SeoGamertag' => $seo_gamertag,
                     'Rank' => $service_record['RankName'],
                     'RankImage' => substr($service_record['RankImageUrl']['AssetUrl'], 7),
                     'Specialization' => $this->find_current_specialization($service_record['Specializations']),
                     'SpecializationLevel' => $this->find_current_specialization($service_record['Specializations'], "Level"),
                     'Expiration' => intval(time() + THREE_HOURS_IN_SECONDS),
                     'MedalData' => @serialize($medal_data),
+                    'SkillData' => @serialize($skill_data),
                     'KDRatio' => $service_record['GameModes'][2]['KDRatio'],
                     'Xp' => $service_record['XP'],
                     'SpartanPoints' => $service_record['SpartanPoints'],
@@ -429,7 +451,7 @@ class Library {
             case "CSR":
                 $path = "uploads/csr/" . $size;
                 $image_path = "/" . $image;
-                $url = str_repplace("{SIZE}", $size, str_replace("{CSR}", $image, $this->csr_url));
+                $url = str_replace("{SIZE}", $size, str_replace("{CSR}", $image, $this->csr_url));
                 break;
                 
             default:
@@ -444,6 +466,7 @@ class Library {
             $_stream = file_get_contents($url);
 
             // check if we got the file
+            // @todo create dir (mkdir) if not there.
             if ($_stream == "") {
                 return $url;
             } else {
@@ -498,6 +521,29 @@ class Library {
         
         return $rtr_arr;
     }
+
+    /**
+     * get_skill_data
+     *
+     * Goes through skill data finding CSR
+     *
+     * @param $all_csr
+     * @param $top_csr
+     * @return array
+     */
+    public function get_skill_data($all_csr, $top_csr) {
+        $rtr_arr = array();
+
+        foreach ($all_csr as $csr) {
+            $rtr_arr[$csr['PlaylistName']] = array(
+                'Description' => $csr['PlaylistDescription'],
+                'SkillRank' => intval($csr['CurrentSkillRank']),
+                'Top' => ($csr['PlaylistName'] == $top_csr['PlaylistName']) ? TRUE : FALSE
+            );
+        }
+
+        return $rtr_arr;
+    }
     
     /**
      * return_medals
@@ -511,6 +557,23 @@ class Library {
         
         foreach ($data as $key => $item) {
             $data[$key]['ImageUrl'] = $this->return_image_url("Medal", $data[$key]['ImageUrl'], "large");
+        }
+        return $data;
+    }
+
+    /**
+     * return_csr
+     *
+     * Parses serialized array `$data` for display on profile
+     * @param $data
+     * @return mixed
+     */
+    public function return_csr($data) {
+        $data = @unserialize($data);
+
+        foreach ($data as $key => $value) {
+            $data[$key]['Playlist'] = $key;
+            $data[$key]['ImageUrl'] = $this->return_image_url("CSR", $data[$key]['SkillRank'], "large");
         }
         return $data;
     }

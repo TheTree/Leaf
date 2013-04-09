@@ -33,6 +33,7 @@
         <?= $template['_partials']['block_basicstats']; ?>
     </div>
     <div class="span9">
+        <?= $template['_partials']['block_csr']; ?>
         <?= $template['_partials']['block_medals']; ?>
     </div>
 </div>

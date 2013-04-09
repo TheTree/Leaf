@@ -47,6 +47,7 @@ class Home extends IBOT_Controller {
         $data['SpartanURL'] = $this->library->return_spartan_url($data['HashedGamertag'], $gamertag);
         $data['RankImage'] = $this->library->return_image_url("Rank", $data['RankImage'], "large");
         $data['MedalData'] = $this->library->return_medals($data['MedalData']);
+        $data['SkillData'] = $this->library->return_csr($data['SkillData']);
         
         //  output gt, build template, set partials
         $this->template
@@ -54,9 +55,10 @@ class Home extends IBOT_Controller {
                 ->set_partial('block_basicstats', '_partials/profile/block_basicstats')
                 ->set_partial('block_progression', '_partials/profile/block_progression')
                 ->set_partial('block_medals','_partials/profile/block_medals')
+                ->set_partial('block_csr', '_partials/profile/block_csr')
                 ->title("Leaf .:. " . urldecode($gamertag))
                 ->set('msg', $this->session->flashdata("recache"))
-                ->set('gamertag', $gamertag)
+                ->set('gamertag', $data['Gamertag'])
                 ->set('data', $data)
                 ->build("pages/profile/view");
         
@@ -67,13 +69,14 @@ class Home extends IBOT_Controller {
          // convert _ to %20 (space)
         $gamertag = str_replace("_", "%20", $gamertag);
         $hashed = md5(trim(urlencode($gamertag)));
+        $seo_gamertag = $this->library->get_seo_gamertag($gamertag);
         
         // lets see if they need a recache.
         $data = $this->stat_m->get_expiration_date($hashed);
         
         if (is_array($data)) {
-            if (($data['Expiration'] - THREE_HOURS_IN_SECONDS + HOUR_IN_SECONDS) < time()) {
-                $data = $this->library->get_profile($gamertag, false, true);
+            if (($data['Expiration'] - THREE_HOURS_IN_SECONDS + TENMIN_IN_SECONDS) < time() || ENVIRONMENT == "development") {
+                $data = $this->library->get_profile($gamertag, false, true, $seo_gamertag);
                 
                 // set cache
                 $this->session->set_flashdata("recache", "enabled");
@@ -89,4 +92,3 @@ class Home extends IBOT_Controller {
     }
     
 }
-?>

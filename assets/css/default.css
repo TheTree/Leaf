@@ -21,3 +21,11 @@
 .h150 {
     height: 150px;
 }
+.h400 {
+    height: 400px;
+}
+csr-legend {
+    margin:3px;
+    text-align:center;
+    width:100%
+}
