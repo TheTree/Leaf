@@ -296,10 +296,24 @@ class Library {
         }
     }
 
+    /**
+     * get_seo_gamertag
+     *
+     * Takes `gamertag`, urldecodes, makes it lowercase, and moves spaces to _
+     * @param $gt
+     * @return mixed
+     */
     public function get_seo_gamertag($gt) {
         return preg_replace('/\s+/', '_', strtolower(urldecode($gt)));
     }
 
+    /**
+     * geo_hashed_seo_gamertag
+     *
+     * Takes `seo_gamertag` and makes hash based on it.
+     * @param $seo_gt
+     * @return string
+     */
     public function get_hashed_seo_gamertag($seo_gt) {
         return md5(trim($seo_gt));
     }
@@ -465,8 +479,10 @@ class Library {
         } else {
             $_stream = file_get_contents($url);
 
-            // check if we got the file
-            // @todo create dir (mkdir) if not there.
+            // check if we got the folder, otherwise make it
+            if (!is_dir(absolute_path($path . $image_path))) {
+                mkdir($path . $image_path, 0777, true);
+            }
             if ($_stream == "") {
                 return $url;
             } else {

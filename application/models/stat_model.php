@@ -14,11 +14,12 @@ class Stat_model extends IBOT_Model {
      * Checking
      * @param type $hash
      * @param type $data
+     * @return \type
      */
     public function update_or_insert_gamertag($hash, $data) {
 
         // check for update
-        if (($_tmp = $this->account_exists($hash)) != false) {
+        if (($_tmp = $this->account_exists($hash)) != FALSE) {
             
             // unset InactiveCounter
             unset($data['InactiveCounter']);
@@ -42,13 +43,15 @@ class Stat_model extends IBOT_Model {
                 ->where('HashedGamertag', $hash)
                 ->update('ci_gamertags', $data);
         
-        return true;
+        return TRUE;
     }
-    
+
     /**
      * insert_account
-     * @param type $hash
+     *
      * @param type $data
+     * @return void
+     * @internal param \type $hash
      */
     public function insert_account($data) {
         
@@ -61,6 +64,7 @@ class Stat_model extends IBOT_Model {
      * account_exists
      * 
      * @param type $hash
+     * @return array|bool
      */
     public function account_exists($hash) {
 
@@ -76,7 +80,7 @@ class Stat_model extends IBOT_Model {
         if (isset($resp['HashedGamertag']) && is_array($resp)) {
             return $resp;
         } else {
-            return false;
+            return FALSE;
         }
     }
     
@@ -98,16 +102,17 @@ class Stat_model extends IBOT_Model {
         if (isset($resp['HashedGamertag']) && is_array($resp)) {
             return $resp;
         } else {
-            return false;
+            return FALSE;
         }
     }
-    
+
     /**
      * count_gamertags
-     * 
+     *
+     * @param bool $active
      * @return type
      */
-    public function count_gamertags($active = false) {
+    public function count_gamertags($active = FALSE) {
         
         if ($active) {
             $this->db->where("Expiration <", time());
@@ -129,7 +134,8 @@ class Stat_model extends IBOT_Model {
                 ->select('HashedGamertag,Xp,id,InactiveCounter,Gamertag')
                 ->limit(intval($max),intval($start))
                 ->get_where('ci_gamertags', array(
-                    'Expiration <' => time() 
+                    'Expiration <' => time(),
+                    'InactiveCounter <' => 40
                 ));
         
         $resp = $resp->result_array();
@@ -137,7 +143,7 @@ class Stat_model extends IBOT_Model {
         if (is_array($resp)) {
             return $resp;
         } else {
-            return false;
+            return FALSE;
         }
                 
     }
@@ -162,7 +168,7 @@ class Stat_model extends IBOT_Model {
         if (isset($resp['Expiration']) && is_array($resp)) {
             return $resp;
         } else {
-            return false;
+            return FALSE;
         }
     }
     
@@ -177,7 +183,7 @@ class Stat_model extends IBOT_Model {
         $resp = $this->db
                 ->select("Gamertag,ServiceTag," . $field)
                 ->limit(5)
-                ->order_by($field, ($asc == true ? "asc" : "desc"))
+                ->order_by($field, ($asc == TRUE ? "asc" : "desc"))
                 ->get_where('ci_gamertags', array(
                     'TotalGamesStarted >' => intval(100)));
         
@@ -186,7 +192,7 @@ class Stat_model extends IBOT_Model {
         if (is_array($resp) && count($resp) > 0) {
             return $resp;
         } else {
-            return false;
+            return FALSE;
         }
                 
     }
@@ -209,7 +215,7 @@ class Stat_model extends IBOT_Model {
         if (is_array($resp) && count($resp) > 0) {
             return $resp;
         } else {
-            return false;
+            return FALSE;
         }
     }
 

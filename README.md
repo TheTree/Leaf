@@ -1,33 +1,35 @@
-# Endpoints
+# LeafApp.co
+// @iBotPeaches
+
+Heres the sauce babes.
 
 
-```
-GetCampaignDetails: "https://stats.svc.halowaypoint.com/{language}/players/{gamertag}/{game}/servicerecord/campaign"
-GetCommendations: "https://stats.svc.halowaypoint.com/{language}/players/{gamertag}/{game}/commendations"
-GetCustomGameDetails: "https://stats.svc.halowaypoint.com/{language}/players/{gamertag}/{game}/servicerecord/custom"
-GetDomainTerminalMetadata: "/{language}/DomainTerminals"
-GetFriends: "/{language}/XboxLive/GetFriends"
-GetGameDetails: "https://stats.svc.halowaypoint.com/{language}/{game}/matches/{gameid}"
-GetGameHistory: "https://stats.svc.halowaypoint.com/{language}/players/{gamertag}/{game}/matches"
-GetGameMetadata: "https://stats.svc.halowaypoint.com/{language}/{game}/metadata"
-GetGlobalChallenges: "https://stats.svc.halowaypoint.com/{language}/{game}/challenges"
-GetMessages: "/{language}/XboxLive/GetMessages"
-GetMultiplePlayerCards: "https://stats.svc.halowaypoint.com/{language}/{game}/playercards?gamertags={gamertags}"
-GetMyGamertag: "https://services.xboxlive.com/users/me/id"
-GetOtherUserAchievements: "https://haloplayer.svc.halowaypoint.com/HaloPlayer/GetOtherUserAchievements?requesteeGamertag={requesteeGamertag}&titleId=1297287449"
-GetPlayerCard: "https://stats.svc.halowaypoint.com/{language}/players/{gamertag}/{game}/playercard"
-GetPlayerChallenges: "https://stats.svc.halowaypoint.com/{language}/players/{gamertag}/{game}/challenges"
-GetPlaylists: "https://presence.svc.halowaypoint.com/{language}/{game}/playlists"
-GetRanks: "https://stats.svc.halowaypoint.com/{language}/players/{gamertag}/{game}/ranks"
-GetServiceRecord: "https://stats.svc.halowaypoint.com/{language}/players/{gamertag}/{game}/servicerecord"
-GetSpartanImage: "https://spartans.svc.halowaypoint.com/players/{gamertag}/{game}/spartans/{pose}"
-GetSpartanOpsDetails: "https://stats.svc.halowaypoint.com/{language}/players/{gamertag}/{game}/servicerecord/spartanops"
-GetUserAchievements: "https://haloplayer.svc.halowaypoint.com/HaloPlayer/GetUserAchievements?titleId=1297287449"
-GetWarGameDetails: "https://stats.svc.halowaypoint.com/{language}/players/{gamertag}/{game}/servicerecord/wargames"
-```
 
-## History
-endpoints from alex and james (www.auntiedot.net).
 
-peaches <3
+# DON'T BE A DICK PUBLIC LICENSE
 
+> Version 1, December 2009
+
+> Copyright (C) 2009 Philip Sturgeon <email@philsturgeon.co.uk>
+ 
+ Everyone is permitted to copy and distribute verbatim or modified
+ copies of this license document, and changing it is allowed as long
+ as the name is changed.
+
+> DON'T BE A DICK PUBLIC LICENSE
+> TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
+
+ 1. Do whatever you like with the original work, just don't be a dick.
+
+     Being a dick includes - but is not limited to - the following instances:
+
+	 1a. Outright copyright infringement - Don't just copy this and change the name.  
+	 1b. Selling the unmodified original with no work done what-so-ever, that's REALLY being a dick.  
+	 1c. Modifying the original work to contain hidden harmful content. That would make you a PROPER dick.  
+
+ 2. If you become rich through modifications, related works/services, or supporting the original work,
+ share the love. Only a dick would make loads off this work and not buy the original works 
+ creator(s) a pint.
+ 
+ 3. Code is provided with no warranty. Using somebody else's code and bitching when it goes wrong makes 
+ you a DONKEY dick. Fix the problem yourself. A non-dick would submit the fix back.

@@ -7,8 +7,9 @@ class News_model extends IBOT_Model {
     }
 
     /**
-     * 
-     * @param type $slug
+     * @param $limit
+     * @param $start
+     * @internal param \type $slug
      * @return type
      */
     public function get_news($limit, $start) {
@@ -36,6 +37,7 @@ class News_model extends IBOT_Model {
     /**
      * get_article
      * @param type $id
+     * @return array|bool
      */
     public function get_article($id) {
         $resp = $this->db
@@ -48,10 +50,17 @@ class News_model extends IBOT_Model {
         if (isset($resp['id']) && is_array($resp)) {
             return $resp;
         } else {
-            return false;
+            return FALSE;
         }
     }
-    
+
+    /**
+     * get_newest_article
+     *
+     * Grabs newest article from `ci_news`
+     *
+     * @return array|bool
+     */
     public function get_newest_article() {
         $resp = $this->db
                 ->limit(1)
@@ -63,7 +72,7 @@ class News_model extends IBOT_Model {
         if (is_array($resp)) {
             return $resp;
         } else {
-            return false;
+            return FALSE;
         }
     }
     
