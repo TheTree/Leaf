@@ -5,7 +5,7 @@ Heres the sauce babes. Let me lay down some rules
 
 1) If you take this and host your own website including my exact product without any changes. Your a dick.
 2) If you take this and host your own website, and put ads on it. Not only are you breaking 343 Terms of Service, but you will have pissed me off beyond belief.
-  --> If you piss me off, I probably won't update Leaf anymore.
+--> If you piss me off, I probably won't update Leaf anymore.
 
 
 > DON'T BE A DICK PUBLIC LICENSE
