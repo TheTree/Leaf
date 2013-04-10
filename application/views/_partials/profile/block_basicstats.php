@@ -6,7 +6,7 @@
             <span class="row_data"><?= number_format($data['TotalGameWins']); ?></span>
         </li>
         <li>
-            <span class="row_title">Total Loses</span>
+            <span class="row_title">Total Losses</span>
             <span class="row_data"><?= number_format($data['TotalGamesStarted'] - $data['TotalGameQuits'] - $data['TotalGameWins']); ?></span>
         </li>
         <li>

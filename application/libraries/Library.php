@@ -479,10 +479,6 @@ class Library {
         } else {
             $_stream = file_get_contents($url);
 
-            // check if we got the folder, otherwise make it
-            if (!is_dir(absolute_path($path . $image_path))) {
-                mkdir($path . $image_path, 0777, true);
-            }
             if ($_stream == "") {
                 return $url;
             } else {
@@ -551,14 +547,22 @@ class Library {
         $rtr_arr = array();
 
         foreach ($all_csr as $csr) {
-            $rtr_arr[$csr['PlaylistName']] = array(
-                'Description' => $csr['PlaylistDescription'],
-                'SkillRank' => intval($csr['CurrentSkillRank']),
-                'Top' => ($csr['PlaylistName'] == $top_csr['PlaylistName']) ? TRUE : FALSE
-            );
+
+            // only add if CSR is more than 0
+            if ($csr['CurrentSkillRank'] > 0) {
+                $rtr_arr[$csr['PlaylistName']] = array(
+                    'Description' => $csr['PlaylistDescription'],
+                    'SkillRank' => intval($csr['CurrentSkillRank']),
+                    'Top' => ($csr['PlaylistName'] == $top_csr['PlaylistName']) ? TRUE : FALSE
+                );
+            }
         }
 
-        return $rtr_arr;
+        if (count($rtr_arr) > 0) {
+            return $rtr_arr;
+        } else {
+            return false;
+        }
     }
     
     /**

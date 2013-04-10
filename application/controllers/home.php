@@ -13,6 +13,7 @@ class Home extends IBOT_Controller {
 
     function about() {
         $this->template
+                ->title("About")
                 ->build("pages/about");
     }
 

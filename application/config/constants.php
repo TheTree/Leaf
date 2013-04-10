@@ -49,7 +49,7 @@ define('LOCAL_URL', 'localhost'); # When working locally.
  */
 define('HOUR_IN_SECONDS', 3600);
 define("THREE_HOURS_IN_SECONDS", 10800);
-define("TENMIN_IN_SECONDS", 600);
+define("FIVEMIN_IN_SECONDS", 300);
 
 /**
  * MAX_HALO_RANK

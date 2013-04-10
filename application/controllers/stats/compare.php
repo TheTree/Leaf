@@ -10,4 +10,3 @@ class Compare extends IBOT_Controller {
         $this->template->build("pages/comingsoon");
     }
 }
-?>

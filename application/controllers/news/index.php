@@ -31,6 +31,7 @@ class Index extends IBOT_Controller {
         $this->template
                 ->set('pagination', $this->pagination->create_links())
                 ->set('news', $news)
+                ->title("Leaf News")
                 ->build("pages/news");
     }
 
@@ -38,6 +39,7 @@ class Index extends IBOT_Controller {
         
         $this->template
                 ->set('article', $this->news_m->get_article($id))
+                ->title("Leafapp Article: " . intval($id) . " ")
                 ->build("pages/article");
     }
 
