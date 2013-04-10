@@ -6,16 +6,6 @@ Heres the sauce babes.
 
 
 
-# DON'T BE A DICK PUBLIC LICENSE
-
-> Version 1, December 2009
-
-> Copyright (C) 2009 Philip Sturgeon <email@philsturgeon.co.uk>
- 
- Everyone is permitted to copy and distribute verbatim or modified
- copies of this license document, and changing it is allowed as long
- as the name is changed.
-
 > DON'T BE A DICK PUBLIC LICENSE
 > TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
@@ -33,3 +23,5 @@ Heres the sauce babes.
  
  3. Code is provided with no warranty. Using somebody else's code and bitching when it goes wrong makes 
  you a DONKEY dick. Fix the problem yourself. A non-dick would submit the fix back.
+
+ Source: https://github.com/philsturgeon/dbad
