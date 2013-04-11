@@ -603,6 +603,9 @@ class Library {
      * @return mixed
      */
     public function return_csr($data) {
+        if ($data == false || $data == "" | $data == "b:0;") {
+            return false;
+        }
         $data = @unserialize($data);
 
         foreach ($data as $key => $value) {
