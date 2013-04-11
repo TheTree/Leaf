@@ -7,7 +7,7 @@ class IBOT_Controller extends CI_Controller {
 
         // check debug
         if (ENVIRONMENT == "development") {
-           $this->output->enable_profiler(TRUE);
+           //$this->output->enable_profiler(TRUE);
         }
 
         // load global header & footer

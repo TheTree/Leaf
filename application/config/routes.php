@@ -47,11 +47,15 @@ $route['stats'] = "stats/home/index";
 $route['compare'] = "stats/compare/index";
 $route['leaderboards'] = "stats/home/index";
 
+// ajax calls
+$route['ajax/gt/(:any)'] = "ajax/core/compare_api/$1";
+
 // variable pages
 $route['gt/(:any)/recache'] = "stats/home/recache_gt/$1";
 $route['gt/(:any)'] = "stats/home/gt/$1";
 $route['news/(:num)'] = "news/index/index/$1";
 $route['news/view/(:num)'] = "news/index/view/$1";
+$route['compare/(:any)/(:any)'] = "stats/compare/comparison/$1/$2";
 
 // other
 $route['default_controller'] = "home";

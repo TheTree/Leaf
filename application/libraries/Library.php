@@ -8,7 +8,7 @@ class Library {
     
     // urls @todo Abstract to config/
     public $emblem_url = "https://emblems.svc.halowaypoint.com/h4/emblems/{EMBLEM}?size={SIZE}";
-    public $spartan_url = "https://spartans.svc.halowaypoint.com/players/{GAMERTAG}/h4/spartans/fullbody?target=medium";
+    public $spartan_url = "https://spartans.svc.halowaypoint.com/players/{GAMERTAG}/h4/spartans/fullbody?target={SIZE}";
     public $rank_url = "https://assets.halowaypoint.com/games/h4/ranks/v1/{SIZE}/{RANK}";
     public $medal_url = "https://assets.halowaypoint.com/games/h4/medals/v1/{SIZE}/{MEDAL}";
     public $csr_url = "https://assets.halowaypoint.com/games/h4/csr/v1/{SIZE}/{CSR}.png";
@@ -18,6 +18,10 @@ class Library {
         $this->_ci = & get_instance();
         $this->lang = "english";
         $this->game = "h4";
+        $this->_ci->load->model('stat_model', 'stat_m', true);
+
+        // load path helper, setup vars
+        $this->_ci->load->helper("path");
     }
 
     // ---------------------------------------------------------------
@@ -489,6 +493,12 @@ class Library {
                 $image_path = "/" . $image;
                 $url = str_replace("{SIZE}", $size, str_replace("{WEAPON}", $image, $this->weapon_url));
                 break;
+
+            case "Spartan":
+                $path = "uploads/spartans/" . $this->get_hashed_seo_gamertag($this->get_seo_gamertag($image));
+                $image_path = "/" . $size . "_spartan.png";
+                $url = str_replace("{SIZE}", $size, str_replace("{GAMERTAG}", urlencode($image), $this->spartan_url));
+                break;
                 
             default:
                 log_message('error', 'Type: ' . $type . " not found in our `return_image_url` Library");
@@ -521,10 +531,7 @@ class Library {
      * @return mixed|string
      */
     public function return_spartan_url($hashed, $gt) {
-        
-        // load path helper, setup vars
-        $this->_ci->load->helper("path");
-        
+
         if (file_exists(absolute_path('uploads/spartans/' . $hashed) . "/spartan.png")) {
             return base_url('uploads/spartans/' . $hashed) . "/spartan.png";
         } else {
@@ -674,7 +681,7 @@ class Library {
         $emblem = file_get_contents($this->return_image_url("Emblem", $emblem, "120"));
         file_put_contents($emblem_path, $emblem);
         
-        $spartan = file_get_contents(str_replace("{GAMERTAG}", $gamertag, $this->spartan_url));
+        $spartan = file_get_contents(str_replace("{SIZE}", "medium", str_replace("{GAMERTAG}", urlencode($gamertag), $this->spartan_url)));
         file_put_contents($spartan_path, $spartan);
         
         // cleanup

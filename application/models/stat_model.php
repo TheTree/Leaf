@@ -219,4 +219,33 @@ class Stat_model extends IBOT_Model {
         }
     }
 
+    /**
+     * load_gamertags
+     *
+     * Loads gamertags from `ci_gamertags` that being with `$letter`
+     * @param string $letter
+     * @return array|bool
+     */
+    public function load_gamertags($letter = "") {
+
+        // only search if letters passed
+        if ($letter != "") {
+            $this->db->like('Gamertag', $letter);
+        }
+
+        // execute
+        $resp = $this->db
+            ->select('Gamertag')
+            ->limit(25)
+            ->get('ci_gamertags');
+
+        $resp = $resp->result_array();
+
+        if (is_array($resp) && count($resp) > 0) {
+            return $resp;
+        } else {
+            return FALSE;
+        }
+    }
+
 }

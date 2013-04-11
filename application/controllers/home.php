@@ -9,6 +9,7 @@ class Home extends IBOT_Controller {
         parent::__construct();
         $this->load->model('news_model', "news_m", true);
         $this->load->model('stat_model', 'stat_m', true);
+        $this->config->set_item('csrf_protection', TRUE);
     }
 
     function about() {
