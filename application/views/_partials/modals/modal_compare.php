@@ -12,11 +12,12 @@
             <li>Kills per Game (KpG)</li>
             <li>Deaths per game (DpG)</li>
             <li>Win Percentage (Wins / Total Games)</li>
+            <li>Kill / Death Ratio</li>
             <li>Total Quit Percentage (Quits / Total Games)</li>
             <li>Highest Commendation Completion</li>
             <li>Higher Rank</li>
             <li>Highest Avg Personal Score</li>
-            <li>Comparison of top 5 CSRs against each other</li>
+            <li>Comparison of top CSR against each other</li>
         </ul>
     </p>
     </div>

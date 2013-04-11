@@ -61,10 +61,11 @@ class Home extends IBOT_Controller {
                 ->set_partial('block_medals','_partials/profile/block_medals')
                 ->set_partial('block_favoriteweapon', '_partials/profile/block_favoriteweapon')
                 ->set_partial('block_csr', '_partials/profile/block_csr')
-                ->title("Leaf .:. " . urldecode($gamertag))
+                ->title("Leaf .:. " . urldecode($data['Gamertag']))
                 ->set('msg', $this->session->flashdata("recache"))
                 ->set('gamertag', $data['Gamertag'])
                 ->set('data', $data)
+                ->set('badge', $this->library->get_badge($data['Gamertag']))
                 ->build("pages/profile/view");
         
     }

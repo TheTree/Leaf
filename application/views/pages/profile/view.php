@@ -11,14 +11,15 @@
     }
 </script>
 <div class="row-fluid">
+    <h1><?= $badge; ?><?= urldecode($gamertag); ?> <small><?= $data['ServiceTag']; ?></small></h1>
+</div>
+<div class="row-fluid">
     <div class="span3">
-        <h2><?= urldecode($gamertag); ?> <small><?= $data['ServiceTag']; ?></small></h2>
         <div class="pagination-centered">
             <?= $template['_partials']['block_photo']; ?>
         </div>
     </div>
     <div class="span9">
-        <br /><br />
         <? if ($msg != false): ?>
             <div class="alert alert-info">
                 <button type="button" class="close" data-dismiss="alert">×</button>

@@ -53,6 +53,12 @@ if (PHP_SAPI == 'cli') {
 */
 $config['index_page'] = '';
 
+
+/*
+ * 343 Easter Eggs
+ */
+$config['employees_343'] = ["bs angel"];
+
 /*
 |--------------------------------------------------------------------------
 | URI PROTOCOL

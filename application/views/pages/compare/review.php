@@ -9,8 +9,8 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th><a href="<?= base_url('gt/' . $data['you']['SeoGamertag']); ?>"><?= $data['you']['Gamertag']; ?></a> - <small><?= $data['you']['ServiceTag']; ?></small></th>
-                    <th><a href="<?= base_url('gt/' . $data['them']['SeoGamertag']); ?>"><?= $data['them']['Gamertag']; ?></a> - <small><?= $data['them']['ServiceTag']; ?></small></th>
+                    <th><?= $data['you']['badge']; ?><a href="<?= base_url('gt/' . $data['you']['SeoGamertag']); ?>"><?= $data['you']['Gamertag']; ?></a> - <small><?= $data['you']['ServiceTag']; ?></small></th>
+                    <th><?= $data['them']['badge']; ?><a href="<?= base_url('gt/' . $data['them']['SeoGamertag']); ?>"><?= $data['them']['Gamertag']; ?></a> - <small><?= $data['them']['ServiceTag']; ?></small></th>
                 </tr>
             </thead>
             <tbody>
@@ -82,6 +82,9 @@
                 <div class="alert <?= $data['final']['Style'] ?>">Loser: <strong><?= $data['you']['Gamertag']; ?></strong></div>
                 <span class="badge badge-success">Winner: <strong><?= $data['them']['Gamertag']; ?></strong></span>
             <? endif; ?>
+            <br /><br />
+            <a href="https://twitter.com/share" class="twitter-share-button" data-size="large" data-text="I <?= $data['final']['TweetWord'] ?> <?= $data['them']['Gamertag'] ?> (<?= $template['title']; ?>)" data-hashtags="Halo4">Tweet</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
         </div>
         <? endif; ?>
     </div>

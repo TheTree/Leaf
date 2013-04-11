@@ -23,7 +23,6 @@ class Leaf_Compare {
         $this->you = $this->_ci->library->grab_profile_data($paras['you'], FALSE, $paras['you']);
         $this->them = $this->_ci->library->grab_profile_data($paras['them'], FALSE, $paras['them']);
 
-
         // check for falses
         if ($this->you == FALSE || $this->them == FALSE) {
             // show error page
@@ -37,6 +36,10 @@ class Leaf_Compare {
             // unseralize
             $this->you['SkillData'] = @unserialize($this->you['SkillData']);
             $this->them['SkillData'] = @unserialize($this->them['SkillData']);
+
+            // badges
+            $this->you['badge'] = $this->_ci->library->get_badge($this->you['Gamertag']);
+            $this->them['badge'] = $this->_ci->library->get_badge($this->them['Gamertag']);
         }
     }
 
@@ -51,8 +54,8 @@ class Leaf_Compare {
 
         // list of functions to run
         $comparisons = ["MediumSpartan", "HighestRank", "MedalsPerGame", "KillsPerGame", "DeathsPerGame",
-            "WinPercentage","QuitPercentage", "CommendationProgress", "AveragePersonalScore", "KDRatio",
-            "HighestCSR"];
+            "WinPercentage","QuitPercentage", "CommendationProgress", "ChallengesCompleted",
+            "AveragePersonalScore", "KDRatio", "HighestCSR"];
 
         // run em
         foreach ($comparisons as $task) {
@@ -92,16 +95,19 @@ class Leaf_Compare {
         if ($this->them['TotalPoints'] == $this->you['TotalPoints']) {
             $final_arr['Style'] = "";
             $final_arr['Winner'] = "";
+            $final_arr['TweetWord'] = "tied";
         } else if ($this->you['TotalPoints'] > $this->them['TotalPoints']) {
             $final_arr['Style'] = "alert-success";
             $final_arr['Status'] = TRUE;
             $final_arr['Winner'] = $this->you['Gamertag'];
             $final_arr['Looser'] = $this->them['Gamertag'];
+            $final_arr['TweetWord'] = "won against";
         } else {
             $final_arr['Style'] = "alert-error";
             $final_arr['Status'] = FALSE;
             $final_arr['Winner'] = $this->them['Gamertag'];
             $final_arr['Looser'] = $this->you['Gamertag'];
+            $final_arr['TweetWord'] = "lost to";
         }
 
         return array(
@@ -458,6 +464,30 @@ class Leaf_Compare {
             'Name' =>'Highest <abbr title="Kill / Death">KD</abbr> Ratio',
             'Max' => 1,
             'Field' => 'KDRatio',
+            'you' => array(
+                'pts' => intval($this->you_pts),
+                'style' => $this->you_style),
+            'them' => array(
+                'pts' => intval($this->them_pts),
+                'style' => $this->them_style),
+            'higher' => TRUE
+        );
+    }
+
+    function ChallengesCompleted() {
+        if ($this->you['TotalChallengesCompleted'] == $this->them['TotalChallengesCompleted']) {
+            $this->tie();
+        } else if ($this->you['TotalChallengesCompleted'] > $this->them['TotalChallengesCompleted']) {
+            $this->you_plus_one_good();
+        } else {
+            $this->them_plus_one_good();
+        }
+
+        // return
+        return array(
+            'Name' =>'Challenges Completed',
+            'Max' => 1,
+            'Field' => 'TotalChallengesCompleted',
             'you' => array(
                 'pts' => intval($this->you_pts),
                 'style' => $this->you_style),

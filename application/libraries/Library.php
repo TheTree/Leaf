@@ -18,7 +18,7 @@ class Library {
         $this->_ci = & get_instance();
         $this->lang = "english";
         $this->game = "h4";
-        $this->_ci->load->model('stat_model', 'stat_m', true);
+        $this->_ci->load->model('stat_model', 'stat_m', TRUE);
 
         // load path helper, setup vars
         $this->_ci->load->helper("path");
@@ -184,6 +184,24 @@ class Library {
         } else {
             log_message('error', 'API Down: ' . $resp['StatusReason']);
             return FALSE;
+        }
+    }
+
+    /**
+     * get_badge
+     *
+     * Gets little `badges` to put by usernames
+     * @param $gt
+     * @return string
+     */
+    public function get_badge($gt) {
+        // check for badges
+        if (in_array($gt, $this->_ci->config->item('employees_343'))) {
+            return '<span class="badge badge-info">343 Employee</span>&nbsp;';
+        } else if ($gt == "iBotPeaches v5") {
+            return '<span class="badge badge-info">Owner</span>&nbsp;';
+        } else {
+            return "";
         }
     }
 
@@ -371,7 +389,7 @@ class Library {
 
         // nasty little hack. If they have 0 games played in matchmaking, reject this bitch.
         if (isset($service_record['GameModes'][2]['TotalGamesStarted']) && intval($service_record['GameModes'][2]['TotalGamesStarted']) == 0) {
-            return false;
+            return FALSE;
         }
 
         // get ready for a dump of data
@@ -622,8 +640,8 @@ class Library {
      * @return mixed
      */
     public function return_csr($data) {
-        if ($data == false || $data == "" | $data == "b:0;") {
-            return false;
+        if ($data == FALSE || $data == "" | $data == "b:0;") {
+            return FALSE;
         }
         $data = @unserialize($data);
 
