@@ -44,14 +44,18 @@ class Compare extends IBOT_Controller {
         // init compare library
         $this->load->library('Leaf_compare',array('you' => $you, 'them' => $them));
 
-        // run it
-        $data = $this->leaf_compare->compare();
+        if ($this->leaf_compare->get_error()) {
+            $this->template->build("pages/compare/review");
+        } else {
+            // run it
+            $data = $this->leaf_compare->compare();
 
-        // dump to template
-        $this->template
-            ->set('data', $data)
-            ->title("Leaf .:. " . $data['you']['Gamertag'] . " vs " . $data['them']['Gamertag'])
-            ->build("pages/compare/review");
+            // dump to template
+            $this->template
+                ->set('data', $data)
+                ->title("Leaf .:. " . $data['you']['Gamertag'] . " vs " . $data['them']['Gamertag'])
+                ->build("pages/compare/review");
+        }
     }
 
 

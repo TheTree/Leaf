@@ -23,6 +23,9 @@ class Stat_model extends IBOT_Model {
             
             // unset InactiveCounter
             unset($data['InactiveCounter']);
+            unset($data['Gamertag']);
+            unset($data['SeoGamertag']);
+            unset($data['HashedGamertag']);
             $this->update_account($hash, $data);
         } else {
             $this->insert_account($data);

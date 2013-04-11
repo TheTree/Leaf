@@ -398,7 +398,9 @@ class Library {
             'DeathsPerGameRatio'         => round(intval($service_record['GameModes'][2]['TotalDeaths']) / intval($service_record['GameModes'][2]['TotalGamesStarted']),2),
             'KillsPerGameRatio'          => round(intval($service_record['GameModes'][2]['TotalKills']) / intval($service_record['GameModes'][2]['TotalGamesStarted']),2),
             'WinPercentage'              => round(intval($service_record['GameModes'][2]['TotalGamesWon']) / intval($service_record['GameModes'][2]['TotalGamesStarted']), 2),
-            'QuitPercentage'             => round(intval($service_record['GameModes'][2]['TotalGamesStarted']) / intval($service_record['GameModes'][2]['TotalGamesCompleted']),2),            'TotalChallengesCompleted'   => $service_record['TotalChallengesCompleted'],
+            'QuitPercentage'             => round(intval($service_record['GameModes'][2]['TotalGamesStarted'] - $service_record['GameModes'][2]['TotalGamesCompleted']) /
+                                                    intval($service_record['GameModes'][2]['TotalGamesStarted']),2),
+            'TotalChallengesCompleted'   => $service_record['TotalChallengesCompleted'],
             'TotalGameWins'              => $service_record['GameModes'][2]['TotalGamesWon'],
             'TotalGameQuits'             => intval($service_record['GameModes'][2]['TotalGamesStarted'] - $service_record['GameModes'][2]['TotalGamesCompleted']),
             'NextRankStartXP'            => $service_record['NextRankStartXP'],
