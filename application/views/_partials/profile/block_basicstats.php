@@ -42,5 +42,13 @@
             <span class="row_title">Challenges Completed</span>
             <span class="row_data"><?= number_format($data['TotalChallengesCompleted']); ?></span>
         </li>
+        <li>
+            <span class="row_title">Commendation Progress</span>
+            <span class="row_data"><?= number_format($data['TotalCommendationProgress'] * 100); ?>%</span>
+        </li>
+        <li>
+            <span class="row_title">Average Score</span>
+            <span class="row_data"><?= number_format($data['AveragePersonalScore']); ?></span>
+        </li>
     </ul>
 </div>

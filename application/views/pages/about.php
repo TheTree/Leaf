@@ -15,14 +15,14 @@
             <strong>What about old accounts that don't play Halo anymore?</strong><br />
             Once an account has 40 re-caches, that didn't change anything. We deem that account "frozen", and thus don't update it automatically.
             <br /><br />
-            <strong>I have a complaint! </strong><br />
-            meh. Tweet me. We will go from there.
-           <br /><br />
+            <strong>I have a complaint/bug! </strong><br />
+            <a href="https://github.com/iBotPeaches/Leaf/issues">I use GitHub for problems. Go here to report one.</a>
+            <br /><br />
             <strong>Any new features? </strong><br />
             meh. Tweet me. We can add more stuff.
             <br /><br />
-            <strong>My medals aren't right?</strong><br />
-            It counts from everything. Not just matchmaking. 343 bug. not me.
+            <strong>My top medal counts aren't right?</strong><br />
+            It counts from everything, this includes Campaign! Not just matchmaking. 343 API limitation. not my fault.
             <br /><br />
             <strong>Can I have the source? </strong><br />
             <a href="https://github.com/iBotPeaches/Leaf" rel="nofollow">GitHub</a>
@@ -30,7 +30,6 @@
             <strong>Can you swim in spent fuel water? </strong><br />
             I've got no clue. These <a href="http://what-if.xkcd.com/29/">guys</a> do though.
             <br />
-            
         </div> 
         <br />
         
@@ -55,7 +54,7 @@
         </div>
         <h4>Kudos</h4>
         <div class="well well-large">
-            Thanks to the folks (Alex & James) @ <a href="http://auntiedot.net/" target="_blank">Auntiedot</a> for major API research.
+            Thanks to the folks (Alex & James) @ <a href="http://auntiedot.net/" rel="nofollow" target="_blank">Auntiedot</a> for major API research, even though I only use one api endpoint :)
         </div>
         <h4>Sources </h4>
         <div class="well well-large">

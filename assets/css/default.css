@@ -23,3 +23,11 @@ csr-legend {
     text-align:center;
     width:100%
 }
+.row_title {
+    width: 175px;
+}
+@media (max-width: 500px) {
+    .row_title {
+        width: 135px;
+    }
+}

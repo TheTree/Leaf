@@ -364,7 +364,12 @@ class Library {
         if ($service_record['NextRankId'] == 0) {
             $service_record['NextRankStartXP'] = 0;
         }
-        
+
+        // nasty little hack. If they have 0 games played in matchmaking, reject this bitch.
+        if (isset($service_record['GameModes'][2]['TotalGamesStarted']) && intval($service_record['GameModes'][2]['TotalGamesStarted']) == 0) {
+            return false;
+        }
+
         // get ready for a dump of data
         return $this->_ci->stat_m->update_or_insert_gamertag($hashed, array(
             'Gamertag'                   => urldecode($gt),
@@ -384,7 +389,12 @@ class Library {
             'FavoriteWeaponDescription'  => $service_record['FavoriteWeaponDescription'],
             'FavoriteWeaponTotalKills'   => $service_record['FavoriteWeaponTotalKills'],
             'FavoriteWeaponUrl'          => $service_record['FavoriteWeaponImageUrl']['AssetUrl'],
-            'TotalChallengesCompleted'   => $service_record['TotalChallengesCompleted'],
+            'AveragePersonalScore'       => intval($service_record['GameModes'][2]['AveragePersonalScore']),
+            'MedalsPerGameRatio'         => round(intval($service_record['GameModes'][2]['TotalMedals']) / intval($service_record['GameModes'][2]['TotalGamesStarted']),2),
+            'DeathsPerGameRatio'         => round(intval($service_record['GameModes'][2]['TotalDeaths']) / intval($service_record['GameModes'][2]['TotalGamesStarted']),2),
+            'KillsPerGameRatio'          => round(intval($service_record['GameModes'][2]['TotalKills']) / intval($service_record['GameModes'][2]['TotalGamesStarted']),2),
+            'WinPercentage'              => round(intval($service_record['GameModes'][2]['TotalGamesWon']) / intval($service_record['GameModes'][2]['TotalGamesStarted']), 2),
+            'QuitPercentage'             => round(intval($service_record['GameModes'][2]['TotalGamesStarted']) / intval($service_record['GameModes'][2]['TotalGamesCompleted']),2),            'TotalChallengesCompleted'   => $service_record['TotalChallengesCompleted'],
             'TotalGameWins'              => $service_record['GameModes'][2]['TotalGamesWon'],
             'TotalGameQuits'             => intval($service_record['GameModes'][2]['TotalGamesStarted'] - $service_record['GameModes'][2]['TotalGamesCompleted']),
             'NextRankStartXP'            => $service_record['NextRankStartXP'],
