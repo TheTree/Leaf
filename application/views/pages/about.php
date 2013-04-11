@@ -51,14 +51,6 @@
                             fjs.parentNode.insertBefore(js, fjs);
                         }
                     }(document, "script", "twitter-wjs");</script>
-                <div class="g-plus" data-height="69" data-href="//plus.google.com/112346535434889804882" data-rel="author" rel="publisher"></div>
-                <script type="text/javascript">
-                    (function() {
-                        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-                        po.src = 'https://apis.google.com/js/plusone.js';
-                        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-                    })();
-                </script>
             </div>
         </div>
         <h4>Kudos</h4>

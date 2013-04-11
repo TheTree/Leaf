@@ -12,6 +12,7 @@ class Library {
     public $rank_url = "https://assets.halowaypoint.com/games/h4/ranks/v1/{SIZE}/{RANK}";
     public $medal_url = "https://assets.halowaypoint.com/games/h4/medals/v1/{SIZE}/{MEDAL}";
     public $csr_url = "https://assets.halowaypoint.com/games/h4/csr/v1/{SIZE}/{CSR}.png";
+    public $weapon_url = "https://assets.halowaypoint.com/games/h4/damage-types/v1/{SIZE}/{WEAPON}";
 
     function __construct() {
         $this->_ci = & get_instance();
@@ -366,35 +367,39 @@ class Library {
         
         // get ready for a dump of data
         return $this->_ci->stat_m->update_or_insert_gamertag($hashed, array(
-                    'Gamertag' => urldecode($gt),
-                    'HashedGamertag' => $hashed,
-                    'SeoGamertag' => $seo_gamertag,
-                    'Rank' => $service_record['RankName'],
-                    'RankImage' => substr($service_record['RankImageUrl']['AssetUrl'], 7),
-                    'Specialization' => $this->find_current_specialization($service_record['Specializations']),
-                    'SpecializationLevel' => $this->find_current_specialization($service_record['Specializations'], "Level"),
-                    'Expiration' => intval(time() + THREE_HOURS_IN_SECONDS),
-                    'MedalData' => @serialize($medal_data),
-                    'SkillData' => @serialize($skill_data),
-                    'KDRatio' => $service_record['GameModes'][2]['KDRatio'],
-                    'Xp' => $service_record['XP'],
-                    'SpartanPoints' => $service_record['SpartanPoints'],
-                    'TotalChallengesCompleted' => $service_record['TotalChallengesCompleted'],
-                    'TotalGameWins' => $service_record['GameModes'][2]['TotalGamesWon'],
-                    'TotalGameQuits' => intval($service_record['GameModes'][2]['TotalGamesStarted'] - $service_record['GameModes'][2]['TotalGamesCompleted']),
-                    'NextRankStartXP' => $service_record['NextRankStartXP'],
-                    'RankStartXP' => $service_record['RankStartXP'],
-                    'TotalCommendationProgress' => floatval($service_record['TotalCommendationProgress']),
-                    'TotalLoadoutItemsPurchased' => intval($service_record['TotalLoadoutItemsPurchased']),
-                    'TotalMedalsEarned' => intval($service_record['GameModes'][2]['TotalMedals']),
-                    'TotalGameplay' => $this->adjust_date($service_record['GameModes'][2]['TotalDuration']),
-                    'TotalKills' => intval($service_record['GameModes'][2]['TotalKills']),
-                    'TotalDeaths' => intval($service_record['GameModes'][2]['TotalDeaths']),
-                    'TotalGamesStarted' => intval($service_record['GameModes'][2]['TotalGamesStarted']),
-                    'ServiceTag' => $service_record['ServiceTag'],
-                    'LastUpdate' => intval(time()),
-                    'InactiveCounter' => intval(0)
-                ));
+            'Gamertag'                   => urldecode($gt),
+            'HashedGamertag'             => $hashed,
+            'SeoGamertag'                => $seo_gamertag,
+            'Rank'                       => $service_record['RankName'],
+            'RankImage'                  => substr($service_record['RankImageUrl']['AssetUrl'], 7),
+            'Specialization'             => $this->find_current_specialization($service_record['Specializations']),
+            'SpecializationLevel'        => $this->find_current_specialization($service_record['Specializations'], "Level"),
+            'Expiration'                 => intval(time() + THREE_HOURS_IN_SECONDS),
+            'MedalData'                  => @serialize($medal_data),
+            'SkillData'                  => @serialize($skill_data),
+            'KDRatio'                    => $service_record['GameModes'][2]['KDRatio'],
+            'Xp'                         => $service_record['XP'],
+            'SpartanPoints'              => $service_record['SpartanPoints'],
+            'FavoriteWeaponName'         => $service_record['FavoriteWeaponName'],
+            'FavoriteWeaponDescription'  => $service_record['FavoriteWeaponDescription'],
+            'FavoriteWeaponTotalKills'   => $service_record['FavoriteWeaponTotalKills'],
+            'FavoriteWeaponUrl'          => $service_record['FavoriteWeaponImageUrl']['AssetUrl'],
+            'TotalChallengesCompleted'   => $service_record['TotalChallengesCompleted'],
+            'TotalGameWins'              => $service_record['GameModes'][2]['TotalGamesWon'],
+            'TotalGameQuits'             => intval($service_record['GameModes'][2]['TotalGamesStarted'] - $service_record['GameModes'][2]['TotalGamesCompleted']),
+            'NextRankStartXP'            => $service_record['NextRankStartXP'],
+            'RankStartXP'                => $service_record['RankStartXP'],
+            'TotalCommendationProgress'  => floatval($service_record['TotalCommendationProgress']),
+            'TotalLoadoutItemsPurchased' => intval($service_record['TotalLoadoutItemsPurchased']),
+            'TotalMedalsEarned'          => intval($service_record['GameModes'][2]['TotalMedals']),
+            'TotalGameplay'              => $this->adjust_date($service_record['GameModes'][2]['TotalDuration']),
+            'TotalKills'                 => intval($service_record['GameModes'][2]['TotalKills']),
+            'TotalDeaths'                => intval($service_record['GameModes'][2]['TotalDeaths']),
+            'TotalGamesStarted'          => intval($service_record['GameModes'][2]['TotalGamesStarted']),
+            'ServiceTag'                 => $service_record['ServiceTag'],
+            'LastUpdate'                 => intval(time()),
+            'InactiveCounter'            => intval(0)
+        ));
     }
 
     /**
@@ -434,7 +439,7 @@ class Library {
      * return_image_url
      * Checks if this image exists locally. If so, uses it. Otherwise pulls from API
      *
-     * @param type $type
+     * @param string $type
      * @param type $image
      * @param      $size
      * @return boolean
@@ -467,6 +472,13 @@ class Library {
                 $image_path = "/" . $image . ".png";
                 $url = str_replace("{SIZE}", $size, str_replace("{CSR}", $image, $this->csr_url));
                 break;
+
+            case "Weapon":
+                $image = substr($image, 7); # remove `{SIZE}/` from url
+                $path = "uploads/weapons/" . $size;
+                $image_path = "/" . $image;
+                $url = str_replace("{SIZE}", $size, str_replace("{WEAPON}", $image, $this->weapon_url));
+                break;
                 
             default:
                 log_message('error', 'Type: ' . $type . " not found in our `return_image_url` Library");
@@ -484,6 +496,7 @@ class Library {
             } else {
                 file_put_contents(absolute_path($path) . $image_path, $_stream);
                 chmod(absolute_path($path) . $image_path, 0777);
+                unset($_stream);
                 return base_url($path . $image_path);
             }
         }
@@ -559,9 +572,10 @@ class Library {
         }
 
         if (count($rtr_arr) > 0) {
+            uasort($rtr_arr, "key_sort");
             return $rtr_arr;
         } else {
-            return false;
+            return FALSE;
         }
     }
     
@@ -596,6 +610,31 @@ class Library {
             $data[$key]['ImageUrl'] = $this->return_image_url("CSR", $data[$key]['SkillRank'], "large");
         }
         return $data;
+    }
+
+    /**
+     * return favorite
+     *
+     * Preps data for display on Profile
+     * @param $name
+     * @param $desc
+     * @param $total
+     * @param $url
+     * @return array
+     */
+    public function return_favorite($name, $desc, $total, $url) {
+
+        // check for null
+        if ($name == "") {
+            return FALSE;
+        }
+
+        $rtr_array = array();
+        $rtr_array['WeaponName'] = $name;
+        $rtr_array['WeaponDesc'] = $desc;
+        $rtr_array['WeaponTotalKills'] = $total;
+        $rtr_array['WeaponUrl'] = $this->return_image_url("Weapon", $url, "large");
+        return $rtr_array;
     }
 
     /**
@@ -670,5 +709,19 @@ class Library {
         $this->_ci->config->load('security');
         return $this->_ci->config->item('anti_tranversal_data');
     }
+}
 
+/**
+ * key_sort
+ *
+ * Sorts associative array based on `SkillRank` to sort CSR's in decreasing #
+ * @param $a
+ * @param $b
+ * @return int
+ */
+function key_sort($a, $b) {
+    if ($a['SkillRank'] == $b['SkillRank']) {
+        return 0;
+    }
+    return ($a['SkillRank'] < $b['SkillRank'] ? 1 : -1);
 }

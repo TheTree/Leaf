@@ -30,7 +30,14 @@
             </div>
         <? endif; ?>
         <?= $template['_partials']['block_progression']; ?>
+    </div>
+    <div class="span4">
         <?= $template['_partials']['block_basicstats']; ?>
+    </div>
+    <div class="span5">
+        <? if (isset($data['FavoriteData'])): ?>
+            <?= $template['_partials']['block_favoriteweapon']; ?>
+        <? endif; ?>
     </div>
     <div class="span9">
         <?= $template['_partials']['block_csr']; ?>

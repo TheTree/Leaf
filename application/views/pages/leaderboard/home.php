@@ -1,5 +1,5 @@
 <div class="alert alert-info">
-    <strong>Warning! </strong>This page is under construction still. Still making design tweaks :) 
+    <strong>Warning! </strong>An entire new structure and presentation of leaderboards is coming!
 </div>
 <div class="row">
     <?= $template['_partials']['total_kills']; ?>

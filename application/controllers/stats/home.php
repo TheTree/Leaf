@@ -16,12 +16,12 @@ class Home extends IBOT_Controller {
         // lets start grabbing data w/ caches
         $stats = array();
         
-        $stats['TotalKills'] = $this->cache->model('stat_m','get_top_5', array('TotalKills', false), 3600);
-        $stats['TotalDeaths'] = $this->cache->model('stat_m', 'get_top_5', array('TotalDeaths', false), 3600);
-        $stats['KDRatio'] = $this->cache->model('stat_m', 'get_top_5', array('KDRatio', false), 3600);
-        $stats['TimePlayed'] = $this->cache->model('stat_m', 'get_top_5', array('TotalGameplay', false), 3600);
-        $stats['TotalMedals'] = $this->cache->model('stat_m', 'get_top_5', array('TotalMedalsEarned', false), 3600);
-        $stats['ChallengesCompleted'] = $this->cache->model('stat_m', 'get_top_5', array('TotalChallengesCompleted', false), 3600);
+        $stats['TotalKills']            = $this->cache->model('stat_m', 'get_top_5', array('TotalKills', false), 3600);
+        $stats['TotalDeaths']           = $this->cache->model('stat_m', 'get_top_5', array('TotalDeaths', false), 3600);
+        $stats['KDRatio']               = $this->cache->model('stat_m', 'get_top_5', array('KDRatio', false), 3600);
+        $stats['TimePlayed']            = $this->cache->model('stat_m', 'get_top_5', array('TotalGameplay', false), 3600);
+        $stats['TotalMedals']           = $this->cache->model('stat_m', 'get_top_5', array('TotalMedalsEarned', false), 3600);
+        $stats['ChallengesCompleted']   = $this->cache->model('stat_m', 'get_top_5', array('TotalChallengesCompleted', false), 3600);
         
         // build w/ data
         $this->template
@@ -44,10 +44,14 @@ class Home extends IBOT_Controller {
         // lets load their data, check for 1hr expiration
         $data = $this->library->get_profile($gamertag);
         
-        $data['SpartanURL'] = $this->library->return_spartan_url($data['HashedGamertag'], $gamertag);
-        $data['RankImage'] = $this->library->return_image_url("Rank", $data['RankImage'], "large");
-        $data['MedalData'] = $this->library->return_medals($data['MedalData']);
-        $data['SkillData'] = $this->library->return_csr($data['SkillData']);
+        $data['SpartanURL']     = $this->library->return_spartan_url($data['HashedGamertag'], $gamertag);
+        $data['RankImage']      = $this->library->return_image_url("Rank", $data['RankImage'], "large");
+        $data['MedalData']      = $this->library->return_medals($data['MedalData']);
+        $data['SkillData']      = $this->library->return_csr($data['SkillData']);
+        $data['FavoriteData']   = $this->library->return_favorite($data['FavoriteWeaponName'],
+                                                                  $data['FavoriteWeaponDescription'],
+                                                                  $data['FavoriteWeaponTotalKills'],
+                                                                  $data['FavoriteWeaponUrl']);
         
         //  output gt, build template, set partials
         $this->template
@@ -55,6 +59,7 @@ class Home extends IBOT_Controller {
                 ->set_partial('block_basicstats', '_partials/profile/block_basicstats')
                 ->set_partial('block_progression', '_partials/profile/block_progression')
                 ->set_partial('block_medals','_partials/profile/block_medals')
+                ->set_partial('block_favoriteweapon', '_partials/profile/block_favoriteweapon')
                 ->set_partial('block_csr', '_partials/profile/block_csr')
                 ->title("Leaf .:. " . urldecode($gamertag))
                 ->set('msg', $this->session->flashdata("recache"))
@@ -87,9 +92,6 @@ class Home extends IBOT_Controller {
             // redirect out of here
             redirect(base_url("gt/" . str_replace("%20", "_",$gamertag)));
         } else {
-            mail("ibotpeaches@gmail.com",'error', 'Below account could not verify existance before recaching');
-            mail("ibotpeaches@gmail.com",'error', $seo_gamertag);
-            mail("ibotpeaches@gmail.com",'error', $hashed);
             show_error("This isn't a gamertag.");
         }
     }

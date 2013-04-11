@@ -1,5 +1,5 @@
 <? if ($data['SkillData'] != false): ?>
-    <strong>Competitive Skill Rank</strong>
+    <strong>Playlist Ranks</strong>
     <div class="well well-large">
         <div class="pagination-centered">
                 <? foreach ($data['SkillData'] as $csr): ?>
