@@ -579,13 +579,13 @@ class Library {
         foreach ($all_csr as $csr) {
 
             // only add if CSR is more than 0
-            if ($csr['CurrentSkillRank'] > 0) {
+            //if ($csr['CurrentSkillRank'] > 0) {
                 $rtr_arr[$csr['PlaylistName']] = array(
                     'Description' => $csr['PlaylistDescription'],
                     'SkillRank' => intval($csr['CurrentSkillRank']),
                     'Top' => ($csr['PlaylistName'] == $top_csr['PlaylistName']) ? TRUE : FALSE
                 );
-            }
+            //}
         }
 
         if (count($rtr_arr) > 0) {
