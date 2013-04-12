@@ -31,8 +31,8 @@ csr-legend {
         width: 135px;
     }
 }
-@media (max-width: 500px) {
+@media (max-width: 500px), (max-device-width: 500px) {
     h1 {
-        font-size: 26px !important;
+        font-size: 22px !important;
     }
 }

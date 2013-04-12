@@ -93,18 +93,21 @@ class Leaf_Compare {
 
         // determine the winner
         if ($this->them['TotalPoints'] == $this->you['TotalPoints']) {
+            $final_arr['Status'] = 'T';
             $final_arr['Style'] = "";
             $final_arr['Winner'] = "";
             $final_arr['TweetWord'] = "tied";
+            $final_arr['Winner'] = $this->you['Gamertag'];
+            $final_arr['Looser'] = $this->them['Gamertag'];
         } else if ($this->you['TotalPoints'] > $this->them['TotalPoints']) {
             $final_arr['Style'] = "alert-success";
-            $final_arr['Status'] = TRUE;
+            $final_arr['Status'] = 'W';
             $final_arr['Winner'] = $this->you['Gamertag'];
             $final_arr['Looser'] = $this->them['Gamertag'];
             $final_arr['TweetWord'] = "won against";
         } else {
             $final_arr['Style'] = "alert-error";
-            $final_arr['Status'] = FALSE;
+            $final_arr['Status'] = 'L';
             $final_arr['Winner'] = $this->them['Gamertag'];
             $final_arr['Looser'] = $this->you['Gamertag'];
             $final_arr['TweetWord'] = "lost to";

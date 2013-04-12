@@ -75,12 +75,15 @@
                     </tr>
                 </tbody>
             </table>
-            <? if ($data['final']['Status']): ?>
+            <?php if ($data['final']['Status'] == 'W'): ?>
                 <div class="alert <?= $data['final']['Style'] ?>">Winner: <strong><?= $data['you']['Gamertag']; ?></strong></div>
                 <span class="badge badge-inverse">Loser: <strong><?= $data['them']['Gamertag']; ?></strong></span>
-            <? else: ?>
+            <? elseif ($data['final']['Status'] == 'L'): ?>
                 <div class="alert <?= $data['final']['Style'] ?>">Loser: <strong><?= $data['you']['Gamertag']; ?></strong></div>
                 <span class="badge badge-success">Winner: <strong><?= $data['them']['Gamertag']; ?></strong></span>
+            <? else: ?>
+                <div class="alert alert-info">Tie: <strong><?= $data['you']['Gamertag']; ?></strong></div>
+                <div class="alert alert-info">Tie: <strong><?= $data['them']['Gamertag']; ?></strong></div>
             <? endif; ?>
             <br /><br />
             <a href="https://twitter.com/share" class="twitter-share-button" data-size="large" data-text="I <?= $data['final']['TweetWord'] ?> <?= $data['them']['Gamertag'] ?> (<?= $template['title']; ?>)" data-hashtags="Halo4">Tweet</a>

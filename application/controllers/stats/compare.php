@@ -7,14 +7,14 @@ class Compare extends IBOT_Controller {
 
         // helpers
         $this->load->helper('cookie');
-
-        // try and load cookie
-        if (($_tmp = get_cookie('your_gamertag', TRUE) != FALSE)) {
-            $this->template->set('you', $_tmp);
-        }
     }
     
     public function index() {
+
+        // try and load cookie
+        if (($_tmp = get_cookie('gamertag', TRUE) != FALSE)) {
+            $this->template->set('you', $_tmp);
+        }
 
         // validation rules
         $this->form_validation->set_rules('you_name','Your Gamertag','required|xss_clean|max_length[16]|callback_check_gt');
