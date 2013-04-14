@@ -263,7 +263,7 @@ class Leaf_Compare {
 
         // return
         return array(
-            'Name' =>'Highest <abbr title="Deaths per game">DpG</abbr> Ratio',
+            'Name' =>'Lowest <abbr title="Deaths per game">DpG</abbr> Ratio',
             'Max' => 1,
             'Field' => 'DeathsPerGameRatio',
             'you' => array(

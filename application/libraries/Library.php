@@ -209,17 +209,59 @@ class Library {
     // API Calls
     // ---------------------------------------------------------------
 
+
+    /**
+     * get_metadata()
+     *
+     * Goes through `/metadata` endpoint and grabs all data (purging all previous data) into the DB. Its ran every week
+     * via CRON
+     */
+    public function get_metadata() {
+        $_tmp = $this->get_url($this->lang . "/" . $this->game . "/" . "metadata",FALSE);
+
+        // Step 1: Achievements
+        $ins_arr = array();
+        foreach ($_tmp['AchievementsMetadata']['Achievements'] as $ach) {
+            $ins_arr[$ach['Id']] = array(
+                'Id' => $ach['Id'],
+                'Name' => $ach['Name'],
+                'LockedDescription' => $ach['LockedDescription'],
+                'UnlockedDescription' => $ach['UnlockedDescription'],
+                'GamerPoints' => $ach['GamerPoints'],
+                'LockedImageUrlAssetUrl' => $ach['LockedImageUrl']['AssetUrl'],
+                'UnlockedImageUrlAssetUrl' => $ach['UnlockedImageUrl']['AssetUrl']
+            );
+        }
+        $this->_ci->stat_m->insert_metadata("achievements", $ins_arr);
+
+        // Step 2: ArmorGroupMetaData
+
+
+
+    }
+
     /**
      * get_url
-     * 
      * Takes the url along w/ language / game, parameter is just paras of the URL
+     *
      * @param type $paras
+     * @param bool $auth
      * @return string
      */
-    private function get_url($paras) {
+    private function get_url($paras, $auth = FALSE) {
 
-        // set accept header
-        $this->_ci->curl->option('HTTPHEADER', array('Accept: application/json'));
+        // set AUTH
+        if ($auth) {
+            $key = $this->get_spartan_auth_key();
+            $header_paras = array('Accept: application/json',
+                'X-343-Authorization-Spartan: ' . $key);
+        } else {
+            $header_paras = array('Accept: application/json');
+        }
+
+        // set accept header, and SpartanToken if needed
+        $this->_ci->curl->option('HTTPHEADER', $header_paras);
+
 
         // make the url
         $url = "https://stats.svc.halowaypoint.com/" . $paras;
@@ -229,6 +271,53 @@ class Library {
 
         // check it
         return $this->check_status($resp);
+    }
+
+    /**
+     * get_spartan_auth_key
+     *
+     * Uses separate non-public method to generate AUTH code for authenticated API endpoints
+     *
+     * @return $key|null
+     */
+    private function get_spartan_auth_key() {
+        $this->get_metadata();
+
+        // grab from cache
+        if (($_tmp = $this->_ci->cache->get('auth_spartan')) == FALSE)  {
+
+            // get the key, via config file
+            $this->_ci->config->load('sekrit');
+
+            // we got the keys, lets make the url
+            $url =  $this->_ci->config->item('sekrit_url') . "/" . $this->_ci->config->item('serkit_key_1') . "/" .
+                $this->_ci->config->item('serkit_key_2') . "/" . $this->_ci->config->item('serkit_key_3');
+
+            $get_url = "https://settings.svc.halowaypoint.com/RegisterClientService.svc/spartantoken/wlid";
+
+            // get key via sekrit site
+            $key = file_get_contents($url);
+
+            // lets grab it
+            $this->_ci->curl->option('HTTPHEADER', array(
+                'Accept: application/json',
+                'X-343-Authorization-WLID: ' ."v1=" . $key));
+
+            // lets make this URL
+            $resp = json_decode($this->_ci->curl->simple_get($get_url), TRUE);
+
+            // count
+            if (count($resp) > 2) {
+                $this->_ci->cache->write($resp['SpartanToken'], 'auth_spartan', 3300);
+                return $resp['SpartanToken'];
+            } else {
+                // @todo kill off old token
+                return NULL;
+            }
+        } else {
+            return $_tmp;
+        }
+
     }
 
     /**
@@ -369,7 +458,7 @@ class Library {
         }
 
         // lets grab service record
-        $service_record = $this->check_status($this->get_url($this->lang . "/players/" . trim(urlencode(strtolower($gt))) . "/" . $this->game . "/servicerecord"));
+        $service_record = $this->check_status($this->get_url($this->lang . "/players/" . trim(urlencode(strtolower($gt))) . "/" . $this->game . "/servicerecord/wargames", TRUE));
 
         if ($service_record == FALSE) {
             return FALSE;

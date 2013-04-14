@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Class Stat_model
+ */
 class Stat_model extends IBOT_Model {
 
     function __construct() {
@@ -249,6 +252,26 @@ class Stat_model extends IBOT_Model {
         } else {
             return FALSE;
         }
+    }
+
+    /**
+     * insert_metadata
+     *
+     * Inserts passed `$table` data into dB associated table. Since metadata is volatile,
+     * it is TRUNCATED on every insert to start fresh.
+     *
+     * @param $table
+     * @param $data
+     */
+    public function insert_metadata($table, $data) {
+        // delete old data
+        $this->db
+            ->from('ci_m_' . $table)
+            ->truncate();
+
+        // insert new data
+        $this->db
+            ->insert_batch('ci_m_' . $table, $data);
     }
 
 }

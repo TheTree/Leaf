@@ -3,7 +3,7 @@
 /application/cache/
 /uploads/
 /application/config/database.php
-
+/application/config/sekrit.php
 #Linux
 *~
 *.iml
