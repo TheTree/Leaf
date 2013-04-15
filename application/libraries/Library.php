@@ -307,7 +307,7 @@ class Library {
         #$this->get_metadata();
 
         // grab from cache
-        if (($_tmp = $this->_ci->cache->get('auth_spartan')) == FALSE)  {
+        if (($_tmp = @json_decode($this->_ci->cache->get('auth_spartan'), TRUE)) == FALSE)  {
 
             // get the key, via config file
             $this->_ci->config->load('sekrit');
@@ -319,10 +319,10 @@ class Library {
             $get_url = "https://settings.svc.halowaypoint.com/RegisterClientService.svc/spartantoken/wlid";
 
             // get key via sekrit site
-            $key = $this->_ci->curl->simple_get($url);
+            $key = json_decode($this->_ci->curl->simple_get($url),TRUE);
 
             // check key
-            if ($key == "") {
+            if (!is_array($key)) {
                 $count++;
 
                 // if its looped more than 5 times, we didn't find a key :(
@@ -334,24 +334,29 @@ class Library {
                 }
             }
 
+            // check expiration key
+            if (time() > intval($key['expiresIn'])) {
+                return $this->get_spartan_auth_key($count);
+            }
+
             // lets grab it
             $this->_ci->curl->option('HTTPHEADER', array(
                 'Accept: application/json',
-                'X-343-Authorization-WLID: ' ."v1=" . $key));
+                'X-343-Authorization-WLID: ' ."v1=" . $key['accessToken']));
 
             // lets make this URL
-            $resp = json_decode($this->_ci->curl->simple_get($get_url), TRUE);
+            $resp = $this->_ci->curl->simple_get($get_url);
 
             // count
-            if (count($resp) > 2) {
-                $this->_ci->cache->write($resp['SpartanToken'], 'auth_spartan', 3300);
-                return $resp['SpartanToken'];
+            if (strlen($resp) > 150) {
+                $this->_ci->cache->write($resp, 'auth_spartan', 3000);
+                return json_decode($resp,TRUE)['SpartanToken'];
             } else {
                 $count++;
                 return $this->get_spartan_auth_key($count);
             }
         } else {
-            return $_tmp;
+            return $_tmp['SpartanToken'];
         }
 
     }
