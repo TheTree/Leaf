@@ -652,6 +652,12 @@ class Library {
                 $image_path = "/" . $size . "_spartan.png";
                 $url = str_replace("{SIZE}", $size, str_replace("{GAMERTAG}", urlencode($image), $this->spartan_url));
                 break;
+
+            case "ProfileSpartan":
+                $path = "uploads/spartans/" . $this->get_hashed_seo_gamertag($this->get_seo_gamertag($image));
+                $image_path = "/spartan.png";
+                $url = str_replace("{SIZE}", $size, str_replace("{GAMERTAG}", urlencode($image), $this->spartan_url));
+                break;
                 
             default:
                 log_message('error', 'Type: ' . $type . " not found in our `return_image_url` Library");
@@ -677,18 +683,18 @@ class Library {
 
     /**
      * return_spartan_url
-     * 
      * Tries and find's local Spartan. Otherwise returns url to it.
-     * @param type $hashed
-     * @param type $gt
+     *
+     * @param type   $gt
+     * @param string $type
+     * @internal param \type $hashed
      * @return mixed|string
      */
-    public function return_spartan_url($hashed, $gt) {
-
-        if (file_exists(absolute_path('uploads/spartans/' . $hashed) . "/spartan.png")) {
-            return base_url('uploads/spartans/' . $hashed) . "/spartan.png";
+    public function return_spartan_url($gt, $type = "Profile") {
+        if ($type == "Profile") {
+            return $this->return_image_url("ProfileSpartan", $gt, "medium");
         } else {
-            return str_replace("{GAMERTAG}", urlencode($gt), $this->spartan_url);
+            return $this->return_image_url("Spartan", $gt, "medium");
         }
     }
     
@@ -821,20 +827,25 @@ class Library {
         
         // load path helper, setup vars
         $this->_ci->load->helper("path");
-        $spartan_path = absolute_path('uploads/spartans/' . $hashed) . "/spartan.png";
+        $spartan_path = absolute_path('uploads/spartans/' . $hashed) . "spartan.png";
         $emblem_path = absolute_path('uploads/spartans/' . $hashed . "/tmp/") . "emblem.png";
         
         // lets try and make a folder. check first :p
         if (!(is_dir(absolute_path('uploads/spartans/' . $hashed . "/tmp")))) {
             mkdir(absolute_path('uploads/spartans/' . $hashed . "/tmp"), 0777, TRUE);
             write_file(absolute_path('uploads/spartans/' . $hashed) . "index.html", $this->get_anti_dir_trav());
+        } else {
+            // only delete if $hashed is set
+            if (strlen($hashed) > 10) {
+                delete_files(absolute_path('uploads/spartans/' . $hashed), TRUE);
+            }
         }
 
         // download 2 images in there, (emblem and spartan). Ignore all errors. Check afterwards
-        $emblem = file_get_contents($this->return_image_url("Emblem", $emblem, "120"));
+        $emblem = file_get_contents($this->return_image_url("Emblem", $emblem, "80"));
         file_put_contents($emblem_path, $emblem);
         
-        $spartan = file_get_contents(str_replace("{SIZE}", "medium", str_replace("{GAMERTAG}", urlencode($gamertag), $this->spartan_url)));
+        $spartan = file_get_contents($this->return_image_url("ProfileSpartan",$gamertag, "medium"));
         file_put_contents($spartan_path, $spartan);
         
         // cleanup
@@ -851,6 +862,7 @@ class Library {
             $config['wm_overlay_path'] = $emblem_path;
             $config['quality'] = "100%";
             $config['wm_hor_alignment'] = "right";
+            $config['wm_vrt_alignment'] = 'top';
             $this->_ci->image_lib->initialize($config);
             $this->_ci->image_lib->watermark();
             
