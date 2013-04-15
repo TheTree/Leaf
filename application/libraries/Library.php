@@ -135,6 +135,29 @@ class Library {
     }
 
     /**
+     * throw_error
+     *
+     * Takes error_id from language file and uses that on error page.
+     * @param $error_id
+     */
+    public function throw_error($error_id = "GENERAL_ERROR") {
+
+        // get lang file
+        $this->_ci->lang->load('errors', 'english');
+
+        // try and load file
+        if (($_tmp = $this->_ci->lang->line($error_id)) == FALSE) {
+            $_tmp = "I'm sorry, an unknown error has occurred.";
+        }
+
+        // set the session & pass it on
+        $this->_ci->session->set_flashdata('error_msg', $_tmp);
+
+        // redirect to error page
+        redirect('/error/', 'refresh');
+    }
+
+    /**
      * get_trophy
      * returns image for place
      *
@@ -275,12 +298,12 @@ class Library {
 
     /**
      * get_spartan_auth_key
-     *
      * Uses separate non-public method to generate AUTH code for authenticated API endpoints
      *
-     * @return $key|null
+     * @param int $count
+     * @return null $key|null
      */
-    private function get_spartan_auth_key() {
+    private function get_spartan_auth_key($count = 0) {
         $this->get_metadata();
 
         // grab from cache
@@ -298,6 +321,18 @@ class Library {
             // get key via sekrit site
             $key = file_get_contents($url);
 
+            // check key
+            if ($key == "") {
+                $count++;
+
+                // if its looped more than 5 times, we didn't find a key :(
+                if ($count < 5) {
+                    return $this->get_spartan_auth_key($count);
+                }  else {
+                    $this->throw_error("API_AUTH_GONE");
+                }
+            }
+
             // lets grab it
             $this->_ci->curl->option('HTTPHEADER', array(
                 'Accept: application/json',
@@ -311,8 +346,8 @@ class Library {
                 $this->_ci->cache->write($resp['SpartanToken'], 'auth_spartan', 3300);
                 return $resp['SpartanToken'];
             } else {
-                // @todo kill off old token
-                return NULL;
+                $count++;
+                return $this->get_spartan_auth_key($count);
             }
         } else {
             return $_tmp;
@@ -369,7 +404,7 @@ class Library {
         if (strlen(urldecode($gt)) > 15) {
 
             if ($errors) {
-                show_error("wtf. This is more than 15 chars. This isn't a gamertag.");
+                $this->throw_error("LONGER_THAN_15_CHARS_GT");
             } else {
                 return FALSE;
             }
@@ -388,7 +423,7 @@ class Library {
 
                 if ($resp == FALSE) {
                     if ($errors) {
-                        show_error("stop. This isn't an Xbox Live (Halo 4) account.");
+                        $this->throw_error("NOT_XBL_ACCOUNT");
                     } else {
                         return FALSE;
                     }
@@ -458,10 +493,13 @@ class Library {
         }
 
         // lets grab service record
-        $service_record = $this->check_status($this->get_url($this->lang . "/players/" . trim(urlencode(strtolower($gt))) . "/" . $this->game . "/servicerecord/wargames", TRUE));
+        $service_record = $this->check_status($this->get_url($this->lang . "/players/" . trim(urlencode(strtolower($gt))) . "/" . $this->game . "/servicerecord", FALSE));
 
-        if ($service_record == FALSE) {
-            return FALSE;
+        // lets grab service record /wargames
+        $wargames_record = $this->check_status($this->get_url($this->lang . "/players/" . trim(urlencode(strtolower($gt))) . "/" . $this->game . "/servicerecord/wargames", TRUE));
+
+        if ($service_record == FALSE || $wargames_record == FALSE) {
+            $this->throw_error("ENDPOINTS_DOWN");
         }
         
         // lets do the URL work, and medal
@@ -478,7 +516,7 @@ class Library {
 
         // nasty little hack. If they have 0 games played in matchmaking, reject this bitch.
         if (isset($service_record['GameModes'][2]['TotalGamesStarted']) && intval($service_record['GameModes'][2]['TotalGamesStarted']) == 0) {
-            return FALSE;
+            $this->throw_error("NO_GAMES_PLAYED");
         }
 
         // get ready for a dump of data

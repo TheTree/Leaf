@@ -93,7 +93,7 @@ class Home extends IBOT_Controller {
             // redirect out of here
             redirect(base_url("gt/" . str_replace("%20", "_",$gamertag)));
         } else {
-            show_error("This isn't a gamertag.");
+            $this->library->throw_error("NO_GAMERTAG_STORED");
         }
     }
     
