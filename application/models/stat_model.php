@@ -24,7 +24,16 @@ class Stat_model extends IBOT_Model {
         // check for update
         if (($_tmp = $this->account_exists($hash)) != FALSE) {
             
-            // unset InactiveCounter
+            // unset some temporarily, so we can add back on postback
+            $unset_arra = array(
+                'InactiveCounter' => $data['InactiveCounter'],
+                'Gamertag' => $data['Gamertag'],
+                'SeoGamertag' => $data['SeoGamertag'],
+                'HashedGamertag' => $data['HashedGamertag']
+            );
+
+            // remove these vars to prevent changing them in db
+            // ex accidentally changing gt from TEST to teST
             unset($data['InactiveCounter']);
             unset($data['Gamertag']);
             unset($data['SeoGamertag']);
@@ -33,7 +42,12 @@ class Stat_model extends IBOT_Model {
         } else {
             $this->insert_account($data);
         }
-        
+
+        // if we unset some elements
+        // lets add them back
+        if (isset($unset_arra)) {
+            $data = array_merge($data, $unset_arra);
+        }
         return $data;
     }
     

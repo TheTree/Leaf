@@ -304,7 +304,7 @@ class Library {
      * @return null $key|null
      */
     private function get_spartan_auth_key($count = 0) {
-        $this->get_metadata();
+        #$this->get_metadata();
 
         // grab from cache
         if (($_tmp = $this->_ci->cache->get('auth_spartan')) == FALSE)  {
@@ -319,7 +319,7 @@ class Library {
             $get_url = "https://settings.svc.halowaypoint.com/RegisterClientService.svc/spartantoken/wlid";
 
             // get key via sekrit site
-            $key = file_get_contents($url);
+            $key = $this->_ci->curl->simple_get($url);
 
             // check key
             if ($key == "") {
@@ -327,6 +327,7 @@ class Library {
 
                 // if its looped more than 5 times, we didn't find a key :(
                 if ($count < 5) {
+                    $this->_ci->cache->delete('auth_spartan');
                     return $this->get_spartan_auth_key($count);
                 }  else {
                     $this->throw_error("API_AUTH_GONE");
