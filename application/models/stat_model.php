@@ -198,11 +198,11 @@ class Stat_model extends IBOT_Model {
      * @param type $asc
      * @return boolean
      */
-    public function get_top_5($field, $asc) {
+    public function get_top_8($field, $asc) {
         
         $resp = $this->db
                 ->select("Gamertag,ServiceTag," . $field)
-                ->limit(5)
+                ->limit(8)
                 ->order_by($field, ($asc == TRUE ? "asc" : "desc"))
                 ->get_where('ci_gamertags', array(
                     'TotalGamesStarted >' => intval(100)));

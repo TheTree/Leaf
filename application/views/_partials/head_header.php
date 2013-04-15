@@ -6,6 +6,7 @@
     <meta name="description" content="Halo 4 Stat Tracking provided by LeafApp, including Halo 4 CSR">
     <?= link_tag('assets/css/bootstrap/bootstrap.min.css'); ?>
     <?= link_tag('assets/css/bootstrap/bootstrap-responsive.min.css'); ?>
+    <?= link_tag('assets/css/bootstrap/bootswatch.css'); ?>
     <?= link_tag('assets/css/default.css'); ?>
     <script type="text/javascript">
         var _gaq = _gaq || [];
@@ -24,4 +25,6 @@
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
     <script src="<?= base_url('assets/js/bootstrap/bootstrap.min.js'); ?>" type="text/javascript"></script>
+    <script src="<?= base_url('assets/js/bootstrap/jquery.smooth-scroll.min.js'); ?>" type="text/javascript"></script>
+    <script src="<?= base_url('assets/js/bootstrap/bootswatch.js'); ?>" type="text/javascript"></script>
 </head>

@@ -15,13 +15,17 @@ class Home extends IBOT_Controller {
         
         // lets start grabbing data w/ caches
         $stats = array();
-        
-        $stats['TotalKills']            = $this->cache->model('stat_m', 'get_top_5', array('TotalKills', false), 3600);
-        $stats['TotalDeaths']           = $this->cache->model('stat_m', 'get_top_5', array('TotalDeaths', false), 3600);
-        $stats['KDRatio']               = $this->cache->model('stat_m', 'get_top_5', array('KDRatio', false), 3600);
-        $stats['TimePlayed']            = $this->cache->model('stat_m', 'get_top_5', array('TotalGameplay', false), 3600);
-        $stats['TotalMedals']           = $this->cache->model('stat_m', 'get_top_5', array('TotalMedalsEarned', false), 3600);
-        $stats['ChallengesCompleted']   = $this->cache->model('stat_m', 'get_top_5', array('TotalChallengesCompleted', false), 3600);
+
+        // start the list of data for affix
+        $stats['Items'] = ["Total Kills", "Total Deaths", "KD Ratio", "Time Played", "Total Medals", "Challenges Completed"];
+
+        // get the actual data for the partials
+        $stats['Data']['total_kills']            = $this->cache->model('stat_m', 'get_top_8', array('TotalKills', false), 3600);
+        $stats['Data']['total_deaths']           = $this->cache->model('stat_m', 'get_top_8', array('TotalDeaths', false), 3600);
+        $stats['Data']['kd_ratio']               = $this->cache->model('stat_m', 'get_top_8', array('KDRatio', false), 3600);
+        $stats['Data']['time_played']            = $this->cache->model('stat_m', 'get_top_8', array('TotalGameplay', false), 3600);
+        $stats['Data']['total_medals']           = $this->cache->model('stat_m', 'get_top_8', array('TotalMedalsEarned', false), 3600);
+        $stats['Data']['challenges_completed']   = $this->cache->model('stat_m', 'get_top_8', array('TotalChallengesCompleted', false), 3600);
         
         // build w/ data
         $this->template

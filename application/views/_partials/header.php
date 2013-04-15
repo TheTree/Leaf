@@ -1,7 +1,7 @@
 <?= doctype() ?>
 <html lang="en">
     <?= $template['_partials']['head_header']; ?>
-    <body>
+    <body id="top" data-spy="scroll" data-target=".subnav" data-offset="100">
         <div class="navbar navbar-inverse navbar-fixed-top">
             <div class="navbar-inner">
                 <div class="container">

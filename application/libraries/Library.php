@@ -180,16 +180,8 @@ class Library {
                 return '<img src="' . base_url("assets/img/icons/medal_bronze.png") . '" />';
                 break;
 
-            case 4:
-                return "4<sup>th</sup>";
-                break;
-
-            case 5:
-                return "5<sup>th</sup>";
-                break;
-
             default:
-                return $x;
+                return intval($x) . "<sup>th</sup>";
                 break;
         }
     }

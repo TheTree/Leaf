@@ -7,10 +7,10 @@
             <h3>FAQ:</h3>
             <br />
             <strong>Why should I come here? </strong><br />
-            I don't care if you do or don't. Its about 2.2mb less clutter than HaloWaypoint, and we only track Matchmaking to prevent abuse.
+            Its about 2.2mb less clutter than HaloWaypoint, and we only track Matchmaking to prevent abuse and generally are faster/sexier.
             <br /><br />
             <strong>How often can I update my stats?</strong><br />
-            The system auto does it every 3 hours for you. Otherwise you are allowed every 5 minutes.
+            The system does it automatically for our leaderboard every 3-5 hours. Otherwise you are allowed every 5 minutes.
             <br /><br />
             <strong>What about old accounts that don't play Halo anymore?</strong><br />
             Once an account has 40 re-caches, that didn't change anything. We deem that account "frozen", and thus don't update it automatically.
@@ -20,9 +20,6 @@
             <br /><br />
             <strong>Any new features? </strong><br />
             meh. Tweet me. We can add more stuff.
-            <br /><br />
-            <strong>My top medal counts aren't right?</strong><br />
-            It counts from everything, this includes Campaign! Not just matchmaking. 343 API limitation. not my fault.
             <br /><br />
             <strong>Can I have the source? </strong><br />
             <a href="https://github.com/iBotPeaches/Leaf" rel="nofollow">GitHub</a>
@@ -54,7 +51,7 @@
         </div>
         <h4>Kudos</h4>
         <div class="well well-large">
-            Thanks to the folks (Alex & James) @ <a href="http://auntiedot.net/" rel="nofollow" target="_blank">Auntiedot</a> for major API research, even though I only use one api endpoint :)
+            Thanks to the folks (Alex & James) @ <a href="http://auntiedot.net/" rel="nofollow" target="_blank">Auntiedot</a> for major API research.
         </div>
         <h4>Sources </h4>
         <div class="well well-large">
