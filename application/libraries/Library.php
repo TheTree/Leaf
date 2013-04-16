@@ -391,6 +391,8 @@ class Library {
 
     /**
      * get_challenges
+     *
+     * Pulls from API `/challenges`, to pull current daily/weekly/monthly challenges.
      * 
      * @return type
      */
@@ -789,7 +791,9 @@ class Library {
     /**
      * return_medals
      * 
-     * Parses url into real url of image.
+     * Takes Id -> Count representation of Medals. Collects metadata and re-makes array.
+     *
+     * Sorts via TierId, and then sorted by Highest `Count` field.
      * @param type $data
      * @return mixed
      */
@@ -841,7 +845,7 @@ class Library {
     /**
      * return favorite
      *
-     * Preps data for display on Profile
+     * Preps data for display on Profile, aligning the FavoriteWeapon into an array
      * @param $name
      * @param $desc
      * @param $total
@@ -864,6 +868,11 @@ class Library {
     }
 
     /**
+     * get_metadata_via_db
+     *
+     * Goes to database in order to find table `ci_m_$type` and returns all of its data. Its cached
+     * forever, so the amount of queries to the database are very little.
+     *
      * @param $type
      * @return mixed
      */
@@ -873,6 +882,11 @@ class Library {
     }
 
     /**
+     * get_metadata_name_via_id
+     *
+     * Pass $type of metadata, and the id of it along w/ what your want. It uses the above function
+     * `get_metadata_via_db` to get the db information, then this function takes the passed $id
+     * and uses it against the returned $metadata before returning it.
      * @param        $type
      * @param        $id
      * @param string $name
@@ -906,7 +920,10 @@ class Library {
     }
 
     /**
-     * emblem
+     * build_spartan_with_emblem
+     *
+     * Used during recache/creation. Takes hashed $gt, and downloads / parses the emblem and Spartan Image.
+     * They are then laid ontop of eachother (lol)
      * 
      * @param type $hashed
      * @param type $emblem
@@ -966,6 +983,9 @@ class Library {
     }
 
     /**
+     * get_top_5_leaderboard
+     *
+     * Helper method for Stat_m::get_top_5
      * @param type       $field
      * @param bool|\type $asc
      * @return
@@ -976,6 +996,9 @@ class Library {
     
     /**
      * get anti_dir_traversal
+     *
+     * Returns file contents that can be injected into a `index.html`
+     * to prevent directory traversal
      */
     public function get_anti_dir_trav() {
         
