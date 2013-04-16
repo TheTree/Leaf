@@ -5,7 +5,7 @@ class Library {
     protected $_ci;
     public $lang;
     public $game;
-    
+
     // urls @todo Abstract to config/
     public $emblem_url = "https://emblems.svc.halowaypoint.com/h4/emblems/{EMBLEM}?size={SIZE}";
     public $spartan_url = "https://spartans.svc.halowaypoint.com/players/{GAMERTAG}/h4/spartans/fullbody?target={SIZE}";
@@ -13,6 +13,9 @@ class Library {
     public $medal_url = "https://assets.halowaypoint.com/games/h4/medals/v1/{SIZE}/{MEDAL}";
     public $csr_url = "https://assets.halowaypoint.com/games/h4/csr/v1/{SIZE}/{CSR}.png";
     public $weapon_url = "https://assets.halowaypoint.com/games/h4/damage-types/v1/{SIZE}/{WEAPON}";
+
+    // key for sort functions
+    public $sort_key = "";
 
     function __construct() {
         $this->_ci = & get_instance();
@@ -84,11 +87,19 @@ class Library {
     // Helper Calls
     // ---------------------------------------------------------------
 
+    public function set_sort_key($sort_key) {
+        $this->sort_key = $sort_key;
+    }
+
+    public function get_sort_key() {
+        return $this->sort_key;
+    }
+
     /**
      * is_active
-     * 
+     *
      * Determines if passed $item is equal to navigation
-     * 
+     *
      * @param type $item
      * @return type
      */
@@ -188,7 +199,7 @@ class Library {
 
     /**
      * check_status
-     * 
+     *
      * Checks the API for the Status var to make sure its up and running
      * @param type $resp
      * @return boolean
@@ -393,7 +404,7 @@ class Library {
      * get_challenges
      *
      * Pulls from API `/challenges`, to pull current daily/weekly/monthly challenges.
-     * 
+     *
      * @return type
      */
     public function get_challenges() {
@@ -403,7 +414,7 @@ class Library {
 
         // check if cache exists.
         if ($resp == FALSE) {
-            
+
             // fixes date, gets url via api
             $resp = $this->fix_date($this->get_url($this->lang . "/" . $this->game . "/challenges"), "BeginDate,EndDate", "Challenges");
             $this->_ci->cache->write($resp, 'current_challenges');
@@ -521,7 +532,7 @@ class Library {
 
         // grab from db, if null continue
         $resp = $this->_ci->stat_m->get_gamertag_data($hashed);
-        
+
         if (isset($resp['Expiration']) && is_array($resp)) {
             if (intval($resp['Expiration']) > intval(time()) && $force == FALSE) {
                 return $resp;
@@ -537,14 +548,14 @@ class Library {
         if ($service_record == FALSE || $wargames_record == FALSE) {
             $this->throw_error("ENDPOINTS_DOWN");
         }
-        
+
         // lets do the URL work, and medal
         $this->build_spartan_with_emblem($hashed, substr_replace($service_record['EmblemImageUrl']['AssetUrl'], "", -12), $gt);
         $medal_data = $this->get_medal_data($wargames_record['TotalMedalsStats']);
 
         // get skill stuff
         $skill_data = $this->get_skill_data($service_record['SkillRanks'], $service_record['TopSkillRank']);
-        
+
         // check for lvl 130
         if ($service_record['NextRankId'] == 0) {
             $service_record['NextRankStartXP'] = 0;
@@ -582,7 +593,7 @@ class Library {
             'SuicidesPerGameRatio'       => round(intval($wargames_record['TotalSuicides']) / intval($wargames_record['Summary']['TotalGamesStarted']), 2),
             'WinPercentage'              => round(intval($service_record['GameModes'][2]['TotalGamesWon']) / intval($service_record['GameModes'][2]['TotalGamesStarted']), 2),
             'QuitPercentage'             => round(intval($service_record['GameModes'][2]['TotalGamesStarted'] - $service_record['GameModes'][2]['TotalGamesCompleted']) /
-                                                    intval($service_record['GameModes'][2]['TotalGamesStarted']),2),
+                                                      intval($service_record['GameModes'][2]['TotalGamesStarted']),2),
             'TotalChallengesCompleted'   => $service_record['TotalChallengesCompleted'],
             'TotalGameWins'              => $service_record['GameModes'][2]['TotalGamesWon'],
             'TotalGameQuits'             => intval($service_record['GameModes'][2]['TotalGamesStarted'] - $service_record['GameModes'][2]['TotalGamesCompleted']),
@@ -607,7 +618,7 @@ class Library {
 
     /**
      * adjust_date
-     * 
+     *
      * Takes form P3DT4H18M45S into seconds.
      * @param type $str
      * @return int
@@ -648,22 +659,22 @@ class Library {
      * @return boolean
      */
     public function return_image_url($type, $image, $size) {
-        
+
         // switch for Type
         switch ($type) {
-            
+
             case "Emblem":
                 $path = "uploads/emblems/" . $size;
                 $image_path =  "/" . $image . ".png";
                 $url = str_replace("{SIZE}", $size, str_replace("{EMBLEM}", $image, $this->emblem_url));
                 break;
-            
+
             case "Rank":
                 $path = "uploads/ranks/" . $size;
                 $image_path = "/" . $image;
                 $url = str_replace("{SIZE}", $size, str_replace("{RANK}", $image, $this->rank_url));
                 break;
-            
+
             case "Medal":
                 $path = "uploads/medals/" . $size;
                 $image_path = "/" . $image;
@@ -694,7 +705,7 @@ class Library {
                 $image_path = "/spartan.png";
                 $url = str_replace("{SIZE}", $size, str_replace("{GAMERTAG}", urlencode($image), $this->spartan_url));
                 break;
-                
+
             default:
                 log_message('error', 'Type: ' . $type . " not found in our `return_image_url` Library");
                 return FALSE;
@@ -733,10 +744,10 @@ class Library {
             return $this->return_image_url("Spartan", $gt, "medium");
         }
     }
-    
+
     /**
      * get_medal_data
-     * 
+     *
      * Extracts from api `TopMedals` into serialized form
      * @param type $medals
      * @return type
@@ -744,7 +755,7 @@ class Library {
     public function get_medal_data($medals) {
         $rtr_arr = array();
         $x = 0;
-        
+
         // loop top medals, extract data.
         foreach($medals as $medal) {
             $rtr_arr[$x++] = array(
@@ -752,7 +763,7 @@ class Library {
                 'Count' => intval($medal['TotalMedals'])
             );
         }
-        
+
         return $rtr_arr;
     }
 
@@ -772,25 +783,26 @@ class Library {
 
             // only add if CSR is more than 0
             //if ($csr['CurrentSkillRank'] > 0) {
-                $rtr_arr[$csr['PlaylistName']] = array(
-                    'Description' => $csr['PlaylistDescription'],
-                    'SkillRank' => intval($csr['CurrentSkillRank']),
-                    'Top' => ($csr['PlaylistName'] == $top_csr['PlaylistName']) ? TRUE : FALSE
-                );
+            $rtr_arr[$csr['PlaylistName']] = array(
+                'Description' => $csr['PlaylistDescription'],
+                'SkillRank' => intval($csr['CurrentSkillRank']),
+                'Top' => ($csr['PlaylistName'] == $top_csr['PlaylistName']) ? TRUE : FALSE
+            );
             //}
         }
 
         if (count($rtr_arr) > 0) {
-            uasort($rtr_arr, "key_sort");
+            $this->set_sort_key("SkillRank");
+            uasort($rtr_arr, array($this,"key_sort"));
             return $rtr_arr;
         } else {
             return FALSE;
         }
     }
-    
+
     /**
      * return_medals
-     * 
+     *
      * Takes Id -> Count representation of Medals. Collects metadata and re-makes array.
      *
      * Sorts via TierId, and then sorted by Highest `Count` field.
@@ -814,8 +826,9 @@ class Library {
         unset($data);
 
         // sort
+        $this->set_sort_key("Count");
         foreach ($new_arr as $key => $value) {
-            uasort($new_arr[$key], "medal_sort");
+            uasort($new_arr[$key], array($this,"key_sort"));
             $new_arr[$key]['Name'] = $this->get_metadata_name_via_id("medaltiers",$key, "Name");
             $new_arr[$key]['Description'] = $this->get_metadata_name_via_id("medaltiers",$key, "Description");
         }
@@ -924,18 +937,18 @@ class Library {
      *
      * Used during recache/creation. Takes hashed $gt, and downloads / parses the emblem and Spartan Image.
      * They are then laid ontop of eachother (lol)
-     * 
+     *
      * @param type $hashed
      * @param type $emblem
      * @param type $gamertag
      */
     public function build_spartan_with_emblem($hashed, $emblem, $gamertag) {
-        
+
         // load path helper, setup vars
         $this->_ci->load->helper("path");
         $spartan_path = absolute_path('uploads/spartans/' . $hashed) . "spartan.png";
         $emblem_path = absolute_path('uploads/spartans/' . $hashed . "/tmp/") . "emblem.png";
-        
+
         // lets try and make a folder. check first :p
         if (!(is_dir(absolute_path('uploads/spartans/' . $hashed . "/tmp")))) {
             mkdir(absolute_path('uploads/spartans/' . $hashed . "/tmp"), 0777, TRUE);
@@ -950,17 +963,17 @@ class Library {
         // download 2 images in there, (emblem and spartan). Ignore all errors. Check afterwards
         $emblem = file_get_contents($this->return_image_url("Emblem", $emblem, "80"));
         file_put_contents($emblem_path, $emblem);
-        
+
         $spartan = file_get_contents($this->return_image_url("ProfileSpartan",$gamertag, "medium"));
         file_put_contents($spartan_path, $spartan);
-        
+
         // cleanup
         unset($emblem);
         unset($spartan);
-        
+
         // check if both files are there.
         if (file_exists($spartan_path) &&  file_exists($emblem_path)) {
-            
+
             // we got em both. Lets merge them.
             $config = array();
             $config['source_image'] = $spartan_path;
@@ -971,12 +984,12 @@ class Library {
             $config['wm_vrt_alignment'] = 'top';
             $this->_ci->image_lib->initialize($config);
             $this->_ci->image_lib->watermark();
-            
+
         } else {
             log_message('debug', 'spartan: ' . $spartan_path);
             log_message('debug', 'emblem: ' . $emblem_path);
         }
-        
+
         // delete tmp dir
         delete_files(absolute_path('uploads/spartans/' . $hashed . "/tmp/"), FALSE);
         rmdir(absolute_path('uploads/spartans/' . $hashed . "/tmp"));
@@ -993,7 +1006,7 @@ class Library {
     public function get_top_5_leaderboard($field, $asc = FALSE) {
         return $this->_ci->stat_m->get_top_5($field, $asc);
     }
-    
+
     /**
      * get anti_dir_traversal
      *
@@ -1001,31 +1014,24 @@ class Library {
      * to prevent directory traversal
      */
     public function get_anti_dir_trav() {
-        
+
         // load config var
         $this->_ci->config->load('security');
         return $this->_ci->config->item('anti_tranversal_data');
     }
-}
 
-/**
- * key_sort
- *
- * Sorts associative array based on `SkillRank` to sort CSR's in decreasing #
- * @param $a
- * @param $b
- * @return int
- */
-function key_sort($a, $b) {
-    if ($a['SkillRank'] == $b['SkillRank']) {
-        return 0;
+    /**
+     * key_sort
+     *
+     * Sorts associative array based on `SkillRank` to sort CSR's in decreasing #
+     * @param $a
+     * @param $b
+     * @return int
+     */
+    function key_sort($a, $b) {
+        if ($a[$this->get_sort_key()] == $b[$this->get_sort_key()]) {
+            return 0;
+        }
+    return ($a[$this->get_sort_key()] < $b[$this->get_sort_key()] ? 1 : -1);
     }
-    return ($a['SkillRank'] < $b['SkillRank'] ? 1 : -1);
-}
-
-function medal_sort($a, $b) {
-    if ($a['Count'] == $b['Count']) {
-        return 0;
-    }
-    return ($a['Count'] < $b['Count'] ? 1 : -1);
 }
