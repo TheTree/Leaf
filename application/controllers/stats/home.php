@@ -20,12 +20,12 @@ class Home extends IBOT_Controller {
         $stats['Items'] = ["Total Kills", "Total Deaths", "KD Ratio", "Time Played", "Total Medals", "Challenges Completed"];
 
         // get the actual data for the partials
-        $stats['Data']['total_kills']            = $this->cache->model('stat_m', 'get_top_8', array('TotalKills', false), 3600);
-        $stats['Data']['total_deaths']           = $this->cache->model('stat_m', 'get_top_8', array('TotalDeaths', false), 3600);
-        $stats['Data']['kd_ratio']               = $this->cache->model('stat_m', 'get_top_8', array('KDRatio', false), 3600);
-        $stats['Data']['time_played']            = $this->cache->model('stat_m', 'get_top_8', array('TotalGameplay', false), 3600);
-        $stats['Data']['total_medals']           = $this->cache->model('stat_m', 'get_top_8', array('TotalMedalsEarned', false), 3600);
-        $stats['Data']['challenges_completed']   = $this->cache->model('stat_m', 'get_top_8', array('TotalChallengesCompleted', false), 3600);
+        $stats['Data']['total_kills']            = $this->cache->model('stat_m', 'get_top_10', array('TotalKills', false), 3600);
+        $stats['Data']['total_deaths']           = $this->cache->model('stat_m', 'get_top_10', array('TotalDeaths', false), 3600);
+        $stats['Data']['kd_ratio']               = $this->cache->model('stat_m', 'get_top_10', array('KDRatio', false), 3600);
+        $stats['Data']['time_played']            = $this->cache->model('stat_m', 'get_top_10', array('TotalGameplay', false), 3600);
+        $stats['Data']['total_medals']           = $this->cache->model('stat_m', 'get_top_10', array('TotalMedalsEarned', false), 3600);
+        $stats['Data']['challenges_completed']   = $this->cache->model('stat_m', 'get_top_10', array('TotalChallengesCompleted', false), 3600);
         
         // build w/ data
         $this->template

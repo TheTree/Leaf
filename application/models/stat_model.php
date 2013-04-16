@@ -193,12 +193,13 @@ class Stat_model extends IBOT_Model {
     }
     
     /**
-     * get_top_5
+     * get_top_10
+     *
      * @param type $field
      * @param type $asc
      * @return boolean
      */
-    public function get_top_8($field, $asc) {
+    public function get_top_10($field, $asc) {
         
         $resp = $this->db
                 ->select("Gamertag,ServiceTag," . $field)

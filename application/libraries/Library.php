@@ -343,7 +343,6 @@ class Library {
      * @return null $key|null
      */
     private function get_spartan_auth_key($count = 0) {
-        #$this->get_metadata();
 
         // grab from cache
         if (($_tmp = @json_decode($this->_ci->cache->get('auth_spartan'), TRUE)) == FALSE)  {
@@ -392,7 +391,13 @@ class Library {
                 return json_decode($resp,TRUE)['SpartanToken'];
             } else {
                 $count++;
-                return $this->get_spartan_auth_key($count);
+
+                if ($count > 5) {
+                    $this->throw_error("API_AUTH_GONE");
+                } else {
+                    $this->_ci->curl->simple_get($url . "/kill");
+                    return $this->get_spartan_auth_key($count);
+                }
             }
         } else {
             return $_tmp['SpartanToken'];
@@ -591,6 +596,8 @@ class Library {
             'KillsPerGameRatio'          => round(intval($service_record['GameModes'][2]['TotalKills']) / intval($service_record['GameModes'][2]['TotalGamesStarted']),2),
             'BetrayalsPerGameRatio'      => round(intval($wargames_record['TotalBetrayals']) / intval($wargames_record['Summary']['TotalGamesStarted']), 2),
             'SuicidesPerGameRatio'       => round(intval($wargames_record['TotalSuicides']) / intval($wargames_record['Summary']['TotalGamesStarted']), 2),
+            'AssistsPerGameRatio'        => round(intval($wargames_record['TotalAssists']) / intval($wargames_record['Summary']['TotalGamesStarted']), 2),
+            'HeadshotsPerGameRatio'      => round(intval($wargames_record['TotalHeadshots']) / intval($wargames_record['Summary']['TotalGamesStarted']), 2),
             'WinPercentage'              => round(intval($service_record['GameModes'][2]['TotalGamesWon']) / intval($service_record['GameModes'][2]['TotalGamesStarted']), 2),
             'QuitPercentage'             => round(intval($service_record['GameModes'][2]['TotalGamesStarted'] - $service_record['GameModes'][2]['TotalGamesCompleted']) /
                                                       intval($service_record['GameModes'][2]['TotalGamesStarted']),2),
@@ -606,6 +613,13 @@ class Library {
             'TotalKills'                 => intval($service_record['GameModes'][2]['TotalKills']),
             'TotalDeaths'                => intval($service_record['GameModes'][2]['TotalDeaths']),
             'TotalGamesStarted'          => intval($service_record['GameModes'][2]['TotalGamesStarted']),
+            'TotalHeadshots'             => intval($wargames_record['TotalHeadshots']),
+            'TotalAssists'               => intval($wargames_record['TotalAssists']),
+            'BestGameTotalKills'         => intval($wargames_record['BestGameTotalKills']),
+            'BestGameTotalMedals'        => intval($wargames_record['BestGameTotalMedals']),
+            'BestGameHeadshotTotal'      => intval($wargames_record['BestGameHeadshotTotal']),
+            'BestGameAssassinationTotal' => intval($wargames_record['BestGameAssassinationTotal']),
+            'BestGameKillDistance'       => intval($wargames_record['BestGameKillDistance']),
             'ServiceTag'                 => $service_record['ServiceTag'],
             'TotalBetrayals'             => intval($wargames_record['TotalBetrayals']),
             'TotalSuicides'              => intval($wargames_record['TotalSuicides']),

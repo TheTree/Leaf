@@ -9,4 +9,3 @@
 <? if ((($data['Expiration'] - THREE_HOURS_IN_SECONDS + FIVEMIN_IN_SECONDS) < time()) && $data['InactiveCounter'] < 40): ?>
     <a href="<?= base_url('gt/' . str_replace(" ", "_",$data['Gamertag']) . "/recache"); ?>" class="btn btn-success pad10">Refresh</a>
 <? endif; ?>
- 
