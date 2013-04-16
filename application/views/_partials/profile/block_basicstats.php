@@ -13,6 +13,10 @@
             <span class="row_title">Total Quits</span>
             <span class="row_data"><?= number_format($data['TotalGameQuits']); ?></span>
         </li>
+        <li>
+            <span class="row_title">Total Games</span>
+            <span class="row_data"><?= number_format($data['TotalGamesStarted']); ?></span>
+        </li>
         <hr>
         <li>
             <span class="row_title">Total Medals</span>
@@ -25,6 +29,22 @@
         <li>
             <span class="row_title">Total Deaths</span>
             <span class="row_data"><?= number_format($data['TotalDeaths']); ?></span>
+        </li>
+        <li>
+            <span class="row_title">Total Assists</span>
+            <span class="row_data"><?= number_format($data['TotalAssists']); ?></span>
+        </li>
+        <li>
+            <span class="row_title">Total Headshots</span>
+            <span class="row_data"><?= number_format($data['TotalHeadshots']); ?></span>
+        </li>
+        <li>
+            <span class="row_title">Total Betrayals</span>
+            <span class="row_data"><?= number_format($data['TotalBetrayals']); ?></span>
+        </li>
+        <li>
+            <span class="row_title">Total Suicides</span>
+            <span class="row_data"><?= number_format($data['TotalSuicides']); ?></span>
         </li>
         <li>
             <span class="row_title">KD Ratio</span>

@@ -17,6 +17,7 @@
     <div class="span3">
         <div class="pagination-centered">
             <?= $template['_partials']['block_photo']; ?>
+            <br /><br />
         </div>
     </div>
     <div class="span9">
@@ -39,6 +40,8 @@
         <? if (isset($data['FavoriteData'])): ?>
             <?= $template['_partials']['block_favoriteweapon']; ?>
         <? endif; ?>
+            <?= $template['_partials']['block_bestgame']; ?>
+        <br />
     </div>
     <div class="span9">
         <?= $template['_partials']['block_csr']; ?>

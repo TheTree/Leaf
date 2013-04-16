@@ -62,6 +62,7 @@ class Home extends IBOT_Controller {
                 ->set_partial('block_photo', '_partials/profile/block_photo')
                 ->set_partial('block_basicstats', '_partials/profile/block_basicstats')
                 ->set_partial('block_progression', '_partials/profile/block_progression')
+                ->set_partial('block_bestgame', '_partials/profile/block_bestgame')
                 ->set_partial('block_medals','_partials/profile/block_medals')
                 ->set_partial('block_favoriteweapon', '_partials/profile/block_favoriteweapon')
                 ->set_partial('block_csr', '_partials/profile/block_csr')
