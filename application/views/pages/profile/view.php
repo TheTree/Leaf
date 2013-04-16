@@ -32,10 +32,10 @@
         <? endif; ?>
         <?= $template['_partials']['block_progression']; ?>
     </div>
-    <div class="span4">
+    <div class="span5">
         <?= $template['_partials']['block_basicstats']; ?>
     </div>
-    <div class="span5">
+    <div class="span4">
         <? if (isset($data['FavoriteData'])): ?>
             <?= $template['_partials']['block_favoriteweapon']; ?>
         <? endif; ?>

@@ -44,6 +44,7 @@ $route['error'] = "home/error";
 $route['cron'] = "cron_task/update_gamertags"; 
 $route['news'] = "news/index";
 $route['news/create'] = "news/index/create";
+$route['metadata/recache'] = "stats/home/metadata";
 $route['stats'] = "stats/home/index";
 $route['compare'] = "stats/compare/index";
 $route['leaderboards'] = "stats/home/index";

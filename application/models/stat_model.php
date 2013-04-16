@@ -288,4 +288,35 @@ class Stat_model extends IBOT_Model {
             ->insert_batch('ci_m_' . $table, $data);
     }
 
+    /**
+     * get_metdata
+     *
+     * Give it the type of metadata which corresponds to the table
+     * `ci_m_$type` where $type is the lowercase metadata.
+     *
+     * Results are automatically re-aligned so the $key value is that ID
+     * of that element, instead of being sequential
+     *
+     * @param $type
+     * @return array|bool
+     */
+    public function get_metadata($type) {
+       $resp = $this->db
+           ->get('ci_m_' . $type);
+
+       $resp = $resp->result_array();
+
+        if (is_array($resp) && count($resp) > 0) {
+            // re-align IDs
+            $rtr_array = array();
+            foreach ($resp as $key => $item) {
+                $rtr_array[$item['Id']] = $item;
+            }
+            unset($resp);
+            return $rtr_array;
+        } else {
+            return FALSE;
+        }
+    }
+
 }

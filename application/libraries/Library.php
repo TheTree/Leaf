@@ -251,7 +251,43 @@ class Library {
 
         // Step 2: ArmorGroupMetaData
 
+        // Step 3: DamageMetadata['WeaponTypes']
 
+        // Step 5: MedalsMetadata['Medals']
+        $ins_arr = array();
+        foreach($_tmp['MedalsMetadata']['Medals'] as $medal) {
+            $ins_arr[$medal['Id']] = array(
+                'Id' => $medal['Id'],
+                'Name' => $medal['Name'],
+                'TierId' => $medal['TierId'],
+                'ClassId' => $medal['ClassId'],
+                'Description' => $medal['Description'],
+                'ImageUrl' => substr($medal['ImageUrl']['AssetUrl'],7)
+            );
+        }
+        $this->_ci->stat_m->insert_metadata("medals", $ins_arr);
+
+        // Step 5a: MedalsMetadata['MedalClasses']
+        $ins_arr = array();
+        foreach($_tmp['MedalsMetadata']['MedalClasses'] as $medal) {
+            $ins_arr[$medal['Id']] = array(
+                'Id' => $medal['Id'],
+                'Name' => $medal['Name']
+            );
+        }
+        $this->_ci->stat_m->insert_metadata("medalclasses", $ins_arr);
+
+
+        // Step 5b: MedalsMetadata['MedalTiers']
+        $ins_arr = array();
+        foreach($_tmp['MedalsMetadata']['MedalTiers'] as $medal) {
+            $ins_arr[$medal['Id']] = array(
+                'Id' => $medal['Id'],
+                'Name' => $medal['Name'],
+                'Description' => $medal['Description']
+            );
+        }
+        $this->_ci->stat_m->insert_metadata("medaltiers", $ins_arr);
 
     }
 
@@ -502,7 +538,7 @@ class Library {
         
         // lets do the URL work, and medal
         $this->build_spartan_with_emblem($hashed, substr_replace($service_record['EmblemImageUrl']['AssetUrl'], "", -12), $gt);
-        $medal_data = $this->get_medal_data($service_record['TopMedals']);
+        $medal_data = $this->get_medal_data($wargames_record['TotalMedalsStats']);
 
         // get skill stuff
         $skill_data = $this->get_skill_data($service_record['SkillRanks'], $service_record['TopSkillRank']);
@@ -540,6 +576,8 @@ class Library {
             'MedalsPerGameRatio'         => round(intval($service_record['GameModes'][2]['TotalMedals']) / intval($service_record['GameModes'][2]['TotalGamesStarted']),2),
             'DeathsPerGameRatio'         => round(intval($service_record['GameModes'][2]['TotalDeaths']) / intval($service_record['GameModes'][2]['TotalGamesStarted']),2),
             'KillsPerGameRatio'          => round(intval($service_record['GameModes'][2]['TotalKills']) / intval($service_record['GameModes'][2]['TotalGamesStarted']),2),
+            'BetrayalsPerGameRatio'      => round(intval($wargames_record['TotalBetrayals']) / intval($wargames_record['Summary']['TotalGamesStarted']), 2),
+            'SuicidesPerGameRatio'       => round(intval($wargames_record['TotalSuicides']) / intval($wargames_record['Summary']['TotalGamesStarted']), 2),
             'WinPercentage'              => round(intval($service_record['GameModes'][2]['TotalGamesWon']) / intval($service_record['GameModes'][2]['TotalGamesStarted']), 2),
             'QuitPercentage'             => round(intval($service_record['GameModes'][2]['TotalGamesStarted'] - $service_record['GameModes'][2]['TotalGamesCompleted']) /
                                                     intval($service_record['GameModes'][2]['TotalGamesStarted']),2),
@@ -556,9 +594,13 @@ class Library {
             'TotalDeaths'                => intval($service_record['GameModes'][2]['TotalDeaths']),
             'TotalGamesStarted'          => intval($service_record['GameModes'][2]['TotalGamesStarted']),
             'ServiceTag'                 => $service_record['ServiceTag'],
+            'TotalBetrayals'             => intval($wargames_record['TotalBetrayals']),
+            'TotalSuicides'              => intval($wargames_record['TotalSuicides']),
             'LastUpdate'                 => intval(time()),
             'InactiveCounter'            => intval(0)
         ));
+
+
     }
 
     /**
@@ -705,10 +747,7 @@ class Library {
         foreach($medals as $medal) {
             $rtr_arr[$x++] = array(
                 'Id' => intval($medal['Id']),
-                'Name' => $medal['Name'],
-                'Count' => intval($medal['TotalMedals']),
-                'Description' => $medal['Description'],
-                'ImageUrl' => str_replace("{size}/", NULL, $medal['ImageUrl']['AssetUrl'])
+                'Count' => intval($medal['TotalMedals'])
             );
         }
         
@@ -756,11 +795,27 @@ class Library {
      */
     public function return_medals($data) {
         $data = @unserialize($data);
-        
         foreach ($data as $key => $item) {
-            $data[$key]['ImageUrl'] = $this->return_image_url("Medal", $data[$key]['ImageUrl'], "large");
+            $data[$key]['Name'] = $this->get_metadata_name_via_id("medals", $item['Id'], "Name");
+            $data[$key]['ImageUrl'] = $this->get_metadata_name_via_id("medals", $item['Id'], "ImageUrl");
+            $data[$key]['TierId'] = $this->get_metadata_name_via_id("medals", $item['Id'], "TierId");
+            $data[$key]['ImageUrl'] = $this->return_image_url("Medal", $data[$key]['ImageUrl'], "medium");
         }
-        return $data;
+
+        // group according to TierId
+        $new_arr = array();
+        foreach ($data as $key => $item) {
+            $new_arr[$item['TierId']][$item['Id']] = $item;
+        }
+        unset($data);
+
+        // sort
+        foreach ($new_arr as $key => $value) {
+            uasort($new_arr[$key], "medal_sort");
+            $new_arr[$key]['Name'] = $this->get_metadata_name_via_id("medaltiers",$key, "Name");
+            $new_arr[$key]['Description'] = $this->get_metadata_name_via_id("medaltiers",$key, "Description");
+        }
+        return $new_arr;
     }
 
     /**
@@ -806,6 +861,48 @@ class Library {
         $rtr_array['WeaponTotalKills'] = $total;
         $rtr_array['WeaponUrl'] = $this->return_image_url("Weapon", $url, "large");
         return $rtr_array;
+    }
+
+    /**
+     * @param $type
+     * @return mixed
+     */
+    public function get_metadata_via_db($type) {
+        // one by one lets grab em from db and cache em
+        return $this->_ci->cache->model('stat_m', 'get_metadata', array($type));
+    }
+
+    /**
+     * @param        $type
+     * @param        $id
+     * @param string $name
+     * @return bool
+     */
+    public function get_metadata_name_via_id($type, $id, $name = "ALL") {
+
+        // get our damn metadata
+        $metadata = $this->get_metadata_via_db($type);
+
+        // do our switch
+        switch($type) {
+            case "medaltiers":
+            case "medals":
+                if (isset($metadata[$id])) {
+                    if ($name != "ALL") {
+                        return $metadata[$id][$name];
+                    } else {
+                        return $metadata[$id];
+                    }
+                } else {
+                    return FALSE;
+                }
+                break;
+
+            default:
+                die("You idiot! Add" . $type . " into the Library::get_metadata_name_via_id function");
+                break;
+        }
+
     }
 
     /**
@@ -901,4 +998,11 @@ function key_sort($a, $b) {
         return 0;
     }
     return ($a['SkillRank'] < $b['SkillRank'] ? 1 : -1);
+}
+
+function medal_sort($a, $b) {
+    if ($a['Count'] == $b['Count']) {
+        return 0;
+    }
+    return ($a['Count'] < $b['Count'] ? 1 : -1);
 }

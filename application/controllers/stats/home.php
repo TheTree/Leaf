@@ -100,5 +100,9 @@ class Home extends IBOT_Controller {
             $this->library->throw_error("NO_GAMERTAG_STORED");
         }
     }
+
+    public function metadata() {
+        $this->library->get_metadata();
+    }
     
 }

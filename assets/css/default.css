@@ -26,6 +26,20 @@ csr-legend {
 .row_title {
     width: 175px;
 }
+.medal_height {
+    min-height: 300px;
+}
+.margin3pxbottom {
+    margin-bottom: 3px;
+}
+.block {
+    display: inline-block;
+}
+.medal_desc {
+    display: inline-block;
+    float: left;
+    width: 60px;
+}
 @media (max-width: 500px) {
     .row_title {
         width: 135px;
