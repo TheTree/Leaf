@@ -7,12 +7,13 @@ class Library {
     public $game;
 
     // urls @todo Abstract to config/
-    public $emblem_url = "https://emblems.svc.halowaypoint.com/h4/emblems/{EMBLEM}?size={SIZE}";
+    public $emblem_url  = "https://emblems.svc.halowaypoint.com/h4/emblems/{EMBLEM}?size={SIZE}";
     public $spartan_url = "https://spartans.svc.halowaypoint.com/players/{GAMERTAG}/h4/spartans/fullbody?target={SIZE}";
-    public $rank_url = "https://assets.halowaypoint.com/games/h4/ranks/v1/{SIZE}/{RANK}";
-    public $medal_url = "https://assets.halowaypoint.com/games/h4/medals/v1/{SIZE}/{MEDAL}";
-    public $csr_url = "https://assets.halowaypoint.com/games/h4/csr/v1/{SIZE}/{CSR}.png";
-    public $weapon_url = "https://assets.halowaypoint.com/games/h4/damage-types/v1/{SIZE}/{WEAPON}";
+    public $rank_url    = "https://assets.halowaypoint.com/games/h4/ranks/v1/{SIZE}/{RANK}";
+    public $medal_url   = "https://assets.halowaypoint.com/games/h4/medals/v1/{SIZE}/{MEDAL}";
+    public $csr_url     = "https://assets.halowaypoint.com/games/h4/csr/v1/{SIZE}/{CSR}.png";
+    public $weapon_url  = "https://assets.halowaypoint.com/games/h4/damage-types/v1/{SIZE}/{WEAPON}";
+    public $spec_url    = "https://assets.halowaypoint.com/games/h4/specializations/v1/{SIZE}/{SPEC}";
 
     // key for sort functions
     public $sort_key = "";
@@ -561,6 +562,9 @@ class Library {
         // get skill stuff
         $skill_data = $this->get_skill_data($service_record['SkillRanks'], $service_record['TopSkillRank']);
 
+        // get spec data
+        $spec_data = $this->get_spec_data($service_record['Specializations']);
+
         // check for lvl 130
         if ($service_record['NextRankId'] == 0) {
             $service_record['NextRankStartXP'] = 0;
@@ -573,58 +577,64 @@ class Library {
 
         // get ready for a dump of data
         return $this->_ci->stat_m->update_or_insert_gamertag($hashed, array(
-            'Gamertag'                   => urldecode($gt),
-            'HashedGamertag'             => $hashed,
-            'SeoGamertag'                => $seo_gamertag,
-            'Rank'                       => $service_record['RankName'],
-            'RankImage'                  => substr($service_record['RankImageUrl']['AssetUrl'], 7),
-            'Specialization'             => $this->find_current_specialization($service_record['Specializations']),
-            'SpecializationLevel'        => $this->find_current_specialization($service_record['Specializations'], "Level"),
-            'Expiration'                 => intval(time() + THREE_HOURS_IN_SECONDS),
-            'MedalData'                  => @serialize($medal_data),
-            'SkillData'                  => @serialize($skill_data),
-            'KDRatio'                    => $service_record['GameModes'][2]['KDRatio'],
-            'Xp'                         => $service_record['XP'],
-            'SpartanPoints'              => $service_record['SpartanPoints'],
-            'FavoriteWeaponName'         => $service_record['FavoriteWeaponName'],
-            'FavoriteWeaponDescription'  => $service_record['FavoriteWeaponDescription'],
-            'FavoriteWeaponTotalKills'   => $service_record['FavoriteWeaponTotalKills'],
-            'FavoriteWeaponUrl'          => $service_record['FavoriteWeaponImageUrl']['AssetUrl'],
-            'AveragePersonalScore'       => intval($service_record['GameModes'][2]['AveragePersonalScore']),
-            'MedalsPerGameRatio'         => round(intval($service_record['GameModes'][2]['TotalMedals']) / intval($service_record['GameModes'][2]['TotalGamesStarted']),2),
-            'DeathsPerGameRatio'         => round(intval($service_record['GameModes'][2]['TotalDeaths']) / intval($service_record['GameModes'][2]['TotalGamesStarted']),2),
-            'KillsPerGameRatio'          => round(intval($service_record['GameModes'][2]['TotalKills']) / intval($service_record['GameModes'][2]['TotalGamesStarted']),2),
-            'BetrayalsPerGameRatio'      => round(intval($wargames_record['TotalBetrayals']) / intval($wargames_record['Summary']['TotalGamesStarted']), 2),
-            'SuicidesPerGameRatio'       => round(intval($wargames_record['TotalSuicides']) / intval($wargames_record['Summary']['TotalGamesStarted']), 2),
-            'AssistsPerGameRatio'        => round(intval($wargames_record['TotalAssists']) / intval($wargames_record['Summary']['TotalGamesStarted']), 2),
-            'HeadshotsPerGameRatio'      => round(intval($wargames_record['TotalHeadshots']) / intval($wargames_record['Summary']['TotalGamesStarted']), 2),
-            'WinPercentage'              => round(intval($service_record['GameModes'][2]['TotalGamesWon']) / intval($service_record['GameModes'][2]['TotalGamesStarted']), 2),
-            'QuitPercentage'             => round(intval($service_record['GameModes'][2]['TotalGamesStarted'] - $service_record['GameModes'][2]['TotalGamesCompleted']) /
-                                                      intval($service_record['GameModes'][2]['TotalGamesStarted']),2),
-            'TotalChallengesCompleted'   => $service_record['TotalChallengesCompleted'],
-            'TotalGameWins'              => $service_record['GameModes'][2]['TotalGamesWon'],
-            'TotalGameQuits'             => intval($service_record['GameModes'][2]['TotalGamesStarted'] - $service_record['GameModes'][2]['TotalGamesCompleted']),
-            'NextRankStartXP'            => $service_record['NextRankStartXP'],
-            'RankStartXP'                => $service_record['RankStartXP'],
-            'TotalCommendationProgress'  => floatval($service_record['TotalCommendationProgress']),
-            'TotalLoadoutItemsPurchased' => intval($service_record['TotalLoadoutItemsPurchased']),
-            'TotalMedalsEarned'          => intval($service_record['GameModes'][2]['TotalMedals']),
-            'TotalGameplay'              => $this->adjust_date($service_record['GameModes'][2]['TotalDuration']),
-            'TotalKills'                 => intval($service_record['GameModes'][2]['TotalKills']),
-            'TotalDeaths'                => intval($service_record['GameModes'][2]['TotalDeaths']),
-            'TotalGamesStarted'          => intval($service_record['GameModes'][2]['TotalGamesStarted']),
-            'TotalHeadshots'             => intval($wargames_record['TotalHeadshots']),
-            'TotalAssists'               => intval($wargames_record['TotalAssists']),
-            'BestGameTotalKills'         => intval($wargames_record['BestGameTotalKills']),
-            'BestGameTotalMedals'        => intval($wargames_record['BestGameTotalMedals']),
-            'BestGameHeadshotTotal'      => intval($wargames_record['BestGameHeadshotTotal']),
-            'BestGameAssassinationTotal' => intval($wargames_record['BestGameAssassinationTotal']),
-            'BestGameKillDistance'       => intval($wargames_record['BestGameKillDistance']),
-            'ServiceTag'                 => $service_record['ServiceTag'],
-            'TotalBetrayals'             => intval($wargames_record['TotalBetrayals']),
-            'TotalSuicides'              => intval($wargames_record['TotalSuicides']),
-            'LastUpdate'                 => intval(time()),
-            'InactiveCounter'            => intval(0)
+            'Gamertag'                         => urldecode($gt),
+            'HashedGamertag'                   => $hashed,
+            'SeoGamertag'                      => $seo_gamertag,
+            'Rank'                             => $service_record['RankName'],
+            'RankImage'                        => substr($service_record['RankImageUrl']['AssetUrl'], 7),
+            'Specialization'                   => $this->find_current_specialization($service_record['Specializations']),
+            'SpecializationLevel'              => $this->find_current_specialization($service_record['Specializations'], "Level"),
+            'Expiration'                       => intval(time() + THREE_HOURS_IN_SECONDS),
+            'MedalData'                        => @serialize($medal_data),
+            'SkillData'                        => @serialize($skill_data),
+            'SpecData'                         => @serialize($spec_data),
+            'KDRatio'                          => $service_record['GameModes'][2]['KDRatio'],
+            'Xp'                               => $service_record['XP'],
+            'SpartanPoints'                    => $service_record['SpartanPoints'],
+            'FavoriteWeaponName'               => $service_record['FavoriteWeaponName'],
+            'FavoriteWeaponDescription'        => $service_record['FavoriteWeaponDescription'],
+            'FavoriteWeaponTotalKills'         => $service_record['FavoriteWeaponTotalKills'],
+            'FavoriteWeaponUrl'                => $service_record['FavoriteWeaponImageUrl']['AssetUrl'],
+            'AveragePersonalScore'             => intval($service_record['GameModes'][2]['AveragePersonalScore']),
+            'MedalsPerGameRatio'               => round(intval($service_record['GameModes'][2]['TotalMedals']) / intval($service_record['GameModes'][2]['TotalGamesStarted']), 2),
+            'DeathsPerGameRatio'               => round(intval($service_record['GameModes'][2]['TotalDeaths']) / intval($service_record['GameModes'][2]['TotalGamesStarted']), 2),
+            'KillsPerGameRatio'                => round(intval($service_record['GameModes'][2]['TotalKills']) / intval($service_record['GameModes'][2]['TotalGamesStarted']), 2),
+            'BetrayalsPerGameRatio'            => round(intval($wargames_record['TotalBetrayals']) / intval($wargames_record['Summary']['TotalGamesStarted']), 2),
+            'SuicidesPerGameRatio'             => round(intval($wargames_record['TotalSuicides']) / intval($wargames_record['Summary']['TotalGamesStarted']), 2),
+            'AssistsPerGameRatio'              => round(intval($wargames_record['TotalAssists']) / intval($wargames_record['Summary']['TotalGamesStarted']), 2),
+            'HeadshotsPerGameRatio'            => round(intval($wargames_record['TotalHeadshots']) / intval($wargames_record['Summary']['TotalGamesStarted']), 2),
+            'WinPercentage'                    => round(intval($service_record['GameModes'][2]['TotalGamesWon']) / intval($service_record['GameModes'][2]['TotalGamesStarted']), 2),
+            'QuitPercentage'                   => round(intval($service_record['GameModes'][2]['TotalGamesStarted'] - $service_record['GameModes'][2]['TotalGamesCompleted']) /
+                                                            intval($service_record['GameModes'][2]['TotalGamesStarted']), 2),
+            'TotalChallengesCompleted'         => $service_record['TotalChallengesCompleted'],
+            'TotalGameWins'                    => $service_record['GameModes'][2]['TotalGamesWon'],
+            'TotalGameQuits'                   => intval($service_record['GameModes'][2]['TotalGamesStarted'] - $service_record['GameModes'][2]['TotalGamesCompleted']),
+            'NextRankStartXP'                  => $service_record['NextRankStartXP'],
+            'RankStartXP'                      => $service_record['RankStartXP'],
+            'TotalCommendationProgress'        => floatval($service_record['TotalCommendationProgress']),
+            'TotalLoadoutItemsPurchased'       => intval($service_record['TotalLoadoutItemsPurchased']),
+            'TotalMedalsEarned'                => intval($service_record['GameModes'][2]['TotalMedals']),
+            'TotalGameplay'                    => $this->adjust_date($service_record['GameModes'][2]['TotalDuration']),
+            'TotalKills'                       => intval($service_record['GameModes'][2]['TotalKills']),
+            'TotalDeaths'                      => intval($service_record['GameModes'][2]['TotalDeaths']),
+            'TotalGamesStarted'                => intval($service_record['GameModes'][2]['TotalGamesStarted']),
+            'TotalHeadshots'                   => intval($wargames_record['TotalHeadshots']),
+            'TotalAssists'                     => intval($wargames_record['TotalAssists']),
+            'BestGameTotalKills'               => intval($wargames_record['BestGameTotalKills']),
+            'BestGameTotalKillsGameId'         => $wargames_record['BestGameTotalKillsGameId'],
+            'BestGameTotalMedals'              => intval($wargames_record['BestGameTotalMedals']),
+            'BestGameTotalMedalsGameId'        => $wargames_record['BestGameTotalMedalsGameId'],
+            'BestGameHeadshotTotal'            => intval($wargames_record['BestGameHeadshotTotal']),
+            'BestGameHeadshotTotalGameId'      => $wargames_record['BestGameHeadshotTotalGameId'],
+            'BestGameAssassinationTotal'       => intval($wargames_record['BestGameAssassinationTotal']),
+            'BestGameAssassinationTotalGameId' => $wargames_record['BestGameAssassinationTotalGameId'],
+            'BestGameKillDistance'             => intval($wargames_record['BestGameKillDistance']),
+            'BestGameKillDistanceGameId'       => $wargames_record['BestGameKillDistanceGameId'],
+            'ServiceTag'                       => $service_record['ServiceTag'],
+            'TotalBetrayals'                   => intval($wargames_record['TotalBetrayals']),
+            'TotalSuicides'                    => intval($wargames_record['TotalSuicides']),
+            'LastUpdate'                       => intval(time()),
+            'InactiveCounter'                  => intval(0)
         ));
 
 
@@ -720,6 +730,13 @@ class Library {
                 $url = str_replace("{SIZE}", $size, str_replace("{GAMERTAG}", urlencode($image), $this->spartan_url));
                 break;
 
+            case "Spec":
+                $image = substr($image, 7); # remove `{SIZE}/` from url
+                $path = "uploads/specializations/" . $size;
+                $image_path = "/" . $image;
+                $url = str_replace("{SIZE}", $size, str_replace("{SPEC}", urlencode($image), $this->spec_url));
+                break;
+
             default:
                 log_message('error', 'Type: ' . $type . " not found in our `return_image_url` Library");
                 return FALSE;
@@ -777,7 +794,30 @@ class Library {
                 'Count' => intval($medal['TotalMedals'])
             );
         }
+        return $rtr_arr;
+    }
 
+    /**
+     * get_spec_data
+     *
+     * Extracts from api `SpecilizationData` into serialized form
+     * @param $specs
+     * @return array
+     */
+    public function get_spec_data($specs) {
+        $rtr_arr = array();
+        $x = 0;
+
+        foreach($specs as $spec) {
+            $rtr_arr[$x++] = array(
+                'Name' => $spec['Name'],
+                'Description' => $spec['Description'],
+                'ImageUrl' => $spec['ImageUrl']['AssetUrl'],
+                'Level' => $spec['Level'],
+                'IsCurrent' => $spec['IsCurrent'],
+                'Completed' => $spec['Completed']
+            );
+        }
         return $rtr_arr;
     }
 
@@ -830,6 +870,7 @@ class Library {
             $data[$key]['ImageUrl'] = $this->get_metadata_name_via_id("medals", $item['Id'], "ImageUrl");
             $data[$key]['TierId'] = $this->get_metadata_name_via_id("medals", $item['Id'], "TierId");
             $data[$key]['ImageUrl'] = $this->return_image_url("Medal", $data[$key]['ImageUrl'], "medium");
+            $data[$key]['Description'] = $this->get_metadata_name_via_id("medals", $item['Id'], "Description");
         }
 
         // group according to TierId
@@ -853,6 +894,7 @@ class Library {
      * return_csr
      *
      * Parses serialized array `$data` for display on profile
+     *
      * @param $data
      * @return mixed
      */
@@ -865,6 +907,30 @@ class Library {
         foreach ($data as $key => $value) {
             $data[$key]['Playlist'] = $key;
             $data[$key]['ImageUrl'] = $this->return_image_url("CSR", $data[$key]['SkillRank'], "large");
+        }
+        return $data;
+    }
+
+    /**
+     * return spec
+     *
+     * Parses serialized array `$data` for display on profile.
+     *
+     * @param $data
+     * @return bool|mixed
+     */
+    public function return_spec($data) {
+        if ($data == FALSE || $data == "" || $data == "b:0;") {
+            return FALSE;
+        }
+        $data = @unserialize($data);
+
+        foreach($data as $key => $value) {
+            if ($data[$key]['Completed']) {
+                $data[$key]['ImageUrl'] = $this->return_image_url("Spec", $data[$key]['ImageUrl'], "small");
+            } else {
+                unset($data[$key]);
+            }
         }
         return $data;
     }

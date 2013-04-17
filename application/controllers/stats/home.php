@@ -17,7 +17,7 @@ class Home extends IBOT_Controller {
         $stats = array();
 
         // start the list of data for affix
-        $stats['Items'] = ["Total Kills", "Total Deaths", "KD Ratio", "Time Played", "Total Medals", "Challenges Completed"];
+        $stats['Items'] = ["Total Kills", "Total Deaths", "Total Assists", "Total Headshots", "KD Ratio", "Time Played", "Total Medals", "Challenges Completed"];
 
         // get the actual data for the partials
         $stats['Data']['total_kills']            = $this->cache->model('stat_m', 'get_top_10', array('TotalKills', false), 3600);
@@ -26,15 +26,19 @@ class Home extends IBOT_Controller {
         $stats['Data']['time_played']            = $this->cache->model('stat_m', 'get_top_10', array('TotalGameplay', false), 3600);
         $stats['Data']['total_medals']           = $this->cache->model('stat_m', 'get_top_10', array('TotalMedalsEarned', false), 3600);
         $stats['Data']['challenges_completed']   = $this->cache->model('stat_m', 'get_top_10', array('TotalChallengesCompleted', false), 3600);
+        $stats['Data']['total_assists']          = $this->cache->model('stat_m', 'get_top_10', array('TotalAssists', false), 3600);
+        $stats['Data']['total_headshots']        = $this->cache->model('stat_m', 'get_top_10', array('TotalHeadshots', false), 3600);
         
         // build w/ data
         $this->template
                 ->set_partial('total_kills', '_partials/leaderboards/total_kills')
                 ->set_partial('total_deaths', '_partials/leaderboards/total_deaths')
+                ->set_partial('total_assists', '_partials/leaderboards/total_assists')
                 ->set_partial('kd_ratio', '_partials/leaderboards/kd_ratio')
                 ->set_partial('time_played', '_partials/leaderboards/time_played')
                 ->set_partial('challenges_completed', '_partials/leaderboards/challenges_completed')
                 ->set_partial('total_medals', '_partials/leaderboards/total_medals')
+                ->set_partial('total_headshots', '_partials/leaderboards/total_headshots')
                 ->title("Leaf .:. Leaderboards")
                 ->set("stats", $stats)
                 ->build("pages/leaderboard/home");
@@ -52,6 +56,7 @@ class Home extends IBOT_Controller {
         $data['RankImage']      = $this->library->return_image_url("Rank", $data['RankImage'], "large");
         $data['MedalData']      = $this->library->return_medals($data['MedalData']);
         $data['SkillData']      = $this->library->return_csr($data['SkillData']);
+        $data['SpecData']       = $this->library->return_spec($data['SpecData']);
         $data['FavoriteData']   = $this->library->return_favorite($data['FavoriteWeaponName'],
                                                                   $data['FavoriteWeaponDescription'],
                                                                   $data['FavoriteWeaponTotalKills'],
@@ -66,6 +71,7 @@ class Home extends IBOT_Controller {
                 ->set_partial('block_medals','_partials/profile/block_medals')
                 ->set_partial('block_favoriteweapon', '_partials/profile/block_favoriteweapon')
                 ->set_partial('block_csr', '_partials/profile/block_csr')
+                ->set_partial('block_specs', '_partials/profile/block_specdata')
                 ->title("Leaf .:. " . urldecode($data['Gamertag']))
                 ->set('msg', $this->session->flashdata("recache"))
                 ->set('gamertag', $data['Gamertag'])

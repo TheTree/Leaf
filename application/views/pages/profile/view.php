@@ -17,7 +17,7 @@
     <div class="span3">
         <div class="pagination-centered">
             <?= $template['_partials']['block_photo']; ?>
-            <br /><br />
+            <?= $template['_partials']['block_specs']; ?>
         </div>
     </div>
     <div class="span9">

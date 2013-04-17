@@ -13,7 +13,7 @@
                     <h6><?= $medal['Description']; ?></h6>
                     <? foreach($medal as $inv): ?>
                         <?php if (is_array($inv)): ?>
-                            <img src="<?= $inv['ImageUrl']; ?>" class=" margin3pxbottom" data-toggle="tooltop" title="<?= $inv['Name']; ?> - <?= number_format($inv['Count']); ?>" rel="tooltip" data-placement="top" />
+                            <img src="<?= $inv['ImageUrl']; ?>" class="margin3pxbottom" data-toggle="tooltop" data-html="true" title="<strong><?= $inv['Name']; ?> - <?= number_format($inv['Count']); ?></strong><br /><br /><?= $inv['Description']; ?>" rel="tooltip" data-placement="top" />
                         <? endif; ?>
                     <? endforeach; ?>
                 </div>
