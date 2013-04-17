@@ -4,7 +4,7 @@
         <div class="pagination-centered">
                 <? foreach ($data['SkillData'] as $csr): ?>
                         <? if ($csr['SkillRank'] > 0): ?>
-                            <span data-toggle="tooltop" title="<?= $csr['Playlist']; ?>" rel="tooltip" data-placement="top"> <img class="" src="<?= $csr['ImageUrl']; ?>" /></span>
+                            <span data-toggle="tooltop" data-html="true" title="<strong><?= $csr['Playlist']; ?></strong>" rel="tooltip" data-placement="top"> <img class="" src="<?= $csr['ImageUrl']; ?>" /></span>
                         <? endif; ?>
                 <? endforeach; ?>
         </div>

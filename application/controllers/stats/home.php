@@ -28,7 +28,10 @@ class Home extends IBOT_Controller {
         $stats['Data']['challenges_completed']   = $this->cache->model('stat_m', 'get_top_10', array('TotalChallengesCompleted', false), 3600);
         $stats['Data']['total_assists']          = $this->cache->model('stat_m', 'get_top_10', array('TotalAssists', false), 3600);
         $stats['Data']['total_headshots']        = $this->cache->model('stat_m', 'get_top_10', array('TotalHeadshots', false), 3600);
-        
+
+        $this->library->description = "LeafApp .:. Leaderboards";
+        $this->template->set("meta", $this->library->return_meta());
+
         // build w/ data
         $this->template
                 ->set_partial('total_kills', '_partials/leaderboards/total_kills')
@@ -61,7 +64,9 @@ class Home extends IBOT_Controller {
                                                                   $data['FavoriteWeaponDescription'],
                                                                   $data['FavoriteWeaponTotalKills'],
                                                                   $data['FavoriteWeaponUrl']);
-        
+
+        $this->library->description = "LeafApp .:. " . $data['Gamertag'] . " Halo 4 Stats";
+        $this->template->set("meta", $this->library->return_meta());
         //  output gt, build template, set partials
         $this->template
                 ->set_partial('block_photo', '_partials/profile/block_photo')

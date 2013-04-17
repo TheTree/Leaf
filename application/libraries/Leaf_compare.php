@@ -53,9 +53,9 @@ class Leaf_Compare {
         $rtr_arr = array();
 
         // list of functions to run
-        $comparisons = ["MediumSpartan", "HighestRank", "MedalsPerGame", "KillsPerGame", "DeathsPerGame",
-            "WinPercentage","QuitPercentage", "CommendationProgress", "ChallengesCompleted",
-            "AveragePersonalScore", "KDRatio", "HighestCSR"];
+        $comparisons = ["MediumSpartan", "HighestRank", "MedalsPerGame", "KillsPerGame", "AssistsPerGame","HeadshotsPerGame",
+            "DeathsPerGame", "BetraysPerGame", "SuicidesPerGame", "WinPercentage","QuitPercentage", "CommendationProgress",
+            "ChallengesCompleted","AveragePersonalScore", "KDRatio", "HighestCSR"];
 
         // run em
         foreach ($comparisons as $task) {
@@ -128,38 +128,21 @@ class Leaf_Compare {
         $this->them_style = "";
     }
 
-    function you_plus_one_good() {
-        $this->you_pts = 1;
-        $this->you_overall += 1;
-        $this->you_style = "badge-success";
-    }
-
-    function you_plus_two_good() {
-        $this->you_pts = 2;
-        $this->you_overall += 2;
-        $this->you_style = "badge-success";
-    }
-
-    function them_plus_one_good() {
-        $this->them_pts = 1;
-        $this->them_overall += 1;
+    function them_num($num = 1) {
+        $this->them_pts = intval($num);
+        $this->them_overall += intval($num);
         $this->them_style = "badge-success";
     }
 
-    function them_plus_two_good() {
-        $this->them_pts = 2;
-        $this->them_overall += 2;
-        $this->them_style = "badge-success";
+    function you_num($num = 1) {
+        $this->you_pts = intval($num);
+        $this->you_overall += intval($num);
+        $this->you_style = "badge-success";
     }
 
-    function two_tie() {
-        $this->you_plus_two_good();
-        $this->them_plus_two_good();
-    }
-
-    function tie() {
-        $this->you_plus_one_good();
-        $this->them_plus_one_good();
+    function tie($num = 1) {
+        $this->them_num($num);
+        $this->you_num($num);
     }
 
     public function wrap_image($img_src) {
@@ -178,11 +161,11 @@ class Leaf_Compare {
     function HighestRank() {
 
         if ($this->you['Rank'] == $this->them['Rank']) {
-            $this->tie();
+            $this->tie(2);
         } else if ($this->you['Rank'] > $this->them['Rank']) {
-            $this->you_plus_one_good();
+            $this->you_num(2);
         } else {
-            $this->them_plus_one_good();
+            $this->them_num(2);
         }
 
         // var prep
@@ -206,11 +189,11 @@ class Leaf_Compare {
 
     function MedalsPerGame() {
         if ($this->you['MedalsPerGameRatio'] == $this->them['MedalsPerGameRatio']) {
-            $this->tie();
+            $this->tie(2);
         } else if ($this->you['MedalsPerGameRatio'] > $this->them['MedalsPerGameRatio']) {
-            $this->you_plus_one_good();
+            $this->you_num(2);
         } else {
-            $this->them_plus_one_good();
+            $this->them_num(2);
         }
 
         // return
@@ -230,11 +213,11 @@ class Leaf_Compare {
 
     function KillsPerGame() {
         if ($this->you['KillsPerGameRatio'] == $this->them['KillsPerGameRatio']) {
-            $this->tie();
+            $this->tie(2);
         } else if ($this->you['KillsPerGameRatio'] > $this->them['KillsPerGameRatio']) {
-            $this->you_plus_one_good();
+            $this->you_num(2);
         } else {
-            $this->them_plus_one_good();
+            $this->them_num(2);
         }
 
         // return
@@ -252,13 +235,85 @@ class Leaf_Compare {
         );
     }
 
+    function HeadshotsPerGame() {
+        if ($this->you['HeadshotsPerGameRatio'] == $this->them['HeadshotsPerGameRatio']) {
+            $this->tie(2);
+        } else if ($this->you['HeadshotsPerGameRatio'] > $this->them['HeadshotsPerGameRatio']) {
+            $this->you_num(2);
+        } else {
+            $this->them_num(2);
+        }
+
+        // return
+        return array(
+            'Name' =>'Highest <abbr title="Headshots per game">HpG</abbr> Ratio',
+            'Max' => 1,
+            'Field' => 'HeadshotsPerGameRatio',
+            'you' => array(
+                'pts' => intval($this->you_pts),
+                'style' => $this->you_style),
+            'them' => array(
+                'pts' => intval($this->them_pts),
+                'style' => $this->them_style),
+            'higher' => TRUE
+        );
+    }
+
+    function AssistsPerGame() {
+        if ($this->you['AssistsPerGameRatio'] == $this->them['AssistsPerGameRatio']) {
+            $this->tie(2);
+        } else if ($this->you['AssistsPerGameRatio'] > $this->them['AssistsPerGameRatio']) {
+            $this->you_num(2);
+        } else {
+            $this->them_num(2);
+        }
+
+        // return
+        return array(
+            'Name' =>'Highest <abbr title="Assists per game">ApG</abbr> Ratio',
+            'Max' => 1,
+            'Field' => 'AssistsPerGameRatio',
+            'you' => array(
+                'pts' => intval($this->you_pts),
+                'style' => $this->you_style),
+            'them' => array(
+                'pts' => intval($this->them_pts),
+                'style' => $this->them_style),
+            'higher' => TRUE
+        );
+    }
+
+    function SuicidesPerGame() {
+        if ($this->you['SuicidesPerGameRatio'] == $this->them['SuicidesPerGameRatio']) {
+            $this->reset_function_vars();
+        } else if ($this->you['SuicidesPerGameRatio'] > $this->them['SuicidesPerGameRatio']) {
+            $this->them_num(1);
+        } else {
+            $this->you_num(1);
+        }
+
+        // return
+        return array(
+            'Name' =>'Lowest <abbr title="Suicides per game">SpG</abbr> Ratio',
+            'Max' => 1,
+            'Field' => 'SuicidesPerGameRatio',
+            'you' => array(
+                'pts' => intval($this->you_pts),
+                'style' => $this->you_style),
+            'them' => array(
+                'pts' => intval($this->them_pts),
+                'style' => $this->them_style),
+            'higher' => FALSE
+        );
+    }
+
     function DeathsPerGame() {
         if ($this->you['DeathsPerGameRatio'] == $this->them['DeathsPerGameRatio']) {
             $this->reset_function_vars();
         } else if ($this->you['DeathsPerGameRatio'] > $this->them['DeathsPerGameRatio']) {
-            $this->them_plus_one_good();
+            $this->them_num(2);
         } else {
-            $this->you_plus_one_good();
+            $this->you_num(2);
         }
 
         // return
@@ -276,13 +331,37 @@ class Leaf_Compare {
         );
     }
 
+    function BetraysPerGame() {
+        if ($this->you['BetrayalsPerGameRatio'] == $this->them['BetrayalsPerGameRatio']) {
+            $this->reset_function_vars();
+        } else if ($this->you['BetrayalsPerGameRatio'] > $this->them['BetrayalsPerGameRatio']) {
+            $this->them_num(1);
+        } else {
+            $this->you_num(1);
+        }
+
+        // return
+        return array(
+            'Name' =>'Lowest <abbr title="Betrayals per game">BpG</abbr> Ratio',
+            'Max' => 1,
+            'Field' => 'BetrayalsPerGameRatio',
+            'you' => array(
+                'pts' => intval($this->you_pts),
+                'style' => $this->you_style),
+            'them' => array(
+                'pts' => intval($this->them_pts),
+                'style' => $this->them_style),
+            'higher' => FALSE
+        );
+    }
+
     function WinPercentage() {
         if ($this->you['WinPercentage'] == $this->them['WinPercentage']) {
-            $this->tie();
+            $this->tie(3);
         } else if ($this->you['WinPercentage'] > $this->them['WinPercentage']) {
-            $this->you_plus_one_good();
+            $this->you_num(3);
         } else {
-            $this->them_plus_one_good();
+            $this->them_num(3);
         }
 
         // prep vars
@@ -308,9 +387,9 @@ class Leaf_Compare {
         if ($this->you['QuitPercentage'] == $this->them['QuitPercentage']) {
             $this->reset_function_vars();
         } else if ($this->you['QuitPercentage'] > $this->them['QuitPercentage']) {
-            $this->them_plus_one_good();
+            $this->them_num(1);
         } else {
-            $this->you_plus_one_good();
+            $this->you_num(1);
         }
 
         // prep vars
@@ -336,9 +415,9 @@ class Leaf_Compare {
         if ($this->you['TotalCommendationProgress'] == $this->them['TotalCommendationProgress']) {
             $this->tie();
         } else if ($this->you['TotalCommendationProgress'] > $this->them['TotalCommendationProgress']) {
-            $this->you_plus_one_good();
+            $this->you_num(1);
         } else {
-            $this->them_plus_one_good();
+            $this->them_num(1);
         }
 
         // prep vars
@@ -362,11 +441,11 @@ class Leaf_Compare {
 
     function AveragePersonalScore() {
         if ($this->you['AveragePersonalScore'] == $this->them['AveragePersonalScore']) {
-            $this->tie();
+            $this->tie(3);
         } else if ($this->you['AveragePersonalScore'] > $this->them['AveragePersonalScore']) {
-            $this->you_plus_one_good();
+            $this->you_num(3);
         } else {
-            $this->them_plus_one_good();
+            $this->them_num(3);
         }
 
         // return
@@ -419,23 +498,23 @@ class Leaf_Compare {
         } else if ($you_top == FALSE && $them_top != FALSE) {
             $this->you['TopCSR']  = $this->wrap_image($this->_ci->library->return_image_url('CSR', intval(0), "small"));
             $this->them['TopCSR'] = $this->wrap_image($this->_ci->library->return_image_url('CSR', intval($them_top['SkillRank']), "small"));
-            $this->them_plus_one_good();
+            $this->them_num(2);
         } else if ($you_top != FALSE && $them_top == FALSE) {
             $this->you['TopCSR']  = $this->wrap_image($this->_ci->library->return_image_url('CSR', intval($you_top['SkillRank']), "small"));
             $this->them['TopCSR'] = $this->wrap_image($this->_ci->library->return_image_url('CSR', intval(0), "small"));
-            $this->you_plus_one_good();
+            $this->you_num(2);
         } else if ($you_top['SkillRank'] == $them_top['SkillRank']) {
             $this->you['TopCSR']  = $this->wrap_image($this->_ci->library->return_image_url('CSR', intval($you_top['SkillRank']), "small"));
             $this->them['TopCSR'] = $this->wrap_image($this->_ci->library->return_image_url('CSR', intval($them_top['SkillRank']), "small"));
-            $this->tie();
+            $this->tie(2);
         } else if ($you_top['SkillRank'] > $them_top['SkillRank']) {
             $this->you['TopCSR']  = $this->wrap_image($this->_ci->library->return_image_url('CSR', intval($you_top['SkillRank']), "small"));
             $this->them['TopCSR'] = $this->wrap_image($this->_ci->library->return_image_url('CSR', intval($them_top['SkillRank']), "small"));
-            $this->you_plus_one_good();
+            $this->you_num(2);
         } else if ($you_top['SkillRank'] < $them_top['SkillRank']) {
             $this->you['TopCSR']  = $this->wrap_image($this->_ci->library->return_image_url('CSR', intval($you_top['SkillRank']), "small"));
             $this->them['TopCSR'] = $this->wrap_image($this->_ci->library->return_image_url('CSR', intval($them_top['SkillRank']), "small"));
-            $this->them_plus_one_good();
+            $this->them_num(2);
         }
 
         // return
@@ -455,11 +534,11 @@ class Leaf_Compare {
 
     function KDRatio() {
         if ($this->you['KDRatio'] == $this->them['KDRatio']) {
-            $this->two_tie();
+            $this->tie(5);
         } else if ($this->you['KDRatio'] > $this->them['KDRatio']) {
-            $this->you_plus_two_good();
+            $this->you_num(5);
         } else {
-            $this->them_plus_two_good();
+            $this->them_num(5);
         }
 
         // return
@@ -481,9 +560,9 @@ class Leaf_Compare {
         if ($this->you['TotalChallengesCompleted'] == $this->them['TotalChallengesCompleted']) {
             $this->tie();
         } else if ($this->you['TotalChallengesCompleted'] > $this->them['TotalChallengesCompleted']) {
-            $this->you_plus_one_good();
+            $this->you_num(1);
         } else {
-            $this->them_plus_one_good();
+            $this->them_num(1);
         }
 
         // return

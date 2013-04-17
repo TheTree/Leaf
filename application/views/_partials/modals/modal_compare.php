@@ -5,12 +5,16 @@
     </div>
     <div class="modal-body">
     <p>
-        We compare on a variety of things.
+        We compare on a 30pt value scale.
         <br />
         <ul class="">
             <li>Medals per Game (MpG)</li>
             <li>Kills per Game (KpG)</li>
             <li>Deaths per game (DpG)</li>
+            <li>Assists per Game (ApG)</li>
+            <li>Betrayals per Game (BpG)</li>
+            <li>Suicides per Game (SpG)</li>
+            <li>Headshots per Game (HpG)</li>
             <li>Win Percentage (Wins / Total Games)</li>
             <li>Kill / Death Ratio</li>
             <li>Total Quit Percentage (Quits / Total Games)</li>

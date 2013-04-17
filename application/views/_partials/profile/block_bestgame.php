@@ -1,4 +1,4 @@
-<strong>One Game Stats</strong>
+<strong>Most in a Game</strong>
 <div class="well well-large">
     <ul class="unstyled">
         <li>
@@ -18,8 +18,8 @@
             <span class="row_data"><?= number_format($data['BestGameAssassinationTotal']); ?></span>
         </li>
         <li>
-            <span class="row_title">Furthest Kill Distance</span>
-            <span class="row_data"><?= number_format($data['BestGameKillDistance']); ?></span>
+            <span class="row_title">Longest Kill Distance</span>
+            <span class="row_data"><?= number_format($data['BestGameKillDistance']); ?><abbr title="meters">m</abbr></span>
         </li>
         </ul>
     </div>

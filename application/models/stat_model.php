@@ -203,7 +203,7 @@ class Stat_model extends IBOT_Model {
         
         $resp = $this->db
                 ->select("Gamertag,ServiceTag," . $field)
-                ->limit(8)
+                ->limit(10)
                 ->order_by($field, ($asc == TRUE ? "asc" : "desc"))
                 ->get_where('ci_gamertags', array(
                     'TotalGamesStarted >' => intval(100)));

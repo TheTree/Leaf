@@ -18,6 +18,9 @@
             <strong>I have a complaint/bug! </strong><br />
             <a href="https://github.com/iBotPeaches/Leaf/issues">I use GitHub for problems. Go here to report one.</a>
             <br /><br />
+            <strong>Whats up with the tooltips everywhere?</strong><br />
+            I like them.
+            <br /><br />
             <strong>Any new features? </strong><br />
             meh. Tweet me. We can add more stuff.
             <br /><br />

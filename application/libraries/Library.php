@@ -18,6 +18,10 @@ class Library {
     // key for sort functions
     public $sort_key = "";
 
+    // meta stuff @todo move to Meta Library
+    public $keywords;
+    public $description;
+
     function __construct() {
         $this->_ci = & get_instance();
         $this->lang = "english";
@@ -94,6 +98,13 @@ class Library {
 
     public function get_sort_key() {
         return $this->sort_key;
+    }
+
+    public function return_meta() {
+        return array(
+            'description' => $this->description,
+            'keywords' => $this->keywords
+        );
     }
 
     /**
@@ -882,6 +893,7 @@ class Library {
 
         // sort
         $this->set_sort_key("Count");
+        ksort($new_arr);
         foreach ($new_arr as $key => $value) {
             uasort($new_arr[$key], array($this,"key_sort"));
             $new_arr[$key]['Name'] = $this->get_metadata_name_via_id("medaltiers",$key, "Name");
@@ -906,7 +918,7 @@ class Library {
 
         foreach ($data as $key => $value) {
             $data[$key]['Playlist'] = $key;
-            $data[$key]['ImageUrl'] = $this->return_image_url("CSR", $data[$key]['SkillRank'], "large");
+            $data[$key]['ImageUrl'] = $this->return_image_url("CSR", $data[$key]['SkillRank'], "medium");
         }
         return $data;
     }

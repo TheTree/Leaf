@@ -33,6 +33,9 @@ class Compare extends IBOT_Controller {
             redirect(base_url('compare/' . $you . "/" . $them),'refresh');
         }
 
+        $this->library->description = "LeafApp .:. Compare Halo 4 Players";
+        $this->template->set("meta", $this->library->return_meta());
+
         $this->template
             ->set_partial('modal_compare', '_partials/modals/modal_compare')
             ->title("Leaf .:. Compare Halo 4 Stats")
@@ -50,10 +53,13 @@ class Compare extends IBOT_Controller {
             // run it
             $data = $this->leaf_compare->compare();
 
+            $this->library->description = "LeafApp .:. " . $data['you']['Gamertag'] . " vs " . $data['them']['Gamertag'];
+            $this->template->set("meta", $this->library->return_meta());
+
             // dump to template
             $this->template
                 ->set('data', $data)
-                ->title("Leaf .:. " . $data['you']['Gamertag'] . " vs " . $data['them']['Gamertag'])
+                ->title("Leaf .:. Comparison: " .$data['you']['Gamertag'] . " vs " . $data['them']['Gamertag'])
                 ->build("pages/compare/review");
         }
     }

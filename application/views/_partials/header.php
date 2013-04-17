@@ -15,7 +15,7 @@
                         <ul class="nav">
                             <li class="<? if ($this->library->is_active("news")): ?> active<? endif; ?>"><a href="<?= base_url('news'); ?>">News</a></li>
                             <li class="<? if ($this->library->is_active("leaderboards")): ?> active<? endif; ?>"><a href="<?= base_url('leaderboards'); ?>">Leaderboards</a></li>
-                            <li class="<? if ($this->library->is_active("compare")): ?> active<? endif; ?>"><a href="<?= base_url('compare'); ?>">Compare</a></li>
+                            <li class="<? if ($this->library->is_active("compare")): ?> active<? endif; ?>"><a rel="help" href="<?= base_url('compare'); ?>">Compare</a></li>
                             <li class="<? if ($this->library->is_active("about")): ?> active<? endif; ?>"><a href="<?= base_url('about'); ?>">About</a></li>
                         </ul>
                         <ul class="nav pull-right">
