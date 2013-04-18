@@ -11,13 +11,20 @@
     }
 </script>
 <div class="row-fluid">
-    <h1><?= $badge; ?><?= urldecode($gamertag); ?> <small><?= $data['ServiceTag']; ?></small></h1>
+    <h1><?= $badge; ?><?= urldecode($gamertag); ?> <small><?= $data['ServiceTag']; ?></small>
+        <? if ($data['Status'] == 0): ?>
+            <a href="<?= base_url('/guilty_spark/flag/' . $data['SeoGamertag']); ?>" data-toggle="tooltop" data-html="true"
+               title="Flag <strong><?= $data['Gamertag']; ?></strong> as a Cheater/Booster?" rel="tooltip"
+               data-placement="right" onclick="return confirm('Are you sure you wish to flag <?= $data['Gamertag']; ?> ?');"><i class="icon-flag"></i></a>
+        <? endif; ?>
+    </h1>
 </div>
 <div class="row-fluid">
     <div class="span3">
         <div class="pagination-centered">
             <?= $template['_partials']['block_photo']; ?>
             <?= $template['_partials']['block_specs']; ?>
+            <?= $template['_partials']['block_cheatertest']; ?>
         </div>
     </div>
     <div class="span9">
@@ -30,7 +37,13 @@
                     <strong>Hey</strong> Sorry. Your not ready for a stat update :(
                     <? endif; ?>
             </div>
+        <? elseif ($general_msg != false): ?>
+            <div class="alert alert-success">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <strong>Hey</strong> We've flagged <?= $data['Gamertag']; ?> for you :)
+            </div>
         <? endif; ?>
+        <?= $template['_partials']['block_cheatertest']; ?>
         <?= $template['_partials']['block_progression']; ?>
     </div>
     <div class="span5">
@@ -46,5 +59,6 @@
     <div class="span9">
         <?= $template['_partials']['block_csr']; ?>
         <?= $template['_partials']['block_medals']; ?>
+        <?= $template['_partials']['block_cheatertest']; ?>
     </div>
 </div>

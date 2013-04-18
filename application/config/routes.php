@@ -49,6 +49,14 @@ $route['stats'] = "stats/home/index";
 $route['compare'] = "stats/compare/index";
 $route['leaderboards'] = "stats/home/index";
 
+// variable mod pages
+$route['guilty_spark/flag/(:any)'] = "moderate/home/flagged/$1";
+$route['guilty_spark/mod/(:any)/(:num)'] = "moderate/home/marked/$1/$2";
+
+// moderate
+$route['guilty_spark'] = "moderate/home";
+$route['guilty_spark/login'] = "moderate/home/login";
+
 // ajax calls
 $route['ajax/gt/(:any)'] = "ajax/core/compare_api/$1";
 

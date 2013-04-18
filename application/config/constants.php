@@ -56,5 +56,11 @@ define("FIVEMIN_IN_SECONDS", 300);
  */
 define('MAX_HALO_RANK', 130);
 
+/**
+ * CHEATER
+ */
+define("CHEATING_PLAYER", 1);
+define("BOOSTING_PLAYER", 2);
+
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */

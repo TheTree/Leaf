@@ -67,6 +67,7 @@ class Home extends IBOT_Controller {
 
         $this->library->description = "LeafApp .:. " . $data['Gamertag'] . " Halo 4 Stats";
         $this->template->set("meta", $this->library->return_meta());
+
         //  output gt, build template, set partials
         $this->template
                 ->set_partial('block_photo', '_partials/profile/block_photo')
@@ -77,8 +78,10 @@ class Home extends IBOT_Controller {
                 ->set_partial('block_favoriteweapon', '_partials/profile/block_favoriteweapon')
                 ->set_partial('block_csr', '_partials/profile/block_csr')
                 ->set_partial('block_specs', '_partials/profile/block_specdata')
+                ->set_partial('block_cheatertest', '_partials/profile/block_cheatertest')
                 ->title("Leaf .:. " . urldecode($data['Gamertag']))
                 ->set('msg', $this->session->flashdata("recache"))
+                ->set('general_msg', $this->session->flashdata('general_msg'))
                 ->set('gamertag', $data['Gamertag'])
                 ->set('data', $data)
                 ->set('badge', $this->library->get_badge($data['Gamertag']))

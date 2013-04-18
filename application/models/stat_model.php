@@ -26,10 +26,11 @@ class Stat_model extends IBOT_Model {
             
             // unset some temporarily, so we can add back on postback
             $unset_arra = array(
-                'InactiveCounter' => $data['InactiveCounter'],
-                'Gamertag' => $data['Gamertag'],
-                'SeoGamertag' => $data['SeoGamertag'],
-                'HashedGamertag' => $data['HashedGamertag']
+                'InactiveCounter'   => $data['InactiveCounter'],
+                'Gamertag'          => $data['Gamertag'],
+                'SeoGamertag'       => $data['SeoGamertag'],
+                'HashedGamertag'    => $data['HashedGamertag'],
+                'Status'            => $data['Status']
             );
 
             // remove these vars to prevent changing them in db
@@ -38,6 +39,7 @@ class Stat_model extends IBOT_Model {
             unset($data['Gamertag']);
             unset($data['SeoGamertag']);
             unset($data['HashedGamertag']);
+            unset($data['Status']);
             $this->update_account($hash, $data);
         } else {
             $this->insert_account($data);
@@ -154,6 +156,7 @@ class Stat_model extends IBOT_Model {
                 ->select('HashedGamertag,Xp,id,InactiveCounter,Gamertag')
                 ->limit(intval($max),intval($start))
                 ->get_where('ci_gamertags', array(
+                    'Status'    => intval(0),
                     'Expiration <' => time(),
                     'InactiveCounter <' => 40
                 ));
@@ -206,7 +209,8 @@ class Stat_model extends IBOT_Model {
                 ->limit(10)
                 ->order_by($field, ($asc == TRUE ? "asc" : "desc"))
                 ->get_where('ci_gamertags', array(
-                    'TotalGamesStarted >' => intval(100)));
+                    'TotalGamesStarted >' => intval(100),
+                    'Status' => intval(0)));
         
         $resp = $resp->result_array();
         
@@ -318,6 +322,110 @@ class Stat_model extends IBOT_Model {
         } else {
             return FALSE;
         }
+    }
+
+    /**
+     * get_cheating_users()
+     *
+     * Grab any users who cheated.
+     * @return array|bool
+     */
+    public function get_cheating_users() {
+        $resp = $this->db
+            ->select('Gamertag,SeoGamertag,HashedGamertag,Status')
+            ->limit(8)
+            ->get_where('ci_gamertags', array(
+                'Status >' => intval(0)
+            ));
+        $resp = $resp->result_array();
+
+        if (is_array($resp) && count($resp) > 0) {
+            return $resp;
+        } else {
+            return FALSE;
+        }
+    }
+
+    /**
+     * get_flagged_users()
+     *
+     * Grab any user who have flags, but not yet cheated
+     * @return array|bool
+     */
+    public function get_flagged_users() {
+        $resp = $this->db
+            ->select('Count(`id`) as amt,`Gamertag`,`SeoGamertag`',FALSE)
+            ->group_by("id")
+            ->order_by("Gamertag", "desc")
+            ->get('ci_flagged');
+
+        $resp = $resp->result_array();
+
+        if (is_array($resp) && count($resp) > 0) {
+            return $resp;
+        } else {
+            return FALSE;
+        }
+    }
+
+    /**
+     * check_for_flag
+     *
+     * Takes `ip` and `$seo` name to see if this IP has already flagged this gamertag
+     * @param $seo
+     * @param $ip
+     * @return bool
+     */
+    public function check_for_flag($seo, $ip) {
+        $resp = $this->db
+            ->get_where('ci_flagged', array(
+                'SeoGamertag' => $seo,
+                'ip_address' => $ip
+            ));
+
+        $resp = $resp->row_array();
+
+        if (isset($resp['SeoGamertag'])) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    }
+
+    public function insert_flag($gt, $ip) {
+        $this->db
+            ->insert('ci_flagged', array(
+                'SeoGamertag' => $gt['SeoGamertag'],
+                'Gamertag' => $gt['Gamertag'],
+                'Id'    => $gt['id'],
+                'ip_address' => $ip
+            ));
+    }
+
+    /**
+     * delete_pending_flagged_users
+     *
+     * @param $seo
+     */
+    public function delete_pending_flagged_users($seo) {
+        $resp = $this->db
+            ->delete('ci_flagged', array(
+                'SeoGamertag' => $seo
+            ));
+    }
+
+    /**
+     * change_status
+     *
+     * @param $seo
+     * @param $status
+     */
+    public function change_status($seo, $status) {
+        $this->db
+            ->where('SeoGamertag', $seo)
+            ->update('ci_gamertags', array(
+                'Status' => intval($status)
+            ));
     }
 
 }

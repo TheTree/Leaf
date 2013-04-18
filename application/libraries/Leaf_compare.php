@@ -32,6 +32,12 @@ class Leaf_Compare {
             // silly dog tricks r 4 kids
             $this->_ci->template->set("error_msg", "funny guy. can't search yo self");
             $this->error_hit = TRUE;
+        } else if ($this->you['Status'] > 0) {
+            $this->_ci->template->set("error_msg", $this->you['Gamertag'] . " is not allowed to be compared against due to " . $this->_ci->library->get_banned_name($this->you['Status'], TRUE));
+            $this->error_hit = TRUE;
+        } else if ($this->them['Status'] > 0) {
+            $this->_ci->template->set("error_msg", $this->them['Gamertag'] . " is not allowed to be compared against due to " . $this->_ci->library->get_banned_name($this->them['Status'], TRUE));
+            $this->error_hit = TRUE;
         } else {
             // unseralize
             $this->you['SkillData'] = @unserialize($this->you['SkillData']);

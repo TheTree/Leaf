@@ -6,3 +6,4 @@
     $lang['NOT_XBL_ACCOUNT'] = "Our system can't find this Gamertag at 343. This account either doesn't exist or hasn't played at least 1 match of Halo 4.";
     $lang['ENDPOINTS_DOWN'] = "The API in which Leaf gets its data, is not returning any :( hopefully this is just temporary. Otherwise you can worry.";
     $lang['NO_GAMES_PLAYED'] = "There are 0 games of history on this account. We cannot process this. Please play at least one game of Halo 4.";
+    $lang['ALREADY_FLAGGED_BY_YOU'] = "You've already flagged this gamertag. We don't need multiple reports.";

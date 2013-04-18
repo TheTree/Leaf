@@ -375,8 +375,8 @@ class Library {
             if (!is_array($key)) {
                 $count++;
 
-                // if its looped more than 5 times, we didn't find a key :(
-                if ($count < 5) {
+                // if its looped more than 2 times, we didn't find a key :(
+                if ($count < 2) {
                     $this->_ci->cache->delete('auth_spartan');
                     return $this->get_spartan_auth_key($count);
                 }  else {
@@ -404,7 +404,7 @@ class Library {
             } else {
                 $count++;
 
-                if ($count > 5) {
+                if ($count > 2) {
                     $this->throw_error("API_AUTH_GONE");
                 } else {
                     $this->_ci->curl->simple_get($url . "/kill");
@@ -515,7 +515,7 @@ class Library {
      * @return mixed
      */
     public function get_seo_gamertag($gt) {
-        return preg_replace('/\s+/', '_', strtolower(urldecode($gt)));
+        return preg_replace('/\s+/', '_', strtolower(urldecode(trim($gt))));
     }
 
     /**
@@ -645,7 +645,8 @@ class Library {
             'TotalBetrayals'                   => intval($wargames_record['TotalBetrayals']),
             'TotalSuicides'                    => intval($wargames_record['TotalSuicides']),
             'LastUpdate'                       => intval(time()),
-            'InactiveCounter'                  => intval(0)
+            'InactiveCounter'                  => intval(0),
+            'Status'                           => intval(0)
         ));
 
 
@@ -1021,7 +1022,45 @@ class Library {
                 die("You idiot! Add" . $type . " into the Library::get_metadata_name_via_id function");
                 break;
         }
+    }
 
+    /**
+     * get_banned_type
+     *
+     * Take the incoming ID and prep for display
+     * @param $status
+     * @return string
+     */
+    public function get_banned_type($status) {
+        switch ($status) {
+            case 0:
+                return '<span class="badge">Not banned</span>';
+
+            case CHEATING_PLAYER:
+                return '<span class="badge badge-important">Cheater</span>';
+
+            case BOOSTING_PLAYER:
+                return '<span class="badge badge-warning">Booster</span>';
+        }
+    }
+
+    /**
+     * get_banned_name
+     * Gets banned name via
+     *
+     * @param      $status
+     * @param bool $type
+     * @return string
+     */
+    public function get_banned_name($status, $type = FALSE) {
+        switch($status) {
+            case 0:
+                return "nothing.";
+            case CHEATING_PLAYER:
+                return ($type) ? "Cheating" : "Cheater";
+            case BOOSTING_PLAYER:
+                return ($type) ? "Boosting" : "Booster";
+        }
     }
 
     /**
