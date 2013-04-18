@@ -5,7 +5,7 @@
             <tr>
                 <th></th>
                 <th>Gamertag</th>
-                <th>Assists</th>
+                <th>Headshots</th>
             </tr>
             </thead>
             <tbody>
