@@ -1080,6 +1080,14 @@ class Library {
         $spartan_path = absolute_path('uploads/spartans/' . $hashed) . "spartan.png";
         $emblem_path = absolute_path('uploads/spartans/' . $hashed . "/tmp/") . "emblem.png";
 
+        // delete old spartans
+        if (is_dir(absolute_path("uploads/spartans/" . $hashed))) {
+            // only delete if $hashed is set
+            if (strlen($hashed) > 10) {
+                delete_files(absolute_path('uploads/spartans/' . $hashed), TRUE);
+            }
+        }
+
         // lets try and make a folder. check first :p
         if (!(is_dir(absolute_path('uploads/spartans/' . $hashed . "/tmp")))) {
             mkdir(absolute_path('uploads/spartans/' . $hashed . "/tmp"), 0777, TRUE);
