@@ -17,10 +17,10 @@ class Home extends IBOT_Controller {
         // get flagged users @todo cache for 5 minutes
         $flagged_users = $this->stat_m->get_flagged_users();
 
-        // remove all that are less than 25 flags
+        // remove all that are less than 5 flags
         if (is_array($flagged_users)) {
             foreach ($flagged_users as $key => $user) {
-                if ($user['amt'] < 25) {
+                if ($user['amt'] < 5) {
                     unset($flagged_users[$key]);
                 }
             }
