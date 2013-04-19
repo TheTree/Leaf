@@ -17,6 +17,7 @@
                title="Flag <strong><?= $data['Gamertag']; ?></strong> as a Cheater/Booster?" rel="tooltip"
                data-placement="right" onclick="return confirm('Are you sure you wish to flag <?= $data['Gamertag']; ?> ?');"><i class="icon-flag"></i></a>
         <? endif; ?>
+            <a href="<?= base_url('/star/' . $data['SeoGamertag']); ?>" data-toggle="tooltip" data-html="true" title="Star <strong><?= $data['Gamertag']; ?></strong>" rel="tooltip" data-placement="right"><i class="icon-star"></i></a>
     </h1>
 </div>
 <div class="row-fluid">

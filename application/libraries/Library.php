@@ -530,6 +530,16 @@ class Library {
     }
 
     /**
+     * reverse_seo_gamertag
+     *
+     * Takes `seo_gamertag` to database to return `Gamertag`
+     * @param $seo_gt
+     */
+    public function reverse_seo_gamertag($seo_gt) {
+        return $this->_ci->stat_m->get_gamertag_name($seo_gt);
+    }
+
+    /**
      * grab_profile_data
      * Pulls directly from the API. Stores into dB
      *
@@ -542,6 +552,10 @@ class Library {
 
         if ($seo_gamertag == "") {
             $seo_gamertag = $this->get_seo_gamertag($gt);
+        }
+
+        if ($gt == "") {
+            $gt = $this->reverse_seo_gamertag($seo_gamertag);
         }
 
         // make hashed name
@@ -601,6 +615,7 @@ class Library {
             'SpecData'                         => @serialize($spec_data),
             'KDRatio'                          => $service_record['GameModes'][2]['KDRatio'],
             'Xp'                               => $service_record['XP'],
+            'Emblem'                           => substr_replace($service_record['EmblemImageUrl']['AssetUrl'], "", -12),
             'SpartanPoints'                    => $service_record['SpartanPoints'],
             'FavoriteWeaponName'               => $service_record['FavoriteWeaponName'],
             'FavoriteWeaponDescription'        => $service_record['FavoriteWeaponDescription'],

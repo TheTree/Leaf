@@ -19,7 +19,11 @@
                             <li class="<? if ($this->library->is_active("about")): ?> active<? endif; ?>"><a href="<?= base_url('about'); ?>">About</a></li>
                         </ul>
                         <ul class="nav pull-right">
-                            <li><a href="http://twitter.com/iBotPeaches" rel="nofollow" target="_blank">Made with &hearts; iBotPeaches</a></li>
+                            <? if (isset($starred) && is_array($starred)): ?>
+                                <li><a href="<?= base_url('/gt/' . $starred['SeoGamertag']); ?>"><img src="<?= $starred['Emblem']; ?>" class="img-emblem" />&nbsp;<?= $starred['Gamertag']; ?></a></li>
+                            <? else: ?>
+                                <li><a href="http://twitter.com/iBotPeaches" rel="nofollow" target="_blank">Made with &hearts; iBotPeaches</a></li>
+                            <? endif; ?>
                         </ul>
                     </div>
                 </div>

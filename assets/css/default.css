@@ -40,6 +40,11 @@ csr-legend {
     float: left;
     width: 60px;
 }
+.img-emblem {
+    width: 20px;
+    height: 20px;
+    vertical-align: top;
+}
 @media (max-width: 500px) {
     .row_title {
         width: 135px;

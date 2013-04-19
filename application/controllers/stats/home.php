@@ -46,6 +46,19 @@ class Home extends IBOT_Controller {
                 ->set("stats", $stats)
                 ->build("pages/leaderboard/home");
     }
+
+    public function star($gamertag = "") {
+        // seo gt
+        $this->load->helper('cookie');
+        $this->input->set_cookie(array(
+            'name' => 'starred',
+            'value' => $gamertag,
+            'expire' => 865000
+                                 ));
+
+        redirect(base_url('/gt/' . $gamertag));
+
+    }
     
     public function gt($gamertag = "") {
         

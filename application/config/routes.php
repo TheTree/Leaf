@@ -61,6 +61,7 @@ $route['guilty_spark/login'] = "moderate/home/login";
 $route['ajax/gt/(:any)'] = "ajax/core/compare_api/$1";
 
 // variable pages
+$route['star/(:any)'] = "stats/home/star/$1";
 $route['gt/(:any)/recache'] = "stats/home/recache_gt/$1";
 $route['gt/(:any)'] = "stats/home/gt/$1";
 $route['news/(:num)'] = "news/index/index/$1";

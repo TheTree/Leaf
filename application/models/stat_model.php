@@ -392,6 +392,13 @@ class Stat_model extends IBOT_Model {
         }
     }
 
+    /**
+     * insert_flag
+     *
+     * Inserts the current id `flag` into the $gt array
+     * @param $gt
+     * @param $ip
+     */
     public function insert_flag($gt, $ip) {
         $this->db
             ->insert('ci_flagged', array(
@@ -426,6 +433,53 @@ class Stat_model extends IBOT_Model {
             ->update('ci_gamertags', array(
                 'Status' => intval($status)
             ));
+    }
+
+    /**
+     * get_gamertag_name
+     *
+     * Returns `Gamertag` when passed `SeoGamertag`
+     * @param $seo_gt
+     * @return bool
+     */
+    public function get_gamertag_name($seo_gt) {
+        $resp = $this->db
+                ->select('Gamertag')
+                ->get_where('ci_gamertags', array(
+                'SeoGamertag' => $seo_gt
+            ));
+
+        $resp = $resp->row_array();
+
+        if (isset($resp['Gamertag'])) {
+            return $resp['Gamertag'];
+        } else {
+            return FALSE;
+        }
+    }
+
+    /**
+     * get_name_and_emblem
+     *
+     * Grabs `Gamertag` and `Emblem` via `SeoGamertag`
+     *
+     * @param $seo_gt
+     * @return bool
+     */
+    public function get_name_and_emblem($seo_gt) {
+        $resp = $this->db
+            ->select('Gamertag,Emblem')
+            ->get_where('ci_gamertags', array(
+                'SeoGamertag' => $seo_gt
+            ));
+
+        $resp = $resp->row_array();
+
+        if (isset($resp['Gamertag'])) {
+            return $resp;
+        } else {
+            return FALSE;
+        }
     }
 
 }

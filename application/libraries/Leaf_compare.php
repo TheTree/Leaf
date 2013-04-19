@@ -20,8 +20,10 @@ class Leaf_Compare {
         $this->_ci = & get_instance();
 
         // set globals
-        $this->you = $this->_ci->library->grab_profile_data($paras['you'], FALSE, $paras['you']);
-        $this->them = $this->_ci->library->grab_profile_data($paras['them'], FALSE, $paras['them']);
+        // we pass NULL to the $gamertag parameter, because we only have SeoGamertag
+        // at this point. We can get their Gamertag via SeoGamertag within the func
+        $this->you = $this->_ci->library->grab_profile_data("", FALSE, $paras['you']);
+        $this->them = $this->_ci->library->grab_profile_data("", FALSE, $paras['them']);
 
         // check for falses
         if ($this->you == FALSE || $this->them == FALSE) {
