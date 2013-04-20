@@ -25,7 +25,9 @@
         <div class="pagination-centered">
             <?= $template['_partials']['block_photo']; ?>
             <?= $template['_partials']['block_specs']; ?>
-            <?= $template['_partials']['block_cheatertest']; ?>
+            <div class="visible-desktop">
+                <?= $template['_partials']['block_cheatertest']; ?>
+            </div>
         </div>
     </div>
     <div class="span9">
