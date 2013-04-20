@@ -1,4 +1,4 @@
-<? if ($data['SkillData'] != false): ?>
+<? if ($data['SkillData'] != false && count($data['SkillData']) > 0): ?>
     <strong>Playlist Ranks</strong>
     <div class="well well-large">
         <div class="pagination-centered">

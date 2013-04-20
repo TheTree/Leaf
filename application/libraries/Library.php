@@ -1116,10 +1116,14 @@ class Library {
 
         // download 2 images in there, (emblem and spartan). Ignore all errors. Check afterwards
         $emblem = file_get_contents($this->return_image_url("Emblem", $emblem, "80"));
-        file_put_contents($emblem_path, $emblem);
+        if ($emblem != FALSE) {
+            file_put_contents($emblem_path, $emblem);
+        }
 
         $spartan = file_get_contents($this->return_image_url("ProfileSpartan",$gamertag, "medium"));
-        file_put_contents($spartan_path, $spartan);
+        if ($spartan != FALSE) {
+            file_put_contents($spartan_path, $spartan);
+        }
 
         // cleanup
         unset($emblem);
