@@ -661,7 +661,8 @@ class Library {
             'TotalSuicides'                    => intval($wargames_record['TotalSuicides']),
             'LastUpdate'                       => intval(time()),
             'InactiveCounter'                  => intval(0),
-            'Status'                           => intval(0)
+            'Status'                           => intval(0),
+            'ApiVersion'                       => intval(API_VERSION)
         ));
 
 
@@ -861,15 +862,22 @@ class Library {
         $rtr_arr = array();
 
         foreach ($all_csr as $csr) {
-
-            // only add if CSR is more than 0
-            //if ($csr['CurrentSkillRank'] > 0) {
             $rtr_arr[$csr['PlaylistName']] = array(
                 'Description' => $csr['PlaylistDescription'],
                 'SkillRank' => intval($csr['CurrentSkillRank']),
                 'Top' => ($csr['PlaylistName'] == $top_csr['PlaylistName']) ? TRUE : FALSE
             );
-            //}
+
+            // lets figure out team vs inv CSR
+            if (in_array($csr['PlaylistId'],$this->_ci->config->item('team_csr'))) {
+                $type = "Team";
+            } else if (in_array($csr['PlaylistId'], $this->_ci->config->item('individual_csr'))) {
+                $type = "Individual";
+            } else {
+                log_message('error', $csr['PlaylistName'] . " not found for CSR stats w/ id of " . $csr['PlaylistId']);
+                $type = "Unknown";
+            }
+            $rtr_arr[$csr['PlaylistName']]['Type'] = $type;
         }
 
         if (count($rtr_arr) > 0) {

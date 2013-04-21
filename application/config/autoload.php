@@ -81,7 +81,7 @@ $autoload['helper'] = array('url','form','string','output','security','email','f
 |
 */
 
-$autoload['config'] = array();
+$autoload['config'] = array('h4_leaf');
 
 
 /*

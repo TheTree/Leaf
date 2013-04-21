@@ -62,5 +62,12 @@ define('MAX_HALO_RANK', 130);
 define("CHEATING_PLAYER", 1);
 define("BOOSTING_PLAYER", 2);
 
+/**
+ * API_VERSION
+ *
+ * Used in incrementing changes to the core API, which forces a recache of everyone not at that API version
+ */
+define("API_VERSION", 1);
+
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */
