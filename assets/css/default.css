@@ -45,6 +45,9 @@ csr-legend {
     height: 20px;
     vertical-align: top;
 }
+.margin3pxtop {
+    margin-top: 3px;
+}
 @media (max-width: 500px) {
     .row_title {
         width: 135px;

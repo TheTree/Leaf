@@ -59,6 +59,35 @@ class Home extends IBOT_Controller {
         redirect(base_url('/gt/' . $gamertag));
 
     }
+
+    public function unfreeze($seo_gamertag = "") {
+
+        // pull record based on seo_gamertag
+        $gt = $this->stat_m->get_unfreeze_data($seo_gamertag);
+
+        // check
+        if ($gt == FALSE) {
+            $this->library->throw_error("NO_GAMERTAG_STORED");
+        } else if ($gt['InactiveCounter'] < 40) {
+            $this->library->throw_error("INACTIVECOUNTER_LESSTHAN_40");
+        } else {
+            // grab new acc
+            $acc = $this->library->grab_profile_data($gt['Gamertag'], TRUE, $gt['SeoGamertag']);
+
+            // check to see if there games are the same
+            if ($acc['TotalGamesStarted'] == $gt['TotalGamesStarted']) {
+                $this->library->throw_error("UNFREEZE_NO_CHANGE");
+            } else {
+                // remove 1 from `InactiveCounter`
+                $this->stat_m->update_account($acc['HashedGamertag'], array(
+                    'InactiveCounter' => intval($acc['InactiveCounter'] - 1)
+                ));
+
+                $this->session->set_flashdata("recache", "enabled");
+                redirect(base_url('/gt/' . $acc['SeoGamertag']));
+            }
+        }
+    }
     
     public function gt($gamertag = "") {
         
@@ -123,7 +152,7 @@ class Home extends IBOT_Controller {
             }
             
             // redirect out of here
-            redirect(base_url("gt/" . str_replace("%20", "_",$gamertag)));
+            redirect(base_url("gt/" . $data['SeoGamertag']));
         } else {
             $this->library->throw_error("NO_GAMERTAG_STORED");
         }

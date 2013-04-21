@@ -153,7 +153,7 @@ class Stat_model extends IBOT_Model {
      */
     public function cron_gamertag($start, $max) {
         $resp = $this->db
-                ->select('HashedGamertag,Xp,id,InactiveCounter,Gamertag')
+                ->select('HashedGamertag,Xp,id,InactiveCounter,Gamertag,SeoGamertag')
                 ->limit(intval($max),intval($start))
                 ->get_where('ci_gamertags', array(
                     'Status'    => intval(0),
@@ -482,4 +482,26 @@ class Stat_model extends IBOT_Model {
         }
     }
 
+    /**
+     * get_unfreeze_data
+     *
+     * Grabs `InactiveCounter,Gamertag,SeoGamertag` via `SeoGamertag`
+     * @param $seo_gt
+     * @return bool
+     */
+    public function get_unfreeze_data($seo_gt) {
+        $resp = $this->db
+            ->select("InactiveCounter,Gamertag,SeoGamertag,TotalGamesStarted")
+            ->get_where('ci_gamertags', array(
+                'SeoGamertag' => $seo_gt
+            ));
+
+        $resp = $resp->row_array();
+
+        if (isset($resp['Gamertag'])) {
+            return $resp;
+        } else {
+            return FALSE;
+        }
+    }
 }

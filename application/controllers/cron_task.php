@@ -41,15 +41,24 @@ class Cron_task extends IBOT_Controller {
             foreach ($results as $result) {
                 
                 // pull new data update their record
-                $new_record = $this->library->get_profile(str_replace(" ", "%20",$result['Gamertag']));
+                $new_record = $this->library->get_profile(str_replace(" ", "%20",$result['Gamertag']), FALSE, TRUE);
                 
-                // check comparison, if so increment there InactiveCounter by 1
+                // check comparison, if so increment there `InactiveCounter` by 1
                 if ($new_record['Xp'] == $result['Xp']) {
                     $this->stat_m->update_account($result['HashedGamertag'], array(
                         'InactiveCounter' => intval($result['InactiveCounter'] + 1)
                     ));
-                    
+
+                    print $result['Gamertag'] . " has had 0 Xp change. +1 to `InactiveCounter` \n";
                     unset($new_record);
+                } else {
+
+                    // reset `InactiveCounter` to 0
+                    $this->stat_m->update_account($result['HashedGamertag'], array(
+                        'InactiveCounter' => intval(0)
+                    ));
+
+                    print $result['Gamertag'] . " has had " . ($new_record['Xp'] - $result['Xp']) . " Xp change. Reset `InactiveCounter` \n";
                 }
             }
             

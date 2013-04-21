@@ -336,7 +336,6 @@ class Library {
         // set accept header, and SpartanToken if needed
         $this->_ci->curl->option('HTTPHEADER', $header_paras);
 
-
         // make the url
         $url = "https://stats.svc.halowaypoint.com/" . $paras;
 

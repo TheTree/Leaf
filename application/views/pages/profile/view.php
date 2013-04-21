@@ -32,7 +32,7 @@
     </div>
     <div class="span9">
         <? if ($msg != false): ?>
-            <div class="alert alert-info">
+            <div class="alert alert-info margin3pxtop">
                 <button type="button" class="close" data-dismiss="alert">×</button>
                     <? if ($msg == "enabled"): ?>
                     <strong>Hey</strong> We've updated your stats :) 
