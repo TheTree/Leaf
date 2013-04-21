@@ -20,14 +20,14 @@ class Home extends IBOT_Controller {
         $stats['Items'] = ["Total Kills", "Total Deaths", "Total Assists", "Total Headshots", "KD Ratio", "Time Played", "Total Medals", "Challenges Completed"];
 
         // get the actual data for the partials
-        $stats['Data']['total_kills']            = $this->cache->model('stat_m', 'get_top_10', array('TotalKills', false), 3600);
-        $stats['Data']['total_deaths']           = $this->cache->model('stat_m', 'get_top_10', array('TotalDeaths', false), 3600);
-        $stats['Data']['kd_ratio']               = $this->cache->model('stat_m', 'get_top_10', array('KDRatio', false), 3600);
-        $stats['Data']['time_played']            = $this->cache->model('stat_m', 'get_top_10', array('TotalGameplay', false), 3600);
-        $stats['Data']['total_medals']           = $this->cache->model('stat_m', 'get_top_10', array('TotalMedalsEarned', false), 3600);
-        $stats['Data']['challenges_completed']   = $this->cache->model('stat_m', 'get_top_10', array('TotalChallengesCompleted', false), 3600);
-        $stats['Data']['total_assists']          = $this->cache->model('stat_m', 'get_top_10', array('TotalAssists', false), 3600);
-        $stats['Data']['total_headshots']        = $this->cache->model('stat_m', 'get_top_10', array('TotalHeadshots', false), 3600);
+        $stats['Data']['total_kills']            = $this->cache->model('stat_m', 'get_top_10', array('TotalKills', false), 1800);
+        $stats['Data']['total_deaths']           = $this->cache->model('stat_m', 'get_top_10', array('TotalDeaths', false), 1800);
+        $stats['Data']['kd_ratio']               = $this->cache->model('stat_m', 'get_top_10', array('KDRatio', false), 1800);
+        $stats['Data']['time_played']            = $this->cache->model('stat_m', 'get_top_10', array('TotalGameplay', false), 1800);
+        $stats['Data']['total_medals']           = $this->cache->model('stat_m', 'get_top_10', array('TotalMedalsEarned', false), 1800);
+        $stats['Data']['challenges_completed']   = $this->cache->model('stat_m', 'get_top_10', array('TotalChallengesCompleted', false), 1800);
+        $stats['Data']['total_assists']          = $this->cache->model('stat_m', 'get_top_10', array('TotalAssists', false), 1800);
+        $stats['Data']['total_headshots']        = $this->cache->model('stat_m', 'get_top_10', array('TotalHeadshots', false), 1800);
 
         $this->library->description = "LeafApp .:. Leaderboards";
         $this->template->set("meta", $this->library->return_meta());
