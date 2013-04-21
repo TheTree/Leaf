@@ -1153,6 +1153,9 @@ class Library {
         $emblem = $responses['emblem']['response'];
         if ($emblem != FALSE) {
             file_put_contents($emblem_path, $emblem);
+        } else {
+            // default emblem for fucking hackers
+            file_put_contents($emblem_path, 'https://emblems.svc.halowaypoint.com/h4/emblems/steel_brick_recruit-on-silver_plus?size=80');
         }
 
         $spartan = $responses['spartan']['response'];
