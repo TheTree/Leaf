@@ -68,6 +68,7 @@ $route['gt/(:any)'] = "stats/home/gt/$1";
 $route['news/(:num)'] = "news/index/index/$1";
 $route['news/view/(:num)'] = "news/index/view/$1";
 $route['compare/(:any)/(:any)'] = "stats/compare/comparison/$1/$2";
+$route['compare/(:any)'] = "stats/compare/comparison_prefill/$1";
 
 // other
 $route['default_controller'] = "home";

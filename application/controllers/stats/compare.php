@@ -64,6 +64,13 @@ class Compare extends IBOT_Controller {
         }
     }
 
+    public function comparison_prefill($you = "") {
+
+        // set default val
+        $this->template->set("you", $you);
+        $this->index();
+    }
+
 
     function check_gt($gt) {
         if ($this->library->get_profile($gt, FALSE) != FALSE) {

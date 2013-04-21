@@ -47,7 +47,7 @@
                         <td><?php if ($mod): ?>
                              <a class="btn btn-small btn-danger" href="<?= base_url('guilty_spark/mod/' . $user['SeoGamertag']  . "/" . CHEATING_PLAYER); ?>">Mark as Cheater</a>
                              <a class="btn btn-small btn-warning" href="<?= base_url('guilty_spark/mod/' . $user['SeoGamertag']  . "/" . BOOSTING_PLAYER); ?>">Mark as Booster</a>
-                             <a class="btn btn-small" href="<?= base_url('guilty_spark/mod/' . $user['SeoGamertag']  . "/" . 0); ?>">">Neither</a>
+                             <a class="btn btn-small" href="<?= base_url('guilty_spark/mod/' . $user['SeoGamertag']  . "/" . 0); ?>">Neither</a>
                             <? else: ?>
                             <? endif; ?></td>
                     </tr>
