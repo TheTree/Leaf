@@ -216,7 +216,7 @@ class Library {
      * @param type $resp
      * @return boolean
      */
-    public function check_status($resp) {
+    public function check_status(&$resp) {
         if (isset($resp['StatusCode']) && ($resp['StatusCode'] == 0 || $resp['StatusCode'] == 1)) {
             return $resp;
         } else {
@@ -320,9 +320,10 @@ class Library {
      *
      * @param type $paras
      * @param bool $auth
+     * @param bool $return
      * @return string
      */
-    private function get_url($paras, $auth = FALSE) {
+    private function get_url($paras, $auth = FALSE, $return = FALSE) {
 
         // set AUTH
         if ($auth) {
@@ -338,6 +339,14 @@ class Library {
 
         // make the url
         $url = "https://stats.svc.halowaypoint.com/" . $paras;
+
+        if ($return) {
+            return array(
+                'headers' => array(
+                    CURLOPT_HTTPHEADER => $header_paras),
+                'url' => $url
+            );
+        }
 
         // resp
         $resp = json_decode($this->_ci->curl->simple_get($url), TRUE);
@@ -569,11 +578,22 @@ class Library {
             }
         }
 
-        // lets grab service record
-        $service_record = $this->check_status($this->get_url($this->lang . "/players/" . trim(urlencode(strtolower($gt))) . "/" . $this->game . "/servicerecord", FALSE));
+        // we gonna multithread this bitch. Get our header ready
+        $this->_ci->load->library("chad/mcurl");
+        $parts['service_record'] = $this->get_url($this->lang . "/players/" . trim(urlencode(strtolower($gt))) . "/" . $this->game . "/servicerecord", FALSE, TRUE); #unvalidated
+        $parts['wargames_record'] = $this->get_url($this->lang . "/players/" . trim(urlencode(strtolower($gt))) . "/" . $this->game . "/servicerecord/wargames", TRUE, TRUE); #validated
 
-        // lets grab service record /wargames
-        $wargames_record = $this->check_status($this->get_url($this->lang . "/players/" . trim(urlencode(strtolower($gt))) . "/" . $this->game . "/servicerecord/wargames", TRUE));
+        // add the calls
+        $this->_ci->mcurl->add_call('service_record', "get", $parts['service_record']['url'], array(), $parts['service_record']['headers']);
+        $this->_ci->mcurl->add_call('wargames_record', "get", $parts['wargames_record']['url'], array(), $parts['wargames_record']['headers']);
+
+        // execute it
+        $responses = $this->_ci->mcurl->execute();
+        $service_record = $this->check_status(json_decode($responses['service_record']['response'], TRUE));
+        $wargames_record = $this->check_status(json_decode($responses['wargames_record']['response'],TRUE));
+
+        // cleanup multipart
+        unset($responses);
 
         if ($service_record == FALSE || $wargames_record == FALSE) {
             $this->throw_error("ENDPOINTS_DOWN");
@@ -1121,13 +1141,24 @@ class Library {
             }
         }
 
+        // multi thread this bitch
+        $this->_ci->load->library("chad/mcurl");
+        $this->_ci->mcurl->add_call("emblem", "get",$this->return_image_url("Emblem", $emblem, "80"));
+        $this->_ci->mcurl->add_call("spartan", "get",$this->return_image_url("ProfileSpartan",$gamertag, "medium"));
+
+        // get them
+        $responses = $this->_ci->mcurl->execute();
+
         // download 2 images in there, (emblem and spartan). Ignore all errors. Check afterwards
-        $emblem = file_get_contents($this->return_image_url("Emblem", $emblem, "80"));
+        $emblem = $responses['emblem']['response'];
         if ($emblem != FALSE) {
             file_put_contents($emblem_path, $emblem);
+        } else {
+            // default emblem for fucking hackers
+            file_put_contents($emblem_path, 'https://emblems.svc.halowaypoint.com/h4/emblems/steel_brick_recruit-on-silver_plus?size=80');
         }
 
-        $spartan = file_get_contents($this->return_image_url("ProfileSpartan",$gamertag, "medium"));
+        $spartan = $responses['spartan']['response'];
         if ($spartan != FALSE) {
             file_put_contents($spartan_path, $spartan);
         }
@@ -1135,6 +1166,7 @@ class Library {
         // cleanup
         unset($emblem);
         unset($spartan);
+        unset($responses);
 
         // check if both files are there.
         if (file_exists($spartan_path) &&  file_exists($emblem_path)) {
