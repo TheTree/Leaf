@@ -1,15 +1,3 @@
-<script type="text/javascript">
-    // setup func
-    function set(id, con, title) {
-        $("#" + id).popover({
-            title: title.toString(),
-            content: con.toString(),
-            trigger: 'hover',
-            placement: 'top',
-            delay: {show: 0, hide: 25}
-        });
-    }
-</script>
 <div class="row-fluid">
     <h1><?= $badge; ?><?= urldecode($gamertag); ?> <small><?= $data['ServiceTag']; ?></small>
         <? if ($data['Status'] == 0): ?>
