@@ -16,6 +16,19 @@ class Compare extends IBOT_Controller {
             $this->template->set('you', $_tmp);
         }
 
+        // check for "starred" gt
+        $this->load->helper('cookie');
+
+        // get gamertag and icon, send 2 template
+        $_tmp = get_cookie('starred',TRUE);
+
+        if ($_tmp == FALSE) {
+            $this->template->set('starred', FALSE);
+        } else {
+            $resp = $this->stat_m->get_name_and_emblem($_tmp);
+            $this->template->set('you', $resp['Gamertag']);
+        }
+
         // validation rules
         $this->form_validation->set_rules('you_name','Your Gamertag','required|xss_clean|max_length[16]|callback_check_gt');
         $this->form_validation->set_rules('them_name', 'Their Gamertag', 'required|xss_clean|max_length[16]|callback_check_gt');

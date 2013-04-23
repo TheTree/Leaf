@@ -12,7 +12,7 @@
                     <? foreach ($recent_players as $item): ?>
                         <tr>
                             <td><a href="<?= base_url('gt/' . str_replace(" ", "_", $item['Gamertag'])); ?>"><?= $item['Gamertag']; ?></a> - <small><?= $item['ServiceTag']; ?></small></td>
-                            <td><?= number_format($item['Rank']); ?></td>
+                            <td>SR-<?= number_format($item['Rank']); ?></td>
                         </tr>
                     <? endforeach; ?>
                 </tbody>
