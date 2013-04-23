@@ -504,4 +504,54 @@ class Stat_model extends IBOT_Model {
             return FALSE;
         }
     }
+
+    /**
+     * get_id_via_seo_gt
+     *
+     * Pass `SeoGamertag` and get `id` back via dB
+     *
+     * @param $seo_gt
+     * @return bool
+     */
+    public function get_id_via_seo_gt($seo_gt) {
+        $resp = $this->db
+            ->select("id")
+            ->get_where('ci_gamertags', array(
+                'SeoGamertag' => $seo_gt
+            ));
+
+        $resp = $resp->row_array();
+
+        if (isset($resp['id'])) {
+            return $resp['id'];
+        } else {
+            return FALSE;
+        }
+    }
+
+    /**
+     * update_csr_leaderboards
+     *
+     * Adds abstracted CSR data into trackable leaderboard
+     * @param $data
+     * @return bool
+     */
+    public function update_csr_leaderboards($data) {
+
+        if (isset($data['SeoGamertag'])) {
+            // delete old record
+            $this->db
+                ->delete('ci_csr', array(
+                    'SeoGamertag' => $data['SeoGamertag']
+                ));
+
+            $data['LastUpdated'] = time();
+
+            // insert
+            $this->db
+                ->insert('ci_csr', $data);
+        } else {
+            return FALSE;
+        }
+    }
 }

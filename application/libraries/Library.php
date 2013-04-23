@@ -604,7 +604,7 @@ class Library {
         $medal_data = $this->get_medal_data($wargames_record['TotalMedalsStats']);
 
         // get skill stuff
-        $skill_data = $this->get_skill_data($service_record['SkillRanks'], $service_record['TopSkillRank']);
+        $skill_data = $this->get_skill_data($service_record['SkillRanks'], $service_record['TopSkillRank'], $service_record['Gamertag'], $seo_gamertag);
 
         // get spec data
         $spec_data = $this->get_spec_data($service_record['Specializations']);
@@ -621,7 +621,7 @@ class Library {
 
         // get ready for a dump of data
         return $this->_ci->stat_m->update_or_insert_gamertag($hashed, array(
-            'Gamertag'                         => urldecode($gt),
+            'Gamertag'                         => $service_record['Gamertag'],
             'HashedGamertag'                   => $hashed,
             'SeoGamertag'                      => $seo_gamertag,
             'Rank'                             => $service_record['RankName'],
@@ -870,16 +870,33 @@ class Library {
 
     /**
      * get_skill_data
-     *
      * Goes through skill data finding CSR
      *
      * @param $all_csr
      * @param $top_csr
+     * @param $gt
+     * @param $seo_gt
      * @return array
      */
-    public function get_skill_data($all_csr, $top_csr) {
+    public function get_skill_data($all_csr, $top_csr, $gt, $seo_gt) {
         $rtr_arr = array();
 
+        // add basic data for our CSR leaderboards
+        $csr_leader = array();
+        $csr_leader['SeoGamertag'] = $seo_gt;
+        $csr_leader['Gamertag'] = $gt;
+
+        // start w/ 0 for our Team/Inv seperated CSR
+        $rtr_arr['Team'] = array(
+            'SkillRank' => 0,
+            'PlaylistName' => ""
+        );
+        $rtr_arr['Ind'] = array(
+            'SkillRank' => 0,
+            'PlaylistName' => ""
+        );
+
+        // loop through each CSR adding them into final arr
         foreach ($all_csr as $csr) {
             $rtr_arr[$csr['PlaylistName']] = array(
                 'Description' => $csr['PlaylistDescription'],
@@ -889,9 +906,24 @@ class Library {
 
             // lets figure out team vs inv CSR
             if (in_array($csr['PlaylistId'],$this->_ci->config->item('team_csr'))) {
+                $csr_leader[$csr['PlaylistId'] . "_T"] = intval($csr['CurrentSkillRank']);
                 $type = "Team";
+
+                // check if largest - Team based CSR
+                if (intval($csr['CurrentSkillRank']) >= $rtr_arr['Team']['SkillRank']) {
+                    $rtr_arr['Team']['SkillRank'] = intval($csr['CurrentSkillRank']);
+                    $rtr_arr['Team']['PlaylistName'] = $csr['PlaylistName'];
+                }
+
             } else if (in_array($csr['PlaylistId'], $this->_ci->config->item('individual_csr'))) {
+                $csr_leader[$csr['PlaylistId'] . "_I"] = intval($csr['CurrentSkillRank']);
                 $type = "Individual";
+
+                // check if largest - Individual
+                if (intval($csr['CurrentSkillRank']) >= $rtr_arr['Ind']['SkillRank']) {
+                    $rtr_arr['Ind']['SkillRank'] = intval($csr['CurrentSkillRank']);
+                    $rtr_arr['Ind']['PlaylistName'] = $csr['PlaylistName'];
+                }
             } else {
                 log_message('error', $csr['PlaylistName'] . " not found for CSR stats w/ id of " . $csr['PlaylistId']);
                 $type = "Unknown";
@@ -899,6 +931,10 @@ class Library {
             $rtr_arr[$csr['PlaylistName']]['Type'] = $type;
         }
 
+        // fire off to csr leaderboards
+        $this->_ci->stat_m->update_csr_leaderboards($csr_leader);
+
+        // return CSR stuff
         if (count($rtr_arr) > 0) {
             $this->set_sort_key("SkillRank");
             uasort($rtr_arr, array($this,"key_sort"));
@@ -960,8 +996,14 @@ class Library {
         $data = @unserialize($data);
 
         foreach ($data as $key => $value) {
-            $data[$key]['Playlist'] = $key;
-            $data[$key]['ImageUrl'] = $this->return_image_url("CSR", $data[$key]['SkillRank'], "medium");
+
+            // Drop Team / Inv CSR
+            if (count($value) == 4) {
+                $data[$key]['Playlist'] = $key;
+                $data[$key]['ImageUrl'] = $this->return_image_url("CSR", $data[$key]['SkillRank'], "medium");
+            } else {
+                unset($data[$key]);
+            }
         }
         return $data;
     }

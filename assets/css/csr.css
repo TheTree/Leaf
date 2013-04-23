@@ -1,0 +1,65 @@
+/*	CSR Flair
+=============================================================================
+http://www.reddit.com/r/halo/comments/1cuoe4/new_compact_csr_flair/
+@author Arcshine
+*/
+.flair:before {
+    content:'';
+    display:inline-block;
+    height:16px;
+    width:46px;
+    overflow:hidden;
+    vertical-align:middle;
+    margin-right:4px;
+    background:url('../img/csr-flair-sprite.png') no-repeat;
+}
+.flair-CSR-Null:before{ display:none; }
+.flair-CSR-2:before		{ background-position:-46px 0; }
+.flair-CSR-3:before		{ background-position:-92px 0; }
+.flair-CSR-4:before		{ background-position:-138px 0; }
+.flair-CSR-5:before		{ background-position:-184px 0; }
+.flair-CSR-6:before		{ background-position:-230px 0; }
+.flair-CSR-7:before		{ background-position:-276px 0; }
+.flair-CSR-8:before		{ background-position:-322px 0; }
+.flair-CSR-9:before		{ background-position:-368px 0; }
+.flair-CSR-10:before	{ background-position:-414px 0; }
+.flair-CSR-11:before	{ background-position:0 -16px; }
+.flair-CSR-12:before	{ background-position:-46px -16px; }
+.flair-CSR-13:before	{ background-position:-92px -16px; }
+.flair-CSR-14:before	{ background-position:-138px -16px; }
+.flair-CSR-15:before	{ background-position:-184px -16px; }
+.flair-CSR-16:before	{ background-position:-230px -16px; }
+.flair-CSR-17:before	{ background-position:-276px -16px; }
+.flair-CSR-18:before	{ background-position:-322px -16px; }
+.flair-CSR-19:before	{ background-position:-368px -16px; }
+.flair-CSR-20:before	{ background-position:-414px -16px; }
+.flair-CSR-21:before	{ background-position:0 -32px; }
+.flair-CSR-22:before	{ background-position:-46px -32px; }
+.flair-CSR-23:before	{ background-position:-92px -32px; }
+.flair-CSR-24:before	{ background-position:-138px -32px; }
+.flair-CSR-25:before	{ background-position:-184px -32px; }
+.flair-CSR-26:before	{ background-position:-230px -32px; }
+.flair-CSR-27:before	{ background-position:-276px -32px; }
+.flair-CSR-28:before	{ background-position:-322px -32px; }
+.flair-CSR-29:before	{ background-position:-368px -32px; }
+.flair-CSR-30:before	{ background-position:-414px -32px; }
+.flair-CSR-31:before	{ background-position:0 -48px; }
+.flair-CSR-32:before	{ background-position:-46px -48px; }
+.flair-CSR-33:before	{ background-position:-92px -48px; }
+.flair-CSR-34:before	{ background-position:-138px -48px; }
+.flair-CSR-35:before	{ background-position:-184px -48px; }
+.flair-CSR-36:before	{ background-position:-230px -48px; }
+.flair-CSR-37:before	{ background-position:-276px -48px; }
+.flair-CSR-38:before	{ background-position:-322px -48px; }
+.flair-CSR-39:before	{ background-position:-368px -48px; }
+.flair-CSR-40:before	{ background-position:-414px -48px; }
+.flair-CSR-41:before	{ background-position:0 -64px; }
+.flair-CSR-42:before	{ background-position:-46px -64px; }
+.flair-CSR-43:before	{ background-position:-92px -64px; }
+.flair-CSR-44:before	{ background-position:-138px -64px; }
+.flair-CSR-45:before	{ background-position:-184px -64px; }
+.flair-CSR-46:before	{ background-position:-230px -64px; }
+.flair-CSR-47:before	{ background-position:-276px -64px; }
+.flair-CSR-48:before	{ background-position:-322px -64px; }
+.flair-CSR-49:before	{ background-position:-368px -64px; }
+.flair-CSR-50:before	{ background-position:-414px -64px; }

@@ -8,6 +8,7 @@
     <?= link_tag('assets/css/bootstrap/bootstrap-responsive.min.css'); ?>
     <?= link_tag('assets/css/bootstrap/bootswatch.css'); ?>
     <?= link_tag('assets/css/default.css'); ?>
+    <?= link_tag('assets/css/csr.css'); ?>
     <script type="text/javascript">
         var _gaq = _gaq || [];
         _gaq.push(['_setAccount', 'UA-3737795-12']);
