@@ -21,10 +21,7 @@ class Compare extends IBOT_Controller {
 
         // get gamertag and icon, send 2 template
         $_tmp = get_cookie('starred',TRUE);
-
-        if ($_tmp == FALSE) {
-            $this->template->set('starred', FALSE);
-        } else {
+        if ($_tmp != FALSE) {
             $resp = $this->stat_m->get_name_and_emblem($_tmp);
             $this->template->set('you', $resp['Gamertag']);
         }
