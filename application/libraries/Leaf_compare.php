@@ -21,7 +21,7 @@ class Leaf_Compare {
 
         // set globals
         // we pass NULL to the $gamertag parameter, because we only have SeoGamertag
-        // at this point. We can get their Gamertag via SeoGamertag within the func
+        // at this point. We can get their Gamertag via SeoGamerta
         $this->you = $this->_ci->library->grab_profile_data("", FALSE, $paras['you']);
         $this->them = $this->_ci->library->grab_profile_data("", FALSE, $paras['them']);
 
@@ -63,7 +63,7 @@ class Leaf_Compare {
         // list of functions to run
         $comparisons = ["MediumSpartan", "HighestRank", "MedalsPerGame", "KillsPerGame", "AssistsPerGame","HeadshotsPerGame",
             "DeathsPerGame", "BetraysPerGame", "SuicidesPerGame", "WinPercentage","QuitPercentage", "CommendationProgress",
-            "ChallengesCompleted","AveragePersonalScore", "KDRatio", "HighestCSR"];
+            "ChallengesCompleted","AveragePersonalScore", "KDRatio", "HighestTeamCSR", "HighestIndividualCSR"];
 
         // run em
         foreach ($comparisons as $task) {
@@ -153,8 +153,8 @@ class Leaf_Compare {
         $this->you_num($num);
     }
 
-    public function wrap_image($img_src) {
-        return '<img src="' . $img_src . '" />';
+    public function wrap_image($rank_num) {
+        return '<span class="flair flair-CSR-' . $rank_num . '"></span>';
     }
 
     //----------------------------------------
@@ -471,29 +471,19 @@ class Leaf_Compare {
         );
     }
 
-    function HighestCSR() {
+    function HighestTeamCSR() {
         $you_top = FALSE;
         $them_top = FALSE;
 
         // get top CSR
         if (count($this->you['SkillData']) > 0) {
-            foreach($this->you['SkillData'] as $item) {
-                if ($item['Top']) {
-                    $you_top = $item;
-                    break;
-                }
-            }
+            $you_top = $this->you['SkillData']['Team'];
         } else {
             $you_top = FALSE;
         }
 
         if (count($this->them['SkillData']) > 0) {
-            foreach($this->them['SkillData'] as $item) {
-                if ($item['Top']) {
-                    $them_top = $item;
-                    break;
-                }
-            }
+            $them_top = $this->them['SkillData']['Team'];
         } else {
             $them_top = FALSE;
         }
@@ -501,35 +491,94 @@ class Leaf_Compare {
         // compare them
         if ($you_top == FALSE && $them_top == FALSE) {
             $this->reset_function_vars();
-            $this->you['TopCSR']  = $this->wrap_image($this->_ci->library->return_image_url('CSR', intval(0), "small"));
-            $this->them['TopCSR'] = $this->wrap_image($this->_ci->library->return_image_url('CSR', intval(0), "small"));
+            $this->you['TopTeamCSR']  = $this->wrap_image(intval(0));
+            $this->them['TopTeamCSR'] = $this->wrap_image(intval(0));
         } else if ($you_top == FALSE && $them_top != FALSE) {
-            $this->you['TopCSR']  = $this->wrap_image($this->_ci->library->return_image_url('CSR', intval(0), "small"));
-            $this->them['TopCSR'] = $this->wrap_image($this->_ci->library->return_image_url('CSR', intval($them_top['SkillRank']), "small"));
+            $this->you['TopTeamCSR']  = $this->wrap_image(intval(0));
+            $this->them['TopTeamCSR'] = $this->wrap_image(intval($them_top['SkillRank']));
             $this->them_num(2);
         } else if ($you_top != FALSE && $them_top == FALSE) {
-            $this->you['TopCSR']  = $this->wrap_image($this->_ci->library->return_image_url('CSR', intval($you_top['SkillRank']), "small"));
-            $this->them['TopCSR'] = $this->wrap_image($this->_ci->library->return_image_url('CSR', intval(0), "small"));
+            $this->you['TopTeamCSR']  = $this->wrap_image(intval($you_top['SkillRank']));
+            $this->them['TopTeamCSR'] = $this->wrap_image(intval(0));
             $this->you_num(2);
         } else if ($you_top['SkillRank'] == $them_top['SkillRank']) {
-            $this->you['TopCSR']  = $this->wrap_image($this->_ci->library->return_image_url('CSR', intval($you_top['SkillRank']), "small"));
-            $this->them['TopCSR'] = $this->wrap_image($this->_ci->library->return_image_url('CSR', intval($them_top['SkillRank']), "small"));
+            $this->you['TopTeamCSR']  = $this->wrap_image(intval($you_top['SkillRank']));
+            $this->them['TopTeamCSR'] = $this->wrap_image(intval($them_top['SkillRank']));
             $this->tie(2);
         } else if ($you_top['SkillRank'] > $them_top['SkillRank']) {
-            $this->you['TopCSR']  = $this->wrap_image($this->_ci->library->return_image_url('CSR', intval($you_top['SkillRank']), "small"));
-            $this->them['TopCSR'] = $this->wrap_image($this->_ci->library->return_image_url('CSR', intval($them_top['SkillRank']), "small"));
+            $this->you['TopTeamCSR']  = $this->wrap_image(intval($you_top['SkillRank']));
+            $this->them['TopTeamCSR'] = $this->wrap_image(intval($them_top['SkillRank']));
             $this->you_num(2);
         } else if ($you_top['SkillRank'] < $them_top['SkillRank']) {
-            $this->you['TopCSR']  = $this->wrap_image($this->_ci->library->return_image_url('CSR', intval($you_top['SkillRank']), "small"));
-            $this->them['TopCSR'] = $this->wrap_image($this->_ci->library->return_image_url('CSR', intval($them_top['SkillRank']), "small"));
+            $this->you['TopTeamCSR']  = $this->wrap_image(intval($you_top['SkillRank']));
+            $this->them['TopTeamCSR'] = $this->wrap_image(intval($them_top['SkillRank']));
             $this->them_num(2);
         }
 
         // return
         return array(
-            'Name' => 'Highest <abbr title="Competitive Skill Rank">CSR</abbr>',
+            'Name' => 'Highest Team <abbr title="Competitive Skill Rank">CSR</abbr>',
             'Max' => 1,
-            'Field' => "TopCSR",
+            'Field' => "TopTeamCSR",
+            'you' => array(
+                'pts' => intval($this->you_pts),
+                'style' => $this->you_style),
+            'them' => array(
+                'pts' => intval($this->them_pts),
+                'style' => $this->them_style),
+            'higher' => TRUE
+        );
+    }
+
+    function HighestIndividualCSR() {
+        $you_top = FALSE;
+        $them_top = FALSE;
+
+        // get top CSR
+        if (count($this->you['SkillData']) > 0) {
+            $you_top = $this->you['SkillData']['Ind'];
+        } else {
+            $you_top = FALSE;
+        }
+
+        if (count($this->them['SkillData']) > 0) {
+            $them_top = $this->them['SkillData']['Ind'];
+        } else {
+            $them_top = FALSE;
+        }
+
+        // compare them
+        if ($you_top == FALSE && $them_top == FALSE) {
+            $this->reset_function_vars();
+            $this->you['TopIndCSR']  = $this->wrap_image(intval(0));
+            $this->them['TopIndCSR'] = $this->wrap_image(intval(0));
+        } else if ($you_top == FALSE && $them_top != FALSE) {
+            $this->you['TopIndCSR']  = $this->wrap_image(intval(0));
+            $this->them['TopIndCSR'] = $this->wrap_image(intval($them_top['SkillRank']));
+            $this->them_num(2);
+        } else if ($you_top != FALSE && $them_top == FALSE) {
+            $this->you['TopIndCSR']  = $this->wrap_image(intval($you_top['SkillRank']));
+            $this->them['TopIndCSR'] = $this->wrap_image(intval(0));
+            $this->you_num(2);
+        } else if ($you_top['SkillRank'] == $them_top['SkillRank']) {
+            $this->you['TopIndCSR']  = $this->wrap_image(intval($you_top['SkillRank']));
+            $this->them['TopIndCSR'] = $this->wrap_image(intval($them_top['SkillRank']));
+            $this->tie(2);
+        } else if ($you_top['SkillRank'] > $them_top['SkillRank']) {
+            $this->you['TopIndCSR']  = $this->wrap_image(intval($you_top['SkillRank']));
+            $this->them['TopIndCSR'] = $this->wrap_image(intval($them_top['SkillRank']));
+            $this->you_num(2);
+        } else if ($you_top['SkillRank'] < $them_top['SkillRank']) {
+            $this->you['TopIndCSR']  = $this->wrap_image(intval($you_top['SkillRank']));
+            $this->them['TopIndCSR'] = $this->wrap_image(intval($them_top['SkillRank']));
+            $this->them_num(2);
+        }
+
+        // return
+        return array(
+            'Name' => 'Highest Individual <abbr title="Competitive Skill Rank">CSR</abbr>',
+            'Max' => 1,
+            'Field' => "TopIndCSR",
             'you' => array(
                 'pts' => intval($this->you_pts),
                 'style' => $this->you_style),
