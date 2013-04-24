@@ -36,7 +36,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                <? $x = 1; foreach($leaderboards as $player): ?>
+                <? $x = 1 * $page; foreach($leaderboards as $player): ?>
                     <tr class="<? if ($player['SeoGamertag'] == $my['SeoGamertag']): ?>success<? endif; ?>">
                         <td><?= $this->library->get_trophy($x); ?></td>
                         <td><a style="color: #000; " href="<?= base_url('gt/' . $player['SeoGamertag']); ?>"><?= $player['Gamertag']; ?></a></td>

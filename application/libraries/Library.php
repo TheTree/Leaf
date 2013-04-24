@@ -229,15 +229,17 @@ class Library {
 
     /**
      * check_status
-     *
      * Checks the API for the Status var to make sure its up and running
+     *
      * @param type $resp
+     * @param      $url
      * @return boolean
      */
-    public function check_status(&$resp) {
+    public function check_status(&$resp, $url) {
         if (isset($resp['StatusCode']) && ($resp['StatusCode'] == 0 || $resp['StatusCode'] == 1)) {
             return $resp;
         } else {
+            log_message('error', 'URL Down: ' . $url);
             log_message('error', 'API Down: ' . $resp['StatusReason']);
             return FALSE;
         }
@@ -415,7 +417,7 @@ class Library {
         $resp = json_decode($this->_ci->curl->simple_get($url), TRUE);
 
         // check it
-        return $this->check_status($resp);
+        return $this->check_status($resp, $url);
     }
 
     /**
@@ -643,8 +645,8 @@ class Library {
 
         // we gonna multithread this bitch. Get our header ready
         $this->_ci->load->library("chad/mcurl");
-        $parts['service_record'] = $this->get_url($this->lang . "/players/" . trim(urlencode(strtolower($gt))) . "/" . $this->game . "/servicerecord", FALSE, TRUE); #unvalidated
-        $parts['wargames_record'] = $this->get_url($this->lang . "/players/" . trim(urlencode(strtolower($gt))) . "/" . $this->game . "/servicerecord/wargames", TRUE, TRUE); #validated
+        $parts['service_record'] = $this->get_url($this->lang . "/players/" . trim(rawurlencode(strtolower($gt))) . "/" . $this->game . "/servicerecord", FALSE, TRUE); #unvalidated
+        $parts['wargames_record'] = $this->get_url($this->lang . "/players/" . trim(rawurlencode(strtolower($gt))) . "/" . $this->game . "/servicerecord/wargames", TRUE, TRUE); #validated
 
         // add the calls
         $this->_ci->mcurl->add_call('service_record', "get", $parts['service_record']['url'], array(), $parts['service_record']['headers']);
@@ -652,8 +654,8 @@ class Library {
 
         // execute it
         $responses = $this->_ci->mcurl->execute();
-        $service_record = $this->check_status(json_decode($responses['service_record']['response'], TRUE));
-        $wargames_record = $this->check_status(json_decode($responses['wargames_record']['response'],TRUE));
+        $service_record = $this->check_status(json_decode($responses['service_record']['response'], TRUE),$parts['service_record']['url']);
+        $wargames_record = $this->check_status(json_decode($responses['wargames_record']['response'],TRUE), $parts['wargames_record']['url']);
 
         // cleanup multipart
         unset($responses);

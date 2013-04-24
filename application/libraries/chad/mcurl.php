@@ -93,7 +93,7 @@ class Mcurl {
         // If its an array (instead of a query string) then format it correctly
         if (is_array($params))
         {
-            $params = http_build_query($params, NULL, '&');
+            $params = http_build_query($params, NULL, '&', PHP_QUERY_RFC3986);
         }
 
         $method = strtoupper($method);

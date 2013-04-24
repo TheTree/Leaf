@@ -61,9 +61,18 @@ class Leaderboards extends IBOT_Controller {
         $team = $this->config->item('team_csr');
         $ind = $this->config->item('individual_csr');
 
+        // get page if one
+        $page = $this->uri->segment(3);
+        if ($page == FALSE) {
+            $page = 1;
+        }  else {
+            $page = (($page - 1) * 15 + 1); #$config['per_page']
+        }
+
         //output needed template stuff
         $this->template
             ->set("my", $this->my)
+            ->set("page", intval($page))
             ->set("csr_team", $team)
             ->set("csr_ind", $ind)
             ->set("playlists", $this->playlists)
