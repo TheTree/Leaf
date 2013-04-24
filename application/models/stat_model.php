@@ -468,11 +468,34 @@ class Stat_model extends IBOT_Model {
      */
     public function get_name_and_emblem($seo_gt) {
         $resp = $this->db
-            ->select('Gamertag,Emblem')
+            ->select('Gamertag,Emblem,SeoGamertag')
             ->get_where('ci_gamertags', array(
                 'SeoGamertag' => $seo_gt
             ));
 
+        $resp = $resp->row_array();
+
+        if (isset($resp['Gamertag'])) {
+            return $resp;
+        } else {
+            return FALSE;
+        }
+    }
+
+    /**
+     * get_name_and_kd
+     *
+     * Gets `Gamertag` and `KDRatio` via `SeoGamertag`
+     *
+     * @param $seo_gt
+     * @return bool
+     */
+    public function get_name_and_kd($seo_gt) {
+        $resp = $this->db
+                ->select('Gamertag,SeoGamertag,KDRatio')
+                ->get_where('ci_gamertags', array(
+                'SeoGamertag' => $seo_gt
+            ));
         $resp = $resp->row_array();
 
         if (isset($resp['Gamertag'])) {
@@ -553,5 +576,107 @@ class Stat_model extends IBOT_Model {
         } else {
             return FALSE;
         }
+    }
+
+    /**
+     * get_unique_csr_position
+     *
+     * This complicated bugger sends a query first that creates a local mySQL variable (row_number)
+     * then uses that to count to figure out their position on the sorted query. Thus getting their
+     * rank in that playlist.
+     *
+     * @param $seo_gt
+     * @return array
+     */
+    public function get_unique_csr_position($seo_gt) {
+        $rtr_arr = array();
+
+        // get arrays of playlists
+        $ind = $this->config->item('individual_csr');
+        foreach ($ind as $item) {
+            $csr[] = $item . "_I";
+        }
+
+        $team = $this->config->item('team_csr');
+        foreach ($team as $item) {
+            $csr[] = $item . "_T";
+        }
+        unset($ind);
+        unset($team);
+
+        // lets get Gamertag, SeoGamertag, KDRatio
+        $rtr_arr = $this->get_name_and_kd($seo_gt);
+
+        foreach ($csr as $id) {
+
+            // set our tmp var
+            $this->db->simple_query('SET @row_number := 0');
+
+            // lets grab this query rank id
+            $resp = $this->db->query('SELECT ' . '* FROM (SELECT `' . $id . '`,`SeoGamertag`, @row_number := @row_number + 1 as `Rank`
+                                FROM `ci_csr` ORDER BY `' . $id . '` DESC) as row_to_return WHERE `SeoGamertag` =' . '"' . $this->db->escape_str($seo_gt) . '"');
+
+            $rtr_arr[$id] = $resp->row_array();
+            unset($rtr_arr[$id]['SeoGamertag']);
+        }
+        return $rtr_arr;
+    }
+
+    /**
+     * get_playlist
+     *
+     * Takes an incoming playlist and grabs the most recent.
+     * @param $playlist
+     * @param $limit
+     * @param $start
+     * @return mixed
+     */
+    public function get_playlist($playlist, $limit, $start) {
+        if ($start != 1 && $start != 0) {
+            $start--;
+        }
+        $max = ($start * $limit);
+
+        $query = $this->db
+            ->select($playlist . ",SeoGamertag,KDRatio,Gamertag")
+            ->where($playlist . ' > ', 0)
+            ->order_by($playlist, "desc")
+            ->limit(intval($limit), intval($max))
+            ->get('ci_csr');
+
+        return $query->result_array();
+    }
+
+    /**
+     * count_csr
+     *
+     * Counts records in `ci_csr` that have more than 0 and ready to leaderboard.
+     * @param $playlist
+     * @return mixed
+     */
+    public function count_csr($playlist) {
+        $this->db->where($playlist . ' > ', 0);
+        return $this->db->count_all_results('ci_csr');
+    }
+
+    /**
+     * insert_playlists
+     *
+     * Inserts playlist into dB
+     * @param $data
+     */
+    public function insert_playlists($data) {
+        $this->db
+            ->insert_batch('ci_playlists', $data);
+    }
+
+    /**
+     * empty_playlists
+     *
+     * Cleans out `ci_playlist` table, so new data can come in.
+     */
+    public function empty_playlists() {
+        $this->db
+            ->truncate('ci_playlists');
     }
 }

@@ -142,7 +142,7 @@ class Home extends IBOT_Controller {
         $data = $this->stat_m->get_expiration_date($hashed);
         
         if (is_array($data)) {
-            if (($data['Expiration'] - TWELVE_HOURS_IN_SECONDS + FIVEMIN_IN_SECONDS) < time() || ENVIRONMENT == "development") {
+            if (($data['Expiration'] - TWENTYFOUR_HOURS_IN_SECONDS + FIVEMIN_IN_SECONDS) < time() || ENVIRONMENT == "development") {
                 $data = $this->library->get_profile($gamertag, false, true, $seo_gamertag);
                 
                 // set cache

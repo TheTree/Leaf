@@ -122,7 +122,25 @@ class Library {
             $uri_string = uri_string();
         }
 
-        return strpos($uri_string, $item) !== FALSE ? 'active' : '';
+        if ($this->_ci->uri->segment(1) == $item) {
+            return 'active';
+        } else {
+            return '';
+        }
+    }
+
+    public function is_csr_active($item) {
+        if ($this->_ci->uri->segment(2) == FALSE) {
+            $uri_string = "100_I";
+        } else {
+            $uri_string = $this->_ci->uri->segment(2);
+        }
+
+        if ($uri_string == $item) {
+            return 'active';
+        } else {
+            return '';
+        }
     }
 
     /**
@@ -315,6 +333,47 @@ class Library {
     }
 
     /**
+     * get_playlists
+     *
+     * Pulls from API if more than 5 days have passed, otherwise pulls from cache.
+     * @return array|mixed
+     */
+    public function get_playlists() {
+
+        // check for 5 day old cache
+        if (($_tmp = @json_decode($this->_ci->cache->get('playlists'), TRUE)) == FALSE)  {
+            $resp = $this->get_url("https://presence.svc.halowaypoint.com/" . $this->lang . "/" . $this->game . "/playlists", TRUE);
+
+            $ins_arr = array();
+            if (is_array($resp)) {
+                foreach($resp['Playlists'] as $playlist) {
+                    if ($playlist['ModeId'] == 3) {
+                        $ins_arr[$playlist['Id']] = array(
+                            'Id' => $playlist['Id'],
+                            'Name' => $playlist['Name'],
+                            'Description' => $playlist['Description']
+                        );
+                    }
+                }
+            }
+
+            // alpha order
+            $this->set_sort_key("Name");
+            uasort($ins_arr, array($this,"key_sort"));
+
+            // store into db
+            $this->_ci->stat_m->empty_playlists();
+            $this->_ci->stat_m->insert_playlists($ins_arr);
+
+            // dump into cache
+            $this->_ci->cache->write(json_encode($ins_arr), 'playlists');
+            return $ins_arr;
+        } else {
+            return $_tmp;
+        }
+    }
+
+    /**
      * get_url
      * Takes the url along w/ language / game, parameter is just paras of the URL
      *
@@ -337,8 +396,12 @@ class Library {
         // set accept header, and SpartanToken if needed
         $this->_ci->curl->option('HTTPHEADER', $header_paras);
 
-        // make the url
-        $url = "https://stats.svc.halowaypoint.com/" . $paras;
+        if (substr($paras, 0, 5) === "https") {
+            $url = $paras;
+        } else {
+            // make the url
+            $url = "https://stats.svc.halowaypoint.com/" . $paras;
+        }
 
         if ($return) {
             return array(
@@ -604,7 +667,8 @@ class Library {
         $medal_data = $this->get_medal_data($wargames_record['TotalMedalsStats']);
 
         // get skill stuff
-        $skill_data = $this->get_skill_data($service_record['SkillRanks'], $service_record['TopSkillRank'], $service_record['Gamertag'], $seo_gamertag);
+        $skill_data = $this->get_skill_data($service_record['SkillRanks'], $service_record['TopSkillRank'],
+                                            $service_record['Gamertag'], $seo_gamertag, $service_record['GameModes'][2]['KDRatio']);
 
         // get spec data
         $spec_data = $this->get_spec_data($service_record['Specializations']);
@@ -628,7 +692,7 @@ class Library {
             'RankImage'                        => substr($service_record['RankImageUrl']['AssetUrl'], 7),
             'Specialization'                   => $this->find_current_specialization($service_record['Specializations']),
             'SpecializationLevel'              => $this->find_current_specialization($service_record['Specializations'], "Level"),
-            'Expiration'                       => intval(time() + TWELVE_HOURS_IN_SECONDS),
+            'Expiration'                       => intval(time() + TWENTYFOUR_HOURS_IN_SECONDS),
             'MedalData'                        => @serialize($medal_data),
             'SkillData'                        => @serialize($skill_data),
             'SpecData'                         => @serialize($spec_data),
@@ -876,15 +940,17 @@ class Library {
      * @param $top_csr
      * @param $gt
      * @param $seo_gt
+     * @param $kd_ratio
      * @return array
      */
-    public function get_skill_data($all_csr, $top_csr, $gt, $seo_gt) {
+    public function get_skill_data($all_csr, $top_csr, $gt, $seo_gt, $kd_ratio) {
         $rtr_arr = array();
 
         // add basic data for our CSR leaderboards
         $csr_leader = array();
         $csr_leader['SeoGamertag'] = $seo_gt;
         $csr_leader['Gamertag'] = $gt;
+        $csr_leader['KDratio'] = floatval($kd_ratio);
 
         // start w/ 0 for our Team/Inv seperated CSR
         $rtr_arr['Team'] = array(
@@ -1271,6 +1337,6 @@ class Library {
         if ($a[$this->get_sort_key()] == $b[$this->get_sort_key()]) {
             return 0;
         }
-    return ($a[$this->get_sort_key()] < $b[$this->get_sort_key()] ? 1 : -1);
+        return ($a[$this->get_sort_key()] < $b[$this->get_sort_key()] ? 1 : -1);
     }
 }

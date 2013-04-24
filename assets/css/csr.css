@@ -4,62 +4,20 @@ http://www.reddit.com/r/halo/comments/1cuoe4/new_compact_csr_flair/
 @author Arcshine
 */
 .flair:before {
-    content:'';
-    display:inline-block;
-    height:16px;
-    width:46px;
-    overflow:hidden;
-    vertical-align:middle;
-    margin-right:4px;
-    background:url('../img/csr-flair-sprite.png') no-repeat;
+    content: "";
+    height: 16px;
+    width: 46px;
+    display: inline-block;
+    background: url('../img/csr-flair-sprite.png') no-repeat;
+    vertical-align: middle;
+    margin-right: 4px;
 }
-.flair-CSR-Null:before{ display:none; }
-.flair-CSR-2:before		{ background-position:-46px 0; }
-.flair-CSR-3:before		{ background-position:-92px 0; }
-.flair-CSR-4:before		{ background-position:-138px 0; }
-.flair-CSR-5:before		{ background-position:-184px 0; }
-.flair-CSR-6:before		{ background-position:-230px 0; }
-.flair-CSR-7:before		{ background-position:-276px 0; }
-.flair-CSR-8:before		{ background-position:-322px 0; }
-.flair-CSR-9:before		{ background-position:-368px 0; }
-.flair-CSR-10:before	{ background-position:-414px 0; }
-.flair-CSR-11:before	{ background-position:0 -16px; }
-.flair-CSR-12:before	{ background-position:-46px -16px; }
-.flair-CSR-13:before	{ background-position:-92px -16px; }
-.flair-CSR-14:before	{ background-position:-138px -16px; }
-.flair-CSR-15:before	{ background-position:-184px -16px; }
-.flair-CSR-16:before	{ background-position:-230px -16px; }
-.flair-CSR-17:before	{ background-position:-276px -16px; }
-.flair-CSR-18:before	{ background-position:-322px -16px; }
-.flair-CSR-19:before	{ background-position:-368px -16px; }
-.flair-CSR-20:before	{ background-position:-414px -16px; }
-.flair-CSR-21:before	{ background-position:0 -32px; }
-.flair-CSR-22:before	{ background-position:-46px -32px; }
-.flair-CSR-23:before	{ background-position:-92px -32px; }
-.flair-CSR-24:before	{ background-position:-138px -32px; }
-.flair-CSR-25:before	{ background-position:-184px -32px; }
-.flair-CSR-26:before	{ background-position:-230px -32px; }
-.flair-CSR-27:before	{ background-position:-276px -32px; }
-.flair-CSR-28:before	{ background-position:-322px -32px; }
-.flair-CSR-29:before	{ background-position:-368px -32px; }
-.flair-CSR-30:before	{ background-position:-414px -32px; }
-.flair-CSR-31:before	{ background-position:0 -48px; }
-.flair-CSR-32:before	{ background-position:-46px -48px; }
-.flair-CSR-33:before	{ background-position:-92px -48px; }
-.flair-CSR-34:before	{ background-position:-138px -48px; }
-.flair-CSR-35:before	{ background-position:-184px -48px; }
-.flair-CSR-36:before	{ background-position:-230px -48px; }
-.flair-CSR-37:before	{ background-position:-276px -48px; }
-.flair-CSR-38:before	{ background-position:-322px -48px; }
-.flair-CSR-39:before	{ background-position:-368px -48px; }
-.flair-CSR-40:before	{ background-position:-414px -48px; }
-.flair-CSR-41:before	{ background-position:0 -64px; }
-.flair-CSR-42:before	{ background-position:-46px -64px; }
-.flair-CSR-43:before	{ background-position:-92px -64px; }
-.flair-CSR-44:before	{ background-position:-138px -64px; }
-.flair-CSR-45:before	{ background-position:-184px -64px; }
-.flair-CSR-46:before	{ background-position:-230px -64px; }
-.flair-CSR-47:before	{ background-position:-276px -64px; }
-.flair-CSR-48:before	{ background-position:-322px -64px; }
-.flair-CSR-49:before	{ background-position:-368px -64px; }
-.flair-CSR-50:before	{ background-position:-414px -64px; }
+.flair {
+    overflow: hidden;
+    vertical-align: middle;
+    background-color: transparent !important;
+    color: #64a435;
+    padding: 2px;
+    border-radius: 1px;
+}
+.flair-CSR-1:before{background-position:-0px -0px}.flair-CSR-10:before{background-position:-0px -16px}.flair-CSR-11:before{background-position:-0px -32px}.flair-CSR-12:before{background-position:-0px -48px}.flair-CSR-13:before{background-position:-0px -64px}.flair-CSR-14:before{background-position:-0px -80px}.flair-CSR-15:before{background-position:-0px -96px}.flair-CSR-16:before{background-position:-0px -112px}.flair-CSR-17:before{background-position:-0px -128px}.flair-CSR-18:before{background-position:-0px -144px}.flair-CSR-19:before{background-position:-0px -160px}.flair-CSR-2:before{background-position:-0px -176px}.flair-CSR-20:before{background-position:-0px -192px}.flair-CSR-21:before{background-position:-0px -208px}.flair-CSR-22:before{background-position:-0px -224px}.flair-CSR-23:before{background-position:-0px -240px}.flair-CSR-24:before{background-position:-0px -256px}.flair-CSR-25:before{background-position:-0px -272px}.flair-CSR-26:before{background-position:-0px -288px}.flair-CSR-27:before{background-position:-0px -304px}.flair-CSR-28:before{background-position:-0px -320px}.flair-CSR-29:before{background-position:-0px -336px}.flair-CSR-3:before{background-position:-0px -352px}.flair-CSR-30:before{background-position:-0px -368px}.flair-CSR-31:before{background-position:-0px -384px}.flair-CSR-32:before{background-position:-0px -400px}.flair-CSR-33:before{background-position:-0px -416px}.flair-CSR-34:before{background-position:-0px -432px}.flair-CSR-35:before{background-position:-0px -448px}.flair-CSR-36:before{background-position:-0px -464px}.flair-CSR-37:before{background-position:-0px -480px}.flair-CSR-38:before{background-position:-0px -496px}.flair-CSR-39:before{background-position:-0px -512px}.flair-CSR-4:before{background-position:-0px -528px}.flair-CSR-40:before{background-position:-0px -544px}.flair-CSR-41:before{background-position:-0px -560px}.flair-CSR-42:before{background-position:-0px -576px}.flair-CSR-43:before{background-position:-0px -592px}.flair-CSR-44:before{background-position:-0px -608px}.flair-CSR-45:before{background-position:-0px -624px}.flair-CSR-46:before{background-position:-0px -640px}.flair-CSR-47:before{background-position:-0px -656px}.flair-CSR-48:before{background-position:-0px -672px}.flair-CSR-49:before{background-position:-0px -688px}.flair-CSR-5:before{background-position:-0px -704px}.flair-CSR-50:before{background-position:-0px -720px}.flair-CSR-6:before{background-position:-0px -736px}.flair-CSR-7:before{background-position:-0px -752px}.flair-CSR-8:before{background-position:-0px -768px}.flair-CSR-9:before{background-position:-0px -784px}.flair-CSR-Null:before{background-position:-0px -800px}

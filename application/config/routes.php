@@ -48,6 +48,7 @@ $route['metadata/recache'] = "stats/home/metadata";
 $route['stats'] = "stats/home/index";
 $route['compare'] = "stats/compare/index";
 $route['leaderboards'] = "stats/home/index";
+$route['csr_leaderboards'] = "csr/leaderboards/index";
 
 // variable mod pages
 $route['guilty_spark/flag/(:any)'] = "moderate/home/flagged/$1";
@@ -61,6 +62,8 @@ $route['guilty_spark/login'] = "moderate/home/login";
 $route['ajax/gt/(:any)'] = "ajax/core/compare_api/$1";
 
 // variable pages
+$route['csr_leaderboards/(:any)'] = "csr/leaderboards/leaderboard/$1/0";
+$route['csr_leaderboards/(:any)/(:num)'] = "csr/leaderboards/leaderboard/$1/$2";
 $route['unfreeze/(:any)'] = "stats/home/unfreeze/$1";
 $route['star/(:any)'] = "stats/home/star/$1";
 $route['gt/(:any)/recache'] = "stats/home/recache_gt/$1";
