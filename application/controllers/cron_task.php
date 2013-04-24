@@ -50,9 +50,15 @@ class Cron_task extends IBOT_Controller {
                 print "Running : " . $result['Gamertag'] . "\n";
                 $new_record = $this->library->get_profile($result['Gamertag'], FALSE, TRUE, $result['SeoGamertag']);
 
+                // check if they can be loaded
                 if ($new_record == FALSE) {
-                    print "Couldn't pull: " . $result['Gamertag'] . "\n";
+                    $this->stat_m->update_account($result['HashedGamertag'], array(
+                        'InactiveCounter' => intval($result['InactiveCounter'] + 1)
+                    ));
+                    print $result['Gamertag'] . " could not be loaded. +1 to `InactiveCounter` \n";
+
                 }
+
                 // check comparison, if so increment there `InactiveCounter` by 1
                 if ($new_record['Xp'] == $result['Xp']) {
                     $this->stat_m->update_account($result['HashedGamertag'], array(
@@ -75,6 +81,10 @@ class Cron_task extends IBOT_Controller {
             // store new data
             $cache_write = $this->cache->write($result['id'], 'cron_lastid');
             print "Wrote: " . $result['id'] . " to cache. \n";
-        }  
+        } else {
+            // skip 5
+            $this->cache->write($_previous + 5, 'cron_lastid');
+            print "Wrote: " . $_previous + 5 . " to cache. \n";
+        }
     }
 }

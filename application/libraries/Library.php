@@ -661,7 +661,7 @@ class Library {
         unset($responses);
 
         if ($service_record == FALSE || $wargames_record == FALSE) {
-            $this->throw_error("ENDPOINTS_DOWN");
+           return FALSE;
         }
 
         // lets do the URL work, and medal

@@ -641,6 +641,7 @@ class Stat_model extends IBOT_Model {
             ->select($playlist . ",SeoGamertag,KDRatio,Gamertag")
             ->where($playlist . ' > ', 0)
             ->order_by($playlist, "desc")
+            ->order_by("KDRatio", "desc")
             ->limit(intval($limit), intval($max))
             ->get('ci_csr');
 
