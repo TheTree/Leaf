@@ -12,3 +12,12 @@ function output($my_array, $my_die = 0) {
         die();
     }
 }
+
+function search_big($leaders, $needle) {
+    foreach($leaders as $key => $leader) {
+        if ($leader['Gamertag'] === $needle) {
+            return TRUE;
+        }
+    }
+    return FALSE;
+}
