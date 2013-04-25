@@ -29,8 +29,28 @@ class Leaderboards extends IBOT_Controller {
     }
 
     private function _load_pagination($playlist, $page) {
+
         // load pagination stuff
         $this->load->library('pagination');
+
+        // get arrays of playlists
+        $ind = $this->config->item('individual_csr');
+        foreach ($ind as $item) {
+            $csr[] = $item . "_I";
+        }
+
+        $team = $this->config->item('team_csr');
+        foreach ($team as $item) {
+            $csr[] = $item . "_T";
+        }
+        unset($ind);
+        unset($team);
+
+        // check if this playlist exists
+        if (!in_array($playlist, $csr)) {
+            $this->library->throw_error("PLAYLIST_NOT_FOUND");
+            return FALSE;
+        }
 
         $config = array();
         $config['base_url'] = base_url() . "csr_leaderboards/" . $playlist . "/";
@@ -49,7 +69,7 @@ class Leaderboards extends IBOT_Controller {
 
     private function _load_personal() {
         if (is_array($this->gt)) {
-            $this->my = $this->cache->model('stat_m','get_unique_csr_position', array($this->gt['SeoGamertag']), 1800);
+            $this->my = $this->cache->model('stat_m','get_unique_csr_position', array($this->gt['SeoGamertag']), 300);
         } else {
             // @todo pop message saying to "star" a profile to mark it as your own
         }
