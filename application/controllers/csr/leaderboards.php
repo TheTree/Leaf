@@ -69,8 +69,15 @@ class Leaderboards extends IBOT_Controller {
             $page = (($page - 1) * 15 + 1); #$config['per_page']
         }
 
+        // check 4 playlist
+        $playlist = $this->uri->segment(2);
+        if ($playlist == FALSE) {
+            $playlist = $this->default_playlist;
+        }
+
         //output needed template stuff
         $this->template
+            ->set("playlist", $playlist)
             ->set("my", $this->my)
             ->set("page", intval($page))
             ->set("csr_team", $team)

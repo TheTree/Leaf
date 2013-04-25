@@ -222,7 +222,7 @@ class Library {
                 break;
 
             default:
-                return intval($x) . "<sup>th</sup>";
+                return number_format($x) . "<sup>th</sup>";
                 break;
         }
     }

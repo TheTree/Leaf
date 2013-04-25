@@ -155,6 +155,7 @@ class Stat_model extends IBOT_Model {
         $resp = $this->db
                 ->select('HashedGamertag,Xp,id,InactiveCounter,Gamertag,SeoGamertag')
                 ->limit(intval($max),intval($start))
+                ->order_by("id", "desc")
                 ->get_where('ci_gamertags', array(
                     'Status'    => intval(0),
                     'Expiration <' => time(),

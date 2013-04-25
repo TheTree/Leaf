@@ -40,17 +40,16 @@
                     <tr class="<? if ($player['SeoGamertag'] == $my['SeoGamertag']): ?>success<? endif; ?>">
                         <td><?= $this->library->get_trophy($x); ?></td>
                         <td><a style="color: #000; " href="<?= base_url('gt/' . $player['SeoGamertag']); ?>"><?= $player['Gamertag']; ?></a></td>
-                        <td><span class="flair flair-CSR-<?= $player[($this->uri->segment(2) == FALSE) ? "100_I" : $this->uri->segment(2)]; ?>"></span></td>
+                        <td><span class="flair flair-CSR-<?= $player[$playlist]; ?>"></span></td>
                         <td><?= $player['KDRatio']; ?></td>
                     </tr>
                 <? $x++; endforeach; ?>
                 <? if (!search_big($leaderboards,$my['Gamertag'])): ?>
-                    <? if (isset($my[$this->uri->segment(2)]) && $my[$this->uri->segment(2)][$this->uri->segment(2)] > 0): ?>
+                    <? if (isset($my[$playlist]) && $my[$playlist][$playlist] > 0): ?>
                         <tr class="info">
-                            <td><?= $this->library->get_trophy($my[$this->uri->segment(2)]['Rank']); ?></td>
+                            <td><?= $this->library->get_trophy($my[$playlist]['Rank']); ?></td>
                             <td><a style="color: #000; " href="<?= base_url('gt/' . $my['SeoGamertag']); ?>"><?= $my['Gamertag']; ?></a></td>
-                            <td><span class="flair flair-CSR-<?= $my[($this->uri->segment(2) == FALSE) ? "100_I" : $this->uri->segment(2)]
-                                [($this->uri->segment(2) == FALSE) ? "100_I" : $this->uri->segment(2)]; ?>"></span></td>
+                            <td><span class="flair flair-CSR-<?= $my[$playlist][$playlist]; ?>"></span></td>
                             <td><?= $my['KDRatio']; ?></td>
                         </tr>
                     <? endif; ?>
