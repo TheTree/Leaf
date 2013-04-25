@@ -437,6 +437,21 @@ class Stat_model extends IBOT_Model {
     }
 
     /**
+     * change_csr_status
+     *
+     * Flags user in `ci_csr` as booster/cheater
+     * @param $seo_gt
+     * @param $status
+     */
+    public function change_csr_status($seo_gt, $status) {
+        $this->db
+            ->where('SeoGamertag', $seo_gt)
+            ->update('ci_csr', array(
+                'Status' => intval($status)
+            ));
+    }
+
+    /**
      * get_gamertag_name
      *
      * Returns `Gamertag` when passed `SeoGamertag`
@@ -554,6 +569,29 @@ class Stat_model extends IBOT_Model {
     }
 
     /**
+     * get_csr_data
+     *
+     * Grabs `Gamertag`,`SeoGamertag`,`Status` from `ci_csr` via `SeoGamertag`
+     * @param $seo_gt
+     * @return bool
+     */
+    public function get_csr_data($seo_gt) {
+        $resp = $this->db
+                ->select('Gamertag,SeoGamertag,Status')
+                ->get_where('ci_csr', array(
+                'SeoGamertag' => $seo_gt
+            ));
+
+        $resp = $resp->row_array();
+
+        if (isset($resp['SeoGamertag'])) {
+            return $resp;
+        } else {
+            return FALSE;
+        }
+    }
+
+    /**
      * update_csr_leaderboards
      *
      * Adds abstracted CSR data into trackable leaderboard
@@ -563,12 +601,23 @@ class Stat_model extends IBOT_Model {
     public function update_csr_leaderboards($data) {
 
         if (isset($data['SeoGamertag'])) {
+
+            // check if record exists
+            if (($_tmp = $this->get_csr_data($data['SeoGamertag'])) != FALSE) {
+                $status = $_tmp['Status'];
+            }   else {
+                // new record
+                $status = 0;
+            }
+
             // delete old record
             $this->db
                 ->delete('ci_csr', array(
                     'SeoGamertag' => $data['SeoGamertag']
                 ));
 
+            // add `Status` and `LastUpdated` vars
+            $data['Status'] = intval($status);
             $data['LastUpdated'] = time();
 
             // insert
@@ -641,6 +690,7 @@ class Stat_model extends IBOT_Model {
         $query = $this->db
             ->select($playlist . ",SeoGamertag,KDRatio,Gamertag")
             ->where($playlist . ' > ', 0)
+            ->where('Status', 0)
             ->order_by($playlist, "desc")
             ->order_by("KDRatio", "desc")
             ->limit(intval($limit), intval($max))
@@ -657,7 +707,9 @@ class Stat_model extends IBOT_Model {
      * @return mixed
      */
     public function count_csr($playlist) {
-        $this->db->where($playlist . ' > ', 0);
+        $this->db
+            ->where('Status', 0)
+            ->where($playlist . ' > ', 0);
         return $this->db->count_all_results('ci_csr');
     }
 

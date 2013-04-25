@@ -101,7 +101,7 @@ class Home extends IBOT_Controller {
             // mark the person
             $this->stat_m->change_status($seo_name, $status);
 
-            // @todo flag record in `ci_csr`
+            // flag person in csr_records
             $this->stat_m->change_csr_status($seo_name, $status);
 
             // redirect back 2 marking page

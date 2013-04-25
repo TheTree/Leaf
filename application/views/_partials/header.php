@@ -14,7 +14,7 @@
                     <div class="nav-collapse collapse">
                         <ul class="nav">
                             <li class="<? if ($this->library->is_active("news")): ?> active<? endif; ?>"><a href="<?= base_url('news'); ?>">News</a></li>
-                            <!--<li class="<? if ($this->library->is_active("csr_leaderboards")): ?> active<? endif; ?>"><a href="<?= base_url('csr_leaderboards'); ?>">CSR Leaderboards</a></li>-->
+                            <li class="<? if ($this->library->is_active("csr_leaderboards")): ?> active<? endif; ?>"><a href="<?= base_url('csr_leaderboards'); ?>">CSR Leaderboards</a></li>
                             <li class="<? if ($this->library->is_active("leaderboards")): ?> active<? endif; ?>"><a href="<?= base_url('leaderboards'); ?>">Top Ten</a></li>
                             <li class="<? if ($this->library->is_active("compare")): ?> active<? endif; ?>"><a rel="help" href="<?= base_url('compare'); ?>">Compare</a></li>
                             <li class="<? if ($this->library->is_active("about")): ?> active<? endif; ?>"><a href="<?= base_url('about'); ?>">About</a></li>
