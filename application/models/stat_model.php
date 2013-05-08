@@ -142,6 +142,26 @@ class Stat_model extends IBOT_Model {
         
         return $this->db->count_all_results('ci_gamertags');
     }
+
+    /**
+     * get_max_id
+     *
+     * Find the largest `id` in `ci_gamertags` to be used in cron searches
+     *
+     * @return bool
+     */
+    public function get_max_id() {
+        $this->db->select_max('id','max');
+        $resp = $this->db->get('ci_gamertags');
+
+        $resp = $resp->row_array();
+
+        if (isset($resp['max'])) {
+            return $resp['max'];
+        } else {
+            return FALSE;
+        }
+    }
     
     /**
      * cron_gamertags
@@ -155,7 +175,7 @@ class Stat_model extends IBOT_Model {
         $resp = $this->db
                 ->select('HashedGamertag,Xp,id,InactiveCounter,Gamertag,SeoGamertag')
                 ->limit(intval($max),intval($start))
-                ->order_by("id", "desc")
+                ->order_by("id", "asc")
                 ->get_where('ci_gamertags', array(
                     'Status'    => intval(0),
                     'Expiration <' => time(),

@@ -22,13 +22,17 @@ class Cron_task extends IBOT_Controller {
         // check our previous and max
         $_previous = $this->cache->get('cron_lastid');
         $_max = $this->cache->get('cron_maxid');
+
+        print "Cache Last_ID: " . $_previous . "\n";
+        print "Cache Max_ID " . $_max . "\n";
+
         if (intval($_previous) >= intval($_max)) {
             $_max = 0;
         }
         
         // check if its null
         if (intval($_max) == 0 || intval($_previous) == 0) {
-            $_max = $this->stat_m->count_gamertags(true);
+            $_max = $this->stat_m->get_max_id();
             $this->cache->write($_max, 'cron_maxid');
             
             $_previous = 0;
@@ -48,6 +52,7 @@ class Cron_task extends IBOT_Controller {
                 
                 // pull new data update their
                 print "Running : " . $result['Gamertag'] . "\n";
+                $flag = FALSE;
                 $new_record = $this->library->get_profile($result['Gamertag'], FALSE, TRUE, $result['SeoGamertag']);
 
                 // check if they can be loaded
@@ -55,31 +60,35 @@ class Cron_task extends IBOT_Controller {
                     $this->stat_m->update_account($result['HashedGamertag'], array(
                         'InactiveCounter' => intval($result['InactiveCounter'] + 1)
                     ));
+                    $flag = TRUE;
                     print $result['Gamertag'] . " could not be loaded. +1 to `InactiveCounter` \n";
 
                 }
 
-                // check comparison, if so increment there `InactiveCounter` by 1
-                if ($new_record['Xp'] == $result['Xp']) {
-                    $this->stat_m->update_account($result['HashedGamertag'], array(
-                        'InactiveCounter' => intval($result['InactiveCounter'] + 1)
-                    ));
+                // only run if they loaded data.
+                if ($flag == FALSE) {
+                    // check comparison, if so increment there `InactiveCounter` by 1
+                    if ($new_record['Xp'] == $result['Xp']) {
+                        $this->stat_m->update_account($result['HashedGamertag'], array(
+                            'InactiveCounter' => intval($result['InactiveCounter'] + 1)
+                        ));
 
-                    print $result['Gamertag'] . " has had 0 Xp change. +1 to `InactiveCounter` \n";
-                    unset($new_record);
-                } else {
+                        print $result['Gamertag'] . " has had 0 Xp change. +1 to `InactiveCounter` \n";
+                        unset($new_record);
+                    } else {
 
-                    // reset `InactiveCounter` to 0
-                    $this->stat_m->update_account($result['HashedGamertag'], array(
-                        'InactiveCounter' => intval(0)
-                    ));
+                        // reset `InactiveCounter` to 0
+                        $this->stat_m->update_account($result['HashedGamertag'], array(
+                            'InactiveCounter' => intval(0)
+                        ));
 
-                    print $result['Gamertag'] . " has had " . ($new_record['Xp'] - $result['Xp']) . " Xp change. Reset `InactiveCounter` \n";
+                        print $result['Gamertag'] . " has had " . ($new_record['Xp'] - $result['Xp']) . " Xp change. Reset `InactiveCounter` \n";
+                    }
                 }
             }
             
             // store new data
-            $cache_write = $this->cache->write($result['id'], 'cron_lastid');
+            $this->cache->write($result['id'], 'cron_lastid');
             print "Wrote: " . $result['id'] . " to cache. \n";
         } else {
             // skip 5
