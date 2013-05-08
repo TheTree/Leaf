@@ -17,6 +17,8 @@ class Cron_task extends IBOT_Controller {
         
         // load db
         $this->load->model('stat_model', 'stat_m', true);
+        $this->library->set_cli_mode(TRUE);
+
         print "Running CRON\n";
         
         // check our previous and max
@@ -95,5 +97,13 @@ class Cron_task extends IBOT_Controller {
             print "Wrote: " . $_previous + 5 . " to cache. \n";
             return $this->update_gamertags();
         }
+    }
+
+    function cleanup_gamertags() {
+        $this->load->model('stat_model', 'stat_m', true);
+        print "Looking for deleted gamertags...\n";
+
+        // find all GTs with `InactiveCounter` equal or above 40, and cannot be loaded.
+        // Delete them.
     }
 }

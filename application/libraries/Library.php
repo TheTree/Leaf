@@ -5,6 +5,7 @@ class Library {
     protected $_ci;
     public $lang;
     public $game;
+    public $cli = FALSE;
 
     // urls @todo Abstract to config/
     public $emblem_url  = "https://emblems.svc.halowaypoint.com/h4/emblems/{EMBLEM}?size={SIZE}";
@@ -105,6 +106,10 @@ class Library {
             'description' => $this->description,
             'keywords' => $this->keywords
         );
+    }
+
+    public function set_cli_mode($b) {
+        $this->cli = (bool) $b;
     }
 
     /**
@@ -661,7 +666,11 @@ class Library {
         unset($responses);
 
         if ($service_record == FALSE || $wargames_record == FALSE) {
-           return FALSE;
+           if ($this->cli) {
+               return FALSE;
+           } else {
+               $this->throw_error("NOT_XBL_ACCOUNT");
+           }
         }
 
         // lets do the URL work, and medal
@@ -682,7 +691,11 @@ class Library {
 
         // nasty little hack. If they have 0 games played in matchmaking, reject this bitch.
         if (isset($service_record['GameModes'][2]['TotalGamesStarted']) && intval($service_record['GameModes'][2]['TotalGamesStarted']) == 0) {
-            $this->throw_error("NO_GAMES_PLAYED");
+            if ($this->cli) {
+                return FALSE;
+            } else {
+                $this->throw_error("NO_GAMES_PLAYED");
+            }
         }
 
         // get ready for a dump of data
