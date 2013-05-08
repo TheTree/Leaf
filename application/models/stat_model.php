@@ -753,4 +753,27 @@ class Stat_model extends IBOT_Model {
         $this->db
             ->truncate('ci_playlists');
     }
+
+    /**
+     * remove_old_gamertags
+     *
+     * Finds all gamertags where `InactiveCounter` is greater than 40,
+     * and `Status` is equal to 0.
+     */
+    public function remove_old_gamertags() {
+        $resp = $this->db
+            ->select("HashedGamertag,SeoGamertag,Status,InactiveCounter")
+            ->get_where('ci_gamertags', array(
+                'InactiveCounter >=', intval(40),
+                'Status', intval(0)
+            ));
+
+        $resp = $resp->result_array();
+        print "Count: " . count($resp) . "\n";
+
+        foreach ($resp as $item) {
+            print $item['SeoGamertag'] . " is marked at MISSING. \n";
+            $this->change_status($item['SeoGamertag'], MISSING_PLAYER);
+        }
+    }
 }

@@ -61,6 +61,7 @@ define('MAX_HALO_RANK', 130);
  */
 define("CHEATING_PLAYER", 1);
 define("BOOSTING_PLAYER", 2);
+define("MISSING_PLAYER", 3);
 
 /**
  * API_VERSION
