@@ -100,6 +100,8 @@ class Home extends IBOT_Controller {
         $data['SpartanURL']     = $this->library->return_spartan_url($gamertag, "Profile");
         $data['RankImage']      = $this->library->return_image_url("Rank", $data['RankImage'], "large");
         $data['MedalData']      = $this->library->return_medals($data['MedalData']);
+        $data['CSRPlaylist']    = $this->library->return_csr_v2($this->cache->model('stat_m','get_unique_csr_position', array($data['SeoGamertag']), 300),
+                                                                $data['SkillData']);
         $data['SkillData']      = $this->library->return_csr($data['SkillData']);
         $data['SpecData']       = $this->library->return_spec($data['SpecData']);
         $data['FavoriteData']   = $this->library->return_favorite($data['FavoriteWeaponName'],

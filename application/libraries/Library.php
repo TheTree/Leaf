@@ -1090,6 +1090,38 @@ class Library {
     }
 
     /**
+     * return_csr_v2
+     * Parses data to make presentable on profile
+     *
+     * @param $leaderboard
+     * @param $csr
+     * @return array
+     * @internal param $data
+     */
+    public function return_csr_v2($leaderboard, $csr) {
+        $csr = @unserialize($csr);
+        $rtr_arr = array();
+        $playlists = $this->get_playlists();
+
+        // we are going to loop the `leaderboard` variable, because that is what we have / is current
+        // using that, we will pull their SkillRank in that playlist
+        foreach($leaderboard as $key => $item) {
+            if (is_array($item)) {
+                $rtr_arr[$key] = array(
+                    'Name'      => isset($playlists[substr($key,0,-2)]['Name']) ? $playlists[substr($key,0,-2)]['Name'] : NULL,
+                    'Id'        => $key,
+                    'SkillRank' => intval($item[$key]),
+                    'Rank'      => intval($item['Rank'])
+                );
+            }
+        }
+        // sort
+        $this->set_sort_key("SkillRank");
+        uasort($rtr_arr, array($this, "key_sort"));
+        return $rtr_arr;
+    }
+
+    /**
      * return spec
      *
      * Parses serialized array `$data` for display on profile.

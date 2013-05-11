@@ -48,6 +48,11 @@ csr-legend {
 .margin3pxtop {
     margin-top: 3px;
 }
+.top_right {
+    position: relative;
+    float: right;
+    display: inline-block;
+}
 @media (max-width: 500px) {
     .row_title {
         width: 135px;
