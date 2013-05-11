@@ -23,7 +23,7 @@
                     <tbody>
                         <? foreach($data['CSRPlaylist'] as $playlist): ?>
                             <tr>
-                                <td><?= $playlist['Name']; ?></td>
+                                <td><?= $playlist['Name']; ?><a href="<?= base_url('csr_leaderboards/' . $playlist['Id']); ?>"><i class="icon-leaf"></i></a></td>
                                 <td><span class="flair flair-CSR-<?= $playlist['SkillRank']; ?>"></span></td>
                                 <td><?= $this->library->get_trophy($playlist['Rank']); ?></td>
                             </tr>
