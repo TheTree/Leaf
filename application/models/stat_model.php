@@ -684,7 +684,7 @@ class Stat_model extends IBOT_Model {
 
             // lets grab this query rank id
             $resp = $this->db->query('SELECT ' . '* FROM (SELECT `' . $id . '`,`SeoGamertag`, @row_number := @row_number + 1 as `Rank`
-                                FROM `ci_csr` ORDER BY `' . $id . '` DESC) as row_to_return WHERE `SeoGamertag` =' . '"' . $this->db->escape_str($seo_gt) . '"');
+                                FROM `ci_csr` ORDER BY `' . $id . '` DESC, `KDRatio` DESC) as row_to_return WHERE `SeoGamertag` =' . '"' . $this->db->escape_str($seo_gt) . '"');
 
             $rtr_arr[$id] = $resp->row_array();
             unset($rtr_arr[$id]['SeoGamertag']);
