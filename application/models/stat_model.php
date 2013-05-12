@@ -683,8 +683,9 @@ class Stat_model extends IBOT_Model {
             $this->db->simple_query('SET @row_number := 0');
 
             // lets grab this query rank id
-            $resp = $this->db->query('SELECT ' . '* FROM (SELECT `' . $id . '`,`SeoGamertag`, @row_number := @row_number + 1 as `Rank`
-                                FROM `ci_csr` ORDER BY `' . $id . '` DESC, `KDRatio` DESC) as row_to_return WHERE `SeoGamertag` =' . '"' . $this->db->escape_str($seo_gt) . '"');
+            $resp = $this->db->query('SELECT * FROM (SELECT `' . $id . '`,`SeoGamertag`,`Status`, @row_number := @row_number + 1 as `Rank`
+                                FROM `ci_csr` WHERE `' . $id . '` > 0 AND `Status` = 0 ORDER BY `' . $id . '` DESC, `KDRatio` DESC) as row_to_return WHERE `' .
+                                         $id . '` > 0 AND `Status` = 0 AND `SeoGamertag` =' . '"' . $this->db->escape_str($seo_gt) . '"');
 
             $rtr_arr[$id] = $resp->row_array();
             unset($rtr_arr[$id]['SeoGamertag']);

@@ -215,15 +215,15 @@ class Library {
         switch ($x) {
 
             case 1:
-                return '<img src="' . base_url("assets/img/icons/medal_gold.png") . '" />';
+                return '<img title="1st" src="' . base_url("assets/img/icons/medal_gold.png") . '" />';
                 break;
 
             case 2:
-                return '<img src="' . base_url("assets/img/icons/medal_silver.png") . '" />';
+                return '<img title="2nd" src="' . base_url("assets/img/icons/medal_silver.png") . '" />';
                 break;
 
             case 3:
-                return '<img src="' . base_url("assets/img/icons/medal_bronze.png") . '" />';
+                return '<img title="3rd" src="' . base_url("assets/img/icons/medal_bronze.png") . '" />';
                 break;
 
             default:
@@ -1110,8 +1110,8 @@ class Library {
                 $rtr_arr[$key] = array(
                     'Name'      => isset($playlists[substr($key,0,-2)]['Name']) ? $playlists[substr($key,0,-2)]['Name'] : NULL,
                     'Id'        => $key,
-                    'SkillRank' => intval($item[$key]),
-                    'Rank'      => intval($item['Rank'])
+                    'SkillRank' => isset($item[$key]) ? intval($item[$key]) : 0,
+                    'Rank'      => isset($item['Rank']) ? intval($item['Rank']) : 0
                 );
             }
         }
