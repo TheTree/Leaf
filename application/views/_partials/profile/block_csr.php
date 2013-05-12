@@ -24,7 +24,7 @@
                         <? foreach($data['CSRPlaylist'] as $playlist): ?>
                             <tr>
                                 <td><?= $playlist['Name']; ?> - <small>(<?= (substr($playlist['Id'], -1)) == "T" ? "Team" : "Invididual" ?>)</small>&nbsp;<a href="<?= base_url('csr_leaderboards/' . $playlist['Id']); ?>"><i class="icon-leaf"></i></a></td>
-                                <td><span class="flair flair-CSR-<?= $playlist['SkillRank']; ?>"></span></td>
+                                <td><span class="flair flair-CSR-<?= ($playlist['SkillRank'] == 0) ? "Null" : $playlist['SkillRank']; ?>"></span></td>
                                 <td><?= $this->library->get_trophy($playlist['Rank']); ?></td>
                             </tr>
                         <? endforeach; ?>
