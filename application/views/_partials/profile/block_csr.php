@@ -10,9 +10,10 @@
             </div>
             <i class="icon-th-large" data-toggle="tooltop" data-html="true" title="Switch to Old CSR look?" rel="tooltip" data-placement="top"></i>
         </div>
+        <br />
         <div class="tab-content">
             <div class="tab-pane active" id="new-csr">
-                <table class="table table-hover table-bordered table-condensed">
+                <table class="table table-hover table-bordered table-condensed table-striped">
                     <thead>
                         <tr>
                             <th>Playlist</th>
@@ -22,11 +23,13 @@
                     </thead>
                     <tbody>
                         <? foreach($data['CSRPlaylist'] as $playlist): ?>
-                            <tr>
-                                <td><?= $playlist['Name']; ?> - <small>(<?= (substr($playlist['Id'], -1)) == "T" ? "Team" : "Invididual" ?>)</small>&nbsp;<a href="<?= base_url('csr_leaderboards/' . $playlist['Id']); ?>"><i class="icon-leaf"></i></a></td>
-                                <td><span class="flair flair-CSR-<?= ($playlist['SkillRank'] == 0) ? "Null" : $playlist['SkillRank']; ?>"></span></td>
-                                <td><?= $this->library->get_trophy($playlist['Rank']); ?></td>
-                            </tr>
+                            <? if ($playlist['SkillRank'] > 0): ?>
+                                <tr>
+                                    <td><?= $playlist['Name']; ?> - <small>(<?= (substr($playlist['Id'], -1)) == "T" ? "Team" : "Invididual" ?>)</small>&nbsp;<a class="hidden-phone hidden-tablet" href="<?= base_url('csr_leaderboards/' . $playlist['Id']); ?>"><i class="icon-leaf"></i></a></td>
+                                    <td><span class="flair flair-CSR-<?= ($playlist['SkillRank'] == 0) ? "Null" : $playlist['SkillRank']; ?>"></span></td>
+                                    <td><?= $this->library->get_trophy($playlist['Rank']); ?></td>
+                                </tr>
+                            <? endif; ?>
                         <? endforeach; ?>
                     </tbody>
                 </table>
