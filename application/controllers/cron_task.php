@@ -63,7 +63,7 @@ class Cron_task extends IBOT_Controller {
                         'InactiveCounter' => intval($result['InactiveCounter'] + 1)
                     ));
                     $flag = TRUE;
-                    print $result['Gamertag'] . " could not be loaded. +1 to `InactiveCounter` \n";
+                    print $result['Gamertag'] . " could not be loaded. +1 to `InactiveCounter` , which is now at: " . intval($result['InactiveCounter'] + 1) . "\n";
 
                 }
 
@@ -75,7 +75,7 @@ class Cron_task extends IBOT_Controller {
                             'InactiveCounter' => intval($result['InactiveCounter'] + 1)
                         ));
 
-                        print $result['Gamertag'] . " has had 0 Xp change. +1 to `InactiveCounter` \n";
+                        print $result['Gamertag'] . " has had 0 Xp change. +1 to `InactiveCounter`, which is now at: " . intval($result['InactiveCounter'] + 1) . "\n";
                         unset($new_record);
                     } else {
 
