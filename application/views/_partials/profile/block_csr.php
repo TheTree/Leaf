@@ -4,11 +4,11 @@
         <div id="csr_switch" class="top_right">
             <div class="hidden">
                 <ul class="nav nav-tabs" id="csr-tabs">
-                    <li class="active"><a href="#new-csr">New CSR</a></li>
-                    <li class=""><a href="#old-csr">Old CSR</a></li>
+                    <li data-type="new" class="active"><a href="#new-csr">New CSR</a></li>
+                    <li data-type="old" class=""><a href="#old-csr">Old CSR</a></li>
                 </ul>
             </div>
-            <i class="icon-th-large" data-toggle="tooltop" data-html="true" title="Switch to Old CSR look?" rel="tooltip" data-placement="top"></i>
+            <i class="icon-th-large" data-toggle="tooltop" data-html="true" title="Switch CSR Look?" rel="tooltip" data-placement="top"></i>
         </div>
         <br />
         <div class="tab-content">
@@ -52,8 +52,12 @@
         // bind csr_switch to button
         $(document).ready(function() {
             $("#csr_switch").click(function() {
-                $('#csr-tabs a:last').tab('show');
-                $('#csr_switch').hide();
+                var a_href =  $("ul#csr-tabs li.active").data('type');
+                if (a_href == "new") {
+                    $('#csr-tabs a:last').tab('show');
+                } else {
+                    $('#csr-tabs a:first').tab('show');
+                }
             });
         });
         $(function () {

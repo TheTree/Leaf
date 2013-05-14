@@ -6,6 +6,7 @@
     </div>
 </div>
 <br />
+<!-- setTimeout(function(){$('img').fadeOut(2000);}, 5000); -->
 <? if ((($data['Expiration'] - TWENTYFOUR_HOURS_IN_SECONDS + FIVEMIN_IN_SECONDS) < time()) && $data['InactiveCounter'] < 40): ?>
     <a href="<?= base_url('gt/' . $data['SeoGamertag'] . "/recache"); ?>" class="btn btn-success pad10">Refresh</a>
 <? endif; ?>
