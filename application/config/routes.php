@@ -45,6 +45,7 @@ $route['cron'] = "cron_task/update_gamertags";
 $route['news'] = "news/index";
 $route['news/create'] = "news/index/create";
 $route['metadata/recache'] = "stats/home/metadata";
+$route['playlists/recache'] = "stats/home/redo_playlists";
 $route['stats'] = "stats/home/index";
 $route['compare'] = "stats/compare/index";
 $route['leaderboards'] = "stats/home/index";

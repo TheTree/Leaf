@@ -10,6 +10,10 @@ class Home extends IBOT_Controller {
         
         $this->load->model('stat_model', 'stat_m', true);
     }
+
+    public function redo_playlists() {
+        $this->library->get_playlists();
+    }
     
     public function index() {
         
