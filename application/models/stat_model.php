@@ -764,17 +764,17 @@ class Stat_model extends IBOT_Model {
     public function remove_old_gamertags() {
         $resp = $this->db
             ->select("HashedGamertag,SeoGamertag,Status,InactiveCounter")
-            ->get_where('ci_gamertags', array(
-                'InactiveCounter >=', intval(40),
-                'Status', intval(0)
-            ));
+            ->from('ci_gamertags')
+            ->where('InactiveCounter >=', intval(40))
+            ->where('Status', intval(0)
+            ->get());
 
         $resp = $resp->result_array();
-        print "Count: " . count($resp) . "\n";
 
-        foreach ($resp as $item) {
-            print $item['SeoGamertag'] . " is marked at MISSING. \n";
-            $this->change_status($item['SeoGamertag'], MISSING_PLAYER);
+        if (is_array($resp)) {
+            return $resp;
+        } else {
+            return FALSE;
         }
     }
 }

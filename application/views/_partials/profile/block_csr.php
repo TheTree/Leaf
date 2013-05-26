@@ -38,7 +38,7 @@
                 <div class="pagination-centered">
                     <? foreach ($data['SkillData'] as $csr): ?>
                         <? if ($csr['SkillRank'] > 0): ?>
-                            <span data-toggle="tooltop" data-html="true"
+                            <span data-toggle="tooltip" data-html="true"
                                   title="<strong><?= $csr['Playlist']; ?></strong><br />(<?= $csr['Type']; ?>)" rel="tooltip"
                                   data-placement="top"> <img class="" src="<?= $csr['ImageUrl']; ?>" /></span>
                         <? endif; ?>

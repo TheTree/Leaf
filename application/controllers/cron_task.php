@@ -103,7 +103,31 @@ class Cron_task extends IBOT_Controller {
         $this->load->model('stat_model', 'stat_m', true);
         print "Looking for deleted gamertags...\n";
 
+        $resp = $this->stat_m->remove_old_gamertags();
+
+
         // find all GTs with `InactiveCounter` equal or above 40, and cannot be loaded.
-        // Delete them.
+        // Mark them as "MISSING_PLAYER"
+        if ($resp != FALSE) {
+            print "Count: " . count($resp) . "\n";
+
+            foreach ($resp as $item) {
+                print "Running: " . $item['Gamertag'];
+
+                // check for FAILED msg
+                $new_record = $this->library->get_profile($item['Gamertag'], FALSE, TRUE, $item['SeoGamertag']);
+
+                if ($new_record == FALSE) {
+                    print $item['SeoGamertag'] . " is marked at MISSING. \n";
+                    $this->change_status($item['SeoGamertag'], MISSING_PLAYER);
+                } else {
+                    print $item['Gamertag'] . " loaded fine :(";
+                    $this->stat_m->update_account($item['HashedGamertag'], array(
+                        'InactiveCounter' => intval(39)
+                    ));
+                }
+
+            }
+        }
     }
 }
