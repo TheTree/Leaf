@@ -698,6 +698,9 @@ class Library {
             }
         }
 
+        // update possibly cached CSR data
+        $this->_ci->cache->model('stat_m','get_unique_csr_position', array($seo_gamertag), -1);
+
         // get ready for a dump of data
         return $this->_ci->stat_m->update_or_insert_gamertag($hashed, array(
             'Gamertag'                         => $service_record['Gamertag'],
