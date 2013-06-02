@@ -16,6 +16,7 @@
             <div class="visible-desktop">
                 <?= $template['_partials']['block_cheatertest']; ?>
             </div>
+            <?= $template['_partials']['block_social']; ?>
         </div>
     </div>
     <div class="span9">

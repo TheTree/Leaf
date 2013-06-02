@@ -128,6 +128,7 @@ class Home extends IBOT_Controller {
                 ->set_partial('block_csr', '_partials/profile/block_csr')
                 ->set_partial('block_specs', '_partials/profile/block_specdata')
                 ->set_partial('block_cheatertest', '_partials/profile/block_cheatertest')
+                ->set_partial('block_social', '_partials/profile/block_social')
                 ->title("Leaf .:. " . urldecode($data['Gamertag']))
                 ->set('msg', $this->session->flashdata("recache"))
                 ->set('general_msg', $this->session->flashdata('general_msg'))
