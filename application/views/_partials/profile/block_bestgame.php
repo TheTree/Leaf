@@ -8,7 +8,10 @@
                     <?= number_format($data['BestGameTotalKills']); ?>
 
                     <? if (BRANCH): ?>
-                        <a href="http://branchapp.co/halo4/servicerecord/<?= $data['BranchGamertag']; ?>/match/<?= $data['BestGameTotalKillsGameId']; ?>/" data-toggle="tooltip" data-html="true" title="View Game on Branch" rel="tooltip" data-placement="top"><i class="icon-tag"></i></a>
+                        <a class="hidden-phone hidden-table"
+                           href="http://branchapp.co/halo4/servicerecord/<?= $data['BranchGamertag']; ?>/match/<?= $data['BestGameTotalKillsGameId']; ?>/"
+                           data-toggle="tooltip" data-html="true" title="View Game on Branch"
+                           rel="tooltip" data-placement="top"><i class="icon-tag"></i></a>
                     <? endif; ?>
                 </span>
             </li>
@@ -17,7 +20,10 @@
                 <span class="row_data">
                     <?= number_format($data['BestGameTotalMedals']); ?>
                     <? if (BRANCH): ?>
-                        <a href="http://branchapp.co/halo4/servicerecord/<?= $data['BranchGamertag']; ?>/match/<?= $data['BestGameTotalMedalsGameId']; ?>/" data-toggle="tooltip" data-html="true" title="View Game on Branch" rel="tooltip" data-placement="top"><i class="icon-tag"></i></a>
+                        <a class="hidden-phone hidden-table"
+                           href="http://branchapp.co/halo4/servicerecord/<?= $data['BranchGamertag']; ?>/match/<?= $data['BestGameTotalMedalsGameId']; ?>/"
+                           data-toggle="tooltip" data-html="true" title="View Game on Branch"
+                           rel="tooltip" data-placement="top"><i class="icon-tag"></i></a>
                     <? endif; ?>
                 </span>
             </li>
@@ -26,7 +32,10 @@
                 <span class="row_data">
                     <?= number_format($data['BestGameHeadshotTotal']); ?>
                     <? if (BRANCH): ?>
-                        <a href="http://branchapp.co/halo4/servicerecord/<?= $data['BranchGamertag']; ?>/match/<?= $data['BestGameHeadshotTotalGameId']; ?>/" data-toggle="tooltip" data-html="true" title="View Game on Branch" rel="tooltip" data-placement="top"><i class="icon-tag"></i></a>
+                        <a class="hidden-phone hidden-table"
+                           href="http://branchapp.co/halo4/servicerecord/<?= $data['BranchGamertag']; ?>/match/<?= $data['BestGameHeadshotTotalGameId']; ?>/"
+                           data-toggle="tooltip" data-html="true" title="View Game on Branch"
+                           rel="tooltip" data-placement="top"><i class="icon-tag"></i></a>
                     <? endif; ?>
                 </span>
             </li>
@@ -35,7 +44,10 @@
                 <span class="row_data">
                     <?= number_format($data['BestGameAssassinationTotal']); ?>
                     <? if (BRANCH): ?>
-                        <a href="http://branchapp.co/halo4/servicerecord/<?= $data['BranchGamertag']; ?>/match/<?= $data['BestGameAssassinationTotalGameId']; ?>/" data-toggle="tooltip" data-html="true" title="View Game on Branch" rel="tooltip" data-placement="top"><i class="icon-tag"></i></a>
+                        <a class="hidden-phone hidden-table"
+                           href="http://branchapp.co/halo4/servicerecord/<?= $data['BranchGamertag']; ?>/match/<?= $data['BestGameAssassinationTotalGameId']; ?>/"
+                           data-toggle="tooltip" data-html="true" title="View Game on Branch"
+                           rel="tooltip" data-placement="top"><i class="icon-tag"></i></a>
                     <? endif; ?>
                 </span>
             </li>
@@ -44,7 +56,10 @@
                 <span class="row_data">
                     <?= number_format($data['BestGameKillDistance']); ?><abbr title="meters">m</abbr>
                     <? if (BRANCH): ?>
-                        <a href="http://branchapp.co/halo4/servicerecord/<?= $data['BranchGamertag']; ?>/match/<?= $data['BestGameKillDistanceGameId']; ?>/" data-toggle="tooltip" data-html="true" title="View Game on Branch" rel="tooltip" data-placement="top"><i class="icon-tag"></i></a>
+                        <a class="hidden-phone hidden-table"
+                           href="http://branchapp.co/halo4/servicerecord/<?= $data['BranchGamertag']; ?>/match/<?= $data['BestGameKillDistanceGameId']; ?>/"
+                           data-toggle="tooltip" data-html="true" title="View Game on Branch"
+                           rel="tooltip" data-placement="top"><i class="icon-tag"></i></a>
                     <? endif; ?>
                 </span>
             </li>
