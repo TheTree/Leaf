@@ -23,7 +23,7 @@
                             <? if (isset($starred) && is_array($starred)): ?>
                                 <li><a href="<?= base_url('/gt/' . $starred['SeoGamertag']); ?>"><img src="<?= $starred['Emblem']; ?>" class="img-emblem" />&nbsp;<?= $starred['Gamertag']; ?></a></li>
                             <? else: ?>
-                                <li><a href="http://twitter.com/iBotPeaches" rel="nofollow" target="_blank">Made with &hearts; iBotPeaches</a></li>
+                                <li>Powered by <a href="http://auntiedot.net/" rel="nofollow" target="_blank">Auntiedot</a></li>
                             <? endif; ?>
                         </ul>
                     </div>

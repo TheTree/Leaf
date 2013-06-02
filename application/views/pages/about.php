@@ -52,10 +52,6 @@
                     }(document, "script", "twitter-wjs");</script>
             </div>
         </div>
-        <h4>Kudos</h4>
-        <div class="well well-large">
-            Thanks to the folks (Alex & James) @ <a href="http://auntiedot.net/" rel="nofollow" target="_blank">Auntiedot</a> for major API research.
-        </div>
         <h4>Sources </h4>
         <div class="well well-large">
                 <ul class="unstyled">
@@ -65,6 +61,14 @@
                     <li><a href="http://ellislab.com/codeigniter" target="_blank" rel="nofollow">Code Igniter</a> -> PHP Framework</li>
                     <li><a href="http://philsturgeon.co.uk/blog/category/codeigniter" target="_blank" rel="nofollow">Phil Sturgeon</a> -> CI Plugins (Template, Cache, Curl)</li>
                 </ul>
+        </div>
+        <h4>The Tree</h4>
+        <div class="well well-large">
+            <ul class="unstyled">
+                <li><a href="http://leafapp.co">Leaf</a></li>
+                <li><a href="http://branchapp.co">Branch</a> (ßeta)</li>
+                <li><a href="http://twigapp.co">Twig</a> (Under Construction)</li>
+            </ul>
         </div>
     </div>
 </div>

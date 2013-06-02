@@ -4,7 +4,7 @@
             <p class="lead">
                 Welcome to Leaf.
             </p>
-            <p>Quick, sexy and easy stats.</p>
+            <p>Halo 4 stats, that don't suck.</p>
         </div>
         <?= $template['_partials']['news_block']; ?>
         <br />
