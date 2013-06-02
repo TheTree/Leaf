@@ -70,5 +70,12 @@ define("MISSING_PLAYER", 3);
  */
 define("API_VERSION", 1);
 
+/**
+ * BRANCH
+ *
+ * Use a bool to enable/disable Branch integration. Just in case 3rd party stuff go down :/
+ */
+define("BRANCH", TRUE);
+
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */

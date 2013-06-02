@@ -100,7 +100,8 @@ class Home extends IBOT_Controller {
         
         // lets load their data, check for 1hr expiration
         $data = $this->library->get_profile($gamertag);
-        
+
+        $data['BranchGamertag'] = $this->library->make_branch_gt($data['Gamertag']);
         $data['SpartanURL']     = $this->library->return_spartan_url($gamertag, "Profile");
         $data['RankImage']      = $this->library->return_image_url("Rank", $data['RankImage'], "large");
         $data['MedalData']      = $this->library->return_medals($data['MedalData']);

@@ -618,6 +618,18 @@ class Library {
     }
 
     /**
+     * make_branch_gt
+     *
+     * Handles prepping a gt for Branch's URL system.
+     *
+     * @param $gt
+     * @return mixed
+     */
+    public function make_branch_gt($gt) {
+        return str_ireplace(" ", "%20", $gt);
+    }
+
+    /**
      * grab_profile_data
      * Pulls directly from the API. Stores into dB
      *
