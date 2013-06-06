@@ -462,6 +462,12 @@ class Stat_model extends IBOT_Model {
             ->update('ci_gamertags', array(
                 'Status' => intval($status)
             ));
+
+        $this->db
+            ->where('SeoGamertag', $seo)
+            ->update('ci_csr', array(
+                'Status' => intval($status)
+            ));
     }
 
     /**
