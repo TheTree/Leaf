@@ -13,7 +13,6 @@ class News_model extends IBOT_Model {
      * @return type
      */
     public function get_news($limit, $start) {
-        
             $query = $this->db
                     ->order_by("date_posted", "desc")
                     ->limit(intval($limit), intval($start))

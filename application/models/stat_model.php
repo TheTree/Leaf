@@ -770,12 +770,12 @@ class Stat_model extends IBOT_Model {
      * and `Status` is equal to 0.
      */
     public function remove_old_gamertags() {
+        $this->db->where('InactiveCounter', intval(INACTIVE_COUNTER));
+        $this->db->where('Status', intval(0));
         $resp = $this->db
-            ->select("HashedGamertag,SeoGamertag,Status,InactiveCounter")
-            ->from('ci_gamertags')
-            ->where('InactiveCounter >=', intval(INACTIVE_COUNTER))
-            ->where('Status', intval(0)
-            ->get());
+            ->select("HashedGamertag,SeoGamertag,Status,Gamertag,InactiveCounter,Xp")
+            ->limit(5)
+            ->get('ci_gamertags');
 
         $resp = $resp->result_array();
 
@@ -785,4 +785,6 @@ class Stat_model extends IBOT_Model {
             return FALSE;
         }
     }
+
+
 }

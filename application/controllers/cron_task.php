@@ -101,6 +101,7 @@ class Cron_task extends IBOT_Controller {
 
     function cleanup_gamertags() {
         $this->load->model('stat_model', 'stat_m', true);
+        $this->library->set_cli_mode(TRUE);
         print "Looking for deleted gamertags...\n";
 
         $resp = $this->stat_m->remove_old_gamertags();
@@ -112,22 +113,36 @@ class Cron_task extends IBOT_Controller {
             print "Count: " . count($resp) . "\n";
 
             foreach ($resp as $item) {
-                print "Running: " . $item['Gamertag'];
+                print "Running: " . $item['Gamertag'] . "\n";
 
                 // check for FAILED msg
                 $new_record = $this->library->get_profile($item['Gamertag'], FALSE, TRUE, $item['SeoGamertag']);
 
                 if ($new_record == FALSE) {
+                    $this->stat_m->change_status($item['SeoGamertag'], MISSING_PLAYER);
                     print $item['SeoGamertag'] . " is marked at MISSING. \n";
-                    $this->change_status($item['SeoGamertag'], MISSING_PLAYER);
                 } else {
-                    print $item['Gamertag'] . " loaded fine :(";
-                    $this->stat_m->update_account($item['HashedGamertag'], array(
-                        'InactiveCounter' => intval(INACTIVE_COUNTER - 1)
-                    ));
+                    print $item['Gamertag'] . " loaded fine :( \n";
+                    print $item['Gamertag'] . " was at " . $item['InactiveCounter'] . "\n";
+
+                    if ($item['Xp'] != $new_record['Xp']) {
+                        print $item['Gamertag'] . " has had an Xp Change. Reset InactiveCounter \n";
+                        $this->stat_m->update_account($item['HashedGamertag'], array(
+                            'InactiveCounter' => intval(0)
+                        ));
+                        print $item['Gamertag'] . " now is at " . intval(0) . "\n";
+                    } else {
+                        print $item['Gamertag'] . " has had no Xp Change.+ 1 InactiveCounter \n";
+                        $this->stat_m->update_account($item['HashedGamertag'], array(
+                            'InactiveCounter' => intval(INACTIVE_COUNTER + 1)
+                        ));
+                        print $item['Gamertag'] . " now is at " . intval(INACTIVE_COUNTER + 1) . "\n";
+                    }
                 }
 
             }
+        } else {
+            print "None found... \n";
         }
     }
 }
