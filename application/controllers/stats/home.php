@@ -84,7 +84,7 @@ class Home extends IBOT_Controller {
             } else {
                 // remove 1 from `InactiveCounter`
                 $this->stat_m->update_account($acc['HashedGamertag'], array(
-                    'InactiveCounter' => intval($acc['InactiveCounter'] - 1)
+                    'InactiveCounter' => intval(INACTIVE_COUNTER - 1)
                 ));
 
                 $this->session->set_flashdata("recache", "enabled");
