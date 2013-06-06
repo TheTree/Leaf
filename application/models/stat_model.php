@@ -31,7 +31,7 @@ class Stat_model extends IBOT_Model {
                     // if InactiveCounter is above INACTIVE_COUNTER
                     // set InactiveCounter to MAX, otherwise
                     // previous InactiveCounter + 1;
-                    $data['InactiveCounter'] = ($_tmp['InactiveCounter'] >= INACTIVE_COUNTER) ? INACTIVE_COUNTER : $_tmp['InactiveCounter'] + 1;
+                    $data['InactiveCounter'] =  $_tmp['InactiveCounter'] + 1;
                 }
             }
             // unset some temporarily, so we can add back on postback
