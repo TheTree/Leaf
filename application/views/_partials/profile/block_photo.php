@@ -16,11 +16,13 @@
     </div>
 </div>
 <br />
-<? if ((($data['Expiration'] - TWENTYFOUR_HOURS_IN_SECONDS + FIVEMIN_IN_SECONDS) < time()) && $data['InactiveCounter'] < 40): ?>
-    <a href="<?= base_url('gt/' . $data['SeoGamertag'] . "/recache"); ?>" class="btn btn-success pad10">Refresh</a>
-<? elseif (($data['Expiration'] - TWENTYFOUR_HOURS_IN_SECONDS - time() + FIVEMIN_IN_SECONDS) > 0): ?>
-    <a id="recache_button" href="<?= base_url('gt/' . $data['SeoGamertag'] . "/recache"); ?>" style="display:none;" class="btn btn-success pad10">Refresh</a>
+<? if ($data['InactiveCounter'] < INACTIVE_COUNTER): ?>
+    <? if ((($data['Expiration'] - TWENTYFOUR_HOURS_IN_SECONDS + FIVEMIN_IN_SECONDS) < time()) && $data['InactiveCounter'] < INACTIVE_COUNTER): ?>
+        <a href="<?= base_url('gt/' . $data['SeoGamertag'] . "/recache"); ?>" class="btn btn-success pad10">Refresh</a>
+    <? elseif (($data['Expiration'] - TWENTYFOUR_HOURS_IN_SECONDS - time() + FIVEMIN_IN_SECONDS) > 0): ?>
+        <a id="recache_button" href="<?= base_url('gt/' . $data['SeoGamertag'] . "/recache"); ?>" style="display:none;" class="btn btn-success pad10">Refresh</a>
+    <? endif; ?>
 <? endif; ?>
-<? if ($data['InactiveCounter'] >= 40): ?>
+<? if ($data['InactiveCounter'] >= INACTIVE_COUNTER): ?>
     <a href="<?= base_url('unfreeze/' . $data['SeoGamertag']); ?>" class="btn btn-success margin3pxtop">Unfreeze</a>
 <? endif; ?>

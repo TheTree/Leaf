@@ -23,19 +23,27 @@ class Stat_model extends IBOT_Model {
 
         // check for update
         if (($_tmp = $this->account_exists($hash)) != FALSE) {
-            
+
+            if (isset($_tmp['Xp']) && isset($data['Xp'])) {
+                if (floatval($_tmp['Xp']) != floatval($data['Xp'])) {
+                    $data['InactiveCounter'] = 0;
+                } else {
+                    // if InactiveCounter is above INACTIVE_COUNTER
+                    // set InactiveCounter to MAX, otherwise
+                    // previous InactiveCounter + 1;
+                    $data['InactiveCounter'] = ($_tmp['InactiveCounter'] >= INACTIVE_COUNTER) ? INACTIVE_COUNTER : $_tmp['InactiveCounter'] + 1;
+                }
+            }
             // unset some temporarily, so we can add back on postback
             $unset_arra = array(
-                'InactiveCounter'   => $data['InactiveCounter'],
-                'Gamertag'          => $data['Gamertag'],
-                'SeoGamertag'       => $data['SeoGamertag'],
-                'HashedGamertag'    => $data['HashedGamertag'],
-                'Status'            => $data['Status']
+                'Gamertag'          => $_tmp['Gamertag'],
+                'SeoGamertag'       => $_tmp['SeoGamertag'],
+                'HashedGamertag'    => $_tmp['HashedGamertag'],
+                'Status'            => $_tmp['Status']
             );
 
             // remove these vars to prevent changing them in db
             // ex accidentally changing gt from TEST to teST
-            unset($data['InactiveCounter']);
             unset($data['Gamertag']);
             unset($data['SeoGamertag']);
             unset($data['HashedGamertag']);
@@ -92,7 +100,7 @@ class Stat_model extends IBOT_Model {
 
         // generate resp
         $resp = $this->db
-                ->select('HashedGamertag')
+                ->select('HashedGamertag,InactiveCounter,Gamertag,SeoGamertag,Status,Xp')
                 ->get_where('ci_gamertags', array(
             'HashedGamertag' => $hash
                 ));
@@ -179,7 +187,7 @@ class Stat_model extends IBOT_Model {
                 ->get_where('ci_gamertags', array(
                     'Status'    => intval(0),
                     'Expiration <' => time(),
-                    'InactiveCounter <' => 40
+                    'InactiveCounter <' => INACTIVE_COUNTER
                 ));
         
         $resp = $resp->result_array();
@@ -204,7 +212,7 @@ class Stat_model extends IBOT_Model {
                 ->limit(1)
                 ->get_where("ci_gamertags", array(
                     'HashedGamertag' => $hashed,
-                    'InactiveCounter <' => intval(40)
+                    'InactiveCounter <' => intval(INACTIVE_COUNTER)
                 ));
         
         $resp = $resp->row_array();
@@ -765,7 +773,7 @@ class Stat_model extends IBOT_Model {
         $resp = $this->db
             ->select("HashedGamertag,SeoGamertag,Status,InactiveCounter")
             ->from('ci_gamertags')
-            ->where('InactiveCounter >=', intval(40))
+            ->where('InactiveCounter >=', intval(INACTIVE_COUNTER))
             ->where('Status', intval(0)
             ->get());
 

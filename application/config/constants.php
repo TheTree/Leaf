@@ -71,6 +71,11 @@ define("MISSING_PLAYER", 3);
 define("API_VERSION", 1);
 
 /**
+ * INACTIVE_COUNTER
+ */
+define("INACTIVE_COUNTER", 20);
+
+/**
  * BRANCH
  *
  * Use a bool to enable/disable Branch integration. Just in case 3rd party stuff go down :/

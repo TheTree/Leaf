@@ -15,6 +15,7 @@
             <?= $template['_partials']['block_specs']; ?>
             <div class="visible-desktop">
                 <?= $template['_partials']['block_cheatertest']; ?>
+                <?= $template['_partials']['block_inactivetest']; ?>
             </div>
             <?= $template['_partials']['block_social']; ?>
         </div>
@@ -36,6 +37,7 @@
             </div>
         <? endif; ?>
         <?= $template['_partials']['block_cheatertest']; ?>
+        <?= $template['_partials']['block_inactivetest']; ?>
         <?= $template['_partials']['block_progression']; ?>
     </div>
     <div class="span5">

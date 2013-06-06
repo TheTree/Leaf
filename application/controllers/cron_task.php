@@ -123,7 +123,7 @@ class Cron_task extends IBOT_Controller {
                 } else {
                     print $item['Gamertag'] . " loaded fine :(";
                     $this->stat_m->update_account($item['HashedGamertag'], array(
-                        'InactiveCounter' => intval(39)
+                        'InactiveCounter' => intval(INACTIVE_COUNTER - 1)
                     ));
                 }
 

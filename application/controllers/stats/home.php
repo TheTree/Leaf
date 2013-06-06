@@ -72,7 +72,7 @@ class Home extends IBOT_Controller {
         // check
         if ($gt == FALSE) {
             $this->library->throw_error("NO_GAMERTAG_STORED");
-        } else if ($gt['InactiveCounter'] < 40) {
+        } else if ($gt['InactiveCounter'] < INACTIVE_COUNTER) {
             $this->library->throw_error("INACTIVECOUNTER_LESSTHAN_40");
         } else {
             // grab new acc
@@ -127,6 +127,7 @@ class Home extends IBOT_Controller {
                 ->set_partial('block_favoriteweapon', '_partials/profile/block_favoriteweapon')
                 ->set_partial('block_csr', '_partials/profile/block_csr')
                 ->set_partial('block_specs', '_partials/profile/block_specdata')
+                ->set_partial('block_inactivetest', '_partials/profile/block_inactivetest')
                 ->set_partial('block_cheatertest', '_partials/profile/block_cheatertest')
                 ->set_partial('block_social', '_partials/profile/block_social')
                 ->title("Leaf .:. " . urldecode($data['Gamertag']))
