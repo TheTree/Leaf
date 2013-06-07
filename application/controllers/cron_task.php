@@ -99,6 +99,29 @@ class Cron_task extends IBOT_Controller {
         }
     }
 
+    function direct_missing() {
+        $this->load->model('stat_model', 'stat_m', true);
+        $this->library->set_cli_mode(TRUE);
+        print "enter missing gt: ";
+
+        // make a handle to read CLI
+        $handle = fopen("php://stdin","r");
+        $gt = trim(fgets($handle));
+        $seo_gt = $this->library->get_seo_gamertag($gt);
+
+        print "Running " . $gt . "\n";
+
+        // check for FAILED msg
+        $new_record = $this->library->get_profile($gt, FALSE, TRUE, $seo_gt);
+
+        if ($new_record == FALSE) {
+            $this->stat_m->change_status($seo_gt, MISSING_PLAYER);
+            print $gt . " is marked at MISSING. \n";
+        } else {
+            print $gt . " loaded fine :( \n";
+        }
+    }
+
     function cleanup_gamertags() {
         $this->load->model('stat_model', 'stat_m', true);
         $this->library->set_cli_mode(TRUE);

@@ -73,7 +73,7 @@ define("API_VERSION", 1);
 /**
  * INACTIVE_COUNTER
  */
-define("INACTIVE_COUNTER", 20);
+define("INACTIVE_COUNTER", 30);
 
 /**
  * BRANCH

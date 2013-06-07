@@ -9,6 +9,7 @@
 </script>
 <? endif; ?>
 <img src="<?= $data['SpartanURL']; ?>" width="211px" height="418px" class="img-polaroid" />
+<!-- InactiveCounter: <?= $data['InactiveCounter']; ?> -->
 <div class="well well-large btn btn-primary pad10 w150">
     <div class="pagination-centered">
         <img src="<?= $data['RankImage']; ?>" />
