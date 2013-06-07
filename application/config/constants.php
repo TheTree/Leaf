@@ -48,7 +48,7 @@ define('LOCAL_URL', 'localhost'); # When working locally.
  * TIME
  */
 define('HOUR_IN_SECONDS', 3600);
-define("TWENTYFOUR_HOURS_IN_SECONDS", 86400);
+define("THREEDAYS_IN_SECONDS", 259200);
 define("FIVEMIN_IN_SECONDS", 300);
 
 /**

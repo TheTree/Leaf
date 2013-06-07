@@ -722,7 +722,7 @@ class Library {
             'RankImage'                        => substr($service_record['RankImageUrl']['AssetUrl'], 7),
             'Specialization'                   => $this->find_current_specialization($service_record['Specializations']),
             'SpecializationLevel'              => $this->find_current_specialization($service_record['Specializations'], "Level"),
-            'Expiration'                       => intval(time() + TWENTYFOUR_HOURS_IN_SECONDS),
+            'Expiration'                       => intval(time() + THREEDAYS_IN_SECONDS),
             'MedalData'                        => @serialize($medal_data),
             'SkillData'                        => @serialize($skill_data),
             'SpecData'                         => @serialize($spec_data),
