@@ -116,6 +116,7 @@ class Cron_task extends IBOT_Controller {
 
         if ($new_record == FALSE) {
             $this->stat_m->change_status($seo_gt, MISSING_PLAYER);
+            $this->stat_m->delete_missing_record($seo_gt);
             print $gt . " is marked at MISSING. \n";
         } else {
             print $gt . " loaded fine :( \n";
@@ -143,6 +144,7 @@ class Cron_task extends IBOT_Controller {
 
                 if ($new_record == FALSE) {
                     $this->stat_m->change_status($item['SeoGamertag'], MISSING_PLAYER);
+                    $this->stat_m->delete_missing_record($item['SeoGamertag']);
                     print $item['SeoGamertag'] . " is marked at MISSING. \n";
                 } else {
                     print $item['Gamertag'] . " loaded fine :( \n";

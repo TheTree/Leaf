@@ -31,7 +31,7 @@ class Stat_model extends IBOT_Model {
                     // if InactiveCounter is above INACTIVE_COUNTER
                     // set InactiveCounter to MAX, otherwise
                     // previous InactiveCounter + 1;
-                    $data['InactiveCounter'] =  $_tmp['InactiveCounter'] + 1;
+                    $data['InactiveCounter'] = ($_tmp['InactiveCounter'] >= INACTIVE_COUNTER) ? INACTIVE_COUNTER : $_tmp['InactiveCounter'] + 1;
                 }
             }
             // unset some temporarily, so we can add back on postback
@@ -59,6 +59,106 @@ class Stat_model extends IBOT_Model {
             $data = array_merge($data, $unset_arra);
         }
         return $data;
+    }
+
+    /**
+     * update_or_mark_as_missing
+     * Tries to see if the gamertag passed is MISSING or not, inserts if so
+     *
+     * @param $gt
+     * @param $seo_gt
+     * @internal param $status
+     */
+    public function update_or_mark_as_missing($gt, $seo_gt) {
+
+        // get status
+        $status = $this->get_status($seo_gt);
+
+        if (($_tmp = $this->get_missing_record($seo_gt)) != FALSE) {
+
+            // update it
+            $this->update_missing_record($seo_gt, $status, $_tmp['Count']);
+
+        }  else {
+
+            // insert new record
+            $this->insert_missing_record($gt, $seo_gt, $status);
+
+        }
+    }
+
+    /**
+     * get_missing_record
+     *
+     * Pulls record via `ci_missing` via `SeoGamertag`
+     * @param $seo_gt
+     * @return bool
+     */
+    public function get_missing_record($seo_gt) {
+
+       $resp =  $this->db
+                    ->select('SeoGamertag,Status,Count')
+                    ->get_where('ci_missing', array(
+                        'SeoGamertag' => $seo_gt
+                    ));
+
+        $resp = $resp->row_array();
+
+        if (isset($resp['Count'])) {
+            return $resp;
+        } else {
+            return FALSE;
+        }
+
+    }
+
+    /**
+     * update_missing_record
+     *
+     * Updates the `ci_missing` record w/ `Status,Count` via `SeoGamertag`
+     * @param $seo_gt
+     * @param $status
+     * @param $count
+     */
+    public function update_missing_record($seo_gt, $status, $count) {
+        $this->db
+            ->where('SeoGamertag', $seo_gt)
+            ->update('ci_missing', array(
+                'Status'    => intval($status),
+                'Count'     => intval($count + 1)
+            ));
+
+    }
+
+    /**
+     * insert_missing_record
+     *
+     * Inserts record into `ci_missing`
+     * @param $gt
+     * @param $seo_gt
+     * @param $status
+     */
+    public function insert_missing_record($gt, $seo_gt, $status) {
+        $this->db
+            ->insert('ci_missing', array(
+                'Gamertag'      => $gt,
+                'SeoGamertag'   => $seo_gt,
+                'Status'        => intval($status),
+                'Count'         => intval(0)
+            ));
+    }
+
+    /**
+     * delete_missing_record
+     *
+     * Deletes missing record from `ci_missing` where `SeoGamertag`
+     * @param $seo_gt
+     */
+    public function delete_missing_record($seo_gt) {
+        $this->db
+            ->delete('ci_missing', array(
+                'SeoGamertag', $seo_gt
+            ));
     }
     
     /**
@@ -109,6 +209,29 @@ class Stat_model extends IBOT_Model {
 
         if (isset($resp['HashedGamertag']) && is_array($resp)) {
             return $resp;
+        } else {
+            return FALSE;
+        }
+    }
+
+    /**
+     * get_status
+     *
+     * Returns `Status` via `ci_gamertags` from `SeoGamertag`
+     * @param $seo_gamertag
+     * @return bool|int
+     */
+    public function get_status($seo_gamertag) {
+        $resp = $this->db
+                ->select('Status')
+                ->get_where('ci_gamertags', array(
+                'SeoGamertag' => $seo_gamertag
+            ));
+
+        $resp = $resp->row_array();
+
+        if (isset($resp['Status'])) {
+            return (int) $resp['Status'];
         } else {
             return FALSE;
         }
@@ -772,16 +895,14 @@ class Stat_model extends IBOT_Model {
     /**
      * remove_old_gamertags
      *
-     * Finds all gamertags where `InactiveCounter` is greater than 40,
+     * Finds all gamertags where `Count` is greater than MISSING_COUNTER,
      * and `Status` is equal to 0.
      */
     public function remove_old_gamertags() {
-        $this->db->where('InactiveCounter', intval(INACTIVE_COUNTER));
-        $this->db->where('Status', intval(0));
         $resp = $this->db
-            ->select("HashedGamertag,SeoGamertag,Status,Gamertag,InactiveCounter,Xp")
-            ->limit(5)
-            ->get('ci_gamertags');
+            ->select("Gamertag,Status,SeoGamertag,Count")
+            ->limit(10)
+            ->get('ci_missing');
 
         $resp = $resp->result_array();
 

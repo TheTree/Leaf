@@ -72,8 +72,17 @@ define("API_VERSION", 1);
 
 /**
  * INACTIVE_COUNTER
+ *
+ * Amount of times a profile can "recache" without a changing stats, before being marked as INACTIVE
  */
 define("INACTIVE_COUNTER", 30);
+
+/**
+ * MISSING_COUNTER
+ *
+ * Amount of times a profile can "fail" to load before marking as MISSING (renamed, etc)
+ */
+define("MISSING_COUNTER", 20);
 
 /**
  * BRANCH

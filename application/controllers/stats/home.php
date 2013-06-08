@@ -73,7 +73,7 @@ class Home extends IBOT_Controller {
         if ($gt == FALSE) {
             $this->library->throw_error("NO_GAMERTAG_STORED");
         } else if ($gt['InactiveCounter'] < INACTIVE_COUNTER) {
-            $this->library->throw_error("INACTIVECOUNTER_LESSTHAN_40");
+            $this->library->throw_error("INACTIVECOUNTER_LESSTHAN_X");
         } else {
             // grab new acc
             $acc = $this->library->grab_profile_data($gt['Gamertag'], TRUE, $gt['SeoGamertag']);
@@ -82,11 +82,6 @@ class Home extends IBOT_Controller {
             if ($acc['TotalGamesStarted'] == $gt['TotalGamesStarted']) {
                 $this->library->throw_error("UNFREEZE_NO_CHANGE");
             } else {
-                // remove 1 from `InactiveCounter`
-                $this->stat_m->update_account($acc['HashedGamertag'], array(
-                    'InactiveCounter' => intval(INACTIVE_COUNTER - 1)
-                ));
-
                 $this->session->set_flashdata("recache", "enabled");
                 redirect(base_url('/gt/' . $acc['SeoGamertag']));
             }

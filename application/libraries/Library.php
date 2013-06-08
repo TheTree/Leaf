@@ -678,6 +678,10 @@ class Library {
         unset($responses);
 
         if ($service_record == FALSE || $wargames_record == FALSE) {
+
+            // insert in ci_missing
+            $this->_ci->stat_m->update_or_mark_as_missing($gt, $seo_gamertag);
+
            if ($this->cli) {
                return FALSE;
            } else {
