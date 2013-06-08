@@ -64,7 +64,7 @@ class Home extends IBOT_Controller {
 
     }
 
-    public function unfreeze($seo_gamertag = "") {
+    public function removefreeze($seo_gamertag = "") {
 
         // pull record based on seo_gamertag
         $gt = $this->stat_m->get_unfreeze_data($seo_gamertag);

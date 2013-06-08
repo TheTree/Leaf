@@ -25,5 +25,5 @@
     <? endif; ?>
 <? endif; ?>
 <? if ($data['InactiveCounter'] >= INACTIVE_COUNTER): ?>
-    <a href="<?= base_url('unfreeze/' . $data['SeoGamertag']); ?>" class="btn btn-success margin3pxtop">Unfreeze</a>
+    <a href="<?= base_url('removefreeze/' . $data['SeoGamertag']); ?>" class="btn btn-success margin3pxtop">Unfreeze</a>
 <? endif; ?>

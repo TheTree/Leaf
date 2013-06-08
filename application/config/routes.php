@@ -65,7 +65,7 @@ $route['ajax/gt/(:any)'] = "ajax/core/compare_api/$1";
 // variable pages
 $route['csr_leaderboards/(:any)']        = "csr/leaderboards/leaderboard/$1/0";
 $route['csr_leaderboards/(:any)/(:num)'] = "csr/leaderboards/leaderboard/$1/$2";
-$route['unfreeze/(:any)']                = "stats/home/unfreeze/$1";
+$route['removefreeze/(:any)']            = "stats/home/removefreeze/$1";
 $route['star/(:any)']                    = "stats/home/star/$1";
 $route['gt/(:any)/recache']              = "stats/home/recache_gt/$1";
 $route['gt/(:any)']                      = "stats/home/gt/$1";
