@@ -82,7 +82,7 @@ define("INACTIVE_COUNTER", 30);
  *
  * Amount of times a profile can "fail" to load before marking as MISSING (renamed, etc)
  */
-define("MISSING_COUNTER", 20);
+define("MISSING_COUNTER", 5);
 
 /**
  * BRANCH
