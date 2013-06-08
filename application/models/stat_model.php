@@ -900,6 +900,8 @@ class Stat_model extends IBOT_Model {
      */
     public function remove_old_gamertags() {
         $resp = $this->db
+            ->where('Count >', MISSING_COUNTER)
+            ->where('Status', intval(0))
             ->select("Gamertag,Status,SeoGamertag,Count")
             ->limit(10)
             ->get('ci_missing');
