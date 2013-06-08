@@ -47,8 +47,12 @@
             <span class="row_data"><?= number_format($data['TotalSuicides']); ?></span>
         </li>
         <li>
-            <span class="row_title">KD Ratio</span>
+            <span class="row_title"><abbr title="Kills / Death">K/D</abbr> Ratio</span>
             <span class="row_data"><?= round(floatval($data['KDRatio']), 3); ?></span>
+        </li>
+        <li>
+            <span class="row_title"><abbr title="Kills + Assists / Death">KA/D</abbr> Ratio</span>
+            <span class="row_data"><?= round(floatval(($data['TotalKills'] + $data['TotalAssists']) / $data['TotalDeaths']), 3); ?></span>
         </li>
         <li>
             <span class="row_title">Spartan Points</span>
