@@ -4,7 +4,7 @@
         <div class="well well-large">
 
             <div class="visible-desktop">
-                <a href="http://branchapp.co/halo4/servicerecord/<?= $data['BranchGamertag']; ?>/"><span class="badge badge-info">View Profile on Branch</span></a>
+                <a href="http://branchapp.co/halo4/servicerecord/<?= $data['BranchGamertag']; ?>?u=profile"><span class="badge badge-info">View Profile on Branch</span></a>
                 <br />
                 <hr>
             </div>
