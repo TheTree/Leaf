@@ -157,7 +157,7 @@ class Stat_model extends IBOT_Model {
     public function delete_missing_record($seo_gt) {
         $this->db
             ->delete('ci_missing', array(
-                'SeoGamertag', $seo_gt
+                'SeoGamertag' => $seo_gt
             ));
     }
     
