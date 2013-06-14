@@ -93,8 +93,8 @@ class Cron_task extends IBOT_Controller {
             $this->cache->write($result['id'], 'cron_lastid');
             print "Wrote: " . $result['id'] . " to cache. \n";
         } else {
-            $this->cache->write($_previous + 5, 'cron_lastid');
-            print "Wrote: " . $_previous + 5 . " to cache. \n";
+            $this->cache->write($_previous + 101, 'cron_lastid');
+            print "Wrote: " . $_previous + 101 . " to cache. \n";
             return $this->update_gamertags();
         }
     }
