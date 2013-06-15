@@ -25,6 +25,11 @@ class IBOT_Controller extends CI_Controller {
             $this->template->set('starred', $resp);
         }
 
+        // fix the fucking Chrome browser
+        $this->output->set_header('Cache-Control: no-cache, no-store, must-revalidate');
+        $this->output->set_header('Pragma: no-cache');
+        $this->output->set_header('Expires: 0');
+
         // load global header & footer
         $this->template->set_partial('head_header', '_partials/head_header');
         $this->template->set_partial('header', '_partials/header');

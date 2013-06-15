@@ -382,7 +382,7 @@ class Stat_model extends IBOT_Model {
      */
     public function get_last_5() {
         $resp = $this->db
-                ->select("Gamertag,ServiceTag,Rank")
+                ->select("Gamertag,ServiceTag,Rank,SeoGamertag")
                 ->order_by("id", "desc")
                 ->limit(5)
                 ->get('ci_gamertags');
