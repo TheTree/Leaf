@@ -570,7 +570,7 @@ class Library {
                         return FALSE;
                     }
                 }
-                $this->_ci->cache->write($resp, $hashed, 3600);
+                $this->_ci->cache->write($resp, $hashed, 300);
                 return $resp;
             } else {
 
