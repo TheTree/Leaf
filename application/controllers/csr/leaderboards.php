@@ -120,6 +120,7 @@ class Leaderboards extends IBOT_Controller {
         $this->template
             ->set('pagination', $this->pagination->create_links())
             ->set('leaderboards', $resp)
+            ->set('playlist_name', $name)
             ->title("Leaf .:. CSR Halo 4 " . $name . " Leaderboards");
         $this->_build();
     }
@@ -129,7 +130,7 @@ class Leaderboards extends IBOT_Controller {
         $resp = $this->_load_pagination($playlist, $page);
         $name = $this->playlists[substr($playlist,0, -2)]['Name'];
 
-        // @todo add playlist name into this.
+        // add playlist name into this.
         $this->library->description = "LeafApp .:. CSR Halo 4 " . $name . " Leaderboards";
         $this->template->set("meta", $this->library->return_meta());
 
@@ -137,6 +138,7 @@ class Leaderboards extends IBOT_Controller {
         $this->template
             ->set('pagination', $this->pagination->create_links())
             ->set('leaderboards', $resp)
+            ->set('playlist_name', $name)
             ->title("Leaf .:. CSR Halo 4 " . $name . " Leaderboards");
         $this->_build();
 
