@@ -24,8 +24,8 @@ class Stat_model extends IBOT_Model {
         // check for update
         if (($_tmp = $this->account_exists($hash)) != FALSE) {
 
-            if (isset($_tmp['Xp']) && isset($data['Xp'])) {
-                if (floatval($_tmp['Xp']) != floatval($data['Xp'])) {
+            if (isset($_tmp['TotalGameplay']) && isset($data['TotalGameplay'])) {
+                if (floatval($_tmp['TotalGameplay']) != floatval($data['TotalGameplay'])) {
                     $data['InactiveCounter'] = 0;
                 } else {
                     // if InactiveCounter is above INACTIVE_COUNTER
@@ -34,6 +34,7 @@ class Stat_model extends IBOT_Model {
                     $data['InactiveCounter'] = ($_tmp['InactiveCounter'] >= INACTIVE_COUNTER) ? INACTIVE_COUNTER : $_tmp['InactiveCounter'] + 1;
                 }
             }
+
             // unset some temporarily, so we can add back on postback
             $unset_arra = array(
                 'Gamertag'          => $_tmp['Gamertag'],
@@ -200,7 +201,7 @@ class Stat_model extends IBOT_Model {
 
         // generate resp
         $resp = $this->db
-                ->select('HashedGamertag,InactiveCounter,Gamertag,SeoGamertag,Status,Xp')
+                ->select('HashedGamertag,InactiveCounter,Gamertag,SeoGamertag,Status,TotalGameplay')
                 ->get_where('ci_gamertags', array(
             'HashedGamertag' => $hash
                 ));
@@ -304,7 +305,7 @@ class Stat_model extends IBOT_Model {
      */
     public function cron_gamertag($start, $max) {
         $resp = $this->db
-                ->select('HashedGamertag,Xp,id,InactiveCounter,Gamertag,SeoGamertag')
+                ->select('HashedGamertag,TotalGameplay,id,InactiveCounter,Gamertag,SeoGamertag')
                 ->limit(intval($max),intval($start))
                 ->order_by("id", "asc")
                 ->get_where('ci_gamertags', array(

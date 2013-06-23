@@ -70,12 +70,12 @@ class Cron_task extends IBOT_Controller {
                 // only run if they loaded data.
                 if ($flag == FALSE) {
                     // check comparison, if so increment there `InactiveCounter` by 1
-                    if ($new_record['Xp'] == $result['Xp']) {
+                    if ($new_record['TotalGameplay'] == $result['TotalGameplay']) {
                         $this->stat_m->update_account($result['HashedGamertag'], array(
                             'InactiveCounter' => intval($result['InactiveCounter'] + 1)
                         ));
 
-                        print $result['Gamertag'] . " has had 0 Xp change. +1 to `InactiveCounter`, which is now at: " . intval($result['InactiveCounter'] + 1) . "\n";
+                        print $result['Gamertag'] . " has had 0 TotalGameplay change. +1 to `InactiveCounter`, which is now at: " . intval($result['InactiveCounter'] + 1) . "\n";
                         unset($new_record);
                     } else {
 
@@ -84,7 +84,7 @@ class Cron_task extends IBOT_Controller {
                             'InactiveCounter' => intval(0)
                         ));
 
-                        print $result['Gamertag'] . " has had " . ($new_record['Xp'] - $result['Xp']) . " Xp change. Reset `InactiveCounter` \n";
+                        print $result['Gamertag'] . " has had " . ($this->library->time_duration($new_record['TotalGameplay'] - $result['TotalGameplay'])) . " TotalGameplay change. Reset `InactiveCounter` \n";
                     }
                 }
             }
@@ -150,14 +150,14 @@ class Cron_task extends IBOT_Controller {
                     print $item['Gamertag'] . " loaded fine :( \n";
                     print $item['Gamertag'] . " was at " . $item['InactiveCounter'] . "\n";
 
-                    if ($item['Xp'] != $new_record['Xp']) {
-                        print $item['Gamertag'] . " has had an Xp Change. Reset InactiveCounter \n";
+                    if ($item['TotalGameplay'] != $new_record['TotalGameplay']) {
+                        print $item['Gamertag'] . " has had an TotalGameplay Change. Reset InactiveCounter \n";
                         $this->stat_m->update_account($item['HashedGamertag'], array(
                             'InactiveCounter' => intval(0)
                         ));
                         print $item['Gamertag'] . " now is at " . intval(0) . "\n";
                     } else {
-                        print $item['Gamertag'] . " has had no Xp Change.+ 1 InactiveCounter \n";
+                        print $item['Gamertag'] . " has had no TotalGameplay Change.+ 1 InactiveCounter \n";
                         $this->stat_m->update_account($item['HashedGamertag'], array(
                             'InactiveCounter' => intval(INACTIVE_COUNTER + 1)
                         ));
