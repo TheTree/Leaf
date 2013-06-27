@@ -49,6 +49,7 @@ define('LOCAL_URL', 'localhost'); # When working locally.
  */
 define('HOUR_IN_SECONDS', 3600);
 define("THREEDAYS_IN_SECONDS", 259200);
+define("SEVENDAYS_IN_SECONDS", 604800);
 define("FIVEMIN_IN_SECONDS", 300);
 
 /**
@@ -68,7 +69,7 @@ define("MISSING_PLAYER", 3);
  *
  * Used in incrementing changes to the core API, which forces a recache of everyone not at that API version
  */
-define("API_VERSION", 1);
+define("API_VERSION", 2);
 
 /**
  * INACTIVE_COUNTER

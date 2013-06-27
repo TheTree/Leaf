@@ -543,6 +543,7 @@ class Library {
         if ($seo_gamertag == "") {
             $seo_gamertag = $this->get_seo_gamertag($gt);
         }
+
         if (strlen(urldecode($gt)) > 15) {
 
             if ($errors) {
@@ -552,35 +553,21 @@ class Library {
             }
         } else {
 
-            // get hashed name
-            $hashed = "profile_" . $this->get_hashed_seo_gamertag($seo_gamertag);
+            // grab new data
+            $resp = $this->grab_profile_data($gt,$force, $seo_gamertag);
 
-            // check cache
-            $resp = $this->_ci->cache->get($hashed);
-
-            if ($resp == FALSE || ENVIRONMENT == "development" || $force == TRUE) {
-
-                // grab new data
-                $resp = $this->grab_profile_data($gt,$force, $seo_gamertag);
-
-                if ($resp == FALSE) {
-                    if ($errors) {
-                        $this->throw_error("NOT_XBL_ACCOUNT");
-                    } else {
-                        return FALSE;
-                    }
-                }
-                $this->_ci->cache->write($resp, $hashed, 300);
-                return $resp;
-            } else {
-
-                // check for expiration
-                if ($resp['Expiration'] > time()) {
-                    $this->_ci->cache->delete($hashed);
-                    return $this->get_profile($gt);
+            if ($resp == FALSE) {
+                if ($errors) {
+                    $this->throw_error("NOT_XBL_ACCOUNT");
                 } else {
-                    return $resp;
+                    return FALSE;
                 }
+            }
+            // check for expiration
+            if (intval($resp['Expiration']) < intval(time())) {
+                return $this->get_profile($gt, $errors, TRUE, $seo_gamertag);
+            } else {
+                return $resp;
             }
         }
     }
@@ -726,7 +713,7 @@ class Library {
             'RankImage'                        => substr($service_record['RankImageUrl']['AssetUrl'], 7),
             'Specialization'                   => $this->find_current_specialization($service_record['Specializations']),
             'SpecializationLevel'              => $this->find_current_specialization($service_record['Specializations'], "Level"),
-            'Expiration'                       => intval(time() + THREEDAYS_IN_SECONDS),
+            'Expiration'                       => intval(time() + SEVENDAYS_IN_SECONDS),
             'MedalData'                        => @serialize($medal_data),
             'SkillData'                        => @serialize($skill_data),
             'SpecData'                         => @serialize($spec_data),
