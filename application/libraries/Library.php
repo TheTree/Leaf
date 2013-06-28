@@ -244,6 +244,7 @@ class Library {
         if (isset($resp['StatusCode']) && ($resp['StatusCode'] == 0 || $resp['StatusCode'] == 1)) {
             return $resp;
         } else {
+            $this->_ci->cache->delete('auth_spartan');
             log_message('error', 'URL Down: ' . $url);
             log_message('error', 'API Down: ' . $resp['StatusReason']);
             return FALSE;
@@ -402,6 +403,9 @@ class Library {
 
         // set accept header, and SpartanToken if needed
         $this->_ci->curl->option('HTTPHEADER', $header_paras);
+        $this->_ci->curl->option(CURLOPT_SSL_VERIFYPEER, '0');
+        $this->_ci->curl->option(CURLOPT_SSL_VERIFYHOST, '0');
+        $this->_ci->curl->option(CURLOPT_CAPATH,'cacert.pem');
 
         if (substr($paras, 0, 5) === "https") {
             $url = $paras;
@@ -471,6 +475,10 @@ class Library {
             $this->_ci->curl->option('HTTPHEADER', array(
                 'Accept: application/json',
                 'X-343-Authorization-WLID: ' ."v1=" . $key['accessToken']));
+
+            $this->_ci->curl->option(CURLOPT_SSL_VERIFYPEER, '0');
+            $this->_ci->curl->option(CURLOPT_SSL_VERIFYHOST, '0');
+            $this->_ci->curl->option(CURLOPT_CAPATH,'cacert.pem');
 
             // lets make this URL
             $resp = $this->_ci->curl->simple_get($get_url);
