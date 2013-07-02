@@ -14,18 +14,6 @@ class Home extends IBOT_Controller {
 
     public function index() {
 
-        // get flagged users @todo cache for 5 minutes
-        $flagged_users = $this->stat_m->get_flagged_users();
-
-        // remove all that are less than 5 flags
-        if (is_array($flagged_users)) {
-            foreach ($flagged_users as $key => $user) {
-                if ($user['amt'] < 5) {
-                    unset($flagged_users[$key]);
-                }
-            }
-        }
-
         // if session authenticated
         if ($this->session->userdata('authenticated') != FALSE) {
             $mod = TRUE;
@@ -41,7 +29,6 @@ class Home extends IBOT_Controller {
 
         $this->template
             ->set("Leaf .:. 343 Guilty Spark")
-            ->set("flagged_users", $flagged_users)
             ->set("banned_users", $banned_users)
             ->set("mod", $mod)
             ->build("pages/moderate/index");

@@ -500,28 +500,6 @@ class Stat_model extends IBOT_Model {
     }
 
     /**
-     * get_flagged_users()
-     *
-     * Grab any user who have flags, but not yet cheated
-     * @return array|bool
-     */
-    public function get_flagged_users() {
-        $resp = $this->db
-            ->select('Count(`id`) as amt,`Gamertag`,`SeoGamertag`',FALSE)
-            ->group_by("id")
-            ->order_by("Gamertag", "desc")
-            ->get('ci_flagged');
-
-        $resp = $resp->result_array();
-
-        if (is_array($resp) && count($resp) > 0) {
-            return $resp;
-        } else {
-            return FALSE;
-        }
-    }
-
-    /**
      * check_for_flag
      *
      * Takes `ip` and `$seo` name to see if this IP has already flagged this gamertag

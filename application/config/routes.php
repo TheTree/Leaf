@@ -62,6 +62,12 @@ $route['guilty_spark/login'] = "moderate/home/login";
 // ajax calls
 $route['ajax/gt/(:any)'] = "ajax/core/compare_api/$1";
 
+// static login page
+$route['backstage']         = "admin/gate";
+$route['backstage/index']   = "admin/index";
+$route['backstage/flagged'] = "admin/index/flagged";
+$route['backstage/find']    = "admin/index/find";
+
 // variable pages
 $route['csr_leaderboards/(:any)']        = "csr/leaderboards/leaderboard/$1/0";
 $route['csr_leaderboards/(:any)/(:num)'] = "csr/leaderboards/leaderboard/$1/$2";

@@ -11,7 +11,12 @@
 |	http://codeigniter.com/user_guide/general/profiling.html
 |
 */
-
+$config['memory_usage']             = FALSE;
+$config['uri_string']               = FALSE;
+$config['config']                   = FALSE;
+$config['get']                      = FALSE;
+$config['http_headers']             = FALSE;
+$config['controller_info']          = FALSE;
 
 /* End of file profiler.php */
 /* Location: ./application/config/profiler.php */

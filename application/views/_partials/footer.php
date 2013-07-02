@@ -1,4 +1,3 @@
-</div>
 <div class="contained-fluid navbar navbar-fixed-bottom">
     <span class="pull-left">
         <? if (ENVIRONMENT == "development"): ?>

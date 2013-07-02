@@ -134,6 +134,20 @@ class Library {
         }
     }
 
+    public function is_acp_active($item) {
+        if ($this->_ci->uri->segment(2) == FALSE) {
+            $uri_string = "index";
+        } else {
+            $uri_string = $this->_ci->uri->segment(2);
+        }
+
+        if ($uri_string == $item) {
+            return 'active';
+        } else {
+            return '';
+        }
+    }
+
     public function is_csr_active($item) {
         if ($this->_ci->uri->segment(2) == FALSE) {
             $uri_string = "100_I";
@@ -1384,6 +1398,37 @@ class Library {
         // load config var
         $this->_ci->config->load('security');
         return $this->_ci->config->item('anti_tranversal_data');
+    }
+
+    public function backstage_gatekeeper($errors = TRUE) {
+        // @todo create matching ci_backstage_table to verify against db along with session
+        $session_data = $this->_ci->session->all_userdata();
+
+        // make sure all fields are present
+        foreach(["seo_username","username","id","expire","authenticated"] as $item) {
+            if (!isset($session_data[$item])) {
+                return $this->killoff_session($errors);
+            }
+        }
+
+        // check for expiration
+        if (intval($session_data['expire']) < time()) {
+            return $this->killoff_session($errors);
+        } else {
+            // we are validated, update and move on
+            $this->_ci->session->set_userdata('expire', intval(time() + HOUR_IN_SECONDS));
+            return TRUE;
+        }
+        return $this->killoff_session($errors);
+    }
+
+    public function killoff_session($errors = TRUE) {
+        if ($errors) {
+            $this->_ci->session->sess_destroy();
+            redirect(base_url('backstage'));
+        } else {
+            return FALSE;
+        }
     }
 
     /**

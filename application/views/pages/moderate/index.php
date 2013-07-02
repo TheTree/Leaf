@@ -28,7 +28,7 @@
             </table>
         </div>
     <? endif; ?>
-    <? if ($flagged_users != false): ?>
+    <? if (isset($flagged_users)): ?>
         <h2>Recently Flagged</h2>
         <div class="well">
             <table class="table table-bordered table-striped">

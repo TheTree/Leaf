@@ -218,4 +218,11 @@ if (!defined('PASSWORD_DEFAULT')) {
     }
 }
 
+if ( ! function_exists('seo_name'))
+{
+    function seo_name($name) {
+        return url_title($name,"_",TRUE);
+    }
+}
+
 
