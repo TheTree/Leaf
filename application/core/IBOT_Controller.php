@@ -31,9 +31,13 @@ class IBOT_Controller extends CI_Controller {
         $this->output->set_header('Expires: 0');
 
         // load global header & footer
-        $this->template->set_partial('head_header', '_partials/head_header');
-        $this->template->set_partial('header', '_partials/header');
-        $this->template->set_partial('footer', '_partials/footer');
+        $this->template
+            ->set_partial('global_js_vars', '_partials/global_js_vars')
+            ->set('csrf_token', $this->security->get_csrf_token_name())
+            ->set('csrf_hash', $this->security->get_csrf_hash())
+            ->set_partial('head_header', '_partials/head_header')
+            ->set_partial('header', '_partials/header')
+            ->set_partial('footer', '_partials/footer');
     }
 
 }

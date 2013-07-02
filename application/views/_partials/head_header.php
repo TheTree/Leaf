@@ -24,7 +24,9 @@
             s.parentNode.insertBefore(ga, s);
         })();
     </script>
+    <?= $template['_partials']['global_js_vars']; ?>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src="<?= base_url('assets/js/csrf_autoload.js'); ?>" type="text/javascript"></script>
     <script src="<?= base_url('assets/js/bootstrap/bootstrap.min.js'); ?>" type="text/javascript"></script>
     <script src="<?= base_url('assets/js/bootstrap/jquery.smooth-scroll.min.js'); ?>" type="text/javascript"></script>
     <script src="<?= base_url('assets/js/bootstrap/bootswatch.js'); ?>" type="text/javascript"></script>

@@ -9,7 +9,6 @@ class Home extends IBOT_Controller {
         parent::__construct();
         $this->load->model('stat_model', 'stat_m', true);
         $this->load->model('admin_model', 'admin_m', true);
-        $this->config->set_item('csrf_protection', TRUE);
     }
 
     public function index() {

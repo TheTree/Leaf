@@ -13,7 +13,6 @@ class Leaderboards extends IBOT_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->model('stat_model', 'stat_m', true);
-        $this->config->set_item('csrf_protection', TRUE);
 
         // check for "starred" gt
         $this->load->helper('cookie');
