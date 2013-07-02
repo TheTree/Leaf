@@ -2,7 +2,7 @@
 <html lang="en">
     <?= $template['_partials']['head_header']; ?>
     <body id="top" data-spy="scroll" data-target=".subnav" data-offset="100">
-        <div class="navbar <? if ($this->uri->segment(1) != "backstage"): ?>navbar-inverse<? endif; ?> navbar-static-top">
+        <div class="navbar <? if ($this->uri->segment(1) != "backstage"): ?>navbar-inverse<? endif; ?> navbar-<? if ($this->uri->segment(1) == "leaderboards"): ?>fixed<? else: ?>static<? endif; ?>-top">
             <div class="navbar-inner">
                 <div class="container">
                     <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
