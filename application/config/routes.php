@@ -43,7 +43,6 @@ $route['about'] = "home/about";
 $route['error'] = "home/error";
 $route['cron'] = "cron_task/update_gamertags"; 
 $route['news'] = "news/index";
-$route['news/create'] = "news/index/create";
 $route['metadata/recache'] = "stats/home/metadata";
 $route['playlists/recache'] = "stats/home/redo_playlists";
 $route['stats'] = "stats/home/index";
@@ -63,10 +62,16 @@ $route['guilty_spark/login'] = "moderate/home/login";
 $route['ajax/gt/(:any)'] = "ajax/core/compare_api/$1";
 
 // static login page
-$route['backstage']         = "admin/gate";
-$route['backstage/index']   = "admin/index";
-$route['backstage/flagged'] = "admin/index/flagged";
-$route['backstage/find']    = "admin/index/find";
+$route['backstage']                 = "admin/gate";
+$route['backstage/index']           = "admin/index";
+$route['backstage/flagged']         = "admin/index/flagged";
+$route['backstage/find']            = "admin/index/find";
+$route['backstage/news/create']     = "admin/index/news_create";
+$route['backstage/news/list']       = "admin/index/news_list";
+
+// variable backstage
+$route['backstage/news/list/(:any)'] = "admin/index/news_list/$1"; #pagination
+
 
 // variable pages
 $route['csr_leaderboards/(:any)']        = "csr/leaderboards/leaderboard/$1/0";

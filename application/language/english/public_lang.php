@@ -6,3 +6,5 @@ $lang['acp_find']               = "Find Player";
 $lang['acp_flagged']            = "Flagged Players";
 $lang['acp_news']               = "News";
 
+$lang['acp_news_list']          = "News List";
+$lang['acp_news_create']        = "Create News";

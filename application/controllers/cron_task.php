@@ -12,7 +12,7 @@ class Cron_task extends IBOT_Controller {
     function __construct() {
         parent::__construct();
     }
-    
+
     function update_gamertags() {
         
         // load db
