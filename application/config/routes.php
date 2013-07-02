@@ -66,6 +66,7 @@ $route['backstage/flagged']         = "admin/index/flagged";
 $route['backstage/find']            = "admin/index/find";
 $route['backstage/news/create']     = "admin/index/news_create";
 $route['backstage/news/list']       = "admin/index/news_list";
+$route['backstage/logout']          = "admin/index/logout";
 
 // variable backstage
 $route['backstage/news/list/(:any)']                = "admin/index/news_list/$1"; #pagination

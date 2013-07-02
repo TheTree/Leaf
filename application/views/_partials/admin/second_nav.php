@@ -22,6 +22,7 @@
                     </li>
                     <li class="<?= $this->library->is_acp_active('flagged'); ?>"><a href="<?= base_url('backstage/flagged'); ?>"><?= lang('acp_flagged'); ?></a></li>
                     <li class="<?= $this->library->is_acp_active('find'); ?>"><a href="<?= base_url('backstage/find'); ?>"><?= lang('acp_find'); ?></a></li>
+                    <li><a href="<?= base_url('backstage/logout'); ?>"><?= lang('acp_logout'); ?></a></li>
                 </ul>
             </div>
         </div>
