@@ -1289,6 +1289,24 @@ class Library {
     }
 
     /**
+     * get_flagged
+     *
+     * Removes under 5 flagged accounts.
+     * @param array $flagged_users
+     * @return array
+     */
+    public function get_flagged($flagged_users = array()) {
+        if (is_array($flagged_users)) {
+            foreach ($flagged_users as $key => $user) {
+                if ($user['amt'] < 5) {
+                    unset($flagged_users[$key]);
+                }
+            }
+        }
+        return $flagged_users;
+    }
+
+    /**
      * build_spartan_with_emblem
      *
      * Used during recache/creation. Takes hashed $gt, and downloads / parses the emblem and Spartan Image.

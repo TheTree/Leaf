@@ -10,8 +10,9 @@ class Index extends IBOT_Controller {
 
         // gatekeeper, load models, setup template
         $this->library->backstage_gatekeeper();
-        $this->load->model('admin_model', 'admin_m', true);
-        $this->load->model('news_model', 'news_m', true);
+        $this->load->model('admin_model', 'admin_m', TRUE);
+        $this->load->model('news_model', 'news_m', TRUE);
+        $this->load->model('stat_model', 'stat_m', TRUE);
 
         $this->template
             ->set_partial('second_nav','_partials/admin/second_nav')
@@ -29,8 +30,32 @@ class Index extends IBOT_Controller {
     }
 
     function flagged() {
+        $flagged_users = $this->library->get_flagged($this->admin_m->get_flagged_users());
+
         $this->template
-            ->build("pages/comingsoon");
+            ->title("Flagged Users")
+            ->set('flagged_users', $flagged_users)
+            ->build("pages/admin/flagged");
+    }
+
+    public function flagged_mod($seo_name = "", $status = 0) {
+        // check for session
+        if ($this->session->userdata('authenticated') != FALSE) {
+
+            // delete all pending marks
+            $this->stat_m->delete_pending_flagged_users($seo_name);
+
+            // mark the person
+            $this->stat_m->change_status($seo_name, $status);
+
+            // flag person in csr_records
+            $this->stat_m->change_csr_status($seo_name, $status);
+
+            // redirect back 2 marking page
+            redirect(base_url("backstage/flagged"));
+        } else {
+
+        }
     }
 
     function find() {

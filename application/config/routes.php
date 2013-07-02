@@ -39,24 +39,22 @@
 */
 
 // basic pages
-$route['about'] = "home/about";
-$route['error'] = "home/error";
-$route['cron'] = "cron_task/update_gamertags"; 
-$route['news'] = "news/index";
-$route['metadata/recache'] = "stats/home/metadata";
+$route['about']             = "home/about";
+$route['error']             = "home/error";
+$route['cron']              = "cron_task/update_gamertags";
+$route['news']              = "news/index";
+$route['metadata/recache']  = "stats/home/metadata";
 $route['playlists/recache'] = "stats/home/redo_playlists";
-$route['stats'] = "stats/home/index";
-$route['compare'] = "stats/compare/index";
-$route['leaderboards'] = "stats/home/index";
-$route['csr_leaderboards'] = "csr/leaderboards/index";
+$route['stats']             = "stats/home/index";
+$route['compare']           = "stats/compare/index";
+$route['leaderboards']      = "stats/home/index";
+$route['csr_leaderboards']  = "csr/leaderboards/index";
 
 // variable mod pages
-$route['guilty_spark/flag/(:any)'] = "moderate/home/flagged/$1";
-$route['guilty_spark/mod/(:any)/(:num)'] = "moderate/home/marked/$1/$2";
+$route['guilty_spark/flag/(:any)']          = "moderate/home/flagged/$1";
 
 // moderate
-$route['guilty_spark'] = "moderate/home";
-$route['guilty_spark/login'] = "moderate/home/login";
+$route['guilty_spark']          = "moderate/home";
 
 // ajax calls
 $route['ajax/gt/(:any)'] = "ajax/core/compare_api/$1";
@@ -70,8 +68,8 @@ $route['backstage/news/create']     = "admin/index/news_create";
 $route['backstage/news/list']       = "admin/index/news_list";
 
 // variable backstage
-$route['backstage/news/list/(:any)'] = "admin/index/news_list/$1"; #pagination
-
+$route['backstage/news/list/(:any)']                = "admin/index/news_list/$1"; #pagination
+$route['backstage/flagged/mod/(:any)/(:num)']       = "admin/index/flagged_mod/$1/$2"; #seo_username/status
 
 // variable pages
 $route['csr_leaderboards/(:any)']        = "csr/leaderboards/leaderboard/$1/0";
@@ -86,8 +84,8 @@ $route['compare/(:any)/(:any)']          = "stats/compare/comparison/$1/$2";
 $route['compare/(:any)']                 = "stats/compare/comparison_prefill/$1";
 
 // other
-$route['default_controller'] = "home";
-$route['404_override'] = '';
+$route['default_controller']    = "home";
+$route['404_override']          = '';
 
 
 /* End of file routes.php */
