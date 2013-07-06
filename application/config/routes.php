@@ -67,10 +67,15 @@ $route['backstage/find']            = "admin/index/find";
 $route['backstage/news/create']     = "admin/index/news_create";
 $route['backstage/news/list']       = "admin/index/news_list";
 $route['backstage/logout']          = "admin/index/logout";
+$route['backstage/keys']            = "admin/index/keys";
+
+// api
+$route['api']                       = "api/index/index";
 
 // variable backstage
 $route['backstage/news/list/(:any)']                = "admin/index/news_list/$1"; #pagination
 $route['backstage/flagged/mod/(:any)/(:num)']       = "admin/index/flagged_mod/$1/$2"; #seo_username/status
+$route['backstage/key_delete/(:num)']               = "admin/index/key_delete/$1"; #key_id
 
 // variable pages
 $route['csr_leaderboards/(:any)']        = "csr/leaderboards/leaderboard/$1/0";

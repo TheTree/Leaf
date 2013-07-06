@@ -894,5 +894,67 @@ class Stat_model extends IBOT_Model {
         }
     }
 
+    /**
+     * validate_api
+     *
+     * Checks for valid API
+     * @param $user
+     * @param $pass
+     */
+    public function validate_api($user, $pass) {
+
+    }
+
+    /**
+     * insert_api
+     *
+     * Inserts api key into db
+     * @param $user
+     */
+    public function insert_api($user) {
+        $this->db
+            ->insert('ci_api', array(
+                'user'  => $user,
+                'pass' => random_string('alnum', 32),
+                'last_hit' => intval(0)
+            ));
+    }
+
+    /**
+     * get_keys()
+     *
+     * Returns keys from `ci_api`
+     * @return array|bool
+     */
+    public function get_keys() {
+        $resp = $this->db
+                ->select('user,pass,last_hit,id')
+                ->from('ci_api')
+                ->limit(15)
+                ->order_by('last_hit', "DESC")
+                ->get();
+
+        $resp = $resp->result_array();
+
+        if (is_array($resp)) {
+            return $resp;
+        } else {
+            return FALSE;
+        }
+    }
+
+    /**
+     * delete_key
+     *
+     * Deletes `key` of $key
+     * @param $key
+     */
+    public function delete_key($key) {
+        $this->db
+            ->delete('ci_api', array(
+                'id' => intval($key)
+            ));
+    }
+
 
 }

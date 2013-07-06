@@ -11,5 +11,4 @@ class Utils {
         $this->_ci->load->helper("path");
     }
 
-
 }

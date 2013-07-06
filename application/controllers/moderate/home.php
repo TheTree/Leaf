@@ -12,14 +12,6 @@ class Home extends IBOT_Controller {
     }
 
     public function index() {
-
-        // if session authenticated
-        if ($this->session->userdata('authenticated') != FALSE) {
-            $mod = TRUE;
-        } else {
-            $mod = FALSE;
-        }
-
         // get last 5 banned users
         $banned_users = $this->stat_m->get_cheating_users();
 
@@ -29,7 +21,6 @@ class Home extends IBOT_Controller {
         $this->template
             ->set("Leaf .:. 343 Guilty Spark")
             ->set("banned_users", $banned_users)
-            ->set("mod", $mod)
             ->build("pages/moderate/index");
 
     }

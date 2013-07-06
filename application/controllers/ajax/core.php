@@ -8,6 +8,10 @@ class Core extends IBOT_Controller {
     function __construct() {
         parent::__construct();
 
+        if (!$this->input->is_ajax_request()) {
+            die("no_permission");
+        }
+
         // load model
         $this->load->model('stat_model', 'stat_m', true);
     }

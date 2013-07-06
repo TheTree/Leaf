@@ -63,6 +63,32 @@ class Index extends IBOT_Controller {
             ->build("pages/comingsoon");
     }
 
+    function keys() {
+
+        if ($this->input->post('submitted') != FALSE) {
+            $this->form_validation->set_rules('user', 'User', 'required|xss_clean|max_length[32]|min_length[5]');
+
+            if ($this->form_validation->run() === FALSE) {
+                $this->form_validation->set_message('errors', validation_errors());
+            } else {
+                // add key
+                $this->stat_m->insert_api($this->input->post('user'));
+            }
+        }
+
+        $this->template
+            ->set('key_msg', $this->session->flashdata('key_msg'))
+            ->set('keys', $this->stat_m->get_keys())
+            ->title("API Keys")
+            ->build("pages/admin/keys");
+    }
+
+    function key_delete($key) {
+        $this->stat_m->delete_key($key);
+        $this->session->set_flashdata('key_msg', 'Key deleted');
+        redirect(base_url('backstage/keys'));
+    }
+
     function news_list($page = 0) {
 
         $config = array();
