@@ -15,8 +15,9 @@
                     <td><a href="<?= base_url('gt/' . $user['SeoGamertag']); ?>"><?= $user['Gamertag']; ?></a></td>
                     <td><?= number_format($user['amt']); ?></td>
                     <td>
-                        <a class="btn btn-small btn-danger" href="<?= base_url('backstage/flagged/mod/' . $user['SeoGamertag']  . "/" . CHEATING_PLAYER); ?>">Mark as Cheater</a>
-                        <a class="btn btn-small btn-warning" href="<?= base_url('backstage/flagged/mod/' . $user['SeoGamertag']  . "/" . BOOSTING_PLAYER); ?>">Mark as Booster</a>
+                        <a class="btn btn-small btn-danger" href="<?= base_url('backstage/flagged/mod/' . $user['SeoGamertag']  . "/" . CHEATING_PLAYER); ?>" onclick="return confirm('CONFIRM: Will be marked as Cheater?');">Mark as Cheater</a>
+                        <a class="btn btn-small btn-warning" href="<?= base_url('backstage/flagged/mod/' . $user['SeoGamertag']  . "/" . BOOSTING_PLAYER); ?>" onclick="return confirm('CONFIRM: Will be marked as Booster?');">Mark as Booster</a>
+                        <a class="btn btn-small btn-inverse" href="<?= base_url('backstage/flagged/mod/' . $user['SeoGamertag'] . "/" . MISSING_PLAYER); ?>" onclick="return confirm('CONFIRM: Will be marked as MIA?');">D.N.E</a>
                         <a class="btn btn-small" href="<?= base_url('backstage/flagged/mod/' . $user['SeoGamertag']  . "/" . 0); ?>">Neither</a>
                     </td>
                 </tr>
