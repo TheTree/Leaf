@@ -71,7 +71,7 @@ class Admin_model extends IBOT_Model {
         $resp = $this->db
             ->select('Count(`id`) as amt,`Gamertag`,`SeoGamertag`',FALSE)
             ->group_by("id")
-            ->order_by("Gamertag", "desc")
+            ->order_by("amt", "desc")
             ->get('ci_flagged');
 
         $resp = $resp->result_array();
