@@ -900,9 +900,51 @@ class Stat_model extends IBOT_Model {
      * Checks for valid API
      * @param $user
      * @param $pass
+     * @return bool
      */
     public function validate_api($user, $pass) {
+        $resp = $this->db
+                ->select('id')
+                ->get_where('ci_api', array(
+                'user'  => $user,
+                'pass'  => $pass
+            ));
 
+        $resp = $resp->row_array();
+
+        if (isset($resp['id'])) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    }
+
+    /**
+     * get_playlists
+     *
+     * Returns all results from `ci_playlists`
+     * @return mixed
+     */
+    public function get_playlists() {
+        $resp = $this->db
+                    ->from('ci_playlists')
+                    ->get();
+
+        return $resp->result_array();
+    }
+
+    /**
+     * update_last_hit
+     *
+     * Update last_hit to `$key`
+     * @param $key
+     */
+    public function update_last_hit($key) {
+        $this->db
+            ->where('pass', $key)
+            ->update('ci_api', array(
+                'last_hit' => intval(time())
+            ));
     }
 
     /**
