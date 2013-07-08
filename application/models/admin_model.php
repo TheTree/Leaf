@@ -67,8 +67,11 @@ class Admin_model extends IBOT_Model {
 
         if (is_array($resp)) {
             $rtr = array();
+            $rtr[-1] = 0;
+
             foreach($resp as $item) {
                 $rtr[$item['status']] = number_format($item['amt']);
+                $rtr[-1]              += $item['amt'];
             }
             return $rtr;
         } else {
