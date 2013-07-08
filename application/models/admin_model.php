@@ -58,7 +58,22 @@ class Admin_model extends IBOT_Model {
      * @return mixed
      */
     public function get_count() {
-        return $this->db->count_all('ci_gamertags');
+        $resp = $this->db
+                ->select('Count(`status`) as amt,status')
+                ->group_by('status')
+                ->get('ci_gamertags');
+
+        $resp = $resp->result_array();
+
+        if (is_array($resp)) {
+            $rtr = array();
+            foreach($resp as $item) {
+                $rtr[$item['status']] = number_format($item['amt']);
+            }
+            return $rtr;
+        } else {
+            return FALSE;
+        }
     }
 
     /**
