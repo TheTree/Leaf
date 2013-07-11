@@ -41,9 +41,9 @@ class Index extends IBOT_Controller {
     function view($id) {
         $this->template->set("meta", $this->library->return_meta());
 
-        $article = $this->news_m->get_article($id);
+        $article = $this->news_m->get_article_via_slug($id);
         if ($article == FALSE) {
-            $article = $this->news_m->get_article_via_slug($id);
+            $article = $this->news_m->get_article($id);
         }
 
         $this->library->description = "LeafApp .:. News Article " . $id;
