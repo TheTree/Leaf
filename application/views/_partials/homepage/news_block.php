@@ -1,9 +1,16 @@
 <? if ($recent_news != false): ?>
-    <blockquote><p>
-            <?= character_limiter($recent_news['text'], 200); ?>
-        </p>
-        <small><a href="<?= base_url('news'); ?>">Posted by <?= $recent_news['author']; ?> at <time datetime="<?= date('Y-m-d', $recent_news['date_posted']); ?>"><?= date("F j, Y, g:i a", $recent_news['date_posted']); ?></time></a></small>
-    </blockquote>
+    <article>
+        <blockquote><p>
+                <?= character_limiter($recent_news['text'], 200); ?>
+            </p>
+            <small>
+                <a href="<?= base_url('news'); ?>">Posted by <?= $recent_news['author']; ?> at <time datetime="<?= date('Y-m-d', $recent_news['date_posted']); ?>"><?= date("F j, Y, g:i a", $recent_news['date_posted']); ?></time></a>
+            </small>
+            <small>
+                <a href="<?= base_url('news/view/' . $recent_news['slug']); ?>#disqus_thread" data-disqus-identifier="<?= $recent_news['slug']; ?>"></a>
+            </small>
+        </blockquote>
+    </article>
 <? endif; ?>
 <div class="well well-large">
     <?= form_open('home/index', array('class' => 'form-search')); ?>
@@ -23,5 +30,14 @@
                 }
             });
         });
+    </script>
+    <script type="text/javascript">
+        var disqus_shortname = 'leafapp';
+        (function () {
+            var s = document.createElement('script'); s.async = true;
+            s.type = 'text/javascript';
+            s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+        }());
     </script>
 </div>

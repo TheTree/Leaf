@@ -53,6 +53,13 @@ csr-legend {
     float: right;
     display: inline-block;
 }
+.colur {
+    color: #555;
+}
+.colur:hover {
+    text-decoration: underline;
+    color: #555;
+}
 @media (max-width: 500px) {
     .row_title {
         width: 135px;

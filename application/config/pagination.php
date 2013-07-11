@@ -13,11 +13,11 @@ $config['last_tag_open'] = '<li class="next page">';
 $config['last_tag_close'] = '</li>';
 
 $config['next_link'] = '&raquo;';
-$config['next_tag_open'] = '<li class="next page">';
+$config['next_tag_open'] = '<li rel="next" class="next page">';
 $config['next_tag_close'] = '</li>';
 
 $config['prev_link'] = '&laquo;';
-$config['prev_tag_open'] = '<li class="prev page">';
+$config['prev_tag_open'] = '<li rel="prev" class="prev page">';
 $config['prev_tag_close'] = '</li>';
 
 $config['cur_tag_open'] = '<li class="active"><a href="">';
