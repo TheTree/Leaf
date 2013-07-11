@@ -20,6 +20,19 @@
     </script>
     <?= $template['_partials']['global_js_vars']; ?>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <!--[if lt IE 9]>
+    <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+    <script>
+        document.createElement("header" );
+        document.createElement("footer" );
+        document.createElement("section");
+        document.createElement("aside"  );
+        document.createElement("nav"    );
+        document.createElement("article");
+        document.createElement("hgroup" );
+        document.createElement("time"   );
+    </script>
+    <![endif]-->
     <script src="<?= base_url('assets/js/csrf_autoload.js'); ?>" type="text/javascript"></script>
     <script src="<?= base_url('assets/js/bootstrap/bootstrap.min.js'); ?>" type="text/javascript"></script>
     <script src="<?= base_url('assets/js/bootstrap/jquery.smooth-scroll.min.js'); ?>" type="text/javascript"></script>

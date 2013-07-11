@@ -4,6 +4,6 @@
 <? else: ?>
     <blockquote class="pull-left">
         <p><?= $article['text']; ?></p>
-        <small>Posted by <?= $article['author']; ?> at <cite title="Date"><?= date("F j, Y, g:i a", $article['date_posted']); ?></cite></small>
+        <small>Posted by <?= $article['author']; ?> at <time datetime="<?= date('Y-m-d', $article['date_posted']); ?>"><?= date("F j, Y, g:i a", $article['date_posted']); ?></time></small>
     </blockquote>
 <? endif; ?>

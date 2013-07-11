@@ -41,13 +41,17 @@
         <?= $template['_partials']['block_progression']; ?>
     </div>
     <div class="span5">
-        <?= $template['_partials']['block_basicstats']; ?>
+        <section>
+            <?= $template['_partials']['block_basicstats']; ?>
+        </section>
     </div>
     <div class="span4">
-        <? if (isset($data['FavoriteData'])): ?>
-            <?= $template['_partials']['block_favoriteweapon']; ?>
-        <? endif; ?>
+        <aside>
+            <? if (isset($data['FavoriteData'])): ?>
+                <?= $template['_partials']['block_favoriteweapon']; ?>
+            <? endif; ?>
             <?= $template['_partials']['block_bestgame']; ?>
+        </aside>
         <br />
     </div>
     <div class="span9">

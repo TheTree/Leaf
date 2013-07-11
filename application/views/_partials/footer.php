@@ -1,12 +1,14 @@
-<div class="contained-fluid navbar navbar-fixed-bottom">
-    <span class="pull-left">
-        <? if (ENVIRONMENT == "development"): ?>
-            Report Problems <a href="https://github.com/iBotPeaches/Leaf"> Here.</a>
-        <? else: ?>
-            <small><a href="#legalStuff" role="button" class="btn" data-toggle="modal">Leaf</a></small>
-        <? endif; ?>
-    </span>
-</div>
+<footer>
+    <div class="contained-fluid navbar navbar-fixed-bottom">
+        <span class="pull-left">
+            <? if (ENVIRONMENT == "development"): ?>
+                Report Problems <a href="https://github.com/iBotPeaches/Leaf"> Here.</a>
+            <? else: ?>
+                <small><a href="#legalStuff" role="button" class="btn" data-toggle="modal">Leaf</a></small>
+            <? endif; ?>
+        </span>
+    </div>
+</footer>
 </body>
 <div id="legalStuff" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="legalStuff" aria-hidden="true">
     <div class="modal-header">
