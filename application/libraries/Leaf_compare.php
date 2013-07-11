@@ -63,7 +63,8 @@ class Leaf_Compare {
         // list of functions to run
         $comparisons = ["MediumSpartan", "HighestRank", "MedalsPerGame", "KillsPerGame", "AssistsPerGame","HeadshotsPerGame",
             "DeathsPerGame", "BetraysPerGame", "SuicidesPerGame", "WinPercentage","QuitPercentage", "CommendationProgress",
-            "ChallengesCompleted","AveragePersonalScore", "KDRatio", "HighestTeamCSR", "HighestIndividualCSR"];
+            "ChallengesCompleted","AveragePersonalScore", "KDRatio","KillsPlusAssistsPerGame", "HighestTeamCSR",
+            "HighestIndividualCSR"];
 
         // run em
         foreach ($comparisons as $task) {
@@ -281,6 +282,33 @@ class Leaf_Compare {
             'Name' =>'Highest <abbr title="Assists per game">ApG</abbr> Ratio',
             'Max' => 1,
             'Field' => 'AssistsPerGameRatio',
+            'you' => array(
+                'pts' => intval($this->you_pts),
+                'style' => $this->you_style),
+            'them' => array(
+                'pts' => intval($this->them_pts),
+                'style' => $this->them_style),
+            'higher' => TRUE
+        );
+    }
+
+    function KillsPlusAssistsPerGame() {
+        $this->you['KillsPlusAssistsPerGame']   = ($this->you['AssistsPerGameRatio'] + $this->you['KillsPerGameRatio']);
+        $this->them['KillsPlusAssistsPerGame']  = ($this->them['AssistsPerGameRatio'] + $this->them['KillsPerGameRatio']);
+
+        if ($this->you['KillsPlusAssistsPerGame'] == $this->them['KillsPlusAssistsPerGame']) {
+            $this->tie(3);
+        } else if ($this->you['KillsPlusAssistsPerGame'] > $this->them['KillsPlusAssistsPerGame']) {
+            $this->you_num(3);
+        } else {
+            $this->them_num(3);
+        }
+
+        // return
+        return array(
+            'Name' =>'Highest <abbr title="Kills + Assists per game">KApG</abbr> Ratio',
+            'Max' => 1,
+            'Field' => 'KillsPlusAssistsPerGame',
             'you' => array(
                 'pts' => intval($this->you_pts),
                 'style' => $this->you_style),
