@@ -1285,6 +1285,8 @@ class Library {
                 return ($type) ? "Cheating" : "Cheater";
             case BOOSTING_PLAYER:
                 return ($type) ? "Boosting" : "Booster";
+            case MISSING_PLAYER:
+                return ($type) ? "Missing" : "Inactive";
         }
     }
 
