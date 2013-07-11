@@ -1,5 +1,6 @@
 <head>
     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title><?= $template['title']; ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -9,23 +10,16 @@
     <?= link_tag('assets/css/bootstrap/bootswatch.css'); ?>
     <?= link_tag('assets/css/default.css'); ?>
     <?= link_tag('assets/css/csr.css'); ?>
-    <script type="text/javascript">
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-3737795-12']);
-        _gaq.push(['_setDomainName', 'leafapp.co']);
-        _gaq.push(['_trackPageview']);
-
-        (function() {
-            var ga = document.createElement('script');
-            ga.type = 'text/javascript';
-            ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(ga, s);
-        })();
+    <script>
+        (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+            e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+            e.src='//www.google-analytics.com/analytics.js';
+            r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+        ga('create','UA-3737795-12');ga('send','pageview');
     </script>
     <?= $template['_partials']['global_js_vars']; ?>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="<?= base_url('assets/js/csrf_autoload.js'); ?>" type="text/javascript"></script>
     <script src="<?= base_url('assets/js/bootstrap/bootstrap.min.js'); ?>" type="text/javascript"></script>
     <script src="<?= base_url('assets/js/bootstrap/jquery.smooth-scroll.min.js'); ?>" type="text/javascript"></script>

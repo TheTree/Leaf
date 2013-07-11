@@ -1,5 +1,8 @@
-<?= doctype() ?>
-<html lang="en">
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
     <?= $template['_partials']['head_header']; ?>
     <body id="top" data-spy="scroll" data-target=".subnav" data-offset="100">
         <div class="navbar <? if ($this->uri->segment(1) != "backstage"): ?>navbar-inverse<? endif; ?> navbar-<? if ($this->uri->segment(1) == "leaderboards"): ?>fixed<? else: ?>static<? endif; ?>-top">
