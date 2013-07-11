@@ -39,12 +39,17 @@ class Index extends IBOT_Controller {
     }
 
     function view($id) {
-
-        $this->library->description = "LeafApp .:. News Article " . intval($id);
         $this->template->set("meta", $this->library->return_meta());
 
+        $article = $this->news_m->get_article($id);
+        if ($article == FALSE) {
+            $article = $this->news_m->get_article_via_slug($id);
+        }
+
+        $this->library->description = "LeafApp .:. News Article " . $id;
+
         $this->template
-                ->set('article', $this->news_m->get_article($id))
+                ->set('article', $article)
                 ->title("Leafapp Article: " . intval($id) . " ")
                 ->build("pages/article");
     }

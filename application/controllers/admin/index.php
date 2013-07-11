@@ -114,6 +114,7 @@ class Index extends IBOT_Controller {
 
     function news_create() {
         $this->form_validation->set_rules('author', 'Author', 'required|xss_clean');
+        $this->form_validation->set_rules('title', 'Title', 'required|xss_clean|max_length[28]');
         $this->form_validation->set_rules('article', 'Body', 'required|xss_clean');
 
         if ($this->input->post('submitted') != FALSE) {
@@ -122,9 +123,13 @@ class Index extends IBOT_Controller {
             } else {
 
                 // submit article
-                $this->news_m->add_news(array(
-                                            'author' => $this->input->post('author'),
-                                            'text' => $this->input->post('article')));
+                $id = $this->news_m->add_news(array(
+                                            'author'    => $this->input->post('author'),
+                                            'text'      => $this->input->post('article'),
+                                            'title'     => $this->input->post('title')));
+
+                // update seo
+                $this->news_m->update_slug($id, url_title($this->input->post('title'),'-',TRUE));
 
                 redirect(base_url("backstage/news/list"));
             }

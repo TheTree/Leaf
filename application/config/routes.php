@@ -85,7 +85,7 @@ $route['star/(:any)']                    = "stats/home/star/$1";
 $route['gt/(:any)/recache']              = "stats/home/recache_gt/$1";
 $route['gt/(:any)']                      = "stats/home/gt/$1";
 $route['news/(:num)']                    = "news/index/index/$1";
-$route['news/view/(:num)']               = "news/index/view/$1";
+$route['news/view/(:any)']               = "news/index/view/$1";
 $route['compare/(:any)/(:any)']          = "stats/compare/comparison/$1/$2";
 $route['compare/(:any)']                 = "stats/compare/comparison_prefill/$1";
 

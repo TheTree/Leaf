@@ -2,6 +2,13 @@
 <?= form_hidden('submitted', TRUE); ?>
     <fieldset>
         <legend>Create News Story</legend>
+        <div class="control-group <? if (form_error('title') != null): ?>error<? endif; ?>">
+            <label class="control-label" for="title">Title </label>
+            <div class="controls">
+                <input class="input-xlarge" type="text" name="title" id="title" value="<?= set_value('title'); ?>">
+                <? if (form_error('title') != null): ?><span class="help-inline"><?= form_error('title') ?></span><? endif; ?>
+            </div>
+        </div>
         <div class="control-group <? if (form_error('author') != null): ?>error<? endif; ?>">
             <label class="control-label" for="author">Author </label>
             <div class="controls">

@@ -27,10 +27,29 @@ class News_model extends IBOT_Model {
      */
     public function add_news($data) {
         $this->db->insert('ci_news', array(
-            'author' => $data['author'],
-            'text' => nl2br($data['text']),
-            'date_posted' => time())
+            'author'        => $data['author'],
+            'text'          => nl2br($data['text']),
+            'title'         => $data['title'],
+            'slug'          => " ",
+            'date_posted'   => time())
         );
+
+        return $this->db->insert_id();
+    }
+
+    /**
+     * update_slug
+     *
+     *
+     * @param $id
+     * @param $title
+     */
+    public function update_slug($id, $title) {
+        $this->db
+            ->where('id', intval($id))
+            ->update('ci_news', array(
+                'slug' => $title . "-" . $id
+            ));
     }
     
     /**
@@ -47,6 +66,28 @@ class News_model extends IBOT_Model {
         $resp = $resp->row_array();
         
         if (isset($resp['id']) && is_array($resp)) {
+            return $resp;
+        } else {
+            return FALSE;
+        }
+    }
+
+    /**
+     * get_article_via_slug
+     *
+     * Gets an article via slug
+     * @param $slug
+     * @return bool
+     */
+    public function get_article_via_slug($slug) {
+        $resp = $this->db
+                ->get_where('ci_news', array(
+                'slug'  => $slug
+            ));
+
+        $resp = $resp->row_array();
+
+        if (isset($resp['slug']) && is_array($resp)) {
             return $resp;
         } else {
             return FALSE;
