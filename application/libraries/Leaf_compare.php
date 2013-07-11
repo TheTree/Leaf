@@ -496,23 +496,23 @@ class Leaf_Compare {
         } else if ($you_top == FALSE && $them_top != FALSE) {
             $this->you['TopTeamCSR']  = $this->wrap_image(intval(0));
             $this->them['TopTeamCSR'] = $this->wrap_image(intval($them_top['SkillRank']));
-            $this->them_num(2);
+            $this->them_num(3);
         } else if ($you_top != FALSE && $them_top == FALSE) {
             $this->you['TopTeamCSR']  = $this->wrap_image(intval($you_top['SkillRank']));
             $this->them['TopTeamCSR'] = $this->wrap_image(intval(0));
-            $this->you_num(2);
+            $this->you_num(3);
         } else if ($you_top['SkillRank'] == $them_top['SkillRank']) {
             $this->you['TopTeamCSR']  = $this->wrap_image(intval($you_top['SkillRank']));
             $this->them['TopTeamCSR'] = $this->wrap_image(intval($them_top['SkillRank']));
-            $this->tie(2);
+            $this->tie(3);
         } else if ($you_top['SkillRank'] > $them_top['SkillRank']) {
             $this->you['TopTeamCSR']  = $this->wrap_image(intval($you_top['SkillRank']));
             $this->them['TopTeamCSR'] = $this->wrap_image(intval($them_top['SkillRank']));
-            $this->you_num(2);
+            $this->you_num(3);
         } else if ($you_top['SkillRank'] < $them_top['SkillRank']) {
             $this->you['TopTeamCSR']  = $this->wrap_image(intval($you_top['SkillRank']));
             $this->them['TopTeamCSR'] = $this->wrap_image(intval($them_top['SkillRank']));
-            $this->them_num(2);
+            $this->them_num(3);
         }
 
         // return
@@ -555,23 +555,23 @@ class Leaf_Compare {
         } else if ($you_top == FALSE && $them_top != FALSE) {
             $this->you['TopIndCSR']  = $this->wrap_image(intval(0));
             $this->them['TopIndCSR'] = $this->wrap_image(intval($them_top['SkillRank']));
-            $this->them_num(2);
+            $this->them_num(1);
         } else if ($you_top != FALSE && $them_top == FALSE) {
             $this->you['TopIndCSR']  = $this->wrap_image(intval($you_top['SkillRank']));
             $this->them['TopIndCSR'] = $this->wrap_image(intval(0));
-            $this->you_num(2);
+            $this->you_num(1);
         } else if ($you_top['SkillRank'] == $them_top['SkillRank']) {
             $this->you['TopIndCSR']  = $this->wrap_image(intval($you_top['SkillRank']));
             $this->them['TopIndCSR'] = $this->wrap_image(intval($them_top['SkillRank']));
-            $this->tie(2);
+            $this->tie(1);
         } else if ($you_top['SkillRank'] > $them_top['SkillRank']) {
             $this->you['TopIndCSR']  = $this->wrap_image(intval($you_top['SkillRank']));
             $this->them['TopIndCSR'] = $this->wrap_image(intval($them_top['SkillRank']));
-            $this->you_num(2);
+            $this->you_num(1);
         } else if ($you_top['SkillRank'] < $them_top['SkillRank']) {
             $this->you['TopIndCSR']  = $this->wrap_image(intval($you_top['SkillRank']));
             $this->them['TopIndCSR'] = $this->wrap_image(intval($them_top['SkillRank']));
-            $this->them_num(2);
+            $this->them_num(1);
         }
 
         // return
