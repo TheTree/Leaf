@@ -1,3 +1,4 @@
+<br />
 <? if ($article == false): ?>
     <div class="alert alert-info"><strong>Hey!</strong> We couldn't find this news article. </div>
 <? else: ?>
