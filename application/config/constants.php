@@ -92,5 +92,10 @@ define("MISSING_COUNTER", 5);
  */
 define("BRANCH", TRUE);
 
+/**
+ * VERSION_NUMBER
+ */
+define("VERSION_NUMBER", 1);
+
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */

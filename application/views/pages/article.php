@@ -7,7 +7,7 @@
             <? if ($article['title'] != ""): ?>
                 <h3><?= $article['title']; ?></h3>
             <? endif ?>
-            <blockquote class="pull-left">
+            <blockquote class="w100">
                 <p><?= $article['text']; ?></p>
                 <small>Posted by <?= $article['author']; ?> at <time datetime="<?= date('Y-m-d', $article['date_posted']); ?>"><?= date("F j, Y, g:i a", $article['date_posted']); ?></time></small>
             </blockquote>
@@ -15,7 +15,7 @@
     </div>
 </div>
 <div class="row-fluid">
-    <div class="pagination-centered">
+    <div class="span12">
         <div id="disqus_thread"></div>
         <script type="text/javascript">
             var disqus_shortname = 'leafapp';

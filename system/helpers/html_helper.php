@@ -311,6 +311,11 @@ if ( ! function_exists('link_tag'))
 	{
 		$CI =& get_instance();
 
+        // Connor Tumbleson
+        // add VERSION_NUM to end of static URLs
+        // end
+        $href .= "?" . VERSION_NUMBER;
+
 		$link = '<link ';
 
 		if (is_array($href))
