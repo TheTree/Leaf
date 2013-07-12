@@ -18,6 +18,9 @@
 .w150 {
     width: 150px;
 }
+.w100 {
+    width: 100%;
+}
 csr-legend {
     margin:3px;
     text-align:center;

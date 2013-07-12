@@ -5,7 +5,7 @@
 <? if (is_array($news) && count($news) > 0): ?>
     <? foreach ($news as $article): ?>
         <article>
-            <blockquote class="pull-left">
+            <blockquote class="pull-left w100">
                 <? if ($article['title'] != ""): ?>
                     <h3><a class="colur" href="<?= base_url('news/view/' . $article['slug']); ?>"><?= $article['title']; ?></a></h3>
                 <? endif; ?>
