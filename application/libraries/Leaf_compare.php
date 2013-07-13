@@ -293,8 +293,8 @@ class Leaf_Compare {
     }
 
     function KillsPlusAssistsPerGame() {
-        $this->you['KillsPlusAssistsPerGame']   = ($this->you['AssistsPerGameRatio'] + $this->you['KillsPerGameRatio']);
-        $this->them['KillsPlusAssistsPerGame']  = ($this->them['AssistsPerGameRatio'] + $this->them['KillsPerGameRatio']);
+        $this->you['KillsPlusAssistsPerGame']   = round(floatval(($this->you['TotalKills'] + $this->you['TotalAssists']) / $this->you['TotalDeaths']), 2);
+        $this->them['KillsPlusAssistsPerGame']  = round(floatval(( $this->them['TotalKills'] +  $this->them['TotalAssists']) /  $this->them['TotalDeaths']), 2);
 
         if ($this->you['KillsPlusAssistsPerGame'] == $this->them['KillsPlusAssistsPerGame']) {
             $this->tie(3);
@@ -306,7 +306,7 @@ class Leaf_Compare {
 
         // return
         return array(
-            'Name' =>'Highest <abbr title="Kills + Assists per game">KApG</abbr> Ratio',
+            'Name' =>'Highest <abbr title="Kills + Assists / Deaths">KA/D</abbr> Ratio',
             'Max' => 1,
             'Field' => 'KillsPlusAssistsPerGame',
             'you' => array(
