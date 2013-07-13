@@ -27,6 +27,12 @@ class Stat_model extends IBOT_Model {
             if (isset($_tmp['TotalGameplay']) && isset($data['TotalGameplay'])) {
                 if (floatval($_tmp['TotalGameplay']) != floatval($data['TotalGameplay'])) {
                     $data['InactiveCounter'] = 0;
+
+                    if (isset($data['Status']) && $data['Status'] == MISSING_PLAYER) {
+
+                        // update status to 0
+                        $this->change_status($data['SeoGamertag'], intval(0));
+                    }
                 } else {
                     // if InactiveCounter is above INACTIVE_COUNTER
                     // set InactiveCounter to MAX, otherwise
