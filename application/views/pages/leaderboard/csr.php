@@ -42,13 +42,19 @@
                 <? $x = 1 * $page; foreach($leaderboards as $player): ?>
                     <tr class="<? if ($player['SeoGamertag'] == $my['SeoGamertag']): ?>success<? endif; ?>">
                         <td><?= $this->library->get_trophy($x); ?></td>
-                        <td><a style="color: #000; " href="<?= base_url('gt/' . $player['SeoGamertag']); ?>"><?= $player['Gamertag']; ?></a></td>
+                        <td>
+                            <a style="color: #000; " href="<?= base_url('gt/' . $player['SeoGamertag']); ?>">
+                                <?= $player['Gamertag']; ?>
+                                <? if (isset($player['title'])): ?>
+                                    - <span class="badge badge-<?= $player['colour']; ?>"><?= $player['title']; ?></span>
+                                <? endif; ?></a>
+                        </td>
                         <td><span class="flair flair-CSR-<?= $player[$playlist]; ?>"></span></td>
                         <td><?= $player['KDRatio']; ?></td>
                     </tr>
                 <? $x++; endforeach; ?>
                 <? if (!search_big($leaderboards,$my['Gamertag'])): ?>
-                    <? if (isset($my[$playlist]) && $my[$playlist][$playlist] > 0): ?>
+                    <? if (isset($my[$playlist]['Rank']) && $my[$playlist][$playlist] > 0): ?>
                         <tr class="info">
                             <td><?= $this->library->get_trophy($my[$playlist]['Rank']); ?></td>
                             <td><a style="color: #000; " href="<?= base_url('gt/' . $my['SeoGamertag']); ?>"><?= $my['Gamertag']; ?></a></td>

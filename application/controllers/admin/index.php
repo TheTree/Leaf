@@ -139,12 +139,89 @@ class Index extends IBOT_Controller {
     }
 
     function badges_list($page = 0) {
-        $this->template->build("pages/admin/badges/list");
+        $config = array();
+        $config['base_url'] = base_url() . "backstage/badges/list/";
+        $config['total_rows'] = $this->stat_m->count_badges();
+        $config['per_page'] = intval(6);
+        $config['use_page_numbers'] = FALSE;
+        $config['uri_segment'] = 4;
+        $config['full_tag_open'] = '<div class="pagination pagination-centered"><ul>';
+        $page = ($this->uri->segment(4)) ? $this->uri->segment(4) : $page;
+
+        // run query again, cached w/ limit
+        $news = $this->stat_m->get_badges($config['per_page'], $page);
+        $this->pagination->initialize($config);
+
+        $this->template
+            ->set('badges', $news)
+            ->set("badge_pagination", $this->pagination->create_links())
+            ->title("Badge List")
+            ->build("pages/admin/badges/list");
     }
 
     function badges_create() {
+        $this->form_validation->set_rules('gamertag', 'Gamertag', 'required|xss_clean|callback_valid_gamertag|callback_gamertag_exists');
+        $this->form_validation->set_rules('badge', 'Badge', 'required|xss_clean|max_length[28]');
+        $this->form_validation->set_rules('type', 'Type', 'required|xss_clean|callback_valid_type');
+
+        if ($this->input->post('submitted') != FALSE) {
+            if ($this->form_validation->run() === FALSE) {
+                $this->template->build("pages/admin/badges/create");
+            } else {
+
+                // insert badge
+                $this->stat_m->insert_badge(array(
+                    'SeoGamertag'       => $this->library->get_seo_gamertag($this->input->post('gamertag')),
+                    'title'             => $this->input->post('badge'),
+                    'colour'            => $this->input->post('type')
+                ));
+
+                redirect(base_url("backstage/badges/list"));
+            }
+        }
         $this->template->build("pages/admin/badges/create");
     }
+
+    //----------------------------------------------------------------
+    // START: Callback Functions
+    //----------------------------------------------------------------
+
+    function valid_gamertag($val) {
+        $hashed = $this->library->get_hashed_seo_gamertag($this->library->get_seo_gamertag($val));
+
+        if ($this->stat_m->account_exists($hashed) != FALSE) {
+            return TRUE;
+        } else {
+            $this->form_validation->set_message('valid_gamertag', 'This gamertag does not exist.');
+            return FALSE;
+        }
+    }
+
+    function gamertag_exists($val) {
+        $seo = $this->library->get_seo_gamertag($val);
+
+        if ($this->stat_m->badge_exists($seo) != FALSE) {
+            $this->form_validation->set_message('gamertag_exists', '%s already exists.');
+            return FALSE;
+        } else {
+            return TRUE;
+        }
+    }
+
+    function valid_type($val) {
+        $valid = ["important", "warning", "success", "info", "inverse"];
+
+        if (in_array($val, $valid)) {
+            return TRUE;
+        }  else {
+            $this->form_validation->set_message('valid_type', 'This is not a valid color type.');
+            return FALSE;
+        }
+    }
+
+    //----------------------------------------------------------------
+    // END: Callback Functions
+    //----------------------------------------------------------------
 
     function logout() {
         $this->session->sess_destroy();

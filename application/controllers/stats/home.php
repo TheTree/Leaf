@@ -130,7 +130,6 @@ class Home extends IBOT_Controller {
                 ->set('general_msg', $this->session->flashdata('general_msg'))
                 ->set('gamertag', $data['Gamertag'])
                 ->set('data', $data)
-                ->set('badge', $this->library->get_badge($data['Gamertag']))
                 ->build("pages/profile/view");
         
     }

@@ -267,20 +267,20 @@ class Library {
 
     /**
      * get_badge
-     *
      * Gets little `badges` to put by usernames
-     * @param $gt
+     *
+     * @param $resp
+     * @internal param $gt
      * @return string
      */
-    public function get_badge($gt) {
-        // check for badges
-        if (in_array($gt, $this->_ci->config->item('employees_343'))) {
-            return '<span class="badge badge-info">343 Employee</span>&nbsp;';
-        } else if ($gt == "iBotPeaches v5") {
-            return '<span class="badge badge-info">Owner</span>&nbsp;';
-        } else {
-            return "";
+    public function set_badge(&$resp) {
+
+        if (isset($resp['title']) && strlen($resp['title']) > 2) {
+            $resp['badge'] =  '<span class="badge badge-' . $resp['colour'] . '">' . $resp['title'] . '</span>&nbsp;';
+            return;
         }
+        $resp['badge'] = '';
+        return;
     }
 
     // ---------------------------------------------------------------
@@ -662,6 +662,7 @@ class Library {
 
         // grab from db, if null continue
         $resp = $this->_ci->stat_m->get_gamertag_data($hashed);
+        $this->set_badge($resp);
 
         if (isset($resp['Expiration']) && is_array($resp)) {
             if (intval($resp['ApiVersion']) != intval(API_VERSION) && $force == FALSE) {

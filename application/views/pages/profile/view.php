@@ -1,5 +1,5 @@
 <div class="row-fluid">
-    <h1><?= $badge; ?><?= urldecode($gamertag); ?> <small><?= $data['ServiceTag']; ?></small>
+    <h1><?= $data['badge']; ?><?= urldecode($gamertag); ?> <small><?= $data['ServiceTag']; ?></small>
         <? if ($data['Status'] == 0): ?>
             <a href="<?= base_url('/guilty_spark/flag/' . $data['SeoGamertag']); ?>" data-toggle="tooltop" data-html="true"
                title="Flag <strong><?= $data['Gamertag']; ?></strong> as a Cheater/Booster?" rel="tooltip"

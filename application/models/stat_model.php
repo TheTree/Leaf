@@ -222,6 +222,29 @@ class Stat_model extends IBOT_Model {
     }
 
     /**
+     * badge_exists
+     *
+     * Checks if a badge exists for this gamertag.
+     * @param $seo_gt
+     * @return bool
+     */
+    public function badge_exists($seo_gt) {
+        $resp = $this->db
+                ->select('id')
+                ->get_where('ci_badges', array(
+                'SeoGamertag'   => $seo_gt
+            ));
+
+        $resp = $resp->row_array();
+
+        if (isset($resp['id'])) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    }
+
+    /**
      * get_status
      *
      * Returns `Status` via `ci_gamertags` from `SeoGamertag`
@@ -253,9 +276,11 @@ class Stat_model extends IBOT_Model {
      */
     public function get_gamertag_data($hashed) {
         $resp = $this->db
-                ->get_where('ci_gamertags', array(
-                    'HashedGamertag' => $hashed
-                ));
+                ->select("G.*,B.title,B.colour")
+                ->from("ci_gamertags G")
+                ->join("ci_badges B", "B.SeoGamertag = G.SeoGamertag", "left")
+                ->where('HashedGamertag', $hashed)
+                ->get();
         
         $resp = $resp->row_array();
         
@@ -547,6 +572,17 @@ class Stat_model extends IBOT_Model {
     }
 
     /**
+     * insert_badge
+     *
+     * Inserts badge into `ci_badges`
+     * @param $data
+     */
+    public function insert_badge($data) {
+        $this->db
+            ->insert('ci_badges', $data);
+    }
+
+    /**
      * delete_pending_flagged_users
      *
      * @param $seo
@@ -831,13 +867,15 @@ class Stat_model extends IBOT_Model {
         $max = ($start * $limit);
 
         $query = $this->db
-            ->select($playlist . ",SeoGamertag,KDRatio,Gamertag")
-            ->where($playlist . ' > ', 0)
-            ->where('Status', 0)
-            ->order_by($playlist, "desc")
-            ->order_by("KDRatio", "desc")
+            ->select("C." . $playlist . ",C.SeoGamertag,C.KDRatio,C.Gamertag,B.colour,B.title")
+            ->from('ci_csr C')
+            ->join('ci_badges B', 'C.SeoGamertag = B.SeoGamertag', "left")
+            ->where("C." . $playlist . ' > ', 0)
+            ->where('C.Status', 0)
+            ->order_by("C." . $playlist, "desc")
+            ->order_by("C.KDRatio", "desc")
             ->limit(intval($limit), intval($max))
-            ->get('ci_csr');
+            ->get();
 
         return $query->result_array();
     }
@@ -854,6 +892,16 @@ class Stat_model extends IBOT_Model {
             ->where('Status', 0)
             ->where($playlist . ' > ', 0);
         return $this->db->count_all_results('ci_csr');
+    }
+
+    /**
+     * count_badges
+     *
+     * Returns amount of users who have badges
+     * @return mixed
+     */
+    public function count_badges() {
+        return $this->db->count_all('ci_badges');
     }
 
     /**
@@ -937,6 +985,31 @@ class Stat_model extends IBOT_Model {
                     ->get();
 
         return $resp->result_array();
+    }
+
+    /**
+     * get_badges
+     *
+     * Returns amount of badges, w/ gts.
+     * @param $limit
+     * @param $start
+     * @return array|bool
+     */
+    public function get_badges($limit, $start) {
+        $resp = $this->db
+                    ->select('B.title,B.colour,G.SeoGamertag,G.Gamertag')
+                    ->from("ci_badges B")
+                    ->limit(intval($limit), intval($start))
+                    ->join("ci_gamertags G", "B.SeoGamertag = G.SeoGamertag", "left")
+                    ->get();
+
+        $resp = $resp = $resp->result_array();
+
+        if (is_array($resp) && count($resp) > 0) {
+            return $resp;
+        } else {
+            return FALSE;
+        }
     }
 
     /**

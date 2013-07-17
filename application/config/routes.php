@@ -76,6 +76,7 @@ $route['api']                       = "api/index/index";
 
 // variable backstage
 $route['backstage/news/list/(:any)']                = "admin/index/news_list/$1"; #pagination
+$route['backstage/badges/list/(:any)']              = "admin/index/badges_list/$1"; #pagination
 $route['backstage/flagged/mod/(:any)/(:num)']       = "admin/index/flagged_mod/$1/$2"; #seo_username/status
 $route['backstage/key_delete/(:num)']               = "admin/index/key_delete/$1"; #key_id
 
