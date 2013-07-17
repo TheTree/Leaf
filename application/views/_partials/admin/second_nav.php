@@ -10,13 +10,23 @@
             <div class="nav-collapse sub_menu collapse">
                 <ul class="nav">
                     <li class="<?= $this->library->is_acp_active('index'); ?>"><a href="<?= base_url('backstage/index'); ?>"><?= lang('acp_home'); ?></a></li>
-                    <li class="dropdown $this->library->is_acp_active('news'); ?>">
+                    <li class="dropdown <?= $this->library->is_acp_active('news'); ?>">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?= lang('acp_news'); ?>
                             <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li>
                                 <a href="<?= base_url('backstage/news/list'); ?>"><?= lang('acp_news_list'); ?></a>
                                 <a href="<?= base_url('backstage/news/create'); ?>"><?= lang('acp_news_create'); ?></a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown <?= $this->library->is_acp_active('badges'); ?>">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?= lang('acp_badges'); ?>
+                            <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="<?= base_url('backstage/badges/list'); ?>"><?= lang('acp_badges_list'); ?></a>
+                                <a href="<?= base_url('backstage/badges/create'); ?>"><?= lang('acp_badges_create'); ?></a>
                             </li>
                         </ul>
                     </li>

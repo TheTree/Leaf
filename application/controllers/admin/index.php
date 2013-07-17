@@ -138,6 +138,14 @@ class Index extends IBOT_Controller {
         $this->template->build("pages/admin/news/create");
     }
 
+    function badges_list($page = 0) {
+        $this->template->build("pages/admin/badges/list");
+    }
+
+    function badges_create() {
+        $this->template->build("pages/admin/badges/create");
+    }
+
     function logout() {
         $this->session->sess_destroy();
         redirect(base_url());

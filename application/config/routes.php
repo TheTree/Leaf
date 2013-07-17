@@ -66,6 +66,8 @@ $route['backstage/flagged']         = "admin/index/flagged";
 $route['backstage/find']            = "admin/index/find";
 $route['backstage/news/create']     = "admin/index/news_create";
 $route['backstage/news/list']       = "admin/index/news_list";
+$route['backstage/badges/list']     = "admin/index/badges_list";
+$route['backstage/badges/create']   = "admin/index/badges_create";
 $route['backstage/logout']          = "admin/index/logout";
 $route['backstage/keys']            = "admin/index/keys";
 

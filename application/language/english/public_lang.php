@@ -7,6 +7,9 @@ $lang['acp_flagged']            = "Flagged Players";
 $lang['acp_news']               = "News";
 $lang['acp_logout']             = "Logout";
 $lang['acp_keys']               = "Keys";
+$lang['acp_badges']             = "Badges";
 
 $lang['acp_news_list']          = "News List";
 $lang['acp_news_create']        = "Create News";
+$lang['acp_badges_list']        = "Badges List";
+$lang['acp_badges_create']      = "Create Badge";
