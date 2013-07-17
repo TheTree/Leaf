@@ -42,8 +42,8 @@ class Leaf_Compare {
             $this->error_hit = TRUE;
         } else {
             // unseralize
-            $this->you['SkillData'] = @unserialize($this->you['SkillData']);
-            $this->them['SkillData'] = @unserialize($this->them['SkillData']);
+            $this->you['SkillData'] = msgpack_unpack($this->you['SkillData']);
+            $this->them['SkillData'] = msgpack_unpack($this->them['SkillData']);
 
             // badges
             $this->you['badge'] = $this->_ci->library->get_badge($this->you['Gamertag']);

@@ -664,7 +664,9 @@ class Library {
         $resp = $this->_ci->stat_m->get_gamertag_data($hashed);
 
         if (isset($resp['Expiration']) && is_array($resp)) {
-            if (intval($resp['Expiration']) > intval(time()) && $force == FALSE) {
+            if (intval($resp['ApiVersion']) != intval(API_VERSION) && $force == FALSE) {
+                return $this->grab_profile_data($gt, TRUE, $seo_gamertag);
+            } else if (intval($resp['Expiration']) > intval(time()) && $force == FALSE) {
                 return $resp;
             }
         }
@@ -736,9 +738,9 @@ class Library {
             'Specialization'                   => $this->find_current_specialization($service_record['Specializations']),
             'SpecializationLevel'              => $this->find_current_specialization($service_record['Specializations'], "Level"),
             'Expiration'                       => intval(time() + SEVENDAYS_IN_SECONDS),
-            'MedalData'                        => @serialize($medal_data),
-            'SkillData'                        => @serialize($skill_data),
-            'SpecData'                         => @serialize($spec_data),
+            'MedalData'                        => msgpack_pack($medal_data),
+            'SkillData'                        => msgpack_pack($skill_data),
+            'SpecData'                         => msgpack_pack($spec_data),
             'KDRatio'                          => $service_record['GameModes'][2]['KDRatio'],
             'Xp'                               => $service_record['XP'],
             'Emblem'                           => substr_replace($service_record['EmblemImageUrl']['AssetUrl'], "", -12),
@@ -1063,7 +1065,7 @@ class Library {
      * @return mixed
      */
     public function return_medals($data) {
-        $data = @unserialize($data);
+        $data = msgpack_unpack($data);
         foreach ($data as $key => $item) {
             $data[$key]['Name'] = $this->get_metadata_name_via_id("medals", $item['Id'], "Name");
             $data[$key]['ImageUrl'] = $this->get_metadata_name_via_id("medals", $item['Id'], "ImageUrl");
@@ -1102,7 +1104,7 @@ class Library {
         if ($data == FALSE || $data == "" | $data == "b:0;") {
             return FALSE;
         }
-        $data = @unserialize($data);
+        $data = msgpack_unpack($data);
 
         foreach ($data as $key => $value) {
 
@@ -1127,7 +1129,7 @@ class Library {
      * @internal param $data
      */
     public function return_csr_v2($leaderboard, $csr) {
-        $csr = @unserialize($csr);
+        $csr = msgpack_unpack($csr);
         $rtr_arr = array();
         $playlists = $this->get_playlists();
 
@@ -1161,7 +1163,7 @@ class Library {
         if ($data == FALSE || $data == "" || $data == "b:0;") {
             return FALSE;
         }
-        $data = @unserialize($data);
+        $data = msgpack_unpack($data);
 
         foreach($data as $key => $value) {
             if ($data[$key]['Completed']) {
