@@ -80,6 +80,30 @@ class Admin_model extends IBOT_Model {
     }
 
     /**
+     * get_api_count
+     *
+     * Returns count based on APIs.
+     * @return array|bool
+     */
+    public function get_api_count() {
+        $resp = $this->db
+                ->select('Count(`ApiVersion`) as `amt`,`ApiVersion`', FALSE)
+                ->group_by('ApiVersion')
+                ->get('ci_gamertags');
+
+        $resp = $resp->result_array();
+        if (is_array($resp)) {
+            $rtr = array();
+
+            foreach($resp as $item) {
+                $rtr[$item['ApiVersion']] = number_format($item['amt']);
+            }
+            return $rtr;
+        }
+        return FALSE;
+    }
+
+    /**
      * get_flagged_users()
      *
      * Grab any user who have flags, but not yet cheated

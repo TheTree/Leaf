@@ -21,7 +21,8 @@ class Index extends IBOT_Controller {
 
     function index() {
 
-        $acp = $this->cache->model('admin_m','get_count', array(), 3600);
+        $acp = $this->cache->model('admin_m','get_count', array(), 1800);
+        $acp['api'] = $this->cache->model('admin_m', 'get_api_count', array(), 1800);
 
         $this->template
             ->set('acp', $acp)

@@ -19,4 +19,14 @@
             <? endif; ?>
         </ul>
     </div>
+    <h3>API Version Stats</h3>
+    <div class="well well-large">
+        <? if (is_array($acp['api']) && count($acp['api']) > 0): ?>
+            <ul class="unstyled">
+                <? foreach($acp['api'] as $key => $value): ?>
+                    <li><strong>Version <?= $key; ?></strong> - <span class="badge badge-info"><?= $value; ?></span></li>
+                <? endforeach; ?>
+            </ul>
+        <? endif; ?>
+    </div>
 </div>
