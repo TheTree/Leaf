@@ -389,12 +389,15 @@ class Stat_model extends IBOT_Model {
     public function get_top_10($field, $asc) {
         
         $resp = $this->db
-                ->select("Gamertag,ServiceTag," . $field)
+                ->select("G.Gamertag,G.ServiceTag," . "G." . $field . ",B.title,B.colour")
+                ->from("ci_gamertags G")
+                ->join("ci_badges B", "G.SeoGamertag = B.SeoGamertag", "left")
                 ->limit(10)
-                ->order_by($field, ($asc == TRUE ? "asc" : "desc"))
-                ->get_where('ci_gamertags', array(
+                ->order_by("G." . $field, ($asc == TRUE ? "asc" : "desc"))
+                ->where(array(
                     'TotalGamesStarted >' => intval(100),
-                    'Status' => intval(0)));
+                    'Status' => intval(0)))
+                ->get();
         
         $resp = $resp->result_array();
         
@@ -403,7 +406,6 @@ class Stat_model extends IBOT_Model {
         } else {
             return FALSE;
         }
-                
     }
     
     /**

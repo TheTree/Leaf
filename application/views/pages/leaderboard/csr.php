@@ -5,11 +5,11 @@
             <ul class="nav nav-list">
                 <li class="nav-header">Team CSR</li>
                 <li class="divider"></li>
-                    <? foreach($csr_team as $item): ?>
-                        <? if (isset($playlists[$item])) : ?>
-                            <li class="<?= $this->library->is_csr_active($item . "_T"); ?>"><a href="<?= base_url('csr_leaderboards/' . $item . "_T"); ?>"><?= $playlists[$item]['Name'] ?></a></li>
-                        <? endif; ?>
-                    <? endforeach; ?>
+                <? foreach($csr_team as $item): ?>
+                    <? if (isset($playlists[$item])) : ?>
+                        <li class="<?= $this->library->is_csr_active($item . "_T"); ?>"><a href="<?= base_url('csr_leaderboards/' . $item . "_T"); ?>"><?= $playlists[$item]['Name'] ?></a></li>
+                    <? endif; ?>
+                <? endforeach; ?>
                 <li class="nav-header">Individual CSR</li>
                 <li class="divider"></li>
                 <? foreach($csr_ind as $item): ?>
@@ -28,15 +28,20 @@
         <? endif; ?>
     </div>
     <div class="span9">
+        <? if (count($leaderboards) < 1): ?>
+            <div class="alert alert-info">
+                <strong>Strange! </strong> We have 0 records for this playlist :(
+            </div>
+        <? else: ?>
         <div class="well">
             <table class="table table-bordered table-striped">
                 <thead>
-                    <tr>
-                        <th>Place</th>
-                        <th>Gamertag</th>
-                        <th><abbr title="Competitive Skill Rank">CSR</abbr></th>
-                        <th><abbr title="Kill/Death">KD</abbr> Ratio</th>
-                    </tr>
+                <tr>
+                    <th>Place</th>
+                    <th>Gamertag</th>
+                    <th><abbr title="Competitive Skill Rank">CSR</abbr></th>
+                    <th><abbr title="Kill/Death">KD</abbr> Ratio</th>
+                </tr>
                 </thead>
                 <tbody>
                 <? $x = 1 * $page; foreach($leaderboards as $player): ?>
@@ -52,7 +57,7 @@
                         <td><span class="flair flair-CSR-<?= $player[$playlist]; ?>"></span></td>
                         <td><?= $player['KDRatio']; ?></td>
                     </tr>
-                <? $x++; endforeach; ?>
+                    <? $x++; endforeach; ?>
                 <? if (!search_big($leaderboards,$my['Gamertag'])): ?>
                     <? if (isset($my[$playlist]['Rank']) && $my[$playlist][$playlist] > 0): ?>
                         <tr class="info">
@@ -67,6 +72,7 @@
             </table>
         </div>
     </div>
+    <? endif; ?>
 </div>
 <div class="row-fluid">
     <?= $pagination; ?>

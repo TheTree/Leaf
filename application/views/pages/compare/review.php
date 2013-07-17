@@ -1,5 +1,6 @@
 <div class="container-fluid">
     <div class="row-fluid">
+        <br />
         <? if (isset($error_msg)): ?>
             <div class="hero-unit">
                 <h1>Welp! Error!</h1>

@@ -44,10 +44,6 @@ class Leaf_Compare {
             // unseralize
             $this->you['SkillData'] = msgpack_unpack($this->you['SkillData']);
             $this->them['SkillData'] = msgpack_unpack($this->them['SkillData']);
-
-            // badges
-            $this->you['badge'] = $this->_ci->library->get_badge($this->you['Gamertag']);
-            $this->them['badge'] = $this->_ci->library->get_badge($this->them['Gamertag']);
         }
     }
 
