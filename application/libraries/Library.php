@@ -275,12 +275,11 @@ class Library {
      */
     public function set_badge(&$resp) {
 
-        if (isset($resp['title']) && strlen($resp['title']) > 2) {
+        if (isset($resp['title']) && strlen($resp['title']) > 2 && isset($resp['colour']) && strlen($resp['colour']) > 2) {
             $resp['badge'] =  '<span class="badge badge-' . $resp['colour'] . '">' . $resp['title'] . '</span>&nbsp;';
-            return;
+        } else {
+            $resp['badge'] = '';
         }
-        $resp['badge'] = '';
-        return;
     }
 
     // ---------------------------------------------------------------
