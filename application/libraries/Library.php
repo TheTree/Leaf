@@ -666,7 +666,7 @@ class Library {
 
         if (isset($resp['Expiration']) && is_array($resp)) {
             if (intval($resp['ApiVersion']) != intval(API_VERSION) && $force == FALSE) {
-                return $this->grab_profile_data($gt, TRUE, $seo_gamertag);
+
             } else if (intval($resp['Expiration']) > intval(time()) && $force == FALSE) {
                 return $resp;
             }
