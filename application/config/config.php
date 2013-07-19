@@ -16,7 +16,7 @@ if (PHP_SAPI == 'cli') {
             $config['active_group'] = "stage";
             break;
         case LOCAL_URL:
-            $config['base_url'] = 'http://' . LOCAL_URL . '/h4';
+            $config['base_url'] = 'http://' . LOCAL_URL . '/leaf';
             $config['active_group'] = "local";
             break;
         default:
