@@ -822,12 +822,12 @@ class Stat_model extends IBOT_Model {
         $rtr_arr = array();
 
         // get arrays of playlists
-        $ind = $this->config->item('individual_csr');
+        $ind = $this->config->item('h4_individual_csr');
         foreach ($ind as $item) {
             $csr[] = $item . "_I";
         }
 
-        $team = $this->config->item('team_csr');
+        $team = $this->config->item('h4_team_csr');
         foreach ($team as $item) {
             $csr[] = $item . "_T";
         }

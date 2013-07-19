@@ -96,8 +96,8 @@ class Index extends IBOT_Controller {
 
     private function _load_playlists() {
         $playlists = $this->stat_m->get_playlists();
-        $ind = $this->config->item('individual_csr');
-        $team = $this->config->item('team_csr');
+        $ind = $this->config->item('h4_individual_csr');
+        $team = $this->config->item('h4_team_csr');
 
         $_data = [];
         foreach($playlists as $playlist) {

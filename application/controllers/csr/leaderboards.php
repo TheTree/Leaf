@@ -33,12 +33,12 @@ class Leaderboards extends IBOT_Controller {
         $this->load->library('pagination');
 
         // get arrays of playlists
-        $ind = $this->config->item('individual_csr');
+        $ind = $this->config->item('h4_individual_csr');
         foreach ($ind as $item) {
             $csr[] = $item . "_I";
         }
 
-        $team = $this->config->item('team_csr');
+        $team = $this->config->item('h4_team_csr');
         foreach ($team as $item) {
             $csr[] = $item . "_T";
         }
@@ -77,8 +77,8 @@ class Leaderboards extends IBOT_Controller {
     private function _build() {
 
         // lets grab each playlist via config
-        $team = $this->config->item('team_csr');
-        $ind = $this->config->item('individual_csr');
+        $team = $this->config->item('h4_team_csr');
+        $ind = $this->config->item('h4_individual_csr');
 
         // get page if one
         $page = $this->uri->segment(3);

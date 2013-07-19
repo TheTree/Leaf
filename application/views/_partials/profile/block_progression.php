@@ -1,5 +1,5 @@
 <? if ($data['NextRankStartXP'] == 0): ?>
-    <? if ($data['Rank'] == MAX_HALO_RANK): ?>
+    <? if ($data['Rank'] == $this->config->item('h4_max_halo_rank')): ?>
         All Specializations Completed.
     <? else: ?>
         Specialization: <?= $data['Specialization']; ?> Completed

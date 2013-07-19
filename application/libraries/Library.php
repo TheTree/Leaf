@@ -1016,7 +1016,7 @@ class Library {
             );
 
             // lets figure out team vs inv CSR
-            if (in_array($csr['PlaylistId'],$this->_ci->config->item('team_csr'))) {
+            if (in_array($csr['PlaylistId'],$this->_ci->config->item('h4_team_csr'))) {
                 $csr_leader[$csr['PlaylistId'] . "_T"] = intval($csr['CurrentSkillRank']);
                 $type = "Team";
 
@@ -1026,7 +1026,7 @@ class Library {
                     $rtr_arr['Team']['PlaylistName'] = $csr['PlaylistName'];
                 }
 
-            } else if (in_array($csr['PlaylistId'], $this->_ci->config->item('individual_csr'))) {
+            } else if (in_array($csr['PlaylistId'], $this->_ci->config->item('h4_individual_csr'))) {
                 $csr_leader[$csr['PlaylistId'] . "_I"] = intval($csr['CurrentSkillRank']);
                 $type = "Individual";
 
