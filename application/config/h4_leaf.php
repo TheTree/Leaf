@@ -1,6 +1,10 @@
 <?php
 
 /**
+ * Playlist Table
+ *
+ * Used to record the IDs for future help
+ *
  * 95           - Global Challenge
  * 100          - Infinity Slayer
  * 101          - Big Team Infinity Slayer
@@ -22,14 +26,19 @@
  * 135          - Legendary Slayer
  */
 
-
 /**
  * INDIVIDUAL CSR
  */
-$config['individual_csr'] = [101,104,100,116,103,128,115,126,113,134,135,95];
+$config['h4_individual_csr'] = [101,104,100,116,103,128,115,126,113,134,135,95];
 
 /**
  * TEAM CSR
  */
-$config['team_csr'] = [105,102,117,121,123,119];
+$config['h4_team_csr'] = [105,102,117,121,123,119];
 
+/**
+ * h4_max_rank
+ *
+ * This is highest rank obtainable via Halo 4
+ */
+$config['h4_max_rank'] = intval(130);

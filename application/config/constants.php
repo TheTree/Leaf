@@ -53,11 +53,6 @@ define("SEVENDAYS_IN_SECONDS", 604800);
 define("FIVEMIN_IN_SECONDS", 300);
 
 /**
- * MAX_HALO_RANK
- */
-define('MAX_HALO_RANK', 130);
-
-/**
  * CHEATER
  */
 define("CHEATING_PLAYER", 1);
