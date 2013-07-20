@@ -27,12 +27,16 @@
  */
 
 /**
- * INDIVIDUAL CSR
+ * h4_individual_csr
+ *
+ * Holds playlist ids for individual CSR playlists
  */
 $config['h4_individual_csr'] = [101,104,100,116,103,128,115,126,113,134,135,95];
 
 /**
- * TEAM CSR
+ * h4_team_csr
+ *
+ * Holds playlist ids for team CSR playlists
  */
 $config['h4_team_csr'] = [105,102,117,121,123,119];
 
@@ -42,3 +46,18 @@ $config['h4_team_csr'] = [105,102,117,121,123,119];
  * This is highest rank obtainable via Halo 4
  */
 $config['h4_max_rank'] = intval(130);
+
+/**
+ * h4_urls
+ *
+ * Holds the URLs responsible for downloading assets
+ */
+$config['h4_urls'] = [
+    'emblem_url'    => "https://emblems.svc.halowaypoint.com/h4/emblems/{EMBLEM}?size={SIZE}",
+    'spartan_url'   => "https://spartans.svc.halowaypoint.com/players/{GAMERTAG}/h4/spartans/fullbody?target={SIZE}",
+    'rank_url'      => "https://assets.halowaypoint.com/games/h4/ranks/v1/{SIZE}/{RANK}",
+    'medal_url'     => "https://assets.halowaypoint.com/games/h4/medals/v1/{SIZE}/{MEDAL}",
+    'csr_url'       => "https://assets.halowaypoint.com/games/h4/csr/v1/{SIZE}/{CSR}.png",
+    'weapon_url'    => "https://assets.halowaypoint.com/games/h4/damage-types/v1/{SIZE}/{WEAPON}",
+    'spec_url'      => "https://assets.halowaypoint.com/games/h4/specializations/v1/{SIZE}/{SPEC}"
+];

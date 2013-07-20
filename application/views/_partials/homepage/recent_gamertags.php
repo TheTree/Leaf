@@ -1,4 +1,4 @@
-<? if ($recent_players != false): ?>
+<? if (isset($recent_players) && $recent_players != FALSE): ?>
         <strong>New Accounts</strong><br />
         <div class="well">
             <table class="table table-bordered table-striped">

@@ -53,7 +53,8 @@ $autoload['packages'] = array();
 */
 
 $autoload['libraries'] = array('/phil/template','/phil/cache','/phil/curl', #phil libs
-        'database','form_validation','session','encrypt','email','pagination','image_lib','library');
+        'database','form_validation','session','encrypt','email','pagination','image_lib','library', 'utils',
+        'db/mongo_db');
 
 
 /*
@@ -81,7 +82,7 @@ $autoload['helper'] = array('url','form','string','output','security','email','f
 |
 */
 
-$autoload['config'] = array('h4_leaf');
+$autoload['config'] = array();
 
 
 /*

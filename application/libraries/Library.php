@@ -7,159 +7,22 @@ class Library {
     public $game;
     public $cli = FALSE;
 
-    // urls @todo Abstract to config/
-    public $emblem_url  = "https://emblems.svc.halowaypoint.com/h4/emblems/{EMBLEM}?size={SIZE}";
-    public $spartan_url = "https://spartans.svc.halowaypoint.com/players/{GAMERTAG}/h4/spartans/fullbody?target={SIZE}";
-    public $rank_url    = "https://assets.halowaypoint.com/games/h4/ranks/v1/{SIZE}/{RANK}";
-    public $medal_url   = "https://assets.halowaypoint.com/games/h4/medals/v1/{SIZE}/{MEDAL}";
-    public $csr_url     = "https://assets.halowaypoint.com/games/h4/csr/v1/{SIZE}/{CSR}.png";
-    public $weapon_url  = "https://assets.halowaypoint.com/games/h4/damage-types/v1/{SIZE}/{WEAPON}";
-    public $spec_url    = "https://assets.halowaypoint.com/games/h4/specializations/v1/{SIZE}/{SPEC}";
-
-    // key for sort functions
-    public $sort_key = "";
-
-    // meta stuff @todo move to Meta Library
-    public $keywords;
-    public $description;
-
     function __construct() {
         $this->_ci = & get_instance();
         $this->lang = "english";
         $this->game = "h4";
+
         $this->_ci->load->model('stat_model', 'stat_m', TRUE);
-
-        // load path helper, setup vars
         $this->_ci->load->helper("path");
-    }
-
-    // ---------------------------------------------------------------
-    // 3rd Party
-    // ---------------------------------------------------------------
-
-    /**
-     * A function for making time periods readable
-     *
-     * @author      Aidan Lister <aidan@php.net>
-     * @version     2.0.1
-     * @link        http://aidanlister.com/2004/04/making-time-periods-readable/
-     * @param       int     number of seconds elapsed
-     * @param       string  which time periods to display
-     * @param       bool    whether to show zero time periods
-     * @return      string
-     */
-    function time_duration($seconds, $use = NULL, $zeros = FALSE) {
-        // Define time periods
-        $periods = array(
-            'years' => 31556926,
-            'Months' => 2629743,
-            'weeks' => 604800,
-            'days' => 86400,
-            'hours' => 3600,
-            'minutes' => 60,
-            'seconds' => 1
-        );
-
-        // Break into periods
-        $seconds = (float) $seconds;
-        $segments = array();
-        foreach ($periods as $period => $value) {
-            if ($use && strpos($use, $period[0]) === FALSE) {
-                continue;
-            }
-            $count = floor($seconds / $value);
-            if ($count == 0 && !$zeros) {
-                continue;
-            }
-            $segments[strtolower($period)] = $count;
-            $seconds = $seconds % $value;
-        }
-
-        // Build the string
-        $string = array();
-        foreach ($segments as $key => $value) {
-            $segment_name = substr($key, 0, -1);
-            $segment = $value . ' ' . $segment_name;
-            if ($value != 1) {
-                $segment .= 's';
-            }
-            $string[] = $segment;
-        }
-
-        return implode(', ', $string);
+        $this->_ci->load->config('h4_leaf');
     }
 
     // ---------------------------------------------------------------
     // Helper Calls
     // ---------------------------------------------------------------
 
-    public function set_sort_key($sort_key) {
-        $this->sort_key = $sort_key;
-    }
-
-    public function get_sort_key() {
-        return $this->sort_key;
-    }
-
-    public function return_meta() {
-        return array(
-            'description' => $this->description,
-            'keywords' => $this->keywords
-        );
-    }
-
     public function set_cli_mode($b) {
         $this->cli = (bool) $b;
-    }
-
-    /**
-     * is_active
-     *
-     * Determines if passed $item is equal to navigation
-     *
-     * @param type $item
-     * @return type
-     */
-    public function is_active($item) {
-        if (uri_string() == "") {
-            $uri_string = "home";
-        } else {
-            $uri_string = uri_string();
-        }
-
-        if ($this->_ci->uri->segment(1) == $item) {
-            return 'active';
-        } else {
-            return '';
-        }
-    }
-
-    public function is_acp_active($item) {
-        if ($this->_ci->uri->segment(2) == FALSE) {
-            $uri_string = "index";
-        } else {
-            $uri_string = $this->_ci->uri->segment(2);
-        }
-
-        if ($uri_string == $item) {
-            return 'active';
-        } else {
-            return '';
-        }
-    }
-
-    public function is_csr_active($item) {
-        if ($this->_ci->uri->segment(2) == FALSE) {
-            $uri_string = "100_I";
-        } else {
-            $uri_string = $this->_ci->uri->segment(2);
-        }
-
-        if ($uri_string == $item) {
-            return 'active';
-        } else {
-            return '';
-        }
     }
 
     /**
@@ -192,29 +55,6 @@ class Library {
         }
 
         return $resp;
-    }
-
-    /**
-     * throw_error
-     *
-     * Takes error_id from language file and uses that on error page.
-     * @param $error_id
-     */
-    public function throw_error($error_id = "GENERAL_ERROR") {
-
-        // get lang file
-        $this->_ci->lang->load('errors', 'english');
-
-        // try and load file
-        if (($_tmp = $this->_ci->lang->line($error_id)) == FALSE) {
-            $_tmp = "I'm sorry, an unknown error has occurred.";
-        }
-
-        // set the session & pass it on
-        $this->_ci->session->set_flashdata('error_msg', $_tmp);
-
-        // redirect to error page
-        redirect('/error/', 'refresh');
     }
 
     /**
@@ -380,7 +220,7 @@ class Library {
 
             // alpha order
             $this->set_sort_key("Name");
-            uasort($ins_arr, array($this,"key_sort"));
+            uasort($ins_arr, array($this->ci->utils,"key_sort"));
 
             // store into db
             $this->_ci->stat_m->empty_playlists();
@@ -475,7 +315,7 @@ class Library {
                     $this->_ci->cache->delete('auth_spartan');
                     return $this->get_spartan_auth_key($count);
                 }  else {
-                    $this->throw_error("API_AUTH_GONE");
+                    $this->_ci->utils->throw_error("API_AUTH_GONE");
                 }
             }
 
@@ -504,7 +344,7 @@ class Library {
                 $count++;
 
                 if ($count > 2) {
-                    $this->throw_error("API_AUTH_GONE");
+                    $this->_ci->utils->throw_error("API_AUTH_GONE");
                 } else {
                     $this->_ci->curl->simple_get($url . "/kill");
                     return $this->get_spartan_auth_key($count);
@@ -568,7 +408,7 @@ class Library {
         if (strlen(urldecode($gt)) > 15) {
 
             if ($errors) {
-                $this->throw_error("LONGER_THAN_15_CHARS_GT");
+                $this->_ci->utils->throw_error("LONGER_THAN_15_CHARS_GT");
             } else {
                 return FALSE;
             }
@@ -579,7 +419,7 @@ class Library {
 
             if ($resp == FALSE) {
                 if ($errors) {
-                    $this->throw_error("NOT_XBL_ACCOUNT");
+                    $this->_ci->utils->throw_error("NOT_XBL_ACCOUNT");
                 } else {
                     return FALSE;
                 }
@@ -696,7 +536,7 @@ class Library {
            if ($this->cli) {
                return FALSE;
            } else {
-               $this->throw_error("NOT_XBL_ACCOUNT");
+               $this->_ci->utils->throw_error("NOT_XBL_ACCOUNT");
            }
         }
 
@@ -721,7 +561,7 @@ class Library {
             if ($this->cli) {
                 return FALSE;
             } else {
-                $this->throw_error("NO_GAMES_PLAYED");
+                $this->_ci->utils->throw_error("NO_GAMES_PLAYED");
             }
         }
 
@@ -729,7 +569,7 @@ class Library {
         $this->_ci->cache->model('stat_m','get_unique_csr_position', array($seo_gamertag), -1);
 
         // get ready for a dump of data
-        return $this->_ci->stat_m->update_or_insert_gamertag($hashed, array(
+        $dump = array(
             'Gamertag'                         => $service_record['Gamertag'],
             'HashedGamertag'                   => $hashed,
             'SeoGamertag'                      => $seo_gamertag,
@@ -791,9 +631,17 @@ class Library {
             'InactiveCounter'                  => intval(0),
             'Status'                           => intval(0),
             'ApiVersion'                       => intval(API_VERSION)
+        );
+
+        $this->_ci->mongo_db->add_index('leaf', array(
+            'SeoGamertag'       => 'DESC',
+            'HashedGamertag'    => 'DESC'), array(
+            'unique'    => TRUE,
+            'dropDups'  => TRUE
         ));
 
-
+        utf8_encode_deep($dump);
+        $id = $this->_ci->mongo_db->insert('leaf', $dump);
     }
 
     /**
@@ -840,57 +688,58 @@ class Library {
      */
     public function return_image_url($type, $image, $size) {
 
+        $urls = $this->_ci->config->item('h4_urls');
         // switch for Type
         switch ($type) {
 
             case "Emblem":
                 $path = "uploads/emblems/" . $size;
                 $image_path =  "/" . $image . ".png";
-                $url = str_replace("{SIZE}", $size, str_replace("{EMBLEM}", $image, $this->emblem_url));
+                $url = str_replace("{SIZE}", $size, str_replace("{EMBLEM}", $image, $urls['emblem_url']));
                 break;
 
             case "Rank":
                 $path = "uploads/ranks/" . $size;
                 $image_path = "/" . $image;
-                $url = str_replace("{SIZE}", $size, str_replace("{RANK}", $image, $this->rank_url));
+                $url = str_replace("{SIZE}", $size, str_replace("{RANK}", $image, $urls['rank_url']));
                 break;
 
             case "Medal":
                 $path = "uploads/medals/" . $size;
                 $image_path = "/" . $image;
-                $url = str_replace("{SIZE}", $size, str_replace("{MEDAL}", $image, $this->medal_url));
+                $url = str_replace("{SIZE}", $size, str_replace("{MEDAL}", $image, $urls['medal_url']));
                 break;
 
             case "CSR":
                 $path = "uploads/csr/" . $size;
                 $image_path = "/" . $image . ".png";
-                $url = str_replace("{SIZE}", $size, str_replace("{CSR}", $image, $this->csr_url));
+                $url = str_replace("{SIZE}", $size, str_replace("{CSR}", $image, $urls['csr_url']));
                 break;
 
             case "Weapon":
                 $image = substr($image, 7); # remove `{SIZE}/` from url
                 $path = "uploads/weapons/" . $size;
                 $image_path = "/" . $image;
-                $url = str_replace("{SIZE}", $size, str_replace("{WEAPON}", $image, $this->weapon_url));
+                $url = str_replace("{SIZE}", $size, str_replace("{WEAPON}", $image, $urls['weapon_url']));
                 break;
 
             case "Spartan":
                 $path = "uploads/spartans/" . $this->get_hashed_seo_gamertag($this->get_seo_gamertag($image));
                 $image_path = "/" . $size . "_spartan.png";
-                $url = str_replace("{SIZE}", $size, str_replace("{GAMERTAG}", urlencode($image), $this->spartan_url));
+                $url = str_replace("{SIZE}", $size, str_replace("{GAMERTAG}", urlencode($image), $urls['spartan_url']));
                 break;
 
             case "ProfileSpartan":
                 $path = "uploads/spartans/" . $this->get_hashed_seo_gamertag($this->get_seo_gamertag($image));
                 $image_path = "/spartan.png";
-                $url = str_replace("{SIZE}", $size, str_replace("{GAMERTAG}", urlencode($image), $this->spartan_url));
+                $url = str_replace("{SIZE}", $size, str_replace("{GAMERTAG}", urlencode($image), $urls['spartan_url']));
                 break;
 
             case "Spec":
                 $image = substr($image, 7); # remove `{SIZE}/` from url
                 $path = "uploads/specializations/" . $size;
                 $image_path = "/" . $image;
-                $url = str_replace("{SIZE}", $size, str_replace("{SPEC}", urlencode($image), $this->spec_url));
+                $url = str_replace("{SIZE}", $size, str_replace("{SPEC}", urlencode($image), $urls['spec_url']));
                 break;
 
             default:
@@ -1047,8 +896,8 @@ class Library {
 
         // return CSR stuff
         if (count($rtr_arr) > 0) {
-            $this->set_sort_key("SkillRank");
-            uasort($rtr_arr, array($this,"key_sort"));
+            $this->_ci->utils->set_sort_key("SkillRank");
+            uasort($rtr_arr, array($this->_ci->utils,"key_sort"));
             return $rtr_arr;
         } else {
             return FALSE;
@@ -1451,20 +1300,5 @@ class Library {
         } else {
             return FALSE;
         }
-    }
-
-    /**
-     * key_sort
-     *
-     * Sorts associative array based on `SkillRank` to sort CSR's in decreasing #
-     * @param $a
-     * @param $b
-     * @return int
-     */
-    function key_sort($a, $b) {
-        if ($a[$this->get_sort_key()] == $b[$this->get_sort_key()]) {
-            return 0;
-        }
-        return ($a[$this->get_sort_key()] < $b[$this->get_sort_key()] ? 1 : -1);
     }
 }

@@ -7,14 +7,14 @@
                 <li class="divider"></li>
                 <? foreach($csr_team as $item): ?>
                     <? if (isset($playlists[$item])) : ?>
-                        <li class="<?= $this->library->is_csr_active($item . "_T"); ?>"><a href="<?= base_url('csr_leaderboards/' . $item . "_T"); ?>"><?= $playlists[$item]['Name'] ?></a></li>
+                        <li class="<?= $this->utils->is_active($item . "_T", "100_I", 2); ?>"><a href="<?= base_url('csr_leaderboards/' . $item . "_T"); ?>"><?= $playlists[$item]['Name'] ?></a></li>
                     <? endif; ?>
                 <? endforeach; ?>
                 <li class="nav-header">Individual CSR</li>
                 <li class="divider"></li>
                 <? foreach($csr_ind as $item): ?>
                     <? if (isset($playlists[$item])) : ?>
-                        <li class="<?= $this->library->is_csr_active($item . "_I"); ?>"><a href="<?= base_url('csr_leaderboards/' . $item . "_I"); ?>"><?= $playlists[$item]['Name'] ?></a></li>
+                        <li class="<?= $this->utils->is_active($item . "_I"); ?>"><a href="<?= base_url('csr_leaderboards/' . $item . "_I"); ?>"><?= $playlists[$item]['Name'] ?></a></li>
                     <? endif; ?>
                 <? endforeach; ?>
             </ul>

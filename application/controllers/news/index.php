@@ -10,6 +10,10 @@ class Index extends IBOT_Controller {
         $this->load->model('news_model', "news_m", true);
     }
 
+    public function __destruct() {
+
+    }
+
     function index($page = 0) {
 
         // load pagination stuff
@@ -29,9 +33,8 @@ class Index extends IBOT_Controller {
         $this->pagination->initialize($config);
 
         $this->library->description = "LeafApp .:. News Articles";
-        $this->template->set("meta", $this->library->return_meta());
-
         $this->template
+                ->set("meta", $this->utils->return_meta())
                 ->set('pagination', $this->pagination->create_links())
                 ->set('news', $news)
                 ->title("Leaf News")
@@ -39,21 +42,19 @@ class Index extends IBOT_Controller {
     }
 
     function view($id) {
-        $this->template->set("meta", $this->library->return_meta());
-
         $article = $this->news_m->get_article_via_slug($id);
         if ($article == FALSE) {
             $article = $this->news_m->get_article($id);
         }
 
         if ($article != FALSE) {
-            $this->library->description = "LeafApp .:. News Article " . (($article['title'] == "") ? intval($id) : $article['title']);
+            $this->utils->description = "LeafApp .:. News Article " . (($article['title'] == "") ? intval($id) : $article['title']);
         }
 
         $this->template
-                ->set("meta", $this->library->return_meta())
+                ->set("meta", $this->utils->return_meta())
                 ->set('article', $article)
-                ->title("Leafapp Article: " . (($article['title'] == "") ? intval($id) : $article['title'] . " "))
+                ->title("Leafapp .:. " . (($article['title'] == "") ? intval($id) : $article['title'] . " "))
                 ->build("pages/article");
     }
 }

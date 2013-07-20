@@ -7,7 +7,6 @@ class Stat_model extends IBOT_Model {
 
     function __construct() {
         parent::__construct();
-        
         log_message('debug', 'Stat_modal loaded');
     }
 
@@ -24,8 +23,8 @@ class Stat_model extends IBOT_Model {
         // check for update
         if (($_tmp = $this->account_exists($hash)) != FALSE) {
 
-            if (isset($_tmp['TotalGameplay']) && isset($data['TotalGameplay'])) {
-                if (floatval($_tmp['TotalGameplay']) != floatval($data['TotalGameplay'])) {
+            if (isset($_tmp['H4_MongoId']) && isset($data['H4_MongoId'])) {
+                if (floatval($_tmp['H4_MongoId']) != floatval($data['H4_MongoId'])) {
                     $data['InactiveCounter'] = 0;
 
                     if (isset($data['Status']) && $data['Status'] == MISSING_PLAYER) {
@@ -82,15 +81,9 @@ class Stat_model extends IBOT_Model {
         $status = $this->get_status($seo_gt);
 
         if (($_tmp = $this->get_missing_record($seo_gt)) != FALSE) {
-
-            // update it
             $this->update_missing_record($seo_gt, $status, $_tmp['Count']);
-
         }  else {
-
-            // insert new record
             $this->insert_missing_record($gt, $seo_gt, $status);
-
         }
     }
 
@@ -207,7 +200,7 @@ class Stat_model extends IBOT_Model {
 
         // generate resp
         $resp = $this->db
-                ->select('HashedGamertag,InactiveCounter,Gamertag,SeoGamertag,Status,TotalGameplay')
+                ->select('HashedGamertag,InactiveCounter,Gamertag,SeoGamertag,Status')
                 ->get_where('ci_gamertags', array(
             'HashedGamertag' => $hash
                 ));
@@ -275,15 +268,16 @@ class Stat_model extends IBOT_Model {
      * @return boolean
      */
     public function get_gamertag_data($hashed) {
-        $resp = $this->db
-                ->select("G.*,B.title,B.colour")
-                ->from("ci_gamertags G")
-                ->join("ci_badges B", "B.SeoGamertag = G.SeoGamertag", "left")
-                ->where('HashedGamertag', $hashed)
-                ->get();
-        
-        $resp = $resp->row_array();
-        
+
+        $resp = $this->mongo_db
+                    ->where('HashedGamertag', $hashed)
+                    ->limit(1)
+                    ->get('leaf');
+
+        if (is_array($resp) && count($resp) == 1) {
+            $resp = $resp[0];
+        }
+
         if (isset($resp['HashedGamertag']) && is_array($resp)) {
             return $resp;
         } else {
@@ -415,14 +409,12 @@ class Stat_model extends IBOT_Model {
      * @return boolean
      */
     public function get_last_5() {
-        $resp = $this->db
-                ->select("Gamertag,ServiceTag,Rank,SeoGamertag")
-                ->order_by("id", "desc")
+        $resp = $this->mongo_db
+                ->select(["Gamertag", "SeoGamertag", "Rank", "ServiceTag"])
+                ->order_by([ "id" => "DESC"])
                 ->limit(5)
-                ->get('ci_gamertags');
-        
-        $resp = $resp->result_array();
-        
+                ->get('leaf');
+
         if (is_array($resp) && count($resp) > 0) {
             return $resp;
         } else {
@@ -441,16 +433,14 @@ class Stat_model extends IBOT_Model {
 
         // only search if letters passed
         if ($letter != "") {
-            $this->db->like('Gamertag', $letter);
+            $this->mongo_db->like('Gamertag', $letter);
         }
 
         // execute
-        $resp = $this->db
-            ->select('Gamertag')
+        $resp = $this->mongo_db
+            ->select(array('Gamertag'))
             ->limit(25)
-            ->get('ci_gamertags');
-
-        $resp = $resp->result_array();
+            ->get('leaf');
 
         if (is_array($resp) && count($resp) > 0) {
             return $resp;
@@ -664,7 +654,7 @@ class Stat_model extends IBOT_Model {
      */
     public function get_name_and_emblem($seo_gt) {
         $resp = $this->db
-            ->select('Gamertag,Emblem,SeoGamertag')
+            ->select('Gamertag,SeoGamertag')
             ->get_where('ci_gamertags', array(
                 'SeoGamertag' => $seo_gt
             ));

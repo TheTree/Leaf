@@ -18,11 +18,11 @@
                     <div class="nav-collapse collapse">
                         <nav>
                             <ul class="nav">
-                                <li class="<? if ($this->library->is_active("news")): ?> active<? endif; ?>"><a href="<?= base_url('news'); ?>">News</a></li>
-                                <li class="<? if ($this->library->is_active("csr_leaderboards")): ?> active<? endif; ?>"><a href="<?= base_url('csr_leaderboards'); ?>">CSR Leaderboards</a></li>
-                                <li class="<? if ($this->library->is_active("leaderboards")): ?> active<? endif; ?>"><a href="<?= base_url('leaderboards'); ?>">Top Ten</a></li>
-                                <li class="<? if ($this->library->is_active("compare")): ?> active<? endif; ?>"><a rel="help" href="<?= base_url('compare'); ?>">Compare</a></li>
-                                <li class="<? if ($this->library->is_active("about")): ?> active<? endif; ?>"><a href="<?= base_url('about'); ?>">About</a></li>
+                                <li class="<? if ($this->utils->is_active("news", "home", 1)): ?> active<? endif; ?>"><a href="<?= base_url('news'); ?>">News</a></li>
+                                <li class="<? if ($this->utils->is_active("csr_leaderboards", "home", 1)): ?> active<? endif; ?>"><a href="<?= base_url('csr_leaderboards'); ?>">CSR Leaderboards</a></li>
+                                <li class="<? if ($this->utils->is_active("leaderboards", "home", 1)): ?> active<? endif; ?>"><a href="<?= base_url('leaderboards'); ?>">Top Ten</a></li>
+                                <li class="<? if ($this->utils->is_active("compare", "home", 1)):?> active<? endif; ?>"><a rel="help" href="<?= base_url('compare'); ?>">Compare</a></li>
+                                <li class="<? if ($this->utils->is_active("about", "home", 1)): ?> active<? endif; ?>"><a href="<?= base_url('about'); ?>">About</a></li>
                             </ul>
                         </nav>
                         <ul class="nav pull-right">

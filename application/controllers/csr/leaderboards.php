@@ -69,8 +69,6 @@ class Leaderboards extends IBOT_Controller {
     private function _load_personal() {
         if (is_array($this->gt)) {
             $this->my = $this->cache->model('stat_m','get_unique_csr_position', array($this->gt['SeoGamertag']), 300);
-        } else {
-            // @todo pop message saying to "star" a profile to mark it as your own
         }
     }
 
@@ -113,7 +111,7 @@ class Leaderboards extends IBOT_Controller {
         $name = $this->playlists[substr($this->default_playlist, 0, -2)]['Name'];
 
         $this->library->description = "LeafApp .:. CSR Halo 4 " . $name . " Leaderboards";
-        $this->template->set("meta", $this->library->return_meta());
+        $this->template->set("meta", $this->utils->return_meta());
 
         // build w/ data
         $this->template
@@ -131,7 +129,7 @@ class Leaderboards extends IBOT_Controller {
 
         // add playlist name into this.
         $this->library->description = "LeafApp .:. CSR Halo 4 " . $name . " Leaderboards";
-        $this->template->set("meta", $this->library->return_meta());
+        $this->template->set("meta", $this->utils->return_meta());
 
         // build w/ data
         $this->template

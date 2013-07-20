@@ -913,7 +913,6 @@ class Mongo_db
                 $this->_show_error($exception->getMessage(), 500);
             }
         }
-
         return $documents;
     }
 
@@ -1003,12 +1002,14 @@ class Mongo_db
 
         catch (MongoException $exception)
         {
-            $this->_show_error('Insert of data into MongoDB failed: ' .$exception->getMessage(), 500);
+            return FALSE;
+            log_message('error','Insert of data into MongoDB failed: ' .$exception->getMessage());
         }
 
         catch (MongoCursorException $exception)
         {
-            $this->_show_error('Insert of data into MongoDB failed: ' .$exception->getMessage(), 500);
+            return FALSE;
+            log_message('error','Insert of data into MongoDB failed: ' .$exception->getMessage());
         }
     }
 
