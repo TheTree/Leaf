@@ -995,8 +995,8 @@ class Library {
             }
         }
         // sort
-        $this->set_sort_key("SkillRank");
-        uasort($rtr_arr, array($this, "key_sort"));
+        $this->_ci->utils->set_sort_key("SkillRank");
+        uasort($rtr_arr, array($this->_ci->utils, "key_sort"));
         return $rtr_arr;
     }
 

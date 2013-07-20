@@ -677,12 +677,15 @@ class Stat_model extends IBOT_Model {
      * @return bool
      */
     public function get_name_and_kd($seo_gt) {
-        $resp = $this->db
-                ->select('Gamertag,SeoGamertag,KDRatio')
-                ->get_where('ci_gamertags', array(
+        $resp = $this->mongo_db
+                ->select(['Gamertag','SeoGamertag','KDRatio'])
+                ->get_where('leaf', array(
                 'SeoGamertag' => $seo_gt
             ));
-        $resp = $resp->row_array();
+
+        if (is_array($resp) && count($resp) == 1) {
+            $resp = $resp[0];
+        }
 
         if (isset($resp['Gamertag'])) {
             return $resp;

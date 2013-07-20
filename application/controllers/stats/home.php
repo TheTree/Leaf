@@ -109,11 +109,11 @@ class Home extends IBOT_Controller {
                                                                   $data['FavoriteWeaponTotalKills'],
                                                                   $data['FavoriteWeaponUrl']);
 
-        $this->library->description = "LeafApp .:. " . $data['Gamertag'] . " Halo 4 Stats";
-        $this->template->set("meta", $this->library->return_meta());
+        $this->utils->description = "LeafApp .:. " . $data['Gamertag'] . " Halo 4 Stats";
 
         //  output gt, build template, set partials
         $this->template
+                ->set("meta", $this->utils->return_meta())
                 ->set_partial('block_photo', '_partials/profile/block_photo')
                 ->set_partial('block_basicstats', '_partials/profile/block_basicstats')
                 ->set_partial('block_progression', '_partials/profile/block_progression')
