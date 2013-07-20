@@ -26,6 +26,7 @@ class IBOT_Controller extends CI_Controller {
         }
 
         // fix the fucking Chrome browser
+        $this->output->set_header('Content-Type: text/html; charset=utf-8');
         $this->output->set_header('Cache-Control: no-cache, no-store, must-revalidate');
         $this->output->set_header('Pragma: no-cache');
         $this->output->set_header('Expires: 0');
