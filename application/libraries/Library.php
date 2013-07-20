@@ -914,7 +914,7 @@ class Library {
      * @return mixed
      */
     public function return_medals($data) {
-        $data = msgpack_unpack($data);
+        $data = msgpack_unpack(utf8_decode($data));
         foreach ($data as $key => $item) {
             $data[$key]['Name'] = $this->get_metadata_name_via_id("medals", $item['Id'], "Name");
             $data[$key]['ImageUrl'] = $this->get_metadata_name_via_id("medals", $item['Id'], "ImageUrl");
@@ -931,10 +931,10 @@ class Library {
         unset($data);
 
         // sort
-        $this->set_sort_key("Count");
+        $this->_ci->utils->set_sort_key("Count");
         ksort($new_arr);
         foreach ($new_arr as $key => $value) {
-            uasort($new_arr[$key], array($this,"key_sort"));
+            uasort($new_arr[$key], array($this->_ci->utils,"key_sort"));
             $new_arr[$key]['Name'] = $this->get_metadata_name_via_id("medaltiers",$key, "Name");
             $new_arr[$key]['Description'] = $this->get_metadata_name_via_id("medaltiers",$key, "Description");
         }
@@ -953,7 +953,7 @@ class Library {
         if ($data == FALSE || $data == "" | $data == "b:0;") {
             return FALSE;
         }
-        $data = msgpack_unpack($data);
+        $data = msgpack_unpack(utf8_decode($data));
 
         foreach ($data as $key => $value) {
 
@@ -978,7 +978,7 @@ class Library {
      * @internal param $data
      */
     public function return_csr_v2($leaderboard, $csr) {
-        $csr = msgpack_unpack($csr);
+        $csr = msgpack_unpack(utf8_decode($csr));
         $rtr_arr = array();
         $playlists = $this->get_playlists();
 
@@ -1012,7 +1012,7 @@ class Library {
         if ($data == FALSE || $data == "" || $data == "b:0;") {
             return FALSE;
         }
-        $data = msgpack_unpack($data);
+        $data = msgpack_unpack(utf8_decode($data));
 
         foreach($data as $key => $value) {
             if ($data[$key]['Completed']) {
