@@ -10,6 +10,7 @@
             </section>
         </div>
         <?= $template['_partials']['news_block']; ?>
+        <?= $template['_partials']['gamertag_add']; ?>
         <br />
         <?= $template['_partials']['recent_gamertags']; ?>
         <a href="https://twitter.com/share" class="twitter-share-button" data-size="large" data-hashtags="Halo4">Tweet</a>

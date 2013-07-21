@@ -11,10 +11,6 @@ class Profile extends IBOT_Controller {
         $this->load->model('h4/stat_model', 'stat_m', true);
     }
 
-    public function redo_playlists() {
-        $this->library->get_playlists();
-    }
-    
     public function index() {
         
         // lets start grabbing data w/ caches
@@ -98,7 +94,6 @@ class Profile extends IBOT_Controller {
 
         $data['BranchGamertag'] = $this->library->make_branch_gt($data['Gamertag']);
         $data['SpartanURL']     = $this->library->return_spartan_url($gamertag, "Profile");
-        $data['RankImage']      = $this->library->return_image_url("Rank", $data['RankImage'], "large");
         $data['MedalData']      = $this->library->return_medals($data['MedalData']);
         $data['CSRPlaylist']    = $this->library->return_csr_v2($this->cache->model('stat_m','get_unique_csr_position', array($data['SeoGamertag']), 300),
                                                                 $data['SkillData']);
@@ -163,6 +158,10 @@ class Profile extends IBOT_Controller {
 
     public function metadata() {
         $this->library->get_metadata();
+    }
+
+    public function redo_playlists() {
+        $this->library->get_playlists();
     }
     
 }

@@ -18,13 +18,15 @@ class Home extends IBOT_Controller {
 
         // run it
         if ($this->form_validation->run() == FALSE) {
-            $this->template->build('pages/home');
+            $this->session->set_flashdata('errors', validation_errors());
         } else {
-            redirect(base_url("/gt/" . str_replace(" ", "_",$this->input->post('gamertag'))));
+            redirect(base_url("/h4/" . str_replace(" ", "_",$this->input->post('gamertag'))));
         }
+
         $this->template
                 ->title("Leaf .:. Halo 4 Stats")
                 ->set_partial("challenges", "_partials/homepage/challenges")
+                ->set_partial("gamertag_add", "_partials/homepage/gamertag_add")
                 ->set_partial("news_block", "_partials/homepage/news_block")
                 ->set_partial("recent_gamertags", "_partials/homepage/recent_gamertags")
                 ->set("recent_players", $this->cache->model("stat_m", 'get_last_5', array(), 120))

@@ -237,19 +237,13 @@ class Stat_model extends IBOT_Model {
      * @return bool|int
      */
     public function get_status($seo_gamertag) {
-        $resp = $this->db
-                ->select('Status')
-                ->get_where('ci_gamertags', array(
-                'SeoGamertag' => $seo_gamertag
-            ));
+        $resp = $this->mongo_db
+                ->select(['Status'])
+                ->get_where('h4_gamertags', array(
+                    'SeoGamertag' => $seo_gamertag
+        ));
 
-        $resp = $resp->row_array();
-
-        if (isset($resp['Status'])) {
-            return (int) $resp['Status'];
-        } else {
-            return FALSE;
-        }
+        return $this->_get_one($resp, 'Status');
     }
     
     /**

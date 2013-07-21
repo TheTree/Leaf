@@ -69,7 +69,7 @@ $config['h4_max_rank'] = intval(130);
 $config['h4_urls'] = [
     'emblem_url'    => "https://emblems.svc.halowaypoint.com/h4/emblems/{EMBLEM}?size={SIZE}",
     'spartan_url'   => "https://spartans.svc.halowaypoint.com/players/{GAMERTAG}/h4/spartans/fullbody?target={SIZE}",
-    'rank_url'      => "https://assets.halowaypoint.com/games/h4/ranks/v1/{SIZE}/{RANK}",
+    'rank_url'      => "https://assets.halowaypoint.com/games/h4/ranks/v1/{SIZE}/sr-{RANK}.png",
     'medal_url'     => "https://assets.halowaypoint.com/games/h4/medals/v1/{SIZE}/{MEDAL}",
     'csr_url'       => "https://assets.halowaypoint.com/games/h4/csr/v1/{SIZE}/{CSR}.png",
     'weapon_url'    => "https://assets.halowaypoint.com/games/h4/damage-types/v1/{SIZE}/{WEAPON}",

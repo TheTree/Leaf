@@ -722,50 +722,51 @@ class Library {
         switch ($type) {
 
             case "Emblem":
-                $path = "uploads/emblems/" . $size;
+                $path = "uploads/h4/emblems/" . $size;
                 $image_path =  "/" . $image . ".png";
                 $url = str_replace("{SIZE}", $size, str_replace("{EMBLEM}", $image, $urls['emblem_url']));
                 break;
 
             case "Rank":
-                $path = "uploads/ranks/" . $size;
+                $image = sprintf('%03d', $image);
+                $path = "uploads/h4/ranks/" . $size;
                 $image_path = "/" . $image;
                 $url = str_replace("{SIZE}", $size, str_replace("{RANK}", $image, $urls['rank_url']));
                 break;
 
             case "Medal":
-                $path = "uploads/medals/" . $size;
+                $path = "uploads/h4/medals/" . $size;
                 $image_path = "/" . $image;
                 $url = str_replace("{SIZE}", $size, str_replace("{MEDAL}", $image, $urls['medal_url']));
                 break;
 
             case "CSR":
-                $path = "uploads/csr/" . $size;
+                $path = "uploads/h4/csr/" . $size;
                 $image_path = "/" . $image . ".png";
                 $url = str_replace("{SIZE}", $size, str_replace("{CSR}", $image, $urls['csr_url']));
                 break;
 
             case "Weapon":
                 $image = substr($image, 7); # remove `{SIZE}/` from url
-                $path = "uploads/weapons/" . $size;
+                $path = "uploads/h4/weapons/" . $size;
                 $image_path = "/" . $image;
                 $url = str_replace("{SIZE}", $size, str_replace("{WEAPON}", $image, $urls['weapon_url']));
                 break;
 
             case "Spartan":
-                $path = "uploads/spartans/" . $this->get_hashed_seo_gamertag($this->get_seo_gamertag($image));
+                $path = "uploads/h4/spartans/" . $this->get_hashed_seo_gamertag($this->get_seo_gamertag($image));
                 $image_path = "/" . $size . "_spartan.png";
                 $url = str_replace("{SIZE}", $size, str_replace("{GAMERTAG}", urlencode($image), $urls['spartan_url']));
                 break;
 
             case "ProfileSpartan":
-                $path = "uploads/spartans/" . $this->get_hashed_seo_gamertag($this->get_seo_gamertag($image));
+                $path = "uploads/h4/spartans/" . $this->get_hashed_seo_gamertag($this->get_seo_gamertag($image));
                 $image_path = "/spartan.png";
                 $url = str_replace("{SIZE}", $size, str_replace("{GAMERTAG}", urlencode($image), $urls['spartan_url']));
                 break;
 
             case "Spec":
-                $path = "uploads/specializations/" . $size;
+                $path = "uploads/h4/specializations/" . $size;
                 $image_path = "/" . $image;
                 $url = str_replace("{SIZE}", $size, str_replace("{SPEC}", urlencode($image), $urls['spec_url']));
                 break;
@@ -781,7 +782,7 @@ class Library {
         } else {
             $_stream = file_get_contents($url);
 
-            if ($_stream == "") {
+            if ($_stream === FALSE) {
                 return $url;
             } else {
                 file_put_contents(absolute_path($path) . $image_path, $_stream);
@@ -1207,11 +1208,11 @@ class Library {
 
         // load path helper, setup vars
         $this->_ci->load->helper("path");
-        $spartan_path = absolute_path('uploads/spartans/' . $hashed) . "spartan.png";
-        $emblem_path = absolute_path('uploads/spartans/' . $hashed . "/tmp/") . "emblem.png";
+        $spartan_path = absolute_path('uploads/h4/spartans/' . $hashed) . "spartan.png";
+        $emblem_path = absolute_path('uploads/h4/spartans/' . $hashed . "/tmp/") . "emblem.png";
 
         // delete old spartans
-        if (is_dir(absolute_path("uploads/spartans/" . $hashed))) {
+        if (is_dir(absolute_path("uploads/h4/spartans/" . $hashed))) {
             // only delete if $hashed is set
             if (strlen($hashed) > 10) {
                 delete_files(absolute_path('uploads/spartans/' . $hashed), TRUE);
@@ -1219,9 +1220,9 @@ class Library {
         }
 
         // lets try and make a folder. check first :p
-        if (!(is_dir(absolute_path('uploads/spartans/' . $hashed . "/tmp")))) {
-            mkdir(absolute_path('uploads/spartans/' . $hashed . "/tmp"), 0777, TRUE);
-            write_file(absolute_path('uploads/spartans/' . $hashed) . "index.html", $this->_ci->utils->get_anti_dir_trav());
+        if (!(is_dir(absolute_path('uploads/h4/spartans/' . $hashed . "/tmp")))) {
+            mkdir(absolute_path('uploads/h4/spartans/' . $hashed . "/tmp"), 0777, TRUE);
+            write_file(absolute_path('uploads/h4/spartans/' . $hashed) . "index.html", $this->_ci->utils->get_anti_dir_trav());
         } else {
             // only delete if $hashed is set
             if (strlen($hashed) > 10) {
@@ -1276,8 +1277,8 @@ class Library {
         }
 
         // delete tmp dir
-        delete_files(absolute_path('uploads/spartans/' . $hashed . "/tmp/"), FALSE);
-        rmdir(absolute_path('uploads/spartans/' . $hashed . "/tmp"));
+        delete_files(absolute_path('uploads/h4/spartans/' . $hashed . "/tmp/"), FALSE);
+        rmdir(absolute_path('uploads/h4/spartans/' . $hashed . "/tmp"));
     }
 
     /**

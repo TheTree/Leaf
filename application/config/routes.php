@@ -44,6 +44,9 @@ $route['error']             = "home/error";
 $route['cron']              = "cron_task/update_gamertags";
 $route['news']              = "news/index";
 
+// ajax calls
+$route['ajax/gt/(:any)'] = "ajax/core/compare_api/$1";
+
 // games
 $route['h4']                = "h4/home/index";
 
@@ -56,16 +59,13 @@ $route['h4/leaderboards']           = "h4/home/index";
 $route['h4/csr_leaderboards']       = "h4/leaderboards/index";
 
 // variable pages
-$route['guilty_spark/flag/(:any)']          = "moderate/home/flagged/$1";
+$route['h4/guilty_spark/flag/(:any)']       = "moderate/home/flagged/$1";
 $route['h4/(:any)/recache']                 = "h4/profile/recache_gt/$1";
 $route['h4/(:any)']                         = "h4/profile/gt/$1";
 
-// ajax calls
-$route['ajax/gt/(:any)'] = "ajax/core/compare_api/$1";
-
 // recaching stuff
-$route['h4/metadata/recache']   = "h4/profile/metadata";
-$route['playlists/recache']     = "stats/home/redo_playlists";
+$route['h4/metadata/recache']       = "h4/profile/metadata";
+$route['h4/playlists/recache']      = "h4/profile/redo_playlists";
 
 //-------------------------------------------------------
 // END: Halo 4

@@ -14,7 +14,7 @@
 <!-- ApiVersion: <?= $data['ApiVersion']; ?> -->
 <div class="well well-large btn btn-primary pad10 w150">
     <div class="pagination-centered">
-        <img src="<?= $data['RankImage']; ?>" />
+        <img src="<?= $this->library->return_image_url('Rank', $data['Rank'], 'large'); ?>" />
         <?= $data['Specialization']; ?> - <?= $data['SpecializationLevel']; ?>
     </div>
 </div>
