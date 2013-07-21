@@ -16,7 +16,7 @@ class Cron_task extends IBOT_Controller {
     function update_gamertags() {
         
         // load db
-        $this->load->model('stat_model', 'stat_m', true);
+        $this->load->model('h4/stat_model', 'stat_m', true);
         $this->library->set_cli_mode(TRUE);
 
         print "Running CRON\n";
@@ -100,7 +100,7 @@ class Cron_task extends IBOT_Controller {
     }
 
     function direct_missing() {
-        $this->load->model('stat_model', 'stat_m', true);
+        $this->load->model('h4/stat_model', 'stat_m', true);
         $this->library->set_cli_mode(TRUE);
         print "enter missing gt: ";
 
@@ -124,7 +124,7 @@ class Cron_task extends IBOT_Controller {
     }
 
     function cleanup_gamertags() {
-        $this->load->model('stat_model', 'stat_m', true);
+        $this->load->model('h4/stat_model', 'stat_m', true);
         $this->library->set_cli_mode(TRUE);
         print "Looking for deleted gamertags...\n";
 

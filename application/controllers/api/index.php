@@ -19,7 +19,7 @@ class Index extends IBOT_Controller {
         $this->output->enable_profiler(FALSE);
 
         // load model
-        $this->load->model('stat_model', 'stat_m', true);
+        $this->load->model('h4/stat_model', 'stat_m', true);
 
         // check for valid auth
         $this->_setup();

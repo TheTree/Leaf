@@ -12,7 +12,7 @@ class Library {
         $this->lang = "english";
         $this->game = "h4";
 
-        $this->_ci->load->model('stat_model', 'stat_m', TRUE);
+        $this->_ci->load->model('h4/stat_model', 'stat_m', TRUE);
         $this->_ci->load->helper("path");
         $this->_ci->load->config('h4_leaf');
     }

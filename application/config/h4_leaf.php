@@ -26,6 +26,20 @@
  * 135          - Legendary Slayer
  */
 
+
+/**
+ * enabled
+ *
+ * If disabled all features relating too
+ *
+ * 1) Grabbing new data will be disabled.
+ * 2) New accounts for H4 will be disabled.
+ * 3) Playlists will stop auto-updating.
+ * 4) Challenges will be hidden and stop auto-updating
+ * 5) Cron jobs will halt
+ */
+$config['h4_enabled']   = TRUE;
+
 /**
  * h4_individual_csr
  *

@@ -7,7 +7,7 @@ class Home extends IBOT_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->load->model('stat_model', 'stat_m', true);
+        $this->load->model('h4/stat_model', 'stat_m', true);
         $this->load->model('admin_model', 'admin_m', true);
     }
 

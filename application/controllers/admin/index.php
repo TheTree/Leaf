@@ -12,7 +12,7 @@ class Index extends IBOT_Controller {
         $this->library->backstage_gatekeeper();
         $this->load->model('admin_model', 'admin_m', TRUE);
         $this->load->model('news_model', 'news_m', TRUE);
-        $this->load->model('stat_model', 'stat_m', TRUE);
+        $this->load->model('h4/stat_model', 'stat_m', TRUE);
 
         $this->template
             ->set_partial('second_nav','_partials/admin/second_nav')
