@@ -1094,7 +1094,7 @@ class Mongo_db
             $result = $this->_dbhandle->{$collection}->update($this->wheres, $this->updates, $options);
             $this->_clear($collection, 'update');
 
-            return (bool) $result['ok'];
+            return (bool)$result['ok'];
         }
 
         catch (MongoCursorException $exception)

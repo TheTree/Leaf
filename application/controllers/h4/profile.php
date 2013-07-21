@@ -3,7 +3,7 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class Home extends IBOT_Controller {
+class Profile extends IBOT_Controller {
 
     public function __construct() {
         parent::__construct();
@@ -155,7 +155,7 @@ class Home extends IBOT_Controller {
             }
             
             // redirect out of here
-            redirect(base_url("gt/" . $data['SeoGamertag']));
+            redirect(base_url("h4/" . $data['SeoGamertag']));
         } else {
             $this->library->throw_error("NO_GAMERTAG_STORED");
         }

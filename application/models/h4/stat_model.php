@@ -23,8 +23,8 @@ class Stat_model extends IBOT_Model {
         // check for update
         if (($_tmp = $this->account_exists($hash)) != FALSE) {
 
-            if (isset($_tmp['H4_MongoId']) && isset($data['H4_MongoId'])) {
-                if (floatval($_tmp['H4_MongoId']) != floatval($data['H4_MongoId'])) {
+            if (isset($_tmp['TotalGameplay']) && isset($data['TotalGameplay'])) {
+                if (floatval($_tmp['TotalGameplay']) != floatval($data['TotalGameplay'])) {
                     $data['InactiveCounter'] = 0;
 
                     if (isset($data['Status']) && $data['Status'] == MISSING_PLAYER) {
@@ -169,11 +169,11 @@ class Stat_model extends IBOT_Model {
      */
     public function update_account($hash, $data) {
         
-        $this->db
+        $this->mongo_db
+                ->set($data)
                 ->where('HashedGamertag', $hash)
-                ->update('ci_gamertags', $data);
-        
-        return TRUE;
+                ->update('h4_gamertags');
+
     }
 
     /**
@@ -184,10 +184,8 @@ class Stat_model extends IBOT_Model {
      * @internal param \type $hash
      */
     public function insert_account($data) {
-        
-        $this->db
-                ->insert('ci_gamertags', $data);
-        
+        $this->mongo_db
+            ->insert('h4_gamertags', $data);
     }
 
     /**
@@ -199,19 +197,13 @@ class Stat_model extends IBOT_Model {
     public function account_exists($hash) {
 
         // generate resp
-        $resp = $this->db
-                ->select('HashedGamertag,InactiveCounter,Gamertag,SeoGamertag,Status')
-                ->get_where('ci_gamertags', array(
-            'HashedGamertag' => $hash
-                ));
+        $resp = $this->mongo_db
+                ->select(['HashedGamertag','InactiveCounter','Gamertag','SeoGamertag','Status','TotalGameplay'])
+                ->get_where('h4_gamertags', array(
+                    'HashedGamertag' => $hash
+        ));
 
-        $resp = $resp->row_array();
-
-        if (isset($resp['HashedGamertag']) && is_array($resp)) {
-            return $resp;
-        } else {
-            return FALSE;
-        }
+        return $this->_get_one($resp, 'HashedGamertag');
     }
 
     /**
@@ -274,15 +266,7 @@ class Stat_model extends IBOT_Model {
                     ->limit(1)
                     ->get('h4_gamertags');
 
-        if (is_array($resp) && count($resp) == 1) {
-            $resp = $resp[0];
-        }
-
-        if (isset($resp['HashedGamertag']) && is_array($resp)) {
-            return $resp;
-        } else {
-            return FALSE;
-        }
+        return $this->_get_one($resp, 'HashedGamertag');
     }
 
     /**
@@ -363,15 +347,7 @@ class Stat_model extends IBOT_Model {
                 ->where_lt('InactiveCounter', intval(INACTIVE_COUNTER))
                 ->get('h4_gamertags');
 
-        if (is_array($resp) && count($resp) == 1) {
-            $resp = $resp[0];
-        }
-        
-        if (isset($resp['Expiration']) && is_array($resp)) {
-            return $resp;
-        } else {
-            return FALSE;
-        }
+        return $this->_get_one($resp, 'Expiration');
     }
     
     /**
@@ -684,15 +660,7 @@ class Stat_model extends IBOT_Model {
                 'SeoGamertag' => $seo_gt
             ));
 
-        if (is_array($resp) && count($resp) == 1) {
-            $resp = $resp[0];
-        }
-
-        if (isset($resp['Gamertag'])) {
-            return $resp;
-        } else {
-            return FALSE;
-        }
+        return $this->_get_one($resp, 'Gamertag');
     }
 
     /**
@@ -1073,5 +1041,25 @@ class Stat_model extends IBOT_Model {
             ));
     }
 
+    /**
+     * _get_one
+     *
+     * If you are only grabbing one record Mongo will assign it $array[0], but we just want $array
+     * so this removes the [0] and returns it without the id.
+     *
+     * @param        $resp
+     * @param string $field
+     * @return array|bool
+     */
+    private function _get_one(&$resp, $field = '') {
+        if (is_array($resp) && count($resp) == 1) {
+            $resp = $resp[0];
+        }
 
+        if (isset($resp[$field])) {
+            return $resp;
+        } else {
+            return FALSE;
+        }
+    }
 }

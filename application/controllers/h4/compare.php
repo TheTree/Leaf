@@ -16,9 +16,6 @@ class Compare extends IBOT_Controller {
             $this->template->set('you', $_tmp);
         }
 
-        // check for "starred" gt
-        $this->load->helper('cookie');
-
         // get gamertag and icon, send 2 template
         $_tmp = get_cookie('starred',TRUE);
         if ($_tmp != FALSE) {
@@ -44,7 +41,7 @@ class Compare extends IBOT_Controller {
         }
 
         $this->library->description = "LeafApp .:. Compare Halo 4 Players";
-        $this->template->set("meta", $this->library->return_meta());
+        $this->template->set("meta", $this->utils->return_meta());
 
         $this->template
             ->set_partial('modal_compare', '_partials/modals/modal_compare')
@@ -60,11 +57,10 @@ class Compare extends IBOT_Controller {
         if ($this->leaf_compare->get_error()) {
             $this->template->build("pages/compare/review");
         } else {
-            // run it
             $data = $this->leaf_compare->compare();
 
             $this->library->description = "LeafApp .:. " . $data['you']['Gamertag'] . " vs " . $data['them']['Gamertag'];
-            $this->template->set("meta", $this->library->return_meta());
+            $this->template->set("meta", $this->utils->return_meta());
 
             // dump to template
             $this->template
@@ -75,8 +71,6 @@ class Compare extends IBOT_Controller {
     }
 
     public function comparison_prefill($you = "") {
-
-        // set default val
         $this->template->set("you", $you);
         $this->index();
     }

@@ -16,7 +16,7 @@
             e=o.createElement(i);r=o.getElementsByTagName(i)[0];
             e.src='//www.google-analytics.com/analytics.js';
             r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-        ga('create','UA-3737795-12');ga('send','pageview');
+        ga('create','UA-3737795-14');ga('send','pageview');
     </script>
     <?= $template['_partials']['global_js_vars']; ?>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>

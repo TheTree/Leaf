@@ -11,16 +11,6 @@ class Home extends IBOT_Controller {
         $this->load->model('h4/stat_model', 'stat_m', true);
     }
 
-    function about() {
-
-        $this->library->description = "LeafApp .:. About Us";
-        $this->template->set("meta", $this->library->return_meta());
-
-        $this->template
-                ->title("About")
-                ->build("pages/about");
-    }
-
     function index() {
 
         // rules
@@ -41,19 +31,6 @@ class Home extends IBOT_Controller {
                 ->set("recent_news", $this->news_m->get_newest_article())
                 ->set('challenges', $this->library->get_challenges())
                 ->build('pages/home');
-    }
-
-    function error() {
-        // get the flash data error
-        if (($_tmp = $this->session->flashdata('error_msg')) == FALSE) {
-            $_tmp = "hi. this is the error page, but no error was thrown. happy?";
-        }
-
-        // set the template and page
-        $this->template
-            ->title("Leaf .:. Error Occurred")
-            ->set("error_msg", $_tmp)
-            ->build("pages/error");
     }
 }
 

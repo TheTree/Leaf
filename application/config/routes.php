@@ -39,28 +39,33 @@
 */
 
 // basic pages
-$route['about']             = "home/about";
+$route['about']             = "index/about";
 $route['error']             = "home/error";
 $route['cron']              = "cron_task/update_gamertags";
 $route['news']              = "news/index";
 
+// games
+$route['h4']                = "h4/home/index";
+
 //-------------------------------------------------------
 // START: Halo 4
 //-------------------------------------------------------
-$route['stats']             = "stats/home/index";
-$route['compare']           = "stats/compare/index";
-$route['leaderboards']      = "stats/home/index";
-$route['csr_leaderboards']  = "csr/leaderboards/index";
+$route['h4/stats']                  = "h4/home/index";
+$route['h4/compare']                = "h4/compare/index";
+$route['h4/leaderboards']           = "h4/home/index";
+$route['h4/csr_leaderboards']       = "h4/leaderboards/index";
 
-// variable mod pages
+// variable pages
 $route['guilty_spark/flag/(:any)']          = "moderate/home/flagged/$1";
+$route['h4/(:any)/recache']                 = "h4/profile/recache_gt/$1";
+$route['h4/(:any)']                         = "h4/profile/gt/$1";
 
 // ajax calls
 $route['ajax/gt/(:any)'] = "ajax/core/compare_api/$1";
 
 // recaching stuff
-$route['metadata/recache']  = "stats/home/metadata";
-$route['playlists/recache'] = "stats/home/redo_playlists";
+$route['h4/metadata/recache']   = "h4/profile/metadata";
+$route['playlists/recache']     = "stats/home/redo_playlists";
 
 //-------------------------------------------------------
 // END: Halo 4
@@ -101,8 +106,6 @@ $route['csr_leaderboards/(:any)']        = "csr/leaderboards/leaderboard/$1/0";
 $route['csr_leaderboards/(:any)/(:num)'] = "csr/leaderboards/leaderboard/$1/$2";
 $route['removefreeze/(:any)']            = "stats/home/removefreeze/$1";
 $route['star/(:any)']                    = "stats/home/star/$1";
-$route['gt/(:any)/recache']              = "stats/home/recache_gt/$1";
-$route['gt/(:any)']                      = "stats/home/gt/$1";
 $route['news/(:num)']                    = "news/index/index/$1";
 $route['news/view/(:any)']               = "news/index/view/$1";
 $route['compare/(:any)/(:any)']          = "stats/compare/comparison/$1/$2";

@@ -11,7 +11,7 @@
                 <tbody>
                     <? foreach ($recent_players as $item): ?>
                         <tr>
-                            <td><a href="<?= base_url('gt/' . str_replace(" ", "_", $item['SeoGamertag'])); ?>"><?= $item['Gamertag']; ?></a> - <small><?= $item['ServiceTag']; ?></small></td>
+                            <td><a href="<?= base_url('h4/' . str_replace(" ", "_", $item['SeoGamertag'])); ?>"><?= $item['Gamertag']; ?></a> - <small><?= $item['ServiceTag']; ?></small></td>
                             <td>SR-<?= number_format($item['Rank']); ?></td>
                         </tr>
                     <? endforeach; ?>

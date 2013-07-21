@@ -14,6 +14,7 @@ Heres the sauce babes. Let me lay down some rules
 2. MySqli >= 5.5.x
 3. msgpack 0.5.5
 4. libcurl >= 7.30.0 (Required for bug fix relating to https redirects retaining POST)
+5. MongoDB
 
 <br /><br />
 > DON'T BE A DICK PUBLIC LICENSE

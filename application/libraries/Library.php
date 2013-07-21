@@ -136,61 +136,72 @@ class Library {
     public function get_metadata() {
         $_tmp = $this->get_url($this->lang . "/" . $this->game . "/" . "metadata",FALSE);
 
-        // Step 1: Achievements
+        // Achievements
         $ins_arr = array();
         foreach ($_tmp['AchievementsMetadata']['Achievements'] as $ach) {
             $ins_arr[$ach['Id']] = array(
-                'Id' => $ach['Id'],
-                'Name' => $ach['Name'],
-                'LockedDescription' => $ach['LockedDescription'],
-                'UnlockedDescription' => $ach['UnlockedDescription'],
-                'GamerPoints' => $ach['GamerPoints'],
-                'LockedImageUrlAssetUrl' => $ach['LockedImageUrl']['AssetUrl'],
-                'UnlockedImageUrlAssetUrl' => $ach['UnlockedImageUrl']['AssetUrl']
+                'Id'                        => $ach['Id'],
+                'Name'                      => $ach['Name'],
+                'LockedDescription'         => $ach['LockedDescription'],
+                'UnlockedDescription'       => $ach['UnlockedDescription'],
+                'GamerPoints'               => $ach['GamerPoints'],
+                'LockedImageUrlAssetUrl'    => $ach['LockedImageUrl']['AssetUrl'],
+                'UnlockedImageUrlAssetUrl'  => $ach['UnlockedImageUrl']['AssetUrl']
             );
         }
         $this->_ci->stat_m->insert_metadata("achievements", $ins_arr);
 
-        // Step 2: ArmorGroupMetaData
-
-        // Step 3: DamageMetadata['WeaponTypes']
-
-        // Step 5: MedalsMetadata['Medals']
+        // MedalsMetadata['Medals']
         $ins_arr = array();
         foreach($_tmp['MedalsMetadata']['Medals'] as $medal) {
             $ins_arr[$medal['Id']] = array(
-                'Id' => $medal['Id'],
-                'Name' => $medal['Name'],
-                'TierId' => $medal['TierId'],
-                'ClassId' => $medal['ClassId'],
-                'Description' => $medal['Description'],
-                'ImageUrl' => substr($medal['ImageUrl']['AssetUrl'],7)
+                'Id'            => $medal['Id'],
+                'Name'          => $medal['Name'],
+                'TierId'        => $medal['TierId'],
+                'ClassId'       => $medal['ClassId'],
+                'Description'   => $medal['Description'],
+                'ImageUrl'      => substr($medal['ImageUrl']['AssetUrl'],7)
             );
         }
         $this->_ci->stat_m->insert_metadata("medals", $ins_arr);
 
-        // Step 5a: MedalsMetadata['MedalClasses']
+        // MedalsMetadata['MedalClasses']
         $ins_arr = array();
         foreach($_tmp['MedalsMetadata']['MedalClasses'] as $medal) {
             $ins_arr[$medal['Id']] = array(
-                'Id' => $medal['Id'],
-                'Name' => $medal['Name']
+                'Id'        => $medal['Id'],
+                'Name'      => $medal['Name']
             );
         }
         $this->_ci->stat_m->insert_metadata("medalclasses", $ins_arr);
 
 
-        // Step 5b: MedalsMetadata['MedalTiers']
+        // MedalsMetadata['MedalTiers']
         $ins_arr = array();
         foreach($_tmp['MedalsMetadata']['MedalTiers'] as $medal) {
             $ins_arr[$medal['Id']] = array(
-                'Id' => $medal['Id'],
-                'Name' => $medal['Name'],
-                'Description' => $medal['Description']
+                'Id'            => $medal['Id'],
+                'Name'          => $medal['Name'],
+                'Description'   => $medal['Description']
             );
         }
         $this->_ci->stat_m->insert_metadata("medaltiers", $ins_arr);
 
+        // Specializations
+        $ins_arr = array();
+        foreach($_tmp['SpecializationsMetadata']['Specializations'] as $spec) {
+            $ins_arr[$spec['Id']] = [
+                'Id'            => intval($spec['Id']),
+                'MaxXp'         => intval($spec['MaxSpecializationXP']),
+                'Name'          => $spec['Name'],
+                'Description'   => $spec['Description'],
+                'AssetUrl'      => substr($spec['ImageUrl']['AssetUrl'],7)
+            ];
+        }
+        $this->_ci->stat_m->insert_metadata('specializations', $ins_arr);
+
+        // a little done msg
+        echo "DONE";
     }
 
     /**
@@ -638,7 +649,7 @@ class Library {
         ));
 
         utf8_encode_deep($dump);
-        $id = $this->_ci->mongo_db->insert('leaf', $dump);
+        return $this->_ci->stat_m->update_or_insert_gamertag($hashed, $dump);
     }
 
     /**
@@ -733,7 +744,6 @@ class Library {
                 break;
 
             case "Spec":
-                $image = substr($image, 7); # remove `{SIZE}/` from url
                 $path = "uploads/specializations/" . $size;
                 $image_path = "/" . $image;
                 $url = str_replace("{SIZE}", $size, str_replace("{SPEC}", urlencode($image), $urls['spec_url']));
@@ -909,22 +919,22 @@ class Library {
     public function return_medals($data) {
         $data = msgpack_unpack(utf8_decode($data));
         foreach ($data as $key => $item) {
-            $data[$key]['Name'] = $this->get_metadata_name_via_id("medals", $item['Id'], "Name");
-            $data[$key]['ImageUrl'] = $this->get_metadata_name_via_id("medals", $item['Id'], "ImageUrl");
-            $data[$key]['TierId'] = $this->get_metadata_name_via_id("medals", $item['Id'], "TierId");
+            $data[$key]['Name'] = $this->get_metadata_name_via_id("medals", $item['i'], "Name");
+            $data[$key]['ImageUrl'] = $this->get_metadata_name_via_id("medals", $item['i'], "ImageUrl");
+            $data[$key]['TierId'] = $this->get_metadata_name_via_id("medals", $item['i'], "TierId");
             $data[$key]['ImageUrl'] = $this->return_image_url("Medal", $data[$key]['ImageUrl'], "medium");
-            $data[$key]['Description'] = $this->get_metadata_name_via_id("medals", $item['Id'], "Description");
+            $data[$key]['Description'] = $this->get_metadata_name_via_id("medals", $item['i'], "Description");
         }
 
         // group according to TierId
         $new_arr = array();
         foreach ($data as $key => $item) {
-            $new_arr[$item['TierId']][$item['Id']] = $item;
+            $new_arr[$item['TierId']][$item['i']] = $item;
         }
         unset($data);
 
         // sort
-        $this->_ci->utils->set_sort_key("Count");
+        $this->_ci->utils->set_sort_key("c");
         ksort($new_arr);
         foreach ($new_arr as $key => $value) {
             uasort($new_arr[$key], array($this->_ci->utils,"key_sort"));
@@ -1008,8 +1018,11 @@ class Library {
         $data = msgpack_unpack(utf8_decode($data));
 
         foreach($data as $key => $value) {
+            $spec = $this->get_metadata_name_via_id('specializations', $key);
             if ($data[$key]['Completed']) {
-                $data[$key]['ImageUrl'] = $this->return_image_url("Spec", $data[$key]['ImageUrl'], "small");
+                $data[$key]['ImageUrl']         = $this->return_image_url("Spec", $spec['AssetUrl'], "small");
+                $data[$key]['Name']             = $spec['Name'];
+                $data[$key]['Description']      = $spec['Description'];
             } else {
                 unset($data[$key]);
             }
@@ -1052,7 +1065,6 @@ class Library {
      * @return mixed
      */
     public function get_metadata_via_db($type) {
-        // one by one lets grab em from db and cache em
         return $this->_ci->cache->model('stat_m', 'get_metadata', array($type));
     }
 
@@ -1082,6 +1094,14 @@ class Library {
                     } else {
                         return $metadata[$id];
                     }
+                } else {
+                    return FALSE;
+                }
+                break;
+
+            case "specializations":
+                if (isset($metadata[$id])) {
+                    return $metadata[$id];
                 } else {
                     return FALSE;
                 }
