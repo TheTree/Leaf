@@ -272,7 +272,7 @@ class Stat_model extends IBOT_Model {
         $resp = $this->mongo_db
                     ->where('HashedGamertag', $hashed)
                     ->limit(1)
-                    ->get('leaf');
+                    ->get('h4_gamertags');
 
         if (is_array($resp) && count($resp) == 1) {
             $resp = $resp[0];
@@ -356,15 +356,16 @@ class Stat_model extends IBOT_Model {
      * @return boolean
      */
     public function get_expiration_date($hashed) {
-        $resp = $this->db
-                ->select("Expiration")
+        $resp = $this->mongo_db
+                ->select(["Expiration"])
                 ->limit(1)
-                ->get_where("ci_gamertags", array(
-                    'HashedGamertag' => $hashed,
-                    'InactiveCounter <' => intval(INACTIVE_COUNTER)
-                ));
-        
-        $resp = $resp->row_array();
+                ->where('HashedGamertag', $hashed)
+                ->where_lt('InactiveCounter', intval(INACTIVE_COUNTER))
+                ->get('h4_gamertags');
+
+        if (is_array($resp) && count($resp) == 1) {
+            $resp = $resp[0];
+        }
         
         if (isset($resp['Expiration']) && is_array($resp)) {
             return $resp;
@@ -413,7 +414,7 @@ class Stat_model extends IBOT_Model {
                 ->select(["Gamertag", "SeoGamertag", "Rank", "ServiceTag"])
                 ->order_by([ "id" => "DESC"])
                 ->limit(5)
-                ->get('leaf');
+                ->get('h4_gamertags');
 
         if (is_array($resp) && count($resp) > 0) {
             return $resp;
@@ -440,7 +441,7 @@ class Stat_model extends IBOT_Model {
         $resp = $this->mongo_db
             ->select(array('Gamertag'))
             ->limit(25)
-            ->get('leaf');
+            ->get('h4_gamertags');
 
         if (is_array($resp) && count($resp) > 0) {
             return $resp;
@@ -679,7 +680,7 @@ class Stat_model extends IBOT_Model {
     public function get_name_and_kd($seo_gt) {
         $resp = $this->mongo_db
                 ->select(['Gamertag','SeoGamertag','KDRatio'])
-                ->get_where('leaf', array(
+                ->get_where('h4_gamertags', array(
                 'SeoGamertag' => $seo_gt
             ));
 
@@ -776,7 +777,7 @@ class Stat_model extends IBOT_Model {
         if (isset($data['SeoGamertag'])) {
 
             // check if record exists
-            if (($_tmp = $this->get_csr_data($data['SeoGamertag'])) != FALSE) {
+            if (($_tmp = $this->get_csr_data($data['SeoGamertag'])) !== FALSE) {
                 $status = $_tmp['Status'];
             }   else {
                 // new record

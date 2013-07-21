@@ -16,11 +16,20 @@
  * ['mongo_host_db_flag']   If running in auth mode and the user does not have global read/write then set this to true
  */
 
-$config['default']['mongo_hostbase']                = 'localhost:27017';
-$config['default']['mongo_database']                = 'leaf';
-$config['default']['mongo_username']                = 'leaf';
-$config['default']['mongo_password']                = 'test';
-$config['default']['mongo_replica_set']             = FALSE;
-$config['default']['mongo_query_safety']            = 'safe';
-$config['default']['mongo_suppress_connect_error']  = TRUE;
-$config['default']['mongo_host_db_flag']            = FALSE;
+$config['live']['mongo_hostbase']                = 'localhost:27017';
+$config['live']['mongo_database']                = 'h4_gamertags';
+$config['live']['mongo_username']                = 'leaf';
+$config['live']['mongo_password']                = 'test';
+$config['live']['mongo_replica_set']             = FALSE;
+$config['live']['mongo_query_safety']            = 'safe';
+$config['live']['mongo_suppress_connect_error']  = TRUE;
+$config['live']['mongo_host_db_flag']            = FALSE;
+
+$config['local']['mongo_hostbase']                = 'localhost:27017';
+$config['local']['mongo_database']                = 'h4_gamertags';
+$config['local']['mongo_username']                = 'leaf';
+$config['local']['mongo_password']                = 'test';
+$config['local']['mongo_replica_set']             = FALSE;
+$config['local']['mongo_query_safety']            = 'safe';
+$config['local']['mongo_suppress_connect_error']  = TRUE;
+$config['local']['mongo_host_db_flag']            = FALSE;

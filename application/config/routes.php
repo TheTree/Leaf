@@ -43,8 +43,10 @@ $route['about']             = "home/about";
 $route['error']             = "home/error";
 $route['cron']              = "cron_task/update_gamertags";
 $route['news']              = "news/index";
-$route['metadata/recache']  = "stats/home/metadata";
-$route['playlists/recache'] = "stats/home/redo_playlists";
+
+//-------------------------------------------------------
+// START: Halo 4
+//-------------------------------------------------------
 $route['stats']             = "stats/home/index";
 $route['compare']           = "stats/compare/index";
 $route['leaderboards']      = "stats/home/index";
@@ -53,11 +55,21 @@ $route['csr_leaderboards']  = "csr/leaderboards/index";
 // variable mod pages
 $route['guilty_spark/flag/(:any)']          = "moderate/home/flagged/$1";
 
-// moderate
-$route['guilty_spark']          = "moderate/home";
-
 // ajax calls
 $route['ajax/gt/(:any)'] = "ajax/core/compare_api/$1";
+
+// recaching stuff
+$route['metadata/recache']  = "stats/home/metadata";
+$route['playlists/recache'] = "stats/home/redo_playlists";
+
+//-------------------------------------------------------
+// END: Halo 4
+//-------------------------------------------------------
+
+
+//-------------------------------------------------------
+// START: Backstage
+//-------------------------------------------------------
 
 // static login page
 $route['backstage']                 = "admin/gate";
@@ -80,6 +92,10 @@ $route['backstage/badges/list/(:any)']              = "admin/index/badges_list/$
 $route['backstage/flagged/mod/(:any)/(:num)']       = "admin/index/flagged_mod/$1/$2"; #seo_username/status
 $route['backstage/key_delete/(:num)']               = "admin/index/key_delete/$1"; #key_id
 
+//-------------------------------------------------------
+// End: Backstage
+//-------------------------------------------------------
+
 // variable pages
 $route['csr_leaderboards/(:any)']        = "csr/leaderboards/leaderboard/$1/0";
 $route['csr_leaderboards/(:any)/(:num)'] = "csr/leaderboards/leaderboard/$1/$2";
@@ -92,8 +108,8 @@ $route['news/view/(:any)']               = "news/index/view/$1";
 $route['compare/(:any)/(:any)']          = "stats/compare/comparison/$1/$2";
 $route['compare/(:any)']                 = "stats/compare/comparison_prefill/$1";
 
-// other
-$route['default_controller']    = "home";
+// default home
+$route['default_controller']    = "h4/home";
 $route['404_override']          = '';
 
 

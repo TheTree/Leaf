@@ -11,6 +11,7 @@ class Core extends IBOT_Controller {
         if (!$this->input->is_ajax_request()) {
             die("no_permission");
         }
+        $this->output->enable_profiler(FALSE);
 
         // load model
         $this->load->model('stat_model', 'stat_m', true);

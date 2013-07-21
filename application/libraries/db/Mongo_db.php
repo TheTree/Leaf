@@ -208,7 +208,7 @@ class Mongo_db
      * @access public
      * @return void
      */
-    public function load($config = 'default')
+    public function load($config = 'local')
     {
         // Try and load a config file if CodeIgniter
         if ($this->_ci)
@@ -1094,12 +1094,7 @@ class Mongo_db
             $result = $this->_dbhandle->{$collection}->update($this->wheres, $this->updates, $options);
             $this->_clear($collection, 'update');
 
-            if ($result['updatedExisting'] > 0)
-            {
-                return $result['updatedExisting'];
-            }
-
-            return FALSE;
+            return (bool) $result['ok'];
         }
 
         catch (MongoCursorException $exception)

@@ -574,7 +574,6 @@ class Library {
             'HashedGamertag'                   => $hashed,
             'SeoGamertag'                      => $seo_gamertag,
             'Rank'                             => $service_record['RankName'],
-            'RankImage'                        => substr($service_record['RankImageUrl']['AssetUrl'], 7),
             'Specialization'                   => $this->find_current_specialization($service_record['Specializations']),
             'SpecializationLevel'              => $this->find_current_specialization($service_record['Specializations'], "Level"),
             'Expiration'                       => intval(time() + SEVENDAYS_IN_SECONDS),
@@ -585,10 +584,8 @@ class Library {
             'Xp'                               => $service_record['XP'],
             'Emblem'                           => substr_replace($service_record['EmblemImageUrl']['AssetUrl'], "", -12),
             'SpartanPoints'                    => $service_record['SpartanPoints'],
-            'FavoriteWeaponName'               => $service_record['FavoriteWeaponName'],
-            'FavoriteWeaponDescription'        => $service_record['FavoriteWeaponDescription'],
+            'FavoriteWeaponId'                 => $service_record['FavoriteWeaponId'],
             'FavoriteWeaponTotalKills'         => $service_record['FavoriteWeaponTotalKills'],
-            'FavoriteWeaponUrl'                => $service_record['FavoriteWeaponImageUrl']['AssetUrl'],
             'AveragePersonalScore'             => intval($service_record['GameModes'][2]['AveragePersonalScore']),
             'MedalsPerGameRatio'               => round(intval($service_record['GameModes'][2]['TotalMedals']) / intval($service_record['GameModes'][2]['TotalGamesStarted']), 2),
             'DeathsPerGameRatio'               => round(intval($service_record['GameModes'][2]['TotalDeaths']) / intval($service_record['GameModes'][2]['TotalGamesStarted']), 2),
@@ -795,8 +792,8 @@ class Library {
         // loop top medals, extract data.
         foreach($medals as $medal) {
             $rtr_arr[$x++] = array(
-                'Id' => intval($medal['Id']),
-                'Count' => intval($medal['TotalMedals'])
+                'i' => intval($medal['Id']),
+                'c' => intval($medal['TotalMedals'])
             );
         }
         return $rtr_arr;
@@ -811,13 +808,9 @@ class Library {
      */
     public function get_spec_data($specs) {
         $rtr_arr = array();
-        $x = 0;
 
         foreach($specs as $spec) {
-            $rtr_arr[$x++] = array(
-                'Name' => $spec['Name'],
-                'Description' => $spec['Description'],
-                'ImageUrl' => $spec['ImageUrl']['AssetUrl'],
+            $rtr_arr[intval($spec['Id'])] = array(
                 'Level' => $spec['Level'],
                 'IsCurrent' => $spec['IsCurrent'],
                 'Completed' => $spec['Completed']
@@ -1187,7 +1180,7 @@ class Library {
         // lets try and make a folder. check first :p
         if (!(is_dir(absolute_path('uploads/spartans/' . $hashed . "/tmp")))) {
             mkdir(absolute_path('uploads/spartans/' . $hashed . "/tmp"), 0777, TRUE);
-            write_file(absolute_path('uploads/spartans/' . $hashed) . "index.html", $this->get_anti_dir_trav());
+            write_file(absolute_path('uploads/spartans/' . $hashed) . "index.html", $this->_ci->utils->get_anti_dir_trav());
         } else {
             // only delete if $hashed is set
             if (strlen($hashed) > 10) {
@@ -1256,49 +1249,5 @@ class Library {
      */
     public function get_top_5_leaderboard($field, $asc = FALSE) {
         return $this->_ci->stat_m->get_top_5($field, $asc);
-    }
-
-    /**
-     * get anti_dir_traversal
-     *
-     * Returns file contents that can be injected into a `index.html`
-     * to prevent directory traversal
-     */
-    public function get_anti_dir_trav() {
-
-        // load config var
-        $this->_ci->config->load('security');
-        return $this->_ci->config->item('anti_tranversal_data');
-    }
-
-    public function backstage_gatekeeper($errors = TRUE) {
-        // @todo create matching ci_backstage_table to verify against db along with session
-        $session_data = $this->_ci->session->all_userdata();
-
-        // make sure all fields are present
-        foreach(["seo_username","username","id","expire","authenticated"] as $item) {
-            if (!isset($session_data[$item])) {
-                return $this->killoff_session($errors);
-            }
-        }
-
-        // check for expiration
-        if (intval($session_data['expire']) < time()) {
-            return $this->killoff_session($errors);
-        } else {
-            // we are validated, update and move on
-            $this->_ci->session->set_userdata('expire', intval(time() + HOUR_IN_SECONDS));
-            return TRUE;
-        }
-        return $this->killoff_session($errors);
-    }
-
-    public function killoff_session($errors = TRUE) {
-        if ($errors) {
-            $this->_ci->session->sess_destroy();
-            redirect(base_url('backstage'));
-        } else {
-            return FALSE;
-        }
     }
 }

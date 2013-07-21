@@ -13,7 +13,7 @@ class Home extends IBOT_Controller {
 
     function about() {
 
-        $this->library->description = "LeafApp .:. About Us .:. Who we Are";
+        $this->library->description = "LeafApp .:. About Us";
         $this->template->set("meta", $this->library->return_meta());
 
         $this->template
