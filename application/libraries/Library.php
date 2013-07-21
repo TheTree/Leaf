@@ -871,49 +871,18 @@ class Library {
         $csr_leader['Gamertag'] = $gt;
         $csr_leader['KDratio'] = floatval($kd_ratio);
 
-        // start w/ 0 for our Team/Inv seperated CSR
-        $rtr_arr['Team'] = array(
-            'SkillRank' => 0,
-            'PlaylistName' => ""
-        );
-        $rtr_arr['Ind'] = array(
-            'SkillRank' => 0,
-            'PlaylistName' => ""
-        );
-
         // loop through each CSR adding them into final arr
         foreach ($all_csr as $csr) {
-            $rtr_arr[$csr['PlaylistName']] = array(
-                'Description' => $csr['PlaylistDescription'],
-                'SkillRank' => intval($csr['CurrentSkillRank']),
-                'Top' => ($csr['PlaylistName'] == $top_csr['PlaylistName']) ? TRUE : FALSE
-            );
+            $rtr_arr[$csr['PlaylistId']] = intval($csr['CurrentSkillRank']);
 
             // lets figure out team vs inv CSR
             if (in_array($csr['PlaylistId'],$this->_ci->config->item('h4_team_csr'))) {
                 $csr_leader[$csr['PlaylistId'] . "_T"] = intval($csr['CurrentSkillRank']);
-                $type = "Team";
-
-                // check if largest - Team based CSR
-                if (intval($csr['CurrentSkillRank']) >= $rtr_arr['Team']['SkillRank']) {
-                    $rtr_arr['Team']['SkillRank'] = intval($csr['CurrentSkillRank']);
-                    $rtr_arr['Team']['PlaylistName'] = $csr['PlaylistName'];
-                }
-
             } else if (in_array($csr['PlaylistId'], $this->_ci->config->item('h4_individual_csr'))) {
                 $csr_leader[$csr['PlaylistId'] . "_I"] = intval($csr['CurrentSkillRank']);
-                $type = "Individual";
-
-                // check if largest - Individual
-                if (intval($csr['CurrentSkillRank']) >= $rtr_arr['Ind']['SkillRank']) {
-                    $rtr_arr['Ind']['SkillRank'] = intval($csr['CurrentSkillRank']);
-                    $rtr_arr['Ind']['PlaylistName'] = $csr['PlaylistName'];
-                }
             } else {
                 log_message('error', $csr['PlaylistName'] . " not found for CSR stats w/ id of " . $csr['PlaylistId']);
-                $type = "Unknown";
             }
-            $rtr_arr[$csr['PlaylistName']]['Type'] = $type;
         }
 
         // fire off to csr leaderboards

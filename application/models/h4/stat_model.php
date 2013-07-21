@@ -382,7 +382,7 @@ class Stat_model extends IBOT_Model {
     public function get_last_5() {
         $resp = $this->mongo_db
                 ->select(["Gamertag", "SeoGamertag", "Rank", "ServiceTag"])
-                ->order_by([ "id" => "DESC"])
+                ->order_by([ "_id" => -1])
                 ->limit(5)
                 ->get('h4_gamertags');
 
@@ -870,7 +870,7 @@ class Stat_model extends IBOT_Model {
      */
     public function insert_playlists($data) {
         $this->db
-            ->insert_batch('ci_playlists', $data);
+            ->insert_batch('ci_m_playlists', $data);
     }
 
     /**
@@ -880,7 +880,7 @@ class Stat_model extends IBOT_Model {
      */
     public function empty_playlists() {
         $this->db
-            ->truncate('ci_playlists');
+            ->truncate('ci_m_playlists');
     }
 
     /**
@@ -1051,6 +1051,7 @@ class Stat_model extends IBOT_Model {
         }
 
         if (isset($resp[$field])) {
+            unset($resp['_id']);
             return $resp;
         } else {
             return FALSE;
