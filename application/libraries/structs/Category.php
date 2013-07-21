@@ -3,7 +3,7 @@
 /**
  * Our enum of Category IDs.
  */
-final class Category_Id{
+final class Category{
 
     const CAMPAIGN = 0x00;
     const SPARTAN_OPS = 0x01;

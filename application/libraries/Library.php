@@ -398,6 +398,27 @@ class Library {
     }
 
     /**
+     * get_badge_colour
+     *
+     * @param $id
+     * @return string
+     */
+    public function get_badge_colour($id) {
+        $this->_ci->load->library('structs/Category');
+
+        switch (intval($id)) {
+            case Category::CAMPAIGN:
+                return 'warning';
+            case Category::SPARTAN_OPS:
+                return 'inverse';
+            case Category::WAR_GAMES:
+                return 'info';
+            default:
+                return '';
+        }
+    }
+
+    /**
      * get_profile
      * 1) Checks for file-based cache.
      * 2) Returns if less than 1 hr old
