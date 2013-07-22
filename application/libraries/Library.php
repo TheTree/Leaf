@@ -404,7 +404,7 @@ class Library {
      * @return string
      */
     public function get_badge_colour($id) {
-        $this->_ci->load->library('structs/Category');
+        $this->_ci->load->library('structs/h4/Category');
 
         switch (intval($id)) {
             case Category::CAMPAIGN:
