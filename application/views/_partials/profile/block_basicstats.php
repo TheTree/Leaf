@@ -3,7 +3,7 @@
     <ul class="unstyled">
         <li>
             <span class="row_title">Total Wins</span>
-            <span class="row_data"><?= number_format($data['TotalGameWins']); ?></span>
+            <span class="row_data"><?= number_format($data[H4::TOTAL_GAME_WINS]); ?></span>
         </li>
         <li>
             <span class="row_title">Total Losses</span>

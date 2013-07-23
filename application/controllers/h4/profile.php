@@ -92,19 +92,19 @@ class Profile extends IBOT_Controller {
         // lets load their data, check for 1hr expiration
         $data = $this->library->get_profile($gamertag);
 
-        $data['BranchGamertag'] = $this->library->make_branch_gt($data['Gamertag']);
+        $data['BranchGamertag'] = $this->library->make_branch_gt($data[H4::GAMERTAG]);
         $data['SpartanURL']     = $this->library->return_spartan_url($gamertag, "Profile");
-        $data['MedalData']      = $this->library->return_medals($data['MedalData']);
-        $data['CSRPlaylist']    = $this->library->return_csr_v2($this->cache->model('stat_m','get_unique_csr_position', array($data['SeoGamertag']), 300),
-                                                                $data['SkillData']);
-        $data['SkillData']      = $this->library->return_csr($data['SkillData']);
-        $data['SpecData']       = $this->library->return_spec($data['SpecData']);
-        $data['FavoriteData']   = $this->library->return_favorite($data['FavoriteWeaponName'],
-                                                                  $data['FavoriteWeaponDescription'],
-                                                                  $data['FavoriteWeaponTotalKills'],
-                                                                  $data['FavoriteWeaponUrl']);
+        $data['MedalData']      = $this->library->return_medals($data[H4::MEDAL_DATA]);
+        $data['CSRPlaylist']    = $this->library->return_csr_v2($this->cache->model('stat_m','get_unique_csr_position', array($data[H4::SEO_GAMERTAG]), 300),
+                                                                $data[H4::SKILL_DATA]);
+        $data['SkillData']      = $this->library->return_csr($data[H4::SKILL_DATA]);
+        $data['SpecData']       = $this->library->return_spec($data[H4::SPEC_DATA]);
+        $data['FavoriteData']   = $this->library->return_favorite($data[H4::FAVORITE_WEAPON_NAME],
+                                                                  $data[H4::FAVORITE_WEAPON_DESCRIPTION],
+                                                                  $data[H4::FAVORITE_WEAPON_TOTAL_KILLS],
+                                                                  $data[H4::FAVORITE_WEAPON_URL]);
 
-        $this->utils->description = "LeafApp .:. " . $data['Gamertag'] . " Halo 4 Stats";
+        $this->utils->description = "LeafApp .:. " . $data[H4::GAMERTAG] . " Halo 4 Stats";
 
         //  output gt, build template, set partials
         $this->template
@@ -120,10 +120,10 @@ class Profile extends IBOT_Controller {
                 ->set_partial('block_inactivetest', '_partials/profile/block_inactivetest')
                 ->set_partial('block_cheatertest', '_partials/profile/block_cheatertest')
                 ->set_partial('block_social', '_partials/profile/block_social')
-                ->title("Leaf .:. " . urldecode($data['Gamertag']))
+                ->title("Leaf .:. " . urldecode($data[H4::GAMERTAG]))
                 ->set('msg', $this->session->flashdata("recache"))
                 ->set('general_msg', $this->session->flashdata('general_msg'))
-                ->set('gamertag', $data['Gamertag'])
+                ->set('gamertag', $data[H4::GAMERTAG])
                 ->set('data', $data)
                 ->build("pages/profile/view");
         
@@ -140,7 +140,7 @@ class Profile extends IBOT_Controller {
         $data = $this->stat_m->get_expiration_date($hashed);
         
         if (is_array($data)) {
-            if (($data['Expiration'] - SEVENDAYS_IN_SECONDS + FIVEMIN_IN_SECONDS) < time() || ENVIRONMENT == "development") {
+            if (($data[H4::EXPIRATION] - SEVENDAYS_IN_SECONDS + FIVEMIN_IN_SECONDS) < time() || ENVIRONMENT == "development") {
                 $data = $this->library->get_profile($gamertag, false, true, $seo_gamertag);
                 
                 // set cache

@@ -1,11 +1,12 @@
 <div class="row-fluid">
-    <h1><?= isset($data['badge']) ? $data['badge'] : ""; ?><?= urldecode($gamertag); ?> <small><?= $data['ServiceTag']; ?></small>
-        <? if ($data['Status'] == 0): ?>
-            <a href="<?= base_url('/guilty_spark/flag/' . $data['SeoGamertag']); ?>" data-toggle="tooltop" data-html="true"
-               title="Flag <strong><?= $data['Gamertag']; ?></strong> as a Cheater/Booster?" rel="tooltip"
-               data-placement="right" onclick="return confirm('Are you sure you wish to flag <?= $data['Gamertag']; ?> ?');"><i class="icon-flag"></i></a>
+    <h1><?= isset($data[H4::BADGE]) ? $data[H4::BADGE] : ""; ?><?= urldecode($gamertag); ?> <small><?= $data[H4::SERVICE_TAG]; ?></small>
+        <? if ($data[H4::STATUS] == 0): ?>
+            <a href="<?= base_url('/guilty_spark/flag/' . $data[H4::SEO_GAMERTAG]); ?>" data-toggle="tooltop" data-html="true"
+               title="Flag <strong><?= $data[H4::GAMERTAG]; ?></strong> as a Cheater/Booster?" rel="tooltip"
+               data-placement="right" onclick="return confirm('Are you sure you wish to flag <?= $data[H4::GAMERTAG]; ?> ?');"><i class="icon-flag"></i></a>
         <? endif; ?>
-            <a href="<?= base_url('/star/' . $data['SeoGamertag']); ?>" data-toggle="tooltip" data-html="true" title="Star <strong><?= $data['Gamertag']; ?></strong>" rel="tooltip" data-placement="right"><i class="icon-star"></i></a>
+            <a href="<?= base_url('/star/' . $data[H4::SEO_GAMERTAG]); ?>" data-toggle="tooltip" data-html="true"
+               title="Star<strong><?= $data[H4::GAMERTAG]; ?></strong>" rel="tooltip" data-placement="right"><i class="icon-star"></i></a>
     </h1>
 </div>
 <div class="row-fluid">
@@ -33,7 +34,7 @@
         <? elseif ($general_msg != false): ?>
             <div class="alert alert-success">
                 <button type="button" class="close" data-dismiss="alert">×</button>
-                <strong>Hey</strong> We've flagged <?= $data['Gamertag']; ?> for you :)
+                <strong>Hey</strong> We've flagged <?= $data[H4::GAMERTAG]; ?> for you :)
             </div>
         <? endif; ?>
         <?= $template['_partials']['block_cheatertest']; ?>

@@ -170,6 +170,8 @@ class Index extends IBOT_Controller {
             } else {
 
                 // insert badge
+                // $resp['badge'] =  '<span class="badge badge-' . $resp['colour'] . '">' . $resp['title'] . '</span>&nbsp;';
+
                 $this->stat_m->insert_badge(array(
                     'SeoGamertag'       => $this->library->get_seo_gamertag($this->input->post('gamertag')),
                     'title'             => $this->input->post('badge'),

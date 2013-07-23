@@ -23,37 +23,37 @@ class Stat_model extends IBOT_Model {
         // check for update
         if (($_tmp = $this->account_exists($hash)) != FALSE) {
 
-            if (isset($_tmp['TotalGameplay']) && isset($data['TotalGameplay'])) {
-                if (floatval($_tmp['TotalGameplay']) != floatval($data['TotalGameplay'])) {
-                    $data['InactiveCounter'] = 0;
+            if (isset($_tmp[H4::TOTAL_GAMEPLAY]) && isset($data[H4::TOTAL_GAMEPLAY])) {
+                if (floatval($_tmp[H4::TOTAL_GAMEPLAY]) != floatval($data[H4::TOTAL_GAMEPLAY])) {
+                    $data[H4::INACTIVE_COUNTER] = 0;
 
-                    if (isset($data['Status']) && $data['Status'] == MISSING_PLAYER) {
+                    if (isset($data[H4::STATUS]) && $data[H4::STATUS] == MISSING_PLAYER) {
 
                         // update status to 0
-                        $this->change_status($data['SeoGamertag'], intval(0));
+                        $this->change_status($data[H4::STATUS], intval(0));
                     }
                 } else {
                     // if InactiveCounter is above INACTIVE_COUNTER
                     // set InactiveCounter to MAX, otherwise
                     // previous InactiveCounter + 1;
-                    $data['InactiveCounter'] = ($_tmp['InactiveCounter'] >= INACTIVE_COUNTER) ? INACTIVE_COUNTER : $_tmp['InactiveCounter'] + 1;
+                    $data[H4::INACTIVE_COUNTER] = ($_tmp[H4::INACTIVE_COUNTER] >= INACTIVE_COUNTER) ? INACTIVE_COUNTER : $_tmp[H4::INACTIVE_COUNTER] + 1;
                 }
             }
 
             // unset some temporarily, so we can add back on postback
             $unset_arra = array(
-                'Gamertag'          => $_tmp['Gamertag'],
-                'SeoGamertag'       => $_tmp['SeoGamertag'],
-                'HashedGamertag'    => $_tmp['HashedGamertag'],
-                'Status'            => $_tmp['Status']
+                'Gamertag'          => $_tmp[H4::GAMERTAG],
+                'SeoGamertag'       => $_tmp[H4::SEO_GAMERTAG],
+                'HashedGamertag'    => $_tmp[H4::HASHED_GAMERTAG],
+                'Status'            => $_tmp[H4::STATUS]
             );
 
             // remove these vars to prevent changing them in db
             // ex accidentally changing gt from TEST to teST
-            unset($data['Gamertag']);
-            unset($data['SeoGamertag']);
-            unset($data['HashedGamertag']);
-            unset($data['Status']);
+            unset($data[H4::GAMERTAG]);
+            unset($data[H4::SEO_GAMERTAG]);
+            unset($data[H4::HASHED_GAMERTAG]);
+            unset($data[H4::STATUS]);
             $this->update_account($hash, $data);
         } else {
             $this->insert_account($data);
@@ -171,7 +171,7 @@ class Stat_model extends IBOT_Model {
         
         $this->mongo_db
                 ->set($data)
-                ->where('HashedGamertag', $hash)
+                ->where(H4::HASHED_GAMERTAG, $hash)
                 ->update('h4_gamertags');
 
     }
@@ -198,12 +198,12 @@ class Stat_model extends IBOT_Model {
 
         // generate resp
         $resp = $this->mongo_db
-                ->select(['HashedGamertag','InactiveCounter','Gamertag','SeoGamertag','Status','TotalGameplay'])
+                ->select([H4::HASHED_GAMERTAG, H4::INACTIVE_COUNTER, H4::GAMERTAG, H4::SEO_GAMERTAG, H4::STATUS, H4::TOTAL_GAMEPLAY])
                 ->get_where('h4_gamertags', array(
-                    'HashedGamertag' => $hash
+                    H4::HASHED_GAMERTAG => $hash
         ));
 
-        return $this->_get_one($resp, 'HashedGamertag');
+        return $this->_get_one($resp, H4::HASHED_GAMERTAG);
     }
 
     /**
@@ -238,12 +238,12 @@ class Stat_model extends IBOT_Model {
      */
     public function get_status($seo_gamertag) {
         $resp = $this->mongo_db
-                ->select(['Status'])
+                ->select([H4::STATUS])
                 ->get_where('h4_gamertags', array(
-                    'SeoGamertag' => $seo_gamertag
+                    H4::SEO_GAMERTAG => $seo_gamertag
         ));
 
-        return $this->_get_one($resp, 'Status');
+        return $this->_get_one($resp, H4::STATUS);
     }
     
     /**
@@ -256,11 +256,11 @@ class Stat_model extends IBOT_Model {
     public function get_gamertag_data($hashed) {
 
         $resp = $this->mongo_db
-                    ->where('HashedGamertag', $hashed)
+                    ->where(H4::HASHED_GAMERTAG, $hashed)
                     ->limit(1)
                     ->get('h4_gamertags');
 
-        return $this->_get_one($resp, 'HashedGamertag');
+        return $this->_get_one($resp, H4::HASHED_GAMERTAG);
     }
 
     /**
@@ -335,13 +335,13 @@ class Stat_model extends IBOT_Model {
      */
     public function get_expiration_date($hashed) {
         $resp = $this->mongo_db
-                ->select(["Expiration"])
+                ->select(H4::EXPIRATION)
                 ->limit(1)
-                ->where('HashedGamertag', $hashed)
-                ->where_lt('InactiveCounter', intval(INACTIVE_COUNTER))
+                ->where(H4::HASHED_GAMERTAG, $hashed)
+                ->where_lt(H4::INACTIVE_COUNTER, intval(INACTIVE_COUNTER))
                 ->get('h4_gamertags');
 
-        return $this->_get_one($resp, 'Expiration');
+        return $this->_get_one($resp, H4::EXPIRATION);
     }
     
     /**
@@ -381,7 +381,7 @@ class Stat_model extends IBOT_Model {
      */
     public function get_last_5() {
         $resp = $this->mongo_db
-                ->select(["Gamertag", "SeoGamertag", "Rank", "ServiceTag"])
+                ->select([H4::GAMERTAG, H4::SEO_GAMERTAG, H4::RANK, H4::SERVICE_TAG])
                 ->order_by([ "_id" => -1])
                 ->limit(5)
                 ->get('h4_gamertags');
@@ -404,12 +404,12 @@ class Stat_model extends IBOT_Model {
 
         // only search if letters passed
         if ($letter != "") {
-            $this->mongo_db->like('Gamertag', $letter);
+            $this->mongo_db->like(H4::GAMERTAG, $letter);
         }
 
         // execute
         $resp = $this->mongo_db
-            ->select(array('Gamertag'))
+            ->select([H4::GAMERTAG])
             ->limit(25)
             ->get('h4_gamertags');
 
@@ -649,12 +649,12 @@ class Stat_model extends IBOT_Model {
      */
     public function get_name_and_kd($seo_gt) {
         $resp = $this->mongo_db
-                ->select(['Gamertag','SeoGamertag','KDRatio'])
+                ->select([H4::GAMERTAG, H4::SEO_GAMERTAG, H4::KD_RATIO])
                 ->get_where('h4_gamertags', array(
-                'SeoGamertag' => $seo_gt
+                H4::SEO_GAMERTAG => $seo_gt
             ));
 
-        return $this->_get_one($resp, 'Gamertag');
+        return $this->_get_one($resp, H4::GAMERTAG);
     }
 
     /**

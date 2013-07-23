@@ -105,23 +105,6 @@ class Library {
         }
     }
 
-    /**
-     * get_badge
-     * Gets little `badges` to put by usernames
-     *
-     * @param $resp
-     * @internal param $gt
-     * @return string
-     */
-    public function set_badge(&$resp) {
-
-        if (isset($resp['title']) && strlen($resp['title']) > 2 && isset($resp['colour']) && strlen($resp['colour']) > 2) {
-            $resp['badge'] =  '<span class="badge badge-' . $resp['colour'] . '">' . $resp['title'] . '</span>&nbsp;';
-        } else {
-            $resp['badge'] = '';
-        }
-    }
-
     // ---------------------------------------------------------------
     // API Calls
     // ---------------------------------------------------------------
@@ -457,7 +440,7 @@ class Library {
                 }
             }
             // check for expiration
-            if (intval($resp['Expiration']) < intval(time())) {
+            if (intval($resp[H4::EXPIRATION]) < intval(time())) {
                 return $this->get_profile($gt, $errors, TRUE, $seo_gamertag);
             } else {
                 return $resp;
@@ -533,12 +516,11 @@ class Library {
 
         // grab from db, if null continue
         $resp = $this->_ci->stat_m->get_gamertag_data($hashed);
-        $this->set_badge($resp);
 
-        if (isset($resp['Expiration']) && is_array($resp)) {
-            if (intval($resp['ApiVersion']) != intval(API_VERSION) && $force == FALSE) {
+        if (isset($resp[H4::EXPIRATION]) && is_array($resp)) {
+            if (intval($resp[H4::API_VERSION]) != intval(API_VERSION) && $force == FALSE) {
 
-            } else if (intval($resp['Expiration']) > intval(time()) && $force == FALSE) {
+            } else if (intval($resp[H4::EXPIRATION]) > intval(time()) && $force == FALSE) {
                 return $resp;
             }
         }
@@ -602,71 +584,72 @@ class Library {
 
         // get ready for a dump of data
         $dump = array(
-            'Gamertag'                         => $service_record['Gamertag'],
-            'HashedGamertag'                   => $hashed,
-            'SeoGamertag'                      => $seo_gamertag,
-            'Rank'                             => $service_record['RankName'],
-            'Specialization'                   => $this->find_current_specialization($service_record['Specializations']),
-            'SpecializationLevel'              => $this->find_current_specialization($service_record['Specializations'], "Level"),
-            'Expiration'                       => intval(time() + SEVENDAYS_IN_SECONDS),
-            'MedalData'                        => msgpack_pack($medal_data),
-            'SkillData'                        => msgpack_pack($skill_data),
-            'SpecData'                         => msgpack_pack($spec_data),
-            'KDRatio'                          => $service_record['GameModes'][2]['KDRatio'],
-            'Xp'                               => $service_record['XP'],
-            'Emblem'                           => substr_replace($service_record['EmblemImageUrl']['AssetUrl'], "", -12),
-            'SpartanPoints'                    => $service_record['SpartanPoints'],
-            'FavoriteWeaponName'               => $service_record['FavoriteWeaponName'],
-            'FavoriteWeaponDescription'        => $service_record['FavoriteWeaponDescription'],
-            'FavoriteWeaponTotalKills'         => $service_record['FavoriteWeaponTotalKills'],
-            'FavoriteWeaponUrl'                => $service_record['FavoriteWeaponImageUrl']['AssetUrl'],
-            'AveragePersonalScore'             => intval($service_record['GameModes'][2]['AveragePersonalScore']),
-            'MedalsPerGameRatio'               => round(intval($service_record['GameModes'][2]['TotalMedals']) / intval($service_record['GameModes'][2]['TotalGamesStarted']), 2),
-            'DeathsPerGameRatio'               => round(intval($service_record['GameModes'][2]['TotalDeaths']) / intval($service_record['GameModes'][2]['TotalGamesStarted']), 2),
-            'KillsPerGameRatio'                => round(intval($service_record['GameModes'][2]['TotalKills']) / intval($service_record['GameModes'][2]['TotalGamesStarted']), 2),
-            'BetrayalsPerGameRatio'            => round(intval($wargames_record['TotalBetrayals']) / intval($wargames_record['Summary']['TotalGamesStarted']), 2),
-            'SuicidesPerGameRatio'             => round(intval($wargames_record['TotalSuicides']) / intval($wargames_record['Summary']['TotalGamesStarted']), 2),
-            'AssistsPerGameRatio'              => round(intval($wargames_record['TotalAssists']) / intval($wargames_record['Summary']['TotalGamesStarted']), 2),
-            'HeadshotsPerGameRatio'            => round(intval($wargames_record['TotalHeadshots']) / intval($wargames_record['Summary']['TotalGamesStarted']), 2),
-            'WinPercentage'                    => round(intval($service_record['GameModes'][2]['TotalGamesWon']) / intval($service_record['GameModes'][2]['TotalGamesStarted']), 2),
-            'QuitPercentage'                   => round(intval($service_record['GameModes'][2]['TotalGamesStarted'] - $service_record['GameModes'][2]['TotalGamesCompleted']) /
+            H4::GAMERTAG                       => $service_record['Gamertag'],
+            H4::HASHED_GAMERTAG                => $hashed,
+            H4::SEO_GAMERTAG                   => $seo_gamertag,
+            H4::RANK                           => $service_record['RankName'],
+            H4::SPECIALIZATION                 => $this->find_current_specialization($service_record['Specializations']),
+            H4::SPECIALIZATION_LEVEL           => $this->find_current_specialization($service_record['Specializations'], "Level"),
+            H4::EXPIRATION                     => intval(time() + SEVENDAYS_IN_SECONDS),
+            H4::MEDAL_DATA                     => msgpack_pack($medal_data),
+            H4::SKILL_DATA                     => msgpack_pack($skill_data),
+            H4::SPEC_DATA                      => msgpack_pack($spec_data),
+            H4::KD_RATIO                       => $service_record['GameModes'][2]['KDRatio'],
+            H4::KAD_RATIO                      => round(($service_record['GameModes'][2]['TotalKills'] + intval($wargames_record['TotalAssists'])) / $service_record['GameModes'][2]['TotalDeaths'], 2),
+            H4::XP                             => $service_record['XP'],
+            H4::EMBLEM                         => substr_replace($service_record['EmblemImageUrl']['AssetUrl'], "", -12),
+            H4::SPARTAN_POINTS                 => $service_record['SpartanPoints'],
+            H4::FAVORITE_WEAPON_NAME           => $service_record['FavoriteWeaponName'],
+            H4::FAVORITE_WEAPON_DESCRIPTION    => $service_record['FavoriteWeaponDescription'],
+            H4::FAVORITE_WEAPON_TOTAL_KILLS    => $service_record['FavoriteWeaponTotalKills'],
+            H4::FAVORITE_WEAPON_URL            => $service_record['FavoriteWeaponImageUrl']['AssetUrl'],
+            H4::AVERAGE_PERSONAL_SCORE         => intval($service_record['GameModes'][2]['AveragePersonalScore']),
+            H4::MEDALS_PER_GAME_RATIO          => round(intval($service_record['GameModes'][2]['TotalMedals']) / intval($service_record['GameModes'][2]['TotalGamesStarted']), 2),
+            H4::DEATHS_PER_GAME_RATIO          => round(intval($service_record['GameModes'][2]['TotalDeaths']) / intval($service_record['GameModes'][2]['TotalGamesStarted']), 2),
+            H4::KILLS_PER_GAME_RATIO           => round(intval($service_record['GameModes'][2]['TotalKills']) / intval($service_record['GameModes'][2]['TotalGamesStarted']), 2),
+            H4::BETRAYALS_PER_GAME_RATIO       => round(intval($wargames_record['TotalBetrayals']) / intval($wargames_record['Summary']['TotalGamesStarted']), 2),
+            H4::SUICIDES_PER_GAME_RATIO        => round(intval($wargames_record['TotalSuicides']) / intval($wargames_record['Summary']['TotalGamesStarted']), 2),
+            H4::ASSISTS_PER_GAME_RATIO         => round(intval($wargames_record['TotalAssists']) / intval($wargames_record['Summary']['TotalGamesStarted']), 2),
+            H4::HEADSHOTS_PER_GAME_RATIO       => round(intval($wargames_record['TotalHeadshots']) / intval($wargames_record['Summary']['TotalGamesStarted']), 2),
+            H4::WIN_PERCENTAGE                 => round(intval($service_record['GameModes'][2]['TotalGamesWon']) / intval($service_record['GameModes'][2]['TotalGamesStarted']), 2),
+            H4::QUIT_PERCENTAGE                => round(intval($service_record['GameModes'][2]['TotalGamesStarted'] - $service_record['GameModes'][2]['TotalGamesCompleted']) /
                                                             intval($service_record['GameModes'][2]['TotalGamesStarted']), 2),
-            'TotalChallengesCompleted'         => $service_record['TotalChallengesCompleted'],
-            'TotalGameWins'                    => $service_record['GameModes'][2]['TotalGamesWon'],
-            'TotalGameQuits'                   => intval($service_record['GameModes'][2]['TotalGamesStarted'] - $service_record['GameModes'][2]['TotalGamesCompleted']),
-            'NextRankStartXP'                  => $service_record['NextRankStartXP'],
-            'RankStartXP'                      => $service_record['RankStartXP'],
-            'TotalCommendationProgress'        => floatval($service_record['TotalCommendationProgress']),
-            'TotalLoadoutItemsPurchased'       => intval($service_record['TotalLoadoutItemsPurchased']),
-            'TotalMedalsEarned'                => intval($service_record['GameModes'][2]['TotalMedals']),
-            'TotalGameplay'                    => $this->adjust_date($service_record['GameModes'][2]['TotalDuration']),
-            'TotalKills'                       => intval($service_record['GameModes'][2]['TotalKills']),
-            'TotalDeaths'                      => intval($service_record['GameModes'][2]['TotalDeaths']),
-            'TotalGamesStarted'                => intval($service_record['GameModes'][2]['TotalGamesStarted']),
-            'TotalHeadshots'                   => intval($wargames_record['TotalHeadshots']),
-            'TotalAssists'                     => intval($wargames_record['TotalAssists']),
-            'BestGameTotalKills'               => intval($wargames_record['BestGameTotalKills']),
-            'BestGameTotalKillsGameId'         => $wargames_record['BestGameTotalKillsGameId'],
-            'BestGameTotalMedals'              => intval($wargames_record['BestGameTotalMedals']),
-            'BestGameTotalMedalsGameId'        => $wargames_record['BestGameTotalMedalsGameId'],
-            'BestGameHeadshotTotal'            => intval($wargames_record['BestGameHeadshotTotal']),
-            'BestGameHeadshotTotalGameId'      => $wargames_record['BestGameHeadshotTotalGameId'],
-            'BestGameAssassinationTotal'       => intval($wargames_record['BestGameAssassinationTotal']),
-            'BestGameAssassinationTotalGameId' => $wargames_record['BestGameAssassinationTotalGameId'],
-            'BestGameKillDistance'             => intval($wargames_record['BestGameKillDistance']),
-            'BestGameKillDistanceGameId'       => $wargames_record['BestGameKillDistanceGameId'],
-            'ServiceTag'                       => $service_record['ServiceTag'],
-            'TotalBetrayals'                   => intval($wargames_record['TotalBetrayals']),
-            'TotalSuicides'                    => intval($wargames_record['TotalSuicides']),
-            'LastUpdate'                       => intval(time()),
-            'InactiveCounter'                  => intval(0),
-            'Status'                           => intval(0),
-            'ApiVersion'                       => intval(API_VERSION)
+            H4::TOTAL_CHALLENGES_COMPLETED     => $service_record['TotalChallengesCompleted'],
+            H4::TOTAL_GAME_WINS                => $service_record['GameModes'][2]['TotalGamesWon'],
+            H4::TOTAL_GAME_QUITS               => intval($service_record['GameModes'][2]['TotalGamesStarted'] - $service_record['GameModes'][2]['TotalGamesCompleted']),
+            H4::NEXT_RANK_START_XP             => $service_record['NextRankStartXP'],
+            H4::RANK_START_XP                  => $service_record['RankStartXP'],
+            H4::TOTAL_COMMENDATION_PROGRESS    => floatval($service_record['TotalCommendationProgress']),
+            H4::TOTAL_LOADOUT_ITEMS_PURCHASED  => intval($service_record['TotalLoadoutItemsPurchased']),
+            H4::TOTAL_MEDALS                   => intval($service_record['GameModes'][2]['TotalMedals']),
+            H4::TOTAL_GAMEPLAY                 => $this->adjust_date($service_record['GameModes'][2]['TotalDuration']),
+            H4::TOTAL_KILLS                    => intval($service_record['GameModes'][2]['TotalKills']),
+            H4::TOTAL_DEATHS                   => intval($service_record['GameModes'][2]['TotalDeaths']),
+            H4::TOTAL_GAMES_STARTED            => intval($service_record['GameModes'][2]['TotalGamesStarted']),
+            H4::TOTAL_HEADSHOTS                => intval($wargames_record['TotalHeadshots']),
+            H4::TOTAL_ASSISTS                  => intval($wargames_record['TotalAssists']),
+            H4::BEST_GAME_TOTAL_KILLS          => intval($wargames_record['BestGameTotalKills']),
+            H4::BEST_GAME_TOTAL_KILLS_GAMEID   => $wargames_record['BestGameTotalKillsGameId'],
+            H4::BEST_GAME_TOTAL_MEDALS         => intval($wargames_record['BestGameTotalMedals']),
+            H4::BEST_GAME_TOTAL_MEDALS_GAMEID  => $wargames_record['BestGameTotalMedalsGameId'],
+            H4::BEST_GAME_HEADSHOT_TOTAL       => intval($wargames_record['BestGameHeadshotTotal']),
+            H4::BEST_GAME_HEADSHOT_GAMEID      => $wargames_record['BestGameHeadshotTotalGameId'],
+            H4::BEST_GAME_ASSASSINATION_TOTAL  => intval($wargames_record['BestGameAssassinationTotal']),
+            H4::BEST_GAME_ASSASSINATION_GAMEID => $wargames_record['BestGameAssassinationTotalGameId'],
+            H4::BEST_GAME_KILL_DISTANCE        => intval($wargames_record['BestGameKillDistance']),
+            H4::BEST_GAME_KILL_DISTANCE_GAMEID => $wargames_record['BestGameKillDistanceGameId'],
+            H4::SERVICE_TAG                    => $service_record['ServiceTag'],
+            H4::TOTAL_BETRAYALS                => intval($wargames_record['TotalBetrayals']),
+            H4::TOTAL_SUICIDES                 => intval($wargames_record['TotalSuicides']),
+            H4::LAST_UPDATE                    => intval(time()),
+            H4::INACTIVE_COUNTER               => intval(0),
+            H4::STATUS                         => intval(0),
+            H4::API_VERSION                    => intval(API_VERSION)
         );
 
-        $this->_ci->mongo_db->add_index('leaf', array(
-            'SeoGamertag'       => 'DESC',
-            'HashedGamertag'    => 'DESC'), array(
+        $this->_ci->mongo_db->add_index('h4_gamertags', array(
+            H4::SEO_GAMERTAG       => 'DESC',
+            H4::HASHED_GAMERTAG    => 'DESC'), array(
             'unique'    => TRUE,
             'dropDups'  => TRUE
         ));
