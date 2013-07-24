@@ -94,11 +94,11 @@ class Profile extends IBOT_Controller {
 
         $data['BranchGamertag'] = $this->library->make_branch_gt($data[H4::GAMERTAG]);
         $data['SpartanURL']     = $this->library->return_spartan_url($gamertag, "Profile");
-        $data['MedalData']      = $this->library->return_medals($data[H4::MEDAL_DATA]);
+        $data[H4::MEDAL_DATA]      = $this->library->return_medals($data[H4::MEDAL_DATA]);
         $data['CSRPlaylist']    = $this->library->return_csr_v2($this->cache->model('stat_m','get_unique_csr_position', array($data[H4::SEO_GAMERTAG]), 300),
                                                                 $data[H4::SKILL_DATA]);
-        $data['SkillData']      = $this->library->return_csr($data[H4::SKILL_DATA]);
-        $data['SpecData']       = $this->library->return_spec($data[H4::SPEC_DATA]);
+        $data[H4::SKILL_DATA]      = $this->library->return_csr($data[H4::SKILL_DATA]);
+        $data[H4::SPEC_DATA]       = $this->library->return_spec($data[H4::SPEC_DATA]);
         $data['FavoriteData']   = $this->library->return_favorite($data[H4::FAVORITE_WEAPON_NAME],
                                                                   $data[H4::FAVORITE_WEAPON_DESCRIPTION],
                                                                   $data[H4::FAVORITE_WEAPON_TOTAL_KILLS],

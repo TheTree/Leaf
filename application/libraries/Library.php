@@ -933,18 +933,25 @@ class Library {
             return FALSE;
         }
         $data = msgpack_unpack(utf8_decode($data));
+        $playlists = $this->get_playlists();
+        $team_csr = $this->_ci->config->item('h4_team_csr');
 
+        $rtr_arr = array();
         foreach ($data as $key => $value) {
 
-            // Drop Team / Inv CSR
-            if (count($value) == 4) {
-                $data[$key]['Playlist'] = $key;
-                $data[$key]['ImageUrl'] = $this->return_image_url("CSR", $data[$key]['SkillRank'], "medium");
-            } else {
-                unset($data[$key]);
+            $csr = (in_array($key, $team_csr)) ? "Team" : "Individual";
+            if (isset($playlists[$key])) {
+                $rtr_arr[] = array(
+                    'Playlist'  => $playlists[$key]['Name'],
+                    'SkillRank' => intval($value),
+                    'Type'      => $csr,
+                    'ImageUrl'  => $this->return_image_url("CSR", $value, "medium")
+                );
             }
         }
-        return $data;
+        $this->_ci->utils->set_sort_key("SkillRank");
+        uasort($rtr_arr, array($this->_ci->utils, "key_sort"));
+        return $rtr_arr;
     }
 
     /**
@@ -957,7 +964,7 @@ class Library {
      * @internal param $data
      */
     public function return_csr_v2($leaderboard, $csr) {
-        $csr = msgpack_unpack(utf8_decode($csr));
+        //$csr = msgpack_unpack(utf8_decode($csr));
         $rtr_arr = array();
         $playlists = $this->get_playlists();
 

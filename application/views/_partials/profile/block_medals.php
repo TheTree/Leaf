@@ -3,13 +3,13 @@
     <div class="well well-large medal_height">
         <div class="pagination-centered">
             <ul class="nav nav-tabs" id="MedalTabs">
-                <? foreach ($data['MedalData'] as $medal): ?>
+                <? foreach ($data[H4::MEDAL_DATA] as $medal): ?>
                     <li class=""><a href="#Medal_<?= $medal['Name']; ?>" data-toggle="tab"><?= $medal['Name']; ?></a></li>
                 <? endforeach; ?>
             </ul>
 
             <div class="tab-content">
-                <? foreach($data['MedalData'] as $medal): ?>
+                <? foreach($data[H4::MEDAL_DATA] as $medal): ?>
                     <div class="tab-pane" id="Medal_<?= $medal['Name']; ?>">
                         <h6><?= $medal['Description']; ?></h6>
                         <? foreach($medal as $inv): ?>
