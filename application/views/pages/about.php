@@ -60,7 +60,7 @@
                     <li><a href="http://bootswatch.com/cosmo/" target="_blank" rel="nofollow">Cosmo</a> -> Metro</li>
                     <li><a href="http://jquery.com/" target="_blank" rel="nofollow">jQuery</a> -> JS Library</li>
                     <li><a href="http://msgpack.org/" target="_blank" rel="nofollow">MessagePack</a> -> JSON Evolved</li>
-                    <li><a href="mongodb.org" target="_blank" rel="nofollow">MongoDB</a> -> Storage</li>
+                    <li><a href="http://mongodb.org" target="_blank" rel="nofollow">MongoDB</a> -> Storage</li>
                     <li><a href="http://philsturgeon.co.uk/blog/category/codeigniter" target="_blank" rel="nofollow">Phil Sturgeon</a> -> CI Plugins</li>
                     <!--<li><a href="http://twitter.com/iBotPeaches" target="_blank" rel="nofollow">Love</a> -> tis hidden :)</li>-->
                 </ul>
