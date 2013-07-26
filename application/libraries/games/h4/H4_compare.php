@@ -1,6 +1,6 @@
 <?php
 
-class Leaf_Compare {
+class H4_Compare {
 
     public $you;
     public $them;
@@ -22,8 +22,8 @@ class Leaf_Compare {
         // set globals
         // we pass NULL to the $gamertag parameter, because we only have SeoGamertag
         // at this point. We can get their Gamertag via SeoGamerta
-        $this->you = $this->_ci->library->grab_profile_data("", FALSE, $paras['you']);
-        $this->them = $this->_ci->library->grab_profile_data("", FALSE, $paras['them']);
+        $this->you = $this->_ci->h4_lib->grab_profile_data("", FALSE, $paras['you']);
+        $this->them = $this->_ci->h4_lib->grab_profile_data("", FALSE, $paras['them']);
 
         // check for falses
         if ($this->you == FALSE || $this->them == FALSE) {
@@ -35,10 +35,10 @@ class Leaf_Compare {
             $this->_ci->template->set("error_msg", "funny guy. can't search yo self");
             $this->error_hit = TRUE;
         } else if ($this->you['Status'] > 0) {
-            $this->_ci->template->set("error_msg", $this->you['Gamertag'] . " is not allowed to be compared against due to " . $this->_ci->library->get_banned_name($this->you['Status'], TRUE));
+            $this->_ci->template->set("error_msg", $this->you['Gamertag'] . " is not allowed to be compared against due to " . $this->_ci->h4_lib->get_banned_name($this->you['Status'], TRUE));
             $this->error_hit = TRUE;
         } else if ($this->them['Status'] > 0) {
-            $this->_ci->template->set("error_msg", $this->them['Gamertag'] . " is not allowed to be compared against due to " . $this->_ci->library->get_banned_name($this->them['Status'], TRUE));
+            $this->_ci->template->set("error_msg", $this->them['Gamertag'] . " is not allowed to be compared against due to " . $this->_ci->h4_lib->get_banned_name($this->them['Status'], TRUE));
             $this->error_hit = TRUE;
         } else {
             // unseralize
@@ -159,8 +159,8 @@ class Leaf_Compare {
     //----------------------------------------
     function MediumSpartan() {
         // lets get the small spartan image
-        $this->you['SpartanSmallUrl']    = $this->_ci->library->return_image_url('Spartan', $this->you['Gamertag'],'small');
-        $this->them['SpartanSmallUrl']   = $this->_ci->library->return_image_url('Spartan', $this->them['Gamertag'],'small');
+        $this->you['SpartanSmallUrl']    = $this->_ci->h4_lib->return_image_url('Spartan', $this->you['Gamertag'],'small');
+        $this->them['SpartanSmallUrl']   = $this->_ci->h4_lib->return_image_url('Spartan', $this->them['Gamertag'],'small');
     }
 
     function HighestRank() {

@@ -24,41 +24,65 @@ class Leaderboards extends IBOT_Controller {
         }
 
         // load playlists
-        $this->playlists = $this->library->get_playlists();
+        $this->playlists = $this->h4_lib->get_playlists();
     }
 
-    private function _load_pagination($playlist, $page) {
+    public function top_10() {
+
+        // lets start grabbing data w/ caches
+        $stats = array();
+
+        // start the list of data for affix
+        $stats['Items'] = ["KD Ratio", "Kills per Game", "Deaths per Game", "Assists per Game", "Headshots per Game", "Medals per Game", "Time Played", "Challenges Completed"];
+
+        // get the actual data for the partials
+        $stats['Data']['kills_per_game']            = $this->cache->model('stat_m', 'get_top_10', array(H4::KILLS_PER_GAME_RATIO, 'DESC'), 0);
+        $stats['Data']['deaths_per_game']           = $this->cache->model('stat_m', 'get_top_10', array(H4::DEATHS_PER_GAME_RATIO, 'ASC'), 0);
+        $stats['Data']['kd_ratio']                  = $this->cache->model('stat_m', 'get_top_10', array(H4::KD_RATIO, 'DESC'), 0);
+        $stats['Data']['time_played']               = $this->cache->model('stat_m', 'get_top_10', array(H4::TOTAL_GAMEPLAY, 'DESC'), 0);
+        $stats['Data']['medals_per_game']           = $this->cache->model('stat_m', 'get_top_10', array(H4::MEDALS_PER_GAME_RATIO, 'DESC'), 0);
+        $stats['Data']['challenges_completed']      = $this->cache->model('stat_m', 'get_top_10', array(H4::TOTAL_CHALLENGES_COMPLETED, 'DESC'), 0);
+        $stats['Data']['assists_per_game']          = $this->cache->model('stat_m', 'get_top_10', array(H4::ASSISTS_PER_GAME_RATIO, 'ASC'), 0);
+        $stats['Data']['headshots_per_game']        = $this->cache->model('stat_m', 'get_top_10', array(H4::HEADSHOTS_PER_GAME_RATIO,'DESC'), 0);
+
+        $this->utils->description = "LeafApp .:. Leaderboards";
+
+        // build w/ data
+        $this->template
+            ->set_partial('kills_per_game', '_partials/h4/leaderboards/total_kills')
+            ->set_partial('deaths_per_game', '_partials/h4/leaderboards/total_deaths')
+            ->set_partial('kd_ratio', '_partials/h4/leaderboards/kd_ratio')
+            ->set_partial('time_played', '_partials/h4/leaderboards/time_played')
+            ->set_partial('medals_per_game', '_partials/h4/leaderboards/total_medals')
+            ->set_partial('challenges_completed', '_partials/h4/leaderboards/challenges_completed')
+            ->set_partial('assists_per_game', '_partials/h4/leaderboards/total_assists')
+            ->set_partial('headshots_per_game', '_partials/h4/leaderboards/total_headshots')
+            ->set("meta", $this->utils->return_meta())
+            ->title("Leaf .:. Leaderboards")
+            ->set("stats", $stats)
+            ->build("pages/h4/leaderboard/top_ten");
+    }
+
+    private function _load_pagination($playlist, $page = 0) {
 
         // load pagination stuff
         $this->load->library('pagination');
-
-        // get arrays of playlists
-        $ind = $this->config->item('h4_individual_csr');
-        foreach ($ind as $item) {
-            $csr[] = $item . "_I";
-        }
-
-        $team = $this->config->item('h4_team_csr');
-        foreach ($team as $item) {
-            $csr[] = $item . "_T";
-        }
-        unset($ind);
-        unset($team);
+        $csr = $this->h4_lib->get_playlist_csr();
 
         // check if this playlist exists
         if (!in_array($playlist, $csr)) {
-            $this->library->throw_error("PLAYLIST_NOT_FOUND");
+            $this->utils->throw_error("PLAYLIST_NOT_FOUND");
             return FALSE;
         }
 
         $config = array();
-        $config['base_url'] = base_url() . "csr_leaderboards/" . $playlist . "/";
+        $config['base_url'] = base_url() . "h4/csr_leaderboards/" . $playlist . "/";
         $config['total_rows'] = $this->stat_m->count_csr($playlist);
         $config['per_page'] = intval(15);
         $config['use_page_numbers'] = TRUE;
-        $config['uri_segment'] = 3;
+        $config['uri_segment'] = 4;
         $config['full_tag_open'] = '<div class="pagination pagination-centered"><ul>';
-        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+        $page = ($this->uri->segment(4)) ? $this->uri->segment(4) : 0;
 
         // run query again, cached w/ limit
         $_tmp = $this->stat_m->get_playlist($playlist, $config['per_page'], $page);
@@ -72,14 +96,29 @@ class Leaderboards extends IBOT_Controller {
         }
     }
 
+    function panel($playlist = "", $page = 0) {
+        $this->_load_personal();
+        $resp = $this->_load_pagination($playlist, $page);
+        $name = $this->playlists[substr($playlist,0, -2)]['Name'];
+
+        // add playlist name into this.
+        $this->utils->description = "LeafApp .:. CSR Halo 4 " . $name . " Leaderboards";
+
+        // build w/ data
+        $this->template
+            ->set("meta", $this->utils->return_meta())
+            ->set('pagination', $this->pagination->create_links())
+            ->set('leaderboards', $resp)
+            ->set('playlist_name', $name)
+            ->title("Leaf .:. CSR Halo 4 " . $name . " Leaderboards");
+        $this->_build();
+
+    }
+
     private function _build() {
 
-        // lets grab each playlist via config
-        $team = $this->config->item('h4_team_csr');
-        $ind = $this->config->item('h4_individual_csr');
-
         // get page if one
-        $page = $this->uri->segment(3);
+        $page = $this->uri->segment(4);
         if ($page == FALSE) {
             $page = 1;
         }  else {
@@ -87,7 +126,7 @@ class Leaderboards extends IBOT_Controller {
         }
 
         // check 4 playlist
-        $playlist = $this->uri->segment(2);
+        $playlist = $this->uri->segment(3);
         if ($playlist == FALSE) {
             $playlist = $this->default_playlist;
         }
@@ -97,47 +136,9 @@ class Leaderboards extends IBOT_Controller {
             ->set("playlist", $playlist)
             ->set("my", $this->my)
             ->set("page", intval($page))
-            ->set("csr_team", $team)
-            ->set("csr_ind", $ind)
+            ->set("csr_team", $this->config->item('h4_team_csr'))
+            ->set("csr_ind", $this->config->item('h4_individual_csr'))
             ->set("playlists", $this->playlists)
-            ->build("pages/leaderboard/csr");
-    }
-
-    function index() {
-        $this->_load_personal();
-
-        // we are on the default playlist, so load it
-        $resp = $this->_load_pagination($this->default_playlist, 0);
-        $name = $this->playlists[substr($this->default_playlist, 0, -2)]['Name'];
-
-        $this->library->description = "LeafApp .:. CSR Halo 4 " . $name . " Leaderboards";
-        $this->template->set("meta", $this->utils->return_meta());
-
-        // build w/ data
-        $this->template
-            ->set('pagination', $this->pagination->create_links())
-            ->set('leaderboards', $resp)
-            ->set('playlist_name', $name)
-            ->title("Leaf .:. CSR Halo 4 " . $name . " Leaderboards");
-        $this->_build();
-    }
-
-    function leaderboard($playlist = "", $page = 0) {
-        $this->_load_personal();
-        $resp = $this->_load_pagination($playlist, $page);
-        $name = $this->playlists[substr($playlist,0, -2)]['Name'];
-
-        // add playlist name into this.
-        $this->library->description = "LeafApp .:. CSR Halo 4 " . $name . " Leaderboards";
-        $this->template->set("meta", $this->utils->return_meta());
-
-        // build w/ data
-        $this->template
-            ->set('pagination', $this->pagination->create_links())
-            ->set('leaderboards', $resp)
-            ->set('playlist_name', $name)
-            ->title("Leaf .:. CSR Halo 4 " . $name . " Leaderboards");
-        $this->_build();
-
+            ->build("pages/h4/leaderboard/csr");
     }
 }

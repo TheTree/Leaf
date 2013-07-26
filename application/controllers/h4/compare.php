@@ -32,38 +32,38 @@ class Compare extends IBOT_Controller {
             $this->session->set_flashdata('errors', validation_errors());
         } else {
             // set cookie of your name
-            $this->input->set_cookie('gamertag',$this->input->post('you_name'),86500,'.leafapp.co','/',null,TRUE);
+            $this->input->set_cookie('gamertag',$this->input->post('you_name'),86500,'.leafapp.co','/', NULL, TRUE);
 
             // redirect w/ parameters to the correct thing
-            $you    = $this->library->get_seo_gamertag($this->input->post('you_name'));
-            $them   = $this->library->get_seo_gamertag($this->input->post('them_name'));
-            redirect(base_url('compare/' . $you . "/" . $them),'refresh');
+            $you    = $this->h4_lib->get_seo_gamertag($this->input->post('you_name'));
+            $them   = $this->h4_lib->get_seo_gamertag($this->input->post('them_name'));
+            redirect(base_url('h4/compare/' . $you . "/" . $them),'refresh');
         }
 
-        $this->library->description = "LeafApp .:. Compare Halo 4 Players";
-        $this->template->set("meta", $this->utils->return_meta());
+        $this->utils->description = "LeafApp .:. Compare Halo 4 Players";
 
         $this->template
-            ->set_partial('modal_compare', '_partials/modals/modal_compare')
+            ->set("meta", $this->utils->return_meta())
+            ->set_partial('modal_compare', '_partials/h4/modals/modal_compare')
             ->title("Leaf .:. Compare Halo 4 Stats")
-            ->build("pages/compare/compare_index");
+            ->build("pages/h4/compare/compare_index");
     }
 
     public function comparison($you, $them) {
 
         // init compare library
-        $this->load->library('Leaf_compare',array('you' => $you, 'them' => $them));
+        $this->load->library('h4_compare',array('you' => $you, 'them' => $them));
 
-        if ($this->leaf_compare->get_error()) {
+        if ($this->h4_compare->get_error()) {
             $this->template->build("pages/compare/review");
         } else {
-            $data = $this->leaf_compare->compare();
+            $data = $this->h4_compare->compare();
 
-            $this->library->description = "LeafApp .:. " . $data['you']['Gamertag'] . " vs " . $data['them']['Gamertag'];
-            $this->template->set("meta", $this->utils->return_meta());
+            $this->utils->description = "LeafApp .:. " . $data['you']['Gamertag'] . " vs " . $data['them']['Gamertag'];
 
             // dump to template
             $this->template
+                ->set("meta", $this->utils->return_meta())
                 ->set('data', $data)
                 ->title("Leaf .:. Comparison: " .$data['you']['Gamertag'] . " vs " . $data['them']['Gamertag'])
                 ->build("pages/compare/review");
@@ -77,7 +77,7 @@ class Compare extends IBOT_Controller {
 
 
     function check_gt($gt) {
-        if ($this->library->get_profile($gt, FALSE) != FALSE) {
+        if ($this->h4_lib->get_profile($gt, FALSE) != FALSE) {
             return TRUE;
         } else {
             $this->form_validation->set_message('check_gt','I\'m sorry, ' . $gt . ' is not a gamertag we know about.');

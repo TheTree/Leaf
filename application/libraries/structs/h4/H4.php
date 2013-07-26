@@ -87,4 +87,6 @@ final class H4{
     const XP                                = '0x3b';
     const FAVORITE_WEAPON_NAME              = '0x3c';
     const BADGE                             = '0x3d';
+
+    const BADGE_COLOR                       = '0x3e';
 }

@@ -353,18 +353,13 @@ class Stat_model extends IBOT_Model {
      */
     public function get_top_10($field, $asc) {
         
-        $resp = $this->db
-                ->select("G.Gamertag,G.ServiceTag," . "G." . $field . ",B.title,B.colour")
-                ->from("ci_gamertags G")
-                ->join("ci_badges B", "G.SeoGamertag = B.SeoGamertag", "left")
+        $resp = $this->mongo_db
+                ->select([H4::GAMERTAG, H4::SERVICE_TAG, H4::SEO_GAMERTAG, $field])
                 ->limit(10)
-                ->order_by("G." . $field, ($asc == TRUE ? "asc" : "desc"))
-                ->where(array(
-                    'TotalGamesStarted >' => intval(100),
-                    'Status' => intval(0)))
-                ->get();
-        
-        $resp = $resp->result_array();
+                ->order_by(["G." . $field => $asc])
+                ->where_gt(H4::TOTAL_GAMES_STARTED, intval(100))
+                ->where(H4::STATUS, intval(0))
+                ->get("h4_gamertags");
         
         if (is_array($resp) && count($resp) > 0) {
             return $resp;
@@ -825,9 +820,8 @@ class Stat_model extends IBOT_Model {
         $max = ($start * $limit);
 
         $query = $this->db
-            ->select("C." . $playlist . ",C.SeoGamertag,C.KDRatio,C.Gamertag,B.colour,B.title")
+            ->select("C." . $playlist . ",C.SeoGamertag,C.KDRatio,C.Gamertag")
             ->from('ci_csr C')
-            ->join('ci_badges B', 'C.SeoGamertag = B.SeoGamertag', "left")
             ->where("C." . $playlist . ' > ', 0)
             ->where('C.Status', 0)
             ->order_by("C." . $playlist, "desc")

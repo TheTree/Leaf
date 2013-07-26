@@ -1,6 +1,6 @@
 <?php
 
-class Library {
+class H4_Lib {
 
     protected $_ci;
     public $lang;
@@ -188,6 +188,29 @@ class Library {
     }
 
     /**
+     * get_playlist_csr
+     *
+     * Gets playlist via CSR style
+     * @return array
+     */
+    public function get_playlist_csr() {
+        // get arrays of playlists
+        $ind = $this->_ci->config->item('h4_individual_csr');
+        foreach ($ind as $item) {
+            $csr[] = $item . "_I";
+        }
+
+        $team = $this->_ci->config->item('h4_team_csr');
+        foreach ($team as $item) {
+            $csr[] = $item . "_T";
+        }
+        unset($ind);
+        unset($team);
+
+        return $csr;
+    }
+
+    /**
      * get_playlists
      *
      * Pulls from API if more than 5 days have passed, otherwise pulls from cache.
@@ -213,8 +236,8 @@ class Library {
             }
 
             // alpha order
-            $this->set_sort_key("Name");
-            uasort($ins_arr, array($this->ci->utils,"key_sort"));
+            $this->_ci->utils->set_sort_key("Name");
+            uasort($ins_arr, array($this->_ci->utils,"key_sort"));
 
             // store into db
             $this->_ci->stat_m->empty_playlists();
@@ -648,10 +671,12 @@ class Library {
         );
 
         $this->_ci->mongo_db->add_index('h4_gamertags', array(
-            H4::SEO_GAMERTAG       => 'DESC',
-            H4::HASHED_GAMERTAG    => 'DESC'), array(
-            'unique'    => TRUE,
-            'dropDups'  => TRUE
+            H4::SEO_GAMERTAG       => 1,
+            H4::HASHED_GAMERTAG    => 1), array(
+            'unique'        => TRUE,
+            'dropDups'      => TRUE,
+            'background'    => TRUE,
+            'name'          => 'h4_index'
         ));
 
         utf8_encode_deep($dump);

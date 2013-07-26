@@ -11,53 +11,15 @@ class Profile extends IBOT_Controller {
         $this->load->model('h4/stat_model', 'stat_m', true);
     }
 
-    public function index() {
-        
-        // lets start grabbing data w/ caches
-        $stats = array();
-
-        // start the list of data for affix
-        $stats['Items'] = ["Total Kills", "Total Deaths", "Total Assists", "Total Headshots", "KD Ratio", "Time Played", "Total Medals", "Challenges Completed"];
-
-        // get the actual data for the partials
-        $stats['Data']['total_kills']            = $this->cache->model('stat_m', 'get_top_10', array('TotalKills', false), 1800);
-        $stats['Data']['total_deaths']           = $this->cache->model('stat_m', 'get_top_10', array('TotalDeaths', false), 1800);
-        $stats['Data']['kd_ratio']               = $this->cache->model('stat_m', 'get_top_10', array('KDRatio', false), 1800);
-        $stats['Data']['time_played']            = $this->cache->model('stat_m', 'get_top_10', array('TotalGameplay', false), 1800);
-        $stats['Data']['total_medals']           = $this->cache->model('stat_m', 'get_top_10', array('TotalMedalsEarned', false), 1800);
-        $stats['Data']['challenges_completed']   = $this->cache->model('stat_m', 'get_top_10', array('TotalChallengesCompleted', false), 1800);
-        $stats['Data']['total_assists']          = $this->cache->model('stat_m', 'get_top_10', array('TotalAssists', false), 1800);
-        $stats['Data']['total_headshots']        = $this->cache->model('stat_m', 'get_top_10', array('TotalHeadshots', false), 1800);
-
-        $this->library->description = "LeafApp .:. Leaderboards";
-        $this->template->set("meta", $this->library->return_meta());
-
-        // build w/ data
-        $this->template
-                ->set_partial('total_kills', '_partials/leaderboards/total_kills')
-                ->set_partial('total_deaths', '_partials/leaderboards/total_deaths')
-                ->set_partial('total_assists', '_partials/leaderboards/total_assists')
-                ->set_partial('kd_ratio', '_partials/leaderboards/kd_ratio')
-                ->set_partial('time_played', '_partials/leaderboards/time_played')
-                ->set_partial('challenges_completed', '_partials/leaderboards/challenges_completed')
-                ->set_partial('total_medals', '_partials/leaderboards/total_medals')
-                ->set_partial('total_headshots', '_partials/leaderboards/total_headshots')
-                ->title("Leaf .:. Leaderboards")
-                ->set("stats", $stats)
-                ->build("pages/leaderboard/home");
-    }
-
     public function star($gamertag = "") {
-        // seo gt
         $this->load->helper('cookie');
         $this->input->set_cookie(array(
             'name' => 'starred',
             'value' => $gamertag,
             'expire' => 865000
-                                 ));
+        ));
 
-        redirect(base_url('/gt/' . $gamertag));
-
+        redirect(base_url('h4/' . $gamertag));
     }
 
     public function removefreeze($seo_gamertag = "") {
@@ -90,16 +52,16 @@ class Profile extends IBOT_Controller {
         $gamertag = str_replace("_", "%20", $gamertag);
         
         // lets load their data, check for 1hr expiration
-        $data = $this->library->get_profile($gamertag);
+        $data = $this->h4_lib->get_profile($gamertag);
 
-        $data['BranchGamertag'] = $this->library->make_branch_gt($data[H4::GAMERTAG]);
-        $data['SpartanURL']     = $this->library->return_spartan_url($gamertag, "Profile");
-        $data[H4::MEDAL_DATA]      = $this->library->return_medals($data[H4::MEDAL_DATA]);
-        $data['CSRPlaylist']    = $this->library->return_csr_v2($this->cache->model('stat_m','get_unique_csr_position', array($data[H4::SEO_GAMERTAG]), 300),
+        $data['BranchGamertag'] = $this->h4_lib->make_branch_gt($data[H4::GAMERTAG]);
+        $data['SpartanURL']     = $this->h4_lib->return_spartan_url($gamertag, "Profile");
+        $data[H4::MEDAL_DATA]   = $this->h4_lib->return_medals($data[H4::MEDAL_DATA]);
+        $data['CSRPlaylist']    = $this->h4_lib->return_csr_v2($this->cache->model('stat_m','get_unique_csr_position', array($data[H4::SEO_GAMERTAG]), 300),
                                                                 $data[H4::SKILL_DATA]);
-        $data[H4::SKILL_DATA]      = $this->library->return_csr($data[H4::SKILL_DATA]);
-        $data[H4::SPEC_DATA]       = $this->library->return_spec($data[H4::SPEC_DATA]);
-        $data['FavoriteData']   = $this->library->return_favorite($data[H4::FAVORITE_WEAPON_NAME],
+        $data[H4::SKILL_DATA]   = $this->h4_lib->return_csr($data[H4::SKILL_DATA]);
+        $data[H4::SPEC_DATA]    = $this->h4_lib->return_spec($data[H4::SPEC_DATA]);
+        $data['FavoriteData']   = $this->h4_lib->return_favorite($data[H4::FAVORITE_WEAPON_NAME],
                                                                   $data[H4::FAVORITE_WEAPON_DESCRIPTION],
                                                                   $data[H4::FAVORITE_WEAPON_TOTAL_KILLS],
                                                                   $data[H4::FAVORITE_WEAPON_URL]);
@@ -109,23 +71,23 @@ class Profile extends IBOT_Controller {
         //  output gt, build template, set partials
         $this->template
                 ->set("meta", $this->utils->return_meta())
-                ->set_partial('block_photo', '_partials/profile/block_photo')
-                ->set_partial('block_basicstats', '_partials/profile/block_basicstats')
-                ->set_partial('block_progression', '_partials/profile/block_progression')
-                ->set_partial('block_bestgame', '_partials/profile/block_bestgame')
-                ->set_partial('block_medals','_partials/profile/block_medals')
-                ->set_partial('block_favoriteweapon', '_partials/profile/block_favoriteweapon')
-                ->set_partial('block_csr', '_partials/profile/block_csr')
-                ->set_partial('block_specs', '_partials/profile/block_specdata')
-                ->set_partial('block_inactivetest', '_partials/profile/block_inactivetest')
-                ->set_partial('block_cheatertest', '_partials/profile/block_cheatertest')
-                ->set_partial('block_social', '_partials/profile/block_social')
+                ->set_partial('block_photo', '_partials/h4/profile/block_photo')
+                ->set_partial('block_basicstats', '_partials/h4/profile/block_basicstats')
+                ->set_partial('block_progression', '_partials/h4/profile/block_progression')
+                ->set_partial('block_bestgame', '_partials/h4/profile/block_bestgame')
+                ->set_partial('block_medals','_partials/h4/profile/block_medals')
+                ->set_partial('block_favoriteweapon', '_partials/h4/profile/block_favoriteweapon')
+                ->set_partial('block_csr', '_partials/h4/profile/block_csr')
+                ->set_partial('block_specs', '_partials/h4/profile/block_specdata')
+                ->set_partial('block_inactivetest', '_partials/h4/profile/block_inactivetest')
+                ->set_partial('block_cheatertest', '_partials/h4/profile/block_cheatertest')
+                ->set_partial('block_social', '_partials/h4/profile/block_social')
                 ->title("Leaf .:. " . urldecode($data[H4::GAMERTAG]))
                 ->set('msg', $this->session->flashdata("recache"))
                 ->set('general_msg', $this->session->flashdata('general_msg'))
                 ->set('gamertag', $data[H4::GAMERTAG])
                 ->set('data', $data)
-                ->build("pages/profile/view");
+                ->build("pages/h4/profile/view");
         
     }
     
@@ -133,15 +95,15 @@ class Profile extends IBOT_Controller {
         
          // convert _ to %20 (space)
         $gamertag = str_replace("_", "%20", $gamertag);
-        $seo_gamertag = $this->library->get_seo_gamertag($gamertag);
-        $hashed = $this->library->get_hashed_seo_gamertag($seo_gamertag);
+        $seo_gamertag = $this->h4_lib->get_seo_gamertag($gamertag);
+        $hashed = $this->h4_lib->get_hashed_seo_gamertag($seo_gamertag);
         
         // lets see if they need a recache.
         $data = $this->stat_m->get_expiration_date($hashed);
         
         if (is_array($data)) {
             if (($data[H4::EXPIRATION] - SEVENDAYS_IN_SECONDS + FIVEMIN_IN_SECONDS) < time() || ENVIRONMENT == "development") {
-                $data = $this->library->get_profile($gamertag, false, true, $seo_gamertag);
+                $data = $this->h4_lib->get_profile($gamertag, false, true, $seo_gamertag);
                 
                 // set cache
                 $this->session->set_flashdata("recache", "enabled");
@@ -152,16 +114,16 @@ class Profile extends IBOT_Controller {
             // redirect out of here
             redirect(base_url("h4/" . $data['SeoGamertag']));
         } else {
-            $this->library->throw_error("NO_GAMERTAG_STORED");
+            $this->utils->throw_error("NO_GAMERTAG_STORED");
         }
     }
 
     public function metadata() {
-        $this->library->get_metadata();
+        $this->utils->get_metadata();
     }
 
     public function redo_playlists() {
-        $this->library->get_playlists();
+        $this->h4_lib->get_playlists();
     }
     
 }

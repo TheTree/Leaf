@@ -53,7 +53,7 @@ $autoload['packages'] = array();
 */
 
 $autoload['libraries'] = array('/phil/template','/phil/cache','/phil/curl', #phil libs
-        'database','form_validation','session','encrypt','email','pagination','image_lib','library', 'utils',
+        'database','form_validation','session','encrypt','email','pagination','image_lib','games/h4/h4_lib', 'utils',
         'db/mongo_db', 'structs/h4/h4');
 
 

@@ -14,7 +14,7 @@
 <!-- ApiVersion: <?= $data[H4::API_VERSION]; ?> -->
 <div class="well well-large btn btn-primary pad10 w150">
     <div class="pagination-centered">
-        <img src="<?= $this->library->return_image_url('Rank', $data[H4::RANK], 'large'); ?>" />
+        <img src="<?= $this->h4_lib->return_image_url('Rank', $data[H4::RANK], 'large'); ?>" />
         <?= $data[H4::SPECIALIZATION]; ?> - <?= $data[H4::SPECIALIZATION_LEVEL]; ?>
     </div>
 </div>
@@ -27,5 +27,5 @@
     <? endif; ?>
 <? endif; ?>
 <? if ($data[H4::INACTIVE_COUNTER] >= INACTIVE_COUNTER): ?>
-    <a href="<?= base_url('removefreeze/' . $data[H4::SEO_GAMERTAG]); ?>" class="btn btn-success margin3pxtop">Unfreeze</a>
+    <a href="<?= base_url('h4/removefreeze/' . $data[H4::SEO_GAMERTAG]); ?>" class="btn btn-success margin3pxtop">Unfreeze</a>
 <? endif; ?>

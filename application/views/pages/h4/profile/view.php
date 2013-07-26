@@ -5,8 +5,8 @@
                title="Flag <strong><?= $data[H4::GAMERTAG]; ?></strong> as a Cheater/Booster?" rel="tooltip"
                data-placement="right" onclick="return confirm('Are you sure you wish to flag <?= $data[H4::GAMERTAG]; ?> ?');"><i class="icon-flag"></i></a>
         <? endif; ?>
-            <a href="<?= base_url('/star/' . $data[H4::SEO_GAMERTAG]); ?>" data-toggle="tooltip" data-html="true"
-               title="Star<strong><?= $data[H4::GAMERTAG]; ?></strong>" rel="tooltip" data-placement="right"><i class="icon-star"></i></a>
+            <a href="<?= base_url('h4/star/' . $data[H4::SEO_GAMERTAG]); ?>" data-toggle="tooltip" data-html="true"
+               title="Star <strong><?= $data[H4::GAMERTAG]; ?></strong>" rel="tooltip" data-placement="right"><i class="icon-star"></i></a>
     </h1>
 </div>
 <div class="row-fluid">

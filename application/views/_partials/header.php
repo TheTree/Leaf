@@ -6,7 +6,7 @@
     <?= $template['_partials']['head_header']; ?>
     <body id="top" data-spy="scroll" data-target=".subnav" data-offset="100">
     <header>
-        <div class="navbar <? if ($this->uri->segment(1) != "backstage"): ?>navbar-inverse<? endif; ?> navbar-<? if ($this->uri->segment(1) == "leaderboards"): ?>fixed<? else: ?>static<? endif; ?>-top">
+        <div class="navbar <? if ($this->uri->segment(1) != "backstage"): ?>navbar-inverse<? endif; ?> navbar-<? if ($this->uri->segment(2) == "leaderboards"): ?>fixed<? else: ?>static<? endif; ?>-top">
             <div class="navbar-inner">
                 <div class="container">
                     <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -19,9 +19,9 @@
                         <nav>
                             <ul class="nav">
                                 <li class="<? if ($this->utils->is_active("news", "home", 1)): ?> active<? endif; ?>"><a href="<?= base_url('news'); ?>">News</a></li>
-                                <li class="<? if ($this->utils->is_active("csr_leaderboards", "home", 1)): ?> active<? endif; ?>"><a href="<?= base_url('csr_leaderboards'); ?>">CSR Leaderboards</a></li>
-                                <li class="<? if ($this->utils->is_active("leaderboards", "home", 1)): ?> active<? endif; ?>"><a href="<?= base_url('leaderboards'); ?>">Top Ten</a></li>
-                                <li class="<? if ($this->utils->is_active("compare", "home", 1)):?> active<? endif; ?>"><a rel="help" href="<?= base_url('compare'); ?>">Compare</a></li>
+                                <li class="<? if ($this->utils->is_active("csr_leaderboards", "home", 2)): ?> active<? endif; ?>"><a href="<?= base_url('h4/csr_leaderboards'); ?>">CSR Leaderboards</a></li>
+                                <li class="<? if ($this->utils->is_active("leaderboards", "home", 2)): ?> active<? endif; ?>"><a href="<?= base_url('h4/leaderboards'); ?>">Top Ten</a></li>
+                                <li class="<? if ($this->utils->is_active("compare", "home", 2)):?> active<? endif; ?>"><a rel="help" href="<?= base_url('h4/compare'); ?>">Compare</a></li>
                                 <li class="<? if ($this->utils->is_active("about", "home", 1)): ?> active<? endif; ?>"><a href="<?= base_url('about'); ?>">About</a></li>
                             </ul>
                         </nav>

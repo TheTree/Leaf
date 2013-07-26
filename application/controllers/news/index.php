@@ -32,13 +32,13 @@ class Index extends IBOT_Controller {
         $news = $this->news_m->get_news($config['per_page'], $page);
         $this->pagination->initialize($config);
 
-        $this->library->description = "LeafApp .:. News Articles";
+        $this->utils->description = "LeafApp .:. News Articles";
         $this->template
                 ->set("meta", $this->utils->return_meta())
                 ->set('pagination', $this->pagination->create_links())
                 ->set('news', $news)
                 ->title("Leaf News")
-                ->build("pages/news");
+                ->build("pages/news/index");
     }
 
     function view($id) {
@@ -55,6 +55,6 @@ class Index extends IBOT_Controller {
                 ->set("meta", $this->utils->return_meta())
                 ->set('article', $article)
                 ->title("Leafapp .:. " . (($article['title'] == "") ? intval($id) : $article['title'] . " "))
-                ->build("pages/article");
+                ->build("pages/news/article");
     }
 }

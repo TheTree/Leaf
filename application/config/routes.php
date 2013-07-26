@@ -45,7 +45,7 @@ $route['cron']              = "cron_task/update_gamertags";
 $route['news']              = "news/index";
 
 // ajax calls
-$route['ajax/gt/(:any)'] = "ajax/core/compare_api/$1";
+$route['ajax/gt/(:any)']    = "ajax/core/compare_api/$1";
 
 // games
 $route['h4']                = "h4/home/index";
@@ -55,10 +55,12 @@ $route['h4']                = "h4/home/index";
 //-------------------------------------------------------
 $route['h4/stats']                  = "h4/home/index";
 $route['h4/compare']                = "h4/compare/index";
-$route['h4/leaderboards']           = "h4/home/index";
-$route['h4/csr_leaderboards']       = "h4/leaderboards/index";
+$route['h4/leaderboards']           = "h4/leaderboards/top_10";
+$route['h4/csr_leaderboards']       = "h4/leaderboards/panel/100_I/0";
 
 // variable pages
+$route['h4/csr_leaderboards/(:any)']        = "h4/leaderboards/panel/$1/0";
+$route['h4/csr_leaderboards/(:any)/(:num)'] = "h4/leaderboards/panel/$1/$2";
 $route['h4/guilty_spark/flag/(:any)']       = "moderate/home/flagged/$1";
 $route['h4/(:any)/recache']                 = "h4/profile/recache_gt/$1";
 $route['h4/(:any)']                         = "h4/profile/gt/$1";
@@ -66,6 +68,10 @@ $route['h4/(:any)']                         = "h4/profile/gt/$1";
 // recaching stuff
 $route['h4/metadata/recache']       = "h4/profile/metadata";
 $route['h4/playlists/recache']      = "h4/profile/redo_playlists";
+
+// star, unfreeze, mod
+$route['h4/star/(:any)']            = "h4/profile/star/$1";
+
 
 //-------------------------------------------------------
 // END: Halo 4
@@ -101,15 +107,14 @@ $route['backstage/key_delete/(:num)']               = "admin/index/key_delete/$1
 // End: Backstage
 //-------------------------------------------------------
 
-// variable pages
-$route['csr_leaderboards/(:any)']        = "csr/leaderboards/leaderboard/$1/0";
-$route['csr_leaderboards/(:any)/(:num)'] = "csr/leaderboards/leaderboard/$1/$2";
-$route['removefreeze/(:any)']            = "stats/home/removefreeze/$1";
-$route['star/(:any)']                    = "stats/home/star/$1";
-$route['news/(:num)']                    = "news/index/index/$1";
-$route['news/view/(:any)']               = "news/index/view/$1";
+//
 $route['compare/(:any)/(:any)']          = "stats/compare/comparison/$1/$2";
 $route['compare/(:any)']                 = "stats/compare/comparison_prefill/$1";
+
+// variable pages
+$route['removefreeze/(:any)']            = "stats/home/removefreeze/$1";
+$route['news/(:num)']                    = "news/index/index/$1";
+$route['news/view/(:any)']               = "news/index/view/$1";
 
 // default home
 $route['default_controller']    = "h4/home";

@@ -12,11 +12,8 @@ class Home extends IBOT_Controller {
     }
 
     function index() {
-
-        // rules
         $this->form_validation->set_rules('gamertag', 'Gamertag', 'required|max_length[15]|xss_clean');
 
-        // run it
         if ($this->form_validation->run() == FALSE) {
             $this->session->set_flashdata('errors', validation_errors());
         } else {
@@ -25,13 +22,13 @@ class Home extends IBOT_Controller {
 
         $this->template
                 ->title("Leaf .:. Halo 4 Stats")
-                ->set_partial("challenges", "_partials/homepage/challenges")
-                ->set_partial("gamertag_add", "_partials/homepage/gamertag_add")
-                ->set_partial("news_block", "_partials/homepage/news_block")
-                ->set_partial("recent_gamertags", "_partials/homepage/recent_gamertags")
+                ->set_partial("challenges", "_partials/h4/homepage/challenges")
+                ->set_partial("gamertag_add", "_partials/h4/homepage/gamertag_add")
+                ->set_partial("recent_gamertags", "_partials/h4/homepage/recent_gamertags")
+                ->set_partial("news_block", "_partials/globals/homepage/news_block")
                 ->set("recent_players", $this->cache->model("stat_m", 'get_last_5', array(), 120))
                 ->set("recent_news", $this->news_m->get_newest_article())
-                ->set('challenges', $this->library->get_challenges())
+                ->set('challenges', $this->h4_lib->get_challenges())
                 ->build('pages/home');
     }
 }

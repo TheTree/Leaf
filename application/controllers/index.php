@@ -12,10 +12,10 @@ class Index extends IBOT_Controller {
 
     function about() {
 
-        $this->library->description = "LeafApp .:. About Us";
-        $this->template->set("meta", $this->utils->return_meta());
+        $this->utils->description = "LeafApp .:. About Us";
 
         $this->template
+            ->set("meta", $this->utils->return_meta())
             ->title("About")
             ->build("pages/about");
     }

@@ -11,14 +11,14 @@
         <tbody>
         <? $x = 1; foreach ($stats['Data']['time_played'] as $item): ?>
             <tr>
-                <td><?= $this->library->get_trophy($x); ?></td>
-                <td><a href="<?= base_url('gt/' . str_replace(" ", "_", $item['Gamertag'])); ?>">
-                        <?= $item['Gamertag']; ?>
-                        <? if (isset($item['title'])): ?>
-                            - <span class="badge badge-<?= $item['colour']; ?>"><?= $item['title']; ?></span>
+                <td><?= $this->h4_lib->get_trophy($x); ?></td>
+                <td><a href="<?= base_url('h4/' . $item[H4::SEO_GAMERTAG]); ?>">
+                        <?= $item[H4::GAMERTAG]; ?>
+                        <? if (isset($item[H4::BADGE])): ?>
+                            - <span class="badge badge-<?= $item[H4::BADGE_COLOR]; ?>"><?= $item[H4::BADGE]; ?></span>
                         <? endif; ?>
                     </a></td>
-                <td><?= $this->library->time_duration($item['TotalGameplay'], 'yMdmh'); ?></td>
+                <td><?= $this->utils->time_duration($item[H4::TOTAL_GAMEPLAY], 'yMdmh'); ?></td>
             </tr>
             <? $x++; endforeach; ?>
         </tbody>
