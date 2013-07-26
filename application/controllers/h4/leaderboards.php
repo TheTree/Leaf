@@ -42,7 +42,7 @@ class Leaderboards extends IBOT_Controller {
         $stats['Data']['time_played']               = $this->cache->model('stat_m', 'get_top_10', array(H4::TOTAL_GAMEPLAY, 'DESC'), 0);
         $stats['Data']['medals_per_game']           = $this->cache->model('stat_m', 'get_top_10', array(H4::MEDALS_PER_GAME_RATIO, 'DESC'), 0);
         $stats['Data']['challenges_completed']      = $this->cache->model('stat_m', 'get_top_10', array(H4::TOTAL_CHALLENGES_COMPLETED, 'DESC'), 0);
-        $stats['Data']['assists_per_game']          = $this->cache->model('stat_m', 'get_top_10', array(H4::ASSISTS_PER_GAME_RATIO, 'ASC'), 0);
+        $stats['Data']['assists_per_game']          = $this->cache->model('stat_m', 'get_top_10', array(H4::ASSISTS_PER_GAME_RATIO, 'DESC'), 0);
         $stats['Data']['headshots_per_game']        = $this->cache->model('stat_m', 'get_top_10', array(H4::HEADSHOTS_PER_GAME_RATIO,'DESC'), 0);
 
         $this->utils->description = "LeafApp .:. Leaderboards";

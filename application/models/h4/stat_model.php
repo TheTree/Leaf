@@ -356,7 +356,7 @@ class Stat_model extends IBOT_Model {
         $resp = $this->mongo_db
                 ->select([H4::GAMERTAG, H4::SERVICE_TAG, H4::SEO_GAMERTAG, $field])
                 ->limit(10)
-                ->order_by(["G." . $field => $asc])
+                ->order_by([$field => $asc])
                 ->where_gt(H4::TOTAL_GAMES_STARTED, intval(100))
                 ->where(H4::STATUS, intval(0))
                 ->get("h4_gamertags");
