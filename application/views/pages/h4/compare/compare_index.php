@@ -4,7 +4,7 @@
     <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#compareInformation">What is compared?</button>
 </div>
 <div class="alert alert-info"><b>Step 1:</b> Enter your gamertag and the gamertag you want to compare against.</div>
-<?= form_open(base_url("compare")); ?>
+<?= form_open(base_url("h4/compare")); ?>
 <div class="row-fluid">
     <div class="span6">
         <h3>You</h3>

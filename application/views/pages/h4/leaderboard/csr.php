@@ -43,10 +43,10 @@
                 </thead>
                 <tbody>
                 <? $x = 1 * $page; foreach($leaderboards as $player): ?>
-                    <tr class="<? if ($player['SeoGamertag'] == $my['SeoGamertag']): ?>success<? endif; ?>">
+                    <tr class="<? if ($player['SeoGamertag'] == $my[H4::SEO_GAMERTAG]): ?>success<? endif; ?>">
                         <td><?= $this->h4_lib->get_trophy($x); ?></td>
                         <td>
-                            <a style="color: #000; " href="<?= base_url('h4/' . $player['SeoGamertag']); ?>">
+                            <a style="color: #000; " href="<?= base_url('h4/record/' . $player['SeoGamertag']); ?>">
                                 <?= $player['Gamertag']; ?>
                                 <? if (isset($player['title'])): ?>
                                     - <span class="badge badge-<?= $player['colour']; ?>"><?= $player['title']; ?></span>
@@ -56,13 +56,13 @@
                         <td><?= $player['KDRatio']; ?></td>
                     </tr>
                     <? $x++; endforeach; ?>
-                <? if (!search_big($leaderboards,$my['Gamertag'])): ?>
+                <? if (!search_big($leaderboards,$my[H4::GAMERTAG])): ?>
                     <? if (isset($my[$playlist]['Rank']) && $my[$playlist][$playlist] > 0): ?>
                         <tr class="info">
                             <td><?= $this->h4_lib->get_trophy($my[$playlist]['Rank']); ?></td>
-                            <td><a style="color: #000; " href="<?= base_url('h4/' . $my['SeoGamertag']); ?>"><?= $my['Gamertag']; ?></a></td>
+                            <td><a style="color: #000; " href="<?= base_url('h4/record/' . $my[H4::SEO_GAMERTAG]); ?>"><?= $my[H4::GAMERTAG]; ?></a></td>
                             <td><span class="flair flair-CSR-<?= $my[$playlist][$playlist]; ?>"></span></td>
-                            <td><?= $my['KDRatio']; ?></td>
+                            <td><?= $my[H4::KD_RATIO]; ?></td>
                         </tr>
                     <? endif; ?>
                 <? endif; ?>

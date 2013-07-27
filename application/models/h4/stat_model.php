@@ -595,19 +595,13 @@ class Stat_model extends IBOT_Model {
      * @return bool
      */
     public function get_gamertag_name($seo_gt) {
-        $resp = $this->db
-                ->select('Gamertag')
-                ->get_where('ci_gamertags', array(
-                'SeoGamertag' => $seo_gt
+        $resp = $this->mongo_db
+                ->select([H4::GAMERTAG])
+                ->get_where('h4_gamertags', array(
+                H4::SEO_GAMERTAG => $seo_gt
             ));
 
-        $resp = $resp->row_array();
-
-        if (isset($resp['Gamertag'])) {
-            return $resp['Gamertag'];
-        } else {
-            return FALSE;
-        }
+        return $this->_get_one($resp, H4::GAMERTAG);
     }
 
     /**
@@ -619,19 +613,13 @@ class Stat_model extends IBOT_Model {
      * @return bool
      */
     public function get_name_and_emblem($seo_gt) {
-        $resp = $this->db
-            ->select('Gamertag,SeoGamertag')
-            ->get_where('ci_gamertags', array(
-                'SeoGamertag' => $seo_gt
+        $resp = $this->mongo_db
+            ->select([H4::GAMERTAG,H4::SEO_GAMERTAG, H4::EMBLEM])
+            ->get_where('h4_gamertags', array(
+                H4::SEO_GAMERTAG => $seo_gt
             ));
 
-        $resp = $resp->row_array();
-
-        if (isset($resp['Gamertag'])) {
-            return $resp;
-        } else {
-            return FALSE;
-        }
+        return $this->_get_one($resp, H4::GAMERTAG);
     }
 
     /**

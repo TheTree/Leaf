@@ -55,15 +55,16 @@ $route['h4']                = "h4/home/index";
 //-------------------------------------------------------
 $route['h4/stats']                  = "h4/home/index";
 $route['h4/compare']                = "h4/compare/index";
-$route['h4/leaderboards']           = "h4/leaderboards/top_10";
+$route['h4/top_ten']                = "h4/leaderboards/top_10";
 $route['h4/csr_leaderboards']       = "h4/leaderboards/panel/100_I/0";
 
 // variable pages
-$route['h4/csr_leaderboards/(:any)']        = "h4/leaderboards/panel/$1/0";
-$route['h4/csr_leaderboards/(:any)/(:num)'] = "h4/leaderboards/panel/$1/$2";
-$route['h4/guilty_spark/flag/(:any)']       = "moderate/home/flagged/$1";
-$route['h4/(:any)/recache']                 = "h4/profile/recache_gt/$1";
-$route['h4/(:any)']                         = "h4/profile/gt/$1";
+$route['h4/compare/(:any)/(:any)']                  = "h4/compare/comparison/$1/$2";
+$route['h4/compare/(:any)']                         = "h4/compare/comparison_prefill/$1";
+$route['h4/csr_leaderboards/(:any)']                = "h4/leaderboards/panel/$1/0";
+$route['h4/csr_leaderboards/(:any)/(:num)']         = "h4/leaderboards/panel/$1/$2";
+$route['h4/record/(:any)/recache']                  = "h4/profile/recache_gt/$1";
+$route['h4/record/(:any)']                          = "h4/profile/gt/$1";
 
 // recaching stuff
 $route['h4/metadata/recache']       = "h4/profile/metadata";
@@ -71,6 +72,8 @@ $route['h4/playlists/recache']      = "h4/profile/redo_playlists";
 
 // star, unfreeze, mod
 $route['h4/star/(:any)']            = "h4/profile/star/$1";
+$route['h4/flag/(:any)']            = "h4/moderate/flagged/$1";
+
 
 
 //-------------------------------------------------------
@@ -107,9 +110,6 @@ $route['backstage/key_delete/(:num)']               = "admin/index/key_delete/$1
 // End: Backstage
 //-------------------------------------------------------
 
-//
-$route['compare/(:any)/(:any)']          = "stats/compare/comparison/$1/$2";
-$route['compare/(:any)']                 = "stats/compare/comparison_prefill/$1";
 
 // variable pages
 $route['removefreeze/(:any)']            = "stats/home/removefreeze/$1";

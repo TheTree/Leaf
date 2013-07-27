@@ -180,7 +180,7 @@ class Mongo_db
      */
     public function __construct()
     {
-        if ( ! class_exists('Mongo'))
+        if ( ! class_exists('MongoClient'))
         {
             $this->_show_error('The MongoDB PECL extension has not been installed or enabled', 500);
         }
@@ -1799,7 +1799,7 @@ class Mongo_db
 
         try
         {
-            $this->_connection = new Mongo($this->_connection_string, $options);
+            $this->_connection = new MongoClient($this->_connection_string, $options);
             $this->_dbhandle = $this->_connection->{$this->_dbname};
             return $this;
         }

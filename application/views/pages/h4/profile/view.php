@@ -1,7 +1,7 @@
 <div class="row-fluid">
     <h1><?= isset($data[H4::BADGE]) ? $data[H4::BADGE] : ""; ?><?= urldecode($gamertag); ?> <small><?= $data[H4::SERVICE_TAG]; ?></small>
         <? if ($data[H4::STATUS] == 0): ?>
-            <a href="<?= base_url('/guilty_spark/flag/' . $data[H4::SEO_GAMERTAG]); ?>" data-toggle="tooltop" data-html="true"
+            <a href="<?= base_url('h4/flag/' . $data[H4::SEO_GAMERTAG]); ?>" data-toggle="tooltop" data-html="true"
                title="Flag <strong><?= $data[H4::GAMERTAG]; ?></strong> as a Cheater/Booster?" rel="tooltip"
                data-placement="right" onclick="return confirm('Are you sure you wish to flag <?= $data[H4::GAMERTAG]; ?> ?');"><i class="icon-flag"></i></a>
         <? endif; ?>
@@ -48,9 +48,7 @@
     </div>
     <div class="span4">
         <aside>
-            <? if (isset($data['FavoriteData'])): ?>
-                <?= $template['_partials']['block_favoriteweapon']; ?>
-            <? endif; ?>
+            <?= $template['_partials']['block_favoriteweapon']; ?>
             <?= $template['_partials']['block_bestgame']; ?>
         </aside>
         <br />
@@ -61,3 +59,4 @@
         <?= $template['_partials']['block_cheatertest']; ?>
     </div>
 </div>
+<?= $template['_partials']['js_auto_close_alert']; ?>

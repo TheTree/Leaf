@@ -20,8 +20,8 @@ class IBOT_Controller extends CI_Controller {
             $this->template->set('starred', FALSE);
         } else {
             $resp = $this->stat_m->get_name_and_emblem($_tmp);
-            $resp['Emblem'] = $this->library->return_image_url("Emblem", $resp['Emblem'], 40);
-            $resp['SeoGamertag'] = $_tmp;
+            $resp[H4::EMBLEM] = $this->h4_lib->return_image_url("Emblem", $resp[H4::EMBLEM], 40);
+            $resp[H4::SEO_GAMERTAG] = $_tmp;
             $this->template->set('starred', $resp);
         }
 

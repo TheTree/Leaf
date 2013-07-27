@@ -23,11 +23,9 @@ class Core extends IBOT_Controller {
 
         if ($gts != false) {
             foreach ($gts as $key => $value) {
-                $gts_json[] = $value['Gamertag'];
+                $gts_json[] = $value[H4::GAMERTAG];
             }
         }
-
-        // cleanup
         unset($gts);
 
         // output

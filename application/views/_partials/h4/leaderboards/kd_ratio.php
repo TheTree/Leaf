@@ -12,7 +12,7 @@
             <? $x = 1; foreach ($stats['Data']['kd_ratio'] as $item): ?>
                 <tr>
                     <td><?= $this->h4_lib->get_trophy($x); ?></td>
-                    <td><a href="<?= base_url('h4/' . $item[H4::SEO_GAMERTAG]); ?>">
+                    <td><a href="<?= base_url('h4/record/' . $item[H4::SEO_GAMERTAG]); ?>">
                             <?= $item[H4::GAMERTAG]; ?>
                             <? if (isset($item[H4::BADGE])): ?>
                                 - <span class="badge badge-<?= $item[H4::BADGE_COLOR]; ?>"><?= $item[H4::BADGE]; ?></span>

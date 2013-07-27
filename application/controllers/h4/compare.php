@@ -20,7 +20,7 @@ class Compare extends IBOT_Controller {
         $_tmp = get_cookie('starred',TRUE);
         if ($_tmp != FALSE) {
             $resp = $this->stat_m->get_name_and_emblem($_tmp);
-            $this->template->set('you', $resp['Gamertag']);
+            $this->template->set('you', $resp[H4::GAMERTAG]);
         }
 
         // validation rules
@@ -52,21 +52,21 @@ class Compare extends IBOT_Controller {
     public function comparison($you, $them) {
 
         // init compare library
-        $this->load->library('h4_compare',array('you' => $you, 'them' => $them));
+        $this->load->library('games/h4/h4_compare',array('you' => $you, 'them' => $them));
 
         if ($this->h4_compare->get_error()) {
             $this->template->build("pages/compare/review");
         } else {
             $data = $this->h4_compare->compare();
 
-            $this->utils->description = "LeafApp .:. " . $data['you']['Gamertag'] . " vs " . $data['them']['Gamertag'];
+            $this->utils->description = "Leaf Halo 4 Compare - " . $data['you'][H4::GAMERTAG] . " vs " . $data['them'][H4::GAMERTAG];
 
             // dump to template
             $this->template
                 ->set("meta", $this->utils->return_meta())
                 ->set('data', $data)
-                ->title("Leaf .:. Comparison: " .$data['you']['Gamertag'] . " vs " . $data['them']['Gamertag'])
-                ->build("pages/compare/review");
+                ->title("Leaf Halo 4 Compare - " .$data['you'][H4::GAMERTAG] . " vs " . $data['them'][H4::GAMERTAG])
+                ->build("pages/h4/compare/review");
         }
     }
 

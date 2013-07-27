@@ -19,7 +19,7 @@ class Profile extends IBOT_Controller {
             'expire' => 865000
         ));
 
-        redirect(base_url('h4/' . $gamertag));
+        redirect(base_url('h4/record/' . $gamertag));
     }
 
     public function removefreeze($seo_gamertag = "") {
@@ -71,6 +71,7 @@ class Profile extends IBOT_Controller {
         //  output gt, build template, set partials
         $this->template
                 ->set("meta", $this->utils->return_meta())
+                ->set_partial('js_auto_close_alert', '_partials/globals/js/auto_close_alert')
                 ->set_partial('block_photo', '_partials/h4/profile/block_photo')
                 ->set_partial('block_basicstats', '_partials/h4/profile/block_basicstats')
                 ->set_partial('block_progression', '_partials/h4/profile/block_progression')
@@ -112,7 +113,7 @@ class Profile extends IBOT_Controller {
             }
             
             // redirect out of here
-            redirect(base_url("h4/" . $data['SeoGamertag']));
+            redirect(base_url("h4/record/" . $data['SeoGamertag']));
         } else {
             $this->utils->throw_error("NO_GAMERTAG_STORED");
         }

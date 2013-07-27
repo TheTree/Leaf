@@ -17,7 +17,7 @@ class Home extends IBOT_Controller {
         if ($this->form_validation->run() == FALSE) {
             $this->session->set_flashdata('errors', validation_errors());
         } else {
-            redirect(base_url("/h4/" . str_replace(" ", "_",$this->input->post('gamertag'))));
+            redirect(base_url("/h4/record/" . str_replace(" ", "_",$this->input->post('gamertag'))));
         }
 
         $this->template

@@ -30,20 +30,20 @@ class H4_Compare {
             // show error page
             $this->_ci->template->set("error_msg", "We could not find one of these accounts. Please try again.");
             $this->error_hit = TRUE;
-        } else if ($this->you['SeoGamertag'] == $this->them['SeoGamertag']) {
+        } else if ($this->you[H4::SEO_GAMERTAG] == $this->them[H4::SEO_GAMERTAG]) {
             // silly dog tricks r 4 kids
             $this->_ci->template->set("error_msg", "funny guy. can't search yo self");
             $this->error_hit = TRUE;
-        } else if ($this->you['Status'] > 0) {
-            $this->_ci->template->set("error_msg", $this->you['Gamertag'] . " is not allowed to be compared against due to " . $this->_ci->h4_lib->get_banned_name($this->you['Status'], TRUE));
+        } else if ($this->you[H4::STATUS] > 0) {
+            $this->_ci->template->set("error_msg", $this->you[H4::GAMERTAG] . " is not allowed to be compared against due to " . $this->_ci->h4_lib->get_banned_name($this->you[H4::STATUS], TRUE));
             $this->error_hit = TRUE;
-        } else if ($this->them['Status'] > 0) {
-            $this->_ci->template->set("error_msg", $this->them['Gamertag'] . " is not allowed to be compared against due to " . $this->_ci->h4_lib->get_banned_name($this->them['Status'], TRUE));
+        } else if ($this->them[H4::STATUS] > 0) {
+            $this->_ci->template->set("error_msg", $this->them[H4::GAMERTAG] . " is not allowed to be compared against due to " . $this->_ci->h4_lib->get_banned_name($this->them[H4::STATUS], TRUE));
             $this->error_hit = TRUE;
         } else {
             // unseralize
-            $this->you['SkillData'] = msgpack_unpack(utf8_decode($this->you['SkillData']));
-            $this->them['SkillData'] = msgpack_unpack(utf8_decode($this->them['SkillData']));
+            $this->you[H4::SKILL_DATA]  = $this->_ci->h4_lib->return_highest_csr($this->_ci->h4_lib->return_csr($this->you[H4::SKILL_DATA]));
+            $this->them[H4::SKILL_DATA] = $this->_ci->h4_lib->return_highest_csr($this->_ci->h4_lib->return_csr($this->them[H4::SKILL_DATA]));
         }
     }
 
@@ -102,19 +102,19 @@ class H4_Compare {
             $final_arr['Style'] = "";
             $final_arr['Winner'] = "";
             $final_arr['TweetWord'] = "tied";
-            $final_arr['Winner'] = $this->you['Gamertag'];
-            $final_arr['Looser'] = $this->them['Gamertag'];
+            $final_arr['Winner'] = $this->you[H4::GAMERTAG];
+            $final_arr['Looser'] = $this->them[H4::GAMERTAG];
         } else if ($this->you['TotalPoints'] > $this->them['TotalPoints']) {
             $final_arr['Style'] = "alert-success";
             $final_arr['Status'] = 'W';
-            $final_arr['Winner'] = $this->you['Gamertag'];
-            $final_arr['Looser'] = $this->them['Gamertag'];
+            $final_arr['Winner'] = $this->you[H4::GAMERTAG];
+            $final_arr['Looser'] = $this->them[H4::GAMERTAG];
             $final_arr['TweetWord'] = "won against";
         } else {
             $final_arr['Style'] = "alert-error";
             $final_arr['Status'] = 'L';
-            $final_arr['Winner'] = $this->them['Gamertag'];
-            $final_arr['Looser'] = $this->you['Gamertag'];
+            $final_arr['Winner'] = $this->them[H4::GAMERTAG];
+            $final_arr['Looser'] = $this->you[H4::GAMERTAG];
             $final_arr['TweetWord'] = "lost to";
         }
 
@@ -159,29 +159,29 @@ class H4_Compare {
     //----------------------------------------
     function MediumSpartan() {
         // lets get the small spartan image
-        $this->you['SpartanSmallUrl']    = $this->_ci->h4_lib->return_image_url('Spartan', $this->you['Gamertag'],'small');
-        $this->them['SpartanSmallUrl']   = $this->_ci->h4_lib->return_image_url('Spartan', $this->them['Gamertag'],'small');
+        $this->you['SpartanSmallUrl']    = $this->_ci->h4_lib->return_image_url('Spartan', $this->you[H4::GAMERTAG],'small');
+        $this->them['SpartanSmallUrl']   = $this->_ci->h4_lib->return_image_url('Spartan', $this->them[H4::GAMERTAG],'small');
     }
 
     function HighestRank() {
 
-        if ($this->you['Rank'] == $this->them['Rank']) {
+        if ($this->you[H4::RANK] == $this->them[H4::RANK]) {
             $this->tie(2);
-        } else if ($this->you['Rank'] > $this->them['Rank']) {
+        } else if ($this->you[H4::RANK] > $this->them[H4::RANK]) {
             $this->you_num(2);
         } else {
             $this->them_num(2);
         }
 
         // var prep
-        $this->you['Rank'] = "SR-" . $this->you['Rank'];
-        $this->them['Rank'] = "SR-" . $this->them['Rank'];
+        $this->you[H4::RANK] = "SR-" . $this->you[H4::RANK];
+        $this->them[H4::RANK] = "SR-" . $this->them[H4::RANK];
 
         // return
         return array(
             'Name' => "Highest Rank",
             'Max' => 1,
-            'Field' => "Rank",
+            'Field' => H4::RANK,
             'you' => array(
                 'pts' => intval($this->you_pts),
                 'style' => $this->you_style),
@@ -193,9 +193,9 @@ class H4_Compare {
     }
 
     function MedalsPerGame() {
-        if ($this->you['MedalsPerGameRatio'] == $this->them['MedalsPerGameRatio']) {
+        if ($this->you[H4::MEDALS_PER_GAME_RATIO] == $this->them[H4::MEDALS_PER_GAME_RATIO]) {
             $this->tie(2);
-        } else if ($this->you['MedalsPerGameRatio'] > $this->them['MedalsPerGameRatio']) {
+        } else if ($this->you[H4::MEDALS_PER_GAME_RATIO] > $this->them[H4::MEDALS_PER_GAME_RATIO]) {
             $this->you_num(2);
         } else {
             $this->them_num(2);
@@ -205,7 +205,7 @@ class H4_Compare {
         return array(
             'Name' =>'Highest <abbr title="Medals per game">MpG</abbr> Ratio',
             'Max' => 1,
-            'Field' => 'MedalsPerGameRatio',
+            'Field' => H4::MEDALS_PER_GAME_RATIO,
             'you' => array(
                 'pts' => intval($this->you_pts),
                 'style' => $this->you_style),
@@ -217,9 +217,9 @@ class H4_Compare {
     }
 
     function KillsPerGame() {
-        if ($this->you['KillsPerGameRatio'] == $this->them['KillsPerGameRatio']) {
+        if ($this->you[H4::KILLS_PER_GAME_RATIO] == $this->them[H4::KILLS_PER_GAME_RATIO]) {
             $this->tie(2);
-        } else if ($this->you['KillsPerGameRatio'] > $this->them['KillsPerGameRatio']) {
+        } else if ($this->you[H4::KILLS_PER_GAME_RATIO] > $this->them[H4::KILLS_PER_GAME_RATIO]) {
             $this->you_num(2);
         } else {
             $this->them_num(2);
@@ -229,7 +229,7 @@ class H4_Compare {
         return array(
             'Name' =>'Highest <abbr title="Kills per game">KpG</abbr> Ratio',
             'Max' => 1,
-            'Field' => 'KillsPerGameRatio',
+            'Field' => H4::KILLS_PER_GAME_RATIO,
             'you' => array(
                 'pts' => intval($this->you_pts),
                 'style' => $this->you_style),
@@ -241,9 +241,9 @@ class H4_Compare {
     }
 
     function HeadshotsPerGame() {
-        if ($this->you['HeadshotsPerGameRatio'] == $this->them['HeadshotsPerGameRatio']) {
+        if ($this->you[H4::HEADSHOTS_PER_GAME_RATIO] == $this->them[H4::HEADSHOTS_PER_GAME_RATIO]) {
             $this->tie(2);
-        } else if ($this->you['HeadshotsPerGameRatio'] > $this->them['HeadshotsPerGameRatio']) {
+        } else if ($this->you[H4::HEADSHOTS_PER_GAME_RATIO] > $this->them[H4::HEADSHOTS_PER_GAME_RATIO]) {
             $this->you_num(2);
         } else {
             $this->them_num(2);
@@ -253,7 +253,7 @@ class H4_Compare {
         return array(
             'Name' =>'Highest <abbr title="Headshots per game">HpG</abbr> Ratio',
             'Max' => 1,
-            'Field' => 'HeadshotsPerGameRatio',
+            'Field' => H4::HEADSHOTS_PER_GAME_RATIO,
             'you' => array(
                 'pts' => intval($this->you_pts),
                 'style' => $this->you_style),
@@ -265,9 +265,9 @@ class H4_Compare {
     }
 
     function AssistsPerGame() {
-        if ($this->you['AssistsPerGameRatio'] == $this->them['AssistsPerGameRatio']) {
+        if ($this->you[H4::ASSISTS_PER_GAME_RATIO] == $this->them[H4::ASSISTS_PER_GAME_RATIO]) {
             $this->tie(2);
-        } else if ($this->you['AssistsPerGameRatio'] > $this->them['AssistsPerGameRatio']) {
+        } else if ($this->you[H4::ASSISTS_PER_GAME_RATIO] > $this->them[H4::ASSISTS_PER_GAME_RATIO]) {
             $this->you_num(2);
         } else {
             $this->them_num(2);
@@ -277,7 +277,7 @@ class H4_Compare {
         return array(
             'Name' =>'Highest <abbr title="Assists per game">ApG</abbr> Ratio',
             'Max' => 1,
-            'Field' => 'AssistsPerGameRatio',
+            'Field' => H4::ASSISTS_PER_GAME_RATIO,
             'you' => array(
                 'pts' => intval($this->you_pts),
                 'style' => $this->you_style),
@@ -289,12 +289,10 @@ class H4_Compare {
     }
 
     function KillsPlusAssistsPerGame() {
-        $this->you['KillsPlusAssistsPerGame']   = round(floatval(($this->you['TotalKills'] + $this->you['TotalAssists']) / $this->you['TotalDeaths']), 2);
-        $this->them['KillsPlusAssistsPerGame']  = round(floatval(( $this->them['TotalKills'] +  $this->them['TotalAssists']) /  $this->them['TotalDeaths']), 2);
 
-        if ($this->you['KillsPlusAssistsPerGame'] == $this->them['KillsPlusAssistsPerGame']) {
+        if ($this->you[H4::KAD_RATIO] == $this->them[H4::KAD_RATIO]) {
             $this->tie(3);
-        } else if ($this->you['KillsPlusAssistsPerGame'] > $this->them['KillsPlusAssistsPerGame']) {
+        } else if ($this->you[H4::KAD_RATIO] > $this->them[H4::KAD_RATIO]) {
             $this->you_num(3);
         } else {
             $this->them_num(3);
@@ -304,7 +302,7 @@ class H4_Compare {
         return array(
             'Name' =>'Highest <abbr title="Kills + Assists / Deaths">KA/D</abbr> Ratio',
             'Max' => 1,
-            'Field' => 'KillsPlusAssistsPerGame',
+            'Field' => H4::KAD_RATIO,
             'you' => array(
                 'pts' => intval($this->you_pts),
                 'style' => $this->you_style),
@@ -316,9 +314,9 @@ class H4_Compare {
     }
 
     function SuicidesPerGame() {
-        if ($this->you['SuicidesPerGameRatio'] == $this->them['SuicidesPerGameRatio']) {
+        if ($this->you[H4::SUICIDES_PER_GAME_RATIO] == $this->them[H4::SUICIDES_PER_GAME_RATIO]) {
             $this->reset_function_vars();
-        } else if ($this->you['SuicidesPerGameRatio'] > $this->them['SuicidesPerGameRatio']) {
+        } else if ($this->you[H4::SUICIDES_PER_GAME_RATIO] > $this->them[H4::SUICIDES_PER_GAME_RATIO]) {
             $this->them_num(1);
         } else {
             $this->you_num(1);
@@ -328,7 +326,7 @@ class H4_Compare {
         return array(
             'Name' =>'Lowest <abbr title="Suicides per game">SpG</abbr> Ratio',
             'Max' => 1,
-            'Field' => 'SuicidesPerGameRatio',
+            'Field' => H4::SUICIDES_PER_GAME_RATIO,
             'you' => array(
                 'pts' => intval($this->you_pts),
                 'style' => $this->you_style),
@@ -340,9 +338,9 @@ class H4_Compare {
     }
 
     function DeathsPerGame() {
-        if ($this->you['DeathsPerGameRatio'] == $this->them['DeathsPerGameRatio']) {
+        if ($this->you[H4::DEATHS_PER_GAME_RATIO] == $this->them[H4::DEATHS_PER_GAME_RATIO]) {
             $this->reset_function_vars();
-        } else if ($this->you['DeathsPerGameRatio'] > $this->them['DeathsPerGameRatio']) {
+        } else if ($this->you[H4::DEATHS_PER_GAME_RATIO] > $this->them[H4::DEATHS_PER_GAME_RATIO]) {
             $this->them_num(2);
         } else {
             $this->you_num(2);
@@ -352,7 +350,7 @@ class H4_Compare {
         return array(
             'Name' =>'Lowest <abbr title="Deaths per game">DpG</abbr> Ratio',
             'Max' => 1,
-            'Field' => 'DeathsPerGameRatio',
+            'Field' => H4::DEATHS_PER_GAME_RATIO,
             'you' => array(
                 'pts' => intval($this->you_pts),
                 'style' => $this->you_style),
@@ -364,9 +362,9 @@ class H4_Compare {
     }
 
     function BetraysPerGame() {
-        if ($this->you['BetrayalsPerGameRatio'] == $this->them['BetrayalsPerGameRatio']) {
+        if ($this->you[H4::BETRAYALS_PER_GAME_RATIO] == $this->them[H4::BETRAYALS_PER_GAME_RATIO]) {
             $this->reset_function_vars();
-        } else if ($this->you['BetrayalsPerGameRatio'] > $this->them['BetrayalsPerGameRatio']) {
+        } else if ($this->you[H4::BETRAYALS_PER_GAME_RATIO] > $this->them[H4::BETRAYALS_PER_GAME_RATIO]) {
             $this->them_num(1);
         } else {
             $this->you_num(1);
@@ -376,7 +374,7 @@ class H4_Compare {
         return array(
             'Name' =>'Lowest <abbr title="Betrayals per game">BpG</abbr> Ratio',
             'Max' => 1,
-            'Field' => 'BetrayalsPerGameRatio',
+            'Field' => H4::BETRAYALS_PER_GAME_RATIO,
             'you' => array(
                 'pts' => intval($this->you_pts),
                 'style' => $this->you_style),
@@ -388,23 +386,23 @@ class H4_Compare {
     }
 
     function WinPercentage() {
-        if ($this->you['WinPercentage'] == $this->them['WinPercentage']) {
+        if ($this->you[H4::WIN_PERCENTAGE] == $this->them[H4::WIN_PERCENTAGE]) {
             $this->tie(3);
-        } else if ($this->you['WinPercentage'] > $this->them['WinPercentage']) {
+        } else if ($this->you[H4::WIN_PERCENTAGE] > $this->them[H4::WIN_PERCENTAGE]) {
             $this->you_num(3);
         } else {
             $this->them_num(3);
         }
 
         // prep vars
-        $this->you['WinPercentage'] = $this->you['WinPercentage'] * 100 . "%";
-        $this->them['WinPercentage'] = $this->them['WinPercentage'] * 100 . "%";
+        $this->you[H4::WIN_PERCENTAGE] = $this->you[H4::WIN_PERCENTAGE] * 100 . "%";
+        $this->them[H4::WIN_PERCENTAGE] = $this->them[H4::WIN_PERCENTAGE] * 100 . "%";
 
         // return
         return array(
             'Name' => "Win Percentage",
             'Max' => 1,
-            'Field' => "WinPercentage",
+            'Field' => H4::WIN_PERCENTAGE,
             'you' => array(
                 'pts' => intval($this->you_pts),
                 'style' => $this->you_style),
@@ -416,23 +414,23 @@ class H4_Compare {
     }
 
     function QuitPercentage() {
-        if ($this->you['QuitPercentage'] == $this->them['QuitPercentage']) {
+        if ($this->you[H4::QUIT_PERCENTAGE] == $this->them[H4::QUIT_PERCENTAGE]) {
             $this->reset_function_vars();
-        } else if ($this->you['QuitPercentage'] > $this->them['QuitPercentage']) {
+        } else if ($this->you[H4::QUIT_PERCENTAGE] > $this->them[H4::QUIT_PERCENTAGE]) {
             $this->them_num(1);
         } else {
             $this->you_num(1);
         }
 
         // prep vars
-        $this->you['QuitPercentage'] = $this->you['QuitPercentage'] * 100 . "%";
-        $this->them['QuitPercentage'] = $this->them['QuitPercentage'] * 100 . "%";
+        $this->you[H4::QUIT_PERCENTAGE] = $this->you[H4::QUIT_PERCENTAGE] * 100 . "%";
+        $this->them[H4::QUIT_PERCENTAGE] = $this->them[H4::QUIT_PERCENTAGE] * 100 . "%";
 
         // return
         return array(
             'Name' => "Quit Percentage",
             'Max' => 1,
-            'Field' => "QuitPercentage",
+            'Field' => H4::QUIT_PERCENTAGE,
             'you' => array(
                 'pts' => intval($this->you_pts),
                 'style' => $this->you_style),
@@ -444,23 +442,23 @@ class H4_Compare {
     }
 
     function CommendationProgress() {
-        if ($this->you['TotalCommendationProgress'] == $this->them['TotalCommendationProgress']) {
+        if ($this->you[H4::TOTAL_COMMENDATION_PROGRESS] == $this->them[H4::TOTAL_COMMENDATION_PROGRESS]) {
             $this->tie();
-        } else if ($this->you['TotalCommendationProgress'] > $this->them['TotalCommendationProgress']) {
+        } else if ($this->you[H4::TOTAL_COMMENDATION_PROGRESS] > $this->them[H4::TOTAL_COMMENDATION_PROGRESS]) {
             $this->you_num(1);
         } else {
             $this->them_num(1);
         }
 
         // prep vars
-        $this->you['TotalCommendationProgress'] = $this->you['TotalCommendationProgress'] * 100 . "%";
-        $this->them['TotalCommendationProgress'] = $this->them['TotalCommendationProgress'] * 100 . "%";
+        $this->you[H4::TOTAL_COMMENDATION_PROGRESS] = $this->you[H4::TOTAL_COMMENDATION_PROGRESS] * 100 . "%";
+        $this->them[H4::TOTAL_COMMENDATION_PROGRESS] = $this->them[H4::TOTAL_COMMENDATION_PROGRESS] * 100 . "%";
 
         // return
         return array(
             'Name' => "Commendation Progress",
             'Max' => 1,
-            'Field' => "TotalCommendationProgress",
+            'Field' => H4::TOTAL_COMMENDATION_PROGRESS,
             'you' => array(
                 'pts' => intval($this->you_pts),
                 'style' => $this->you_style),
@@ -472,9 +470,9 @@ class H4_Compare {
     }
 
     function AveragePersonalScore() {
-        if ($this->you['AveragePersonalScore'] == $this->them['AveragePersonalScore']) {
+        if ($this->you[H4::AVERAGE_PERSONAL_SCORE] == $this->them[H4::AVERAGE_PERSONAL_SCORE]) {
             $this->tie(3);
-        } else if ($this->you['AveragePersonalScore'] > $this->them['AveragePersonalScore']) {
+        } else if ($this->you[H4::AVERAGE_PERSONAL_SCORE] > $this->them[H4::AVERAGE_PERSONAL_SCORE]) {
             $this->you_num(3);
         } else {
             $this->them_num(3);
@@ -484,7 +482,7 @@ class H4_Compare {
         return array(
             'Name' => '<abbr title="Average">Avg</abbr> Personal Score',
             'Max' => 1,
-            'Field' => "AveragePersonalScore",
+            'Field' => H4::AVERAGE_PERSONAL_SCORE,
             'you' => array(
                 'pts' => intval($this->you_pts),
                 'style' => $this->you_style),
@@ -500,14 +498,14 @@ class H4_Compare {
         $them_top = FALSE;
 
         // get top CSR
-        if (count($this->you['SkillData']) > 0) {
-            $you_top = $this->you['SkillData']['Team'];
+        if (count($this->you[H4::SKILL_DATA]) > 0) {
+            $you_top = $this->you[H4::SKILL_DATA]['Team'];
         } else {
             $you_top = FALSE;
         }
 
-        if (count($this->them['SkillData']) > 0) {
-            $them_top = $this->them['SkillData']['Team'];
+        if (count($this->them[H4::SKILL_DATA]) > 0) {
+            $them_top = $this->them[H4::SKILL_DATA]['Team'];
         } else {
             $them_top = FALSE;
         }
@@ -559,14 +557,14 @@ class H4_Compare {
         $them_top = FALSE;
 
         // get top CSR
-        if (count($this->you['SkillData']) > 0) {
-            $you_top = $this->you['SkillData']['Ind'];
+        if (count($this->you[H4::SKILL_DATA]) > 0) {
+            $you_top = $this->you[H4::SKILL_DATA]['Ind'];
         } else {
             $you_top = FALSE;
         }
 
-        if (count($this->them['SkillData']) > 0) {
-            $them_top = $this->them['SkillData']['Ind'];
+        if (count($this->them[H4::SKILL_DATA]) > 0) {
+            $them_top = $this->them[H4::SKILL_DATA]['Ind'];
         } else {
             $them_top = FALSE;
         }
@@ -614,9 +612,9 @@ class H4_Compare {
     }
 
     function KDRatio() {
-        if ($this->you['KDRatio'] == $this->them['KDRatio']) {
+        if ($this->you[H4::KD_RATIO] == $this->them[H4::KD_RATIO]) {
             $this->tie(5);
-        } else if ($this->you['KDRatio'] > $this->them['KDRatio']) {
+        } else if ($this->you[H4::KD_RATIO] > $this->them[H4::KD_RATIO]) {
             $this->you_num(5);
         } else {
             $this->them_num(5);
@@ -626,7 +624,7 @@ class H4_Compare {
         return array(
             'Name' =>'Highest <abbr title="Kill / Death">KD</abbr> Ratio',
             'Max' => 1,
-            'Field' => 'KDRatio',
+            'Field' => H4::KD_RATIO,
             'you' => array(
                 'pts' => intval($this->you_pts),
                 'style' => $this->you_style),
@@ -638,9 +636,9 @@ class H4_Compare {
     }
 
     function ChallengesCompleted() {
-        if ($this->you['TotalChallengesCompleted'] == $this->them['TotalChallengesCompleted']) {
+        if ($this->you[H4::TOTAL_CHALLENGES_COMPLETED] == $this->them[H4::TOTAL_CHALLENGES_COMPLETED]) {
             $this->tie();
-        } else if ($this->you['TotalChallengesCompleted'] > $this->them['TotalChallengesCompleted']) {
+        } else if ($this->you[H4::TOTAL_CHALLENGES_COMPLETED] > $this->them[H4::TOTAL_CHALLENGES_COMPLETED]) {
             $this->you_num(1);
         } else {
             $this->them_num(1);
@@ -650,7 +648,7 @@ class H4_Compare {
         return array(
             'Name' =>'Challenges Completed',
             'Max' => 1,
-            'Field' => 'TotalChallengesCompleted',
+            'Field' => H4::TOTAL_CHALLENGES_COMPLETED,
             'you' => array(
                 'pts' => intval($this->you_pts),
                 'style' => $this->you_style),

@@ -425,6 +425,20 @@ class H4_Lib {
     }
 
     /**
+     * set_badge
+     *
+     * Returns formatted badge
+     * @param $resp
+     * @return string
+     */
+    public function set_badge(&$resp) {
+        if (isset($resp[H4::BADGE])) {
+            $resp[H4::BADGE] = '<span class="badge badge-' . (isset($resp[H4::BADGE_COLOR]) ? $resp[H4::BADGE_COLOR] : "info") . '">' . $resp[H4::BADGE] . '</span>';
+        }
+        $resp[H4::BADGE] = '';
+    }
+
+    /**
      * get_profile
      * 1) Checks for file-based cache.
      * 2) Returns if less than 1 hr old
@@ -539,6 +553,7 @@ class H4_Lib {
 
         // grab from db, if null continue
         $resp = $this->_ci->stat_m->get_gamertag_data($hashed);
+        $this->_ci->h4_lib->set_badge($resp);
 
         if (isset($resp[H4::EXPIRATION]) && is_array($resp)) {
             if (intval($resp[H4::API_VERSION]) != intval(API_VERSION) && $force == FALSE) {
@@ -670,14 +685,14 @@ class H4_Lib {
             H4::API_VERSION                    => intval(API_VERSION)
         );
 
-        $this->_ci->mongo_db->add_index('h4_gamertags', array(
-            H4::SEO_GAMERTAG       => 1,
-            H4::HASHED_GAMERTAG    => 1), array(
-            'unique'        => TRUE,
-            'dropDups'      => TRUE,
-            'background'    => TRUE,
-            'name'          => 'h4_index'
-        ));
+        //$this->_ci->mongo_db->add_index('h4_gamertags', array(
+        //    H4::SEO_GAMERTAG       => 1,
+        //    H4::HASHED_GAMERTAG    => 1), array(
+        //    'unique'        => TRUE,
+        //    'dropDups'      => TRUE,
+        //    'background'    => TRUE,
+        //    'name'          => 'h4_index'
+        //));
 
         utf8_encode_deep($dump);
         return $this->_ci->stat_m->update_or_insert_gamertag($hashed, $dump);
@@ -977,6 +992,44 @@ class H4_Lib {
         $this->_ci->utils->set_sort_key("SkillRank");
         uasort($rtr_arr, array($this->_ci->utils, "key_sort"));
         return $rtr_arr;
+    }
+
+    /**
+     * return_highest_csr
+     *
+     * Returns the highest Team/Ind for CSR data
+     * @param $data
+     * @return array|bool
+     */
+    public function return_highest_csr($data) {
+        $top_team   = [
+            'SkillRank' => 0
+        ];
+
+        $top_ind    = [
+            'SkillRank' => 0
+        ];
+
+        if (is_array($data)) {
+            foreach($data as $item) {
+                if ($item['Type'] == "Individual") {
+                    if ($item['SkillRank'] >= $top_ind['SkillRank']) {
+                        $top_ind = $item;
+                    }
+                } else if ($item['Type'] == "Team") {
+                    if ($item['SkillRank'] >= $top_team['SkillRank']) {
+                        $top_team = $item;
+                    }
+                } else {
+                    log_mesasage('error', $item['Type'] . " is unknown.");
+                }
+            }
+            return [
+                'Team'  => $top_team,
+                'Ind'   => $top_ind
+            ];
+        }
+        return FALSE;
     }
 
     /**

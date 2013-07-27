@@ -21,9 +21,9 @@
 <br />
 <? if ($data[H4::INACTIVE_COUNTER] < INACTIVE_COUNTER): ?>
     <? if ((($data[H4::EXPIRATION] - SEVENDAYS_IN_SECONDS + FIVEMIN_IN_SECONDS) < time()) && $data[H4::INACTIVE_COUNTER] < INACTIVE_COUNTER): ?>
-        <a href="<?= base_url('h4/' . $data[H4::SEO_GAMERTAG] . "/recache"); ?>" class="btn btn-success pad10">Refresh</a>
+        <a href="<?= base_url('h4/record/' . $data[H4::SEO_GAMERTAG] . "/recache"); ?>" class="btn btn-success pad10">Refresh</a>
     <? elseif (($data[H4::EXPIRATION] - SEVENDAYS_IN_SECONDS - time() + FIVEMIN_IN_SECONDS) > 0): ?>
-        <a id="recache_button" href="<?= base_url('h4/' . $data[H4::SEO_GAMERTAG] . "/recache"); ?>" style="display:none;" class="btn btn-success pad10">Refresh</a>
+        <a id="recache_button" href="<?= base_url('h4/record/' . $data[H4::SEO_GAMERTAG] . "/recache"); ?>" style="display:none;" class="btn btn-success pad10">Refresh</a>
     <? endif; ?>
 <? endif; ?>
 <? if ($data[H4::INACTIVE_COUNTER] >= INACTIVE_COUNTER): ?>

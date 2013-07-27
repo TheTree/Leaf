@@ -10,8 +10,8 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th><?= $data['you']['badge']; ?><a href="<?= base_url('gt/' . $data['you']['SeoGamertag']); ?>"><?= $data['you']['Gamertag']; ?></a> - <small><?= $data['you']['ServiceTag']; ?></small></th>
-                    <th><?= $data['them']['badge']; ?><a href="<?= base_url('gt/' . $data['them']['SeoGamertag']); ?>"><?= $data['them']['Gamertag']; ?></a> - <small><?= $data['them']['ServiceTag']; ?></small></th>
+                    <th><?= $data['you'][H4::BADGE]; ?><a href="<?= base_url('h4/record/' . $data['you'][H4::SEO_GAMERTAG]); ?>"><?= $data['you'][H4::GAMERTAG]; ?></a> - <small><?= $data['you'][H4::SERVICE_TAG]; ?></small></th>
+                    <th><?= $data['them'][H4::BADGE]; ?><a href="<?= base_url('h4/record/' . $data['them'][H4::SEO_GAMERTAG]); ?>"><?= $data['them'][H4::GAMERTAG]; ?></a> - <small><?= $data['them'][H4::SERVICE_TAG]; ?></small></th>
                 </tr>
             </thead>
             <tbody>
@@ -36,9 +36,9 @@
                 <thead>
                     <tr>
                         <th>Task</th>
-                        <th><?= $data['you']['Gamertag']; ?></th>
+                        <th><?= $data['you'][H4::GAMERTAG]; ?></th>
                         <th>Points</th>
-                        <th><?= $data['them']['Gamertag']; ?></th>
+                        <th><?= $data['them'][H4::GAMERTAG]; ?></th>
                         <th>Points</th>
                     </tr>
                 </thead>
@@ -67,27 +67,27 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td><?= $data['you']['Gamertag']; ?></td>
+                        <td><?= $data['you'][H4::GAMERTAG]; ?></td>
                         <td><span class="badge <?= $data['you']['TotalStyle']; ?>"><?= $data['you']['TotalPoints']; ?></span></td>
                     </tr>
                     <tr>
-                        <td><?= $data['them']['Gamertag']; ?></td>
+                        <td><?= $data['them'][H4::GAMERTAG]; ?></td>
                         <td><span class="badge <?= $data['them']['TotalStyle']; ?>"><?= $data['them']['TotalPoints']; ?></span></td>
                     </tr>
                 </tbody>
             </table>
             <?php if ($data['final']['Status'] == 'W'): ?>
-                <div class="alert <?= $data['final']['Style'] ?>">Winner: <strong><?= $data['you']['Gamertag']; ?></strong></div>
-                <span class="badge badge-inverse">Loser: <strong><?= $data['them']['Gamertag']; ?></strong></span>
+                <div class="alert <?= $data['final']['Style'] ?>">Winner: <strong><?= $data['you'][H4::GAMERTAG]; ?></strong></div>
+                <span class="badge badge-inverse">Loser: <strong><?= $data['them'][H4::GAMERTAG]; ?></strong></span>
             <? elseif ($data['final']['Status'] == 'L'): ?>
-                <div class="alert <?= $data['final']['Style'] ?>">Loser: <strong><?= $data['you']['Gamertag']; ?></strong></div>
-                <span class="badge badge-success">Winner: <strong><?= $data['them']['Gamertag']; ?></strong></span>
+                <div class="alert <?= $data['final']['Style'] ?>">Loser: <strong><?= $data['you'][H4::GAMERTAG]; ?></strong></div>
+                <span class="badge badge-success">Winner: <strong><?= $data['them'][H4::GAMERTAG]; ?></strong></span>
             <? else: ?>
-                <div class="alert alert-info">Tie: <strong><?= $data['you']['Gamertag']; ?></strong></div>
-                <div class="alert alert-info">Tie: <strong><?= $data['them']['Gamertag']; ?></strong></div>
+                <div class="alert alert-info">Tie: <strong><?= $data['you'][H4::GAMERTAG]; ?></strong></div>
+                <div class="alert alert-info">Tie: <strong><?= $data['them'][H4::GAMERTAG]; ?></strong></div>
             <? endif; ?>
             <br /><br />
-            <a href="https://twitter.com/share" class="twitter-share-button" data-size="large" data-text="I <?= $data['final']['TweetWord'] ?> <?= $data['them']['Gamertag'] ?> (<?= $template['title']; ?>)" data-hashtags="Halo4">Tweet</a>
+            <a href="https://twitter.com/share" class="twitter-share-button" data-size="large" data-text="I <?= $data['final']['TweetWord'] ?> <?= $data['them'][H4::GAMERTAG] ?> (<?= $template['title']; ?>)" data-hashtags="Halo4">Tweet</a>
             <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
         </div>
         <? endif; ?>
