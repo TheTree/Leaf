@@ -9,7 +9,7 @@ class Index extends IBOT_Controller {
         parent::__construct();
 
         // gatekeeper, load models, setup template
-        $this->library->backstage_gatekeeper();
+        $this->utils->backstage_gatekeeper();
         $this->load->model('admin_model', 'admin_m', TRUE);
         $this->load->model('news_model', 'news_m', TRUE);
         $this->load->model('h4/stat_model', 'stat_m', TRUE);
@@ -31,7 +31,7 @@ class Index extends IBOT_Controller {
     }
 
     function flagged() {
-        $flagged_users = $this->library->get_flagged($this->admin_m->get_flagged_users());
+        $flagged_users = $this->h4_lib->get_flagged($this->admin_m->get_flagged_users());
 
         $this->template
             ->title("Flagged Users")

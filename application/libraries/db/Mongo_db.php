@@ -917,6 +917,47 @@ class Mongo_db
     }
 
     /**
+     * Aggregate
+     *
+     * Performs an aggregate query
+     *
+     * <code>
+     * $this->mongo_db->aggregate('collection')->pipeline(
+     * [ '$group' => [
+     *             ]
+     * ];
+     * </code>
+     *
+     * @param string $collection
+     * @param array  $pipeline
+     *
+     * @access public
+     * @return array
+     */
+    public function aggregate($collection = '', $pipeline = array())
+    {
+
+        if (empty($collection))
+        {
+            $this->_show_error('In order to retrieve a count of documents from MongoDB, a collection name must be passed', 500);
+        }
+
+        $documents = $this->_dbhandle
+            ->{$collection}
+            ->aggregate([$pipeline]);
+
+        if (isset($documents['result']))
+        {
+            return $documents['result'];
+        }
+
+        else
+        {
+            return FALSE;
+        }
+    }
+
+    /**
      * Count.
      *
      * Count the number of found documents

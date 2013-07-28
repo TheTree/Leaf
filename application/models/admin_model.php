@@ -58,25 +58,29 @@ class Admin_model extends IBOT_Model {
      * @return mixed
      */
     public function get_count() {
-        $resp = $this->db
-                ->select('Count(`status`) as amt,status')
-                ->group_by('status')
-                ->get('ci_gamertags');
-
-        $resp = $resp->result_array();
+        $resp = $this->mongo_db
+                ->aggregate('h4_gamertags', [
+                    '$group'    => [
+                        '_id'   => "$" . H4::STATUS . "",
+                        'amt'   => [
+                            '$sum'  => 1
+                        ]
+                    ]
+            ]);
 
         if (is_array($resp)) {
             $rtr = array();
             $rtr[-1] = 0;
 
             foreach($resp as $item) {
-                $rtr[$item['status']] = number_format($item['amt']);
+                $rtr[$item['_id']] = number_format($item['amt']);
                 $rtr[-1]              += $item['amt'];
             }
             return $rtr;
         } else {
             return FALSE;
         }
+        return FALSE;
     }
 
     /**
@@ -86,21 +90,16 @@ class Admin_model extends IBOT_Model {
      * @return array|bool
      */
     public function get_api_count() {
-        $resp = $this->db
-                ->select('Count(`ApiVersion`) as `amt`,`ApiVersion`', FALSE)
-                ->group_by('ApiVersion')
-                ->get('ci_gamertags');
-
-        $resp = $resp->result_array();
-        if (is_array($resp)) {
-            $rtr = array();
-
-            foreach($resp as $item) {
-                $rtr[$item['ApiVersion']] = number_format($item['amt']);
-            }
-            return $rtr;
-        }
-        return FALSE;
+        $resp = $this->mongo_db
+            ->aggregate('h4_gamertags', [
+                '$group'    => [
+                    '_id'   => "$" . H4::API_VERSION . "",
+                    'amt'   => [
+                        '$sum'  => 1
+                    ]
+                ]
+            ]);
+        return $resp;
     }
 
     /**

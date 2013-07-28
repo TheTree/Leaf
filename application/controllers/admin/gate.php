@@ -9,7 +9,7 @@ class Gate extends IBOT_Controller {
         parent::__construct();
         $this->load->model('admin_model', 'admin_m', true);
 
-        if (($this->library->backstage_gatekeeper(FALSE))) {
+        if (($this->utils->backstage_gatekeeper(FALSE))) {
             redirect(base_url('backstage/index'));
         }
     }
