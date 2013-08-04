@@ -173,10 +173,10 @@ class Index extends IBOT_Controller {
                 // $resp['badge'] =  '<span class="badge badge-' . $resp['colour'] . '">' . $resp['title'] . '</span>&nbsp;';
 
                 $this->stat_m->insert_badge(array(
-                    'SeoGamertag'       => $this->library->get_seo_gamertag($this->input->post('gamertag')),
-                    'title'             => $this->input->post('badge'),
-                    'colour'            => $this->input->post('type')
-                ));
+                    H4::BADGE           => $this->input->post('badge'),
+                    H4::BADGE_COLOR     => $this->input->post('type')
+                    ), $this->h4_lib->get_seo_gamertag($this->input->post('gamertag'))
+                );
 
                 redirect(base_url("backstage/badges/list"));
             }
@@ -189,7 +189,7 @@ class Index extends IBOT_Controller {
     //----------------------------------------------------------------
 
     function valid_gamertag($val) {
-        $hashed = $this->library->get_hashed_seo_gamertag($this->library->get_seo_gamertag($val));
+        $hashed = $this->h4_lib->get_hashed_seo_gamertag($this->h4_lib->get_seo_gamertag($val));
 
         if ($this->stat_m->account_exists($hashed) != FALSE) {
             return TRUE;
@@ -200,7 +200,7 @@ class Index extends IBOT_Controller {
     }
 
     function gamertag_exists($val) {
-        $seo = $this->library->get_seo_gamertag($val);
+        $seo = $this->h4_lib->get_seo_gamertag($val);
 
         if ($this->stat_m->badge_exists($seo) != FALSE) {
             $this->form_validation->set_message('gamertag_exists', '%s already exists.');

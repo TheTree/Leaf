@@ -434,6 +434,7 @@ class H4_Lib {
     public function set_badge(&$resp) {
         if (isset($resp[H4::BADGE])) {
             $resp[H4::BADGE] = '<span class="badge badge-' . (isset($resp[H4::BADGE_COLOR]) ? $resp[H4::BADGE_COLOR] : "info") . '">' . $resp[H4::BADGE] . '</span>';
+            return;
         }
         $resp[H4::BADGE] = '';
     }

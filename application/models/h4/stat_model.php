@@ -214,19 +214,13 @@ class Stat_model extends IBOT_Model {
      * @return bool
      */
     public function badge_exists($seo_gt) {
-        $resp = $this->db
-                ->select('id')
-                ->get_where('ci_badges', array(
-                'SeoGamertag'   => $seo_gt
-            ));
+        $resp = $this->mongo_db
+                ->select([H4::GAMERTAG])
+                ->where_exists(H4::BADGE)
+                ->where(H4::SEO_GAMERTAG, $seo_gt)
+                ->get('h4_gamertags');
 
-        $resp = $resp->row_array();
-
-        if (isset($resp['id'])) {
-            return TRUE;
-        } else {
-            return FALSE;
-        }
+        return $this->_get_one($resp, H4::GAMERTAG);
     }
 
     /**
@@ -535,9 +529,11 @@ class Stat_model extends IBOT_Model {
      * Inserts badge into `ci_badges`
      * @param $data
      */
-    public function insert_badge($data) {
-        $this->db
-            ->insert('ci_badges', $data);
+    public function insert_badge($data, $seo_gt) {
+        $this->mongo_db
+            ->set($data)
+            ->where(H4::SEO_GAMERTAG, $seo_gt)
+            ->update('h4_gamertags');
     }
 
     /**
@@ -841,7 +837,9 @@ class Stat_model extends IBOT_Model {
      * @return mixed
      */
     public function count_badges() {
-        return $this->db->count_all('ci_badges');
+        return $this->mongo_db
+            ->where_exists(H4::BADGE)
+            ->count('h4_gamertags');
     }
 
     /**
@@ -936,20 +934,14 @@ class Stat_model extends IBOT_Model {
      * @return array|bool
      */
     public function get_badges($limit, $start) {
-        $resp = $this->db
-                    ->select('B.title,B.colour,G.SeoGamertag,G.Gamertag')
-                    ->from("ci_badges B")
-                    ->limit(intval($limit), intval($start))
-                    ->join("ci_gamertags G", "B.SeoGamertag = G.SeoGamertag", "left")
-                    ->get();
+        $resp = $this->mongo_db
+                    ->select([H4::BADGE, H4::BADGE_COLOR, H4::SEO_GAMERTAG, H4::GAMERTAG])
+                    ->where_exists(H4::BADGE)
+                    ->offset(intval($start))
+                    ->limit(intval($limit))
+                    ->get("h4_gamertags");
 
-        $resp = $resp = $resp->result_array();
-
-        if (is_array($resp) && count($resp) > 0) {
-            return $resp;
-        } else {
-            return FALSE;
-        }
+        return $resp;
     }
 
     /**
