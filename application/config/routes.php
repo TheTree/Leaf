@@ -42,6 +42,7 @@
 $route['about']             = "index/about";
 $route['error']             = "home/error";
 $route['cron']              = "cron_task/update_gamertags";
+$route['cron2']             = "h4/cron_task/mysql_to_mongo";
 $route['news']              = "news/index";
 
 // ajax calls

@@ -318,7 +318,22 @@ class Stat_model extends IBOT_Model {
         } else {
             return FALSE;
         }
-                
+    }
+
+    public function transfer_mongo($start, $max) {
+        $resp = $this->db
+            ->select('Status,SeoGamertag,HashedGamertag,Gamertag,id')
+            ->limit(intval($max),intval($start))
+            ->order_by("id", "asc")
+            ->get("ci_gamertags");
+
+        $resp = $resp->result_array();
+
+        if (is_array($resp)) {
+            return $resp;
+        } else {
+            return FALSE;
+        }
     }
     
     /**
