@@ -721,6 +721,27 @@ class Mongo_db
     }
 
     /**
+     * where_exists
+     *
+     * Gets documents that have field existing already
+     *
+     * <code>
+     * $this->mongo_db->where_exists('foo')->get('foobar');
+     * </code>
+     *
+     * @param string $field Name of field
+     *
+     * @access public
+     * @return object
+     */
+    function where_exists($field = '')
+    {
+        $this->_where_init($field);
+        $this->wheres[$field]['$exists']    = TRUE;
+        return $this;
+    }
+
+    /**
      * like
      *
      * Get the documents where the (string) value of a $field is like a value. The defaults
