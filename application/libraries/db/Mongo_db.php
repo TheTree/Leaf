@@ -223,6 +223,10 @@ class Mongo_db
 
         elseif (is_string($config) && $this->_ci)
         {
+            if ($this->_ci->config->item('active') !== FALSE)
+            {
+                $config = $this->_ci->config->item('active');
+            }
             $this->_config_data = $this->_ci->config->item($config);
         }
 
