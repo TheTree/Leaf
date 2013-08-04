@@ -68,9 +68,13 @@
         <h4>The Tree</h4>
         <div class="well well-large">
             <ul class="unstyled">
+                <li><a href="http://branchapp.co">Branch</a> <small>(ßeta)</small></li>
                 <li><a href="http://leafapp.co">Leaf</a></li>
-                <li><a href="http://branchapp.co">Branch</a> (ßeta)</li>
-                <li><a href="http://twigapp.co">Twig</a> (Under Construction)</li>
+                <li><a href="http://rootapp.co">Root</a> <small>(tba)</small></li>
+                <li><a href="http://stumpapp.co">Stump</a> <small>(tba)</small></li>
+                <li><a href="http://treeapp.co">Tree</a> <small>(tba)</small></li>
+                <li><a href="http://trunkapp.co">Trunk</a> <small>(tba)</small></li>
+                <li><a href="http://twigapp.co">Twig</a> <small>(Under Construction)</small></li>
             </ul>
         </div>
     </div>
