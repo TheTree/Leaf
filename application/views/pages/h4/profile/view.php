@@ -23,7 +23,7 @@
     </div>
     <div class="span9">
         <? if ($msg != false): ?>
-            <div class="alert alert-info margin3pxtop">
+            <div class="alert alert-info alert-close margin3pxtop">
                 <button type="button" class="close" data-dismiss="alert">×</button>
                     <? if ($msg == "enabled"): ?>
                     <strong>Hey</strong> We've updated your stats :) 
@@ -32,7 +32,7 @@
                     <? endif; ?>
             </div>
         <? elseif ($general_msg != false): ?>
-            <div class="alert alert-success">
+            <div class="alert alert-success alert-close">
                 <button type="button" class="close" data-dismiss="alert">×</button>
                 <strong>Hey</strong> We've flagged <?= $data[H4::GAMERTAG]; ?> for you :)
             </div>

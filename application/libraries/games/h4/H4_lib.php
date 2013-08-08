@@ -552,8 +552,13 @@ class H4_Lib {
         // make hashed name
         $hashed = $this->get_hashed_seo_gamertag($seo_gamertag);
 
+        // profile
+        //if (ENVIRONMENT == "development") {
+        //  $this->_ci->stat_m->set_profile_level(2, 50);
+        //}
+
         // grab from db, if null continue
-        $resp = $this->_ci->stat_m->get_gamertag_data($hashed);
+        $resp = $this->_ci->stat_m->get_gamertag_data($seo_gamertag);
         $this->_ci->h4_lib->set_badge($resp);
 
         if (isset($resp[H4::EXPIRATION]) && is_array($resp)) {
@@ -688,8 +693,11 @@ class H4_Lib {
 
         //$this->_ci->mongo_db->add_index('h4_gamertags', array(
         //    H4::SEO_GAMERTAG       => 1,
-        //    H4::HASHED_GAMERTAG    => 1), array(
-        //    'unique'        => TRUE,
+        //    H4::HASHED_GAMERTAG    => 1,
+        //    H4::GAMERTAG           => 1,
+        //    H4::BADGE              => 1,
+        //    H4::STATUS             => 1), array(
+        //   'unique'        => TRUE,
         //    'dropDups'      => TRUE,
         //    'background'    => TRUE,
         //    'name'          => 'h4_index'

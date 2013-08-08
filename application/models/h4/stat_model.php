@@ -239,22 +239,36 @@ class Stat_model extends IBOT_Model {
 
         return $this->_get_one($resp, H4::STATUS);
     }
-    
+
     /**
      * get_gamertag
-     * 
      * Returns every field from `ci_gamertags`
-     * @param type $hashed
+     *
+     * @param $seo_gt
+     * @internal param \type $hashed
      * @return boolean
      */
-    public function get_gamertag_data($hashed) {
+    public function get_gamertag_data($seo_gt) {
 
         $resp = $this->mongo_db
-                    ->where(H4::HASHED_GAMERTAG, $hashed)
+                    ->where(H4::SEO_GAMERTAG, $seo_gt)
                     ->limit(1)
                     ->get('h4_gamertags');
 
         return $this->_get_one($resp, H4::HASHED_GAMERTAG);
+    }
+
+    /**
+     * set_profile_level
+     *
+     * @param $type - profile level
+     * @param $count - count level
+     */
+    public function set_profile_level($type, $count) {
+        $this->mongo_db->command([
+            'profile'   => intval($type),
+            'slowms'    => intval($count)
+        ]);
     }
 
     /**
@@ -325,6 +339,7 @@ class Stat_model extends IBOT_Model {
             ->select('Status,SeoGamertag,HashedGamertag,Gamertag,id')
             ->limit(intval($max),intval($start))
             ->order_by("id", "asc")
+            ->where("Status !=", intval(3))
             ->get("ci_gamertags");
 
         $resp = $resp->result_array();
@@ -570,11 +585,10 @@ class Stat_model extends IBOT_Model {
      * @param $status
      */
     public function change_status($seo, $status) {
-        $this->db
-            ->where('SeoGamertag', $seo)
-            ->update('ci_gamertags', array(
-                'Status' => intval($status)
-            ));
+        $this->mongo_db
+            ->set([H4::STATUS  => intval($status)])
+            ->where(H4::SEO_GAMERTAG, $seo)
+            ->update('h4_gamertags');
 
         $this->db
             ->where('SeoGamertag', $seo)

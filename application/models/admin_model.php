@@ -80,7 +80,6 @@ class Admin_model extends IBOT_Model {
         } else {
             return FALSE;
         }
-        return FALSE;
     }
 
     /**

@@ -6,6 +6,8 @@
  * Used to record the IDs for future help
  *
  * 95           - Global Challenge
+ * 96           - Global Challenge
+ * 97           - Global Challenge
  * 100          - Infinity Slayer
  * 101          - Big Team Infinity Slayer
  * 102          - Dominion
@@ -45,14 +47,14 @@ $config['h4_enabled']   = TRUE;
  *
  * Holds playlist ids for individual CSR playlists
  */
-$config['h4_individual_csr'] = [101,104,100,116,103,128,115,126,113,134,135,95];
+$config['h4_individual_csr'] = [101,104,100,116,103,128,115,126,113,135,96,98];
 
 /**
  * h4_team_csr
  *
  * Holds playlist ids for team CSR playlists
  */
-$config['h4_team_csr'] = [105,102,117,121,123,119];
+$config['h4_team_csr'] = [105,102,117,121,123,119,134];
 
 /**
  * h4_max_rank

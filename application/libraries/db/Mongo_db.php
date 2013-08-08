@@ -128,6 +128,16 @@ class Mongo_db
     public  $wheres = array();
 
     /**
+     * Hints string
+     *
+     * Used to hint an index
+     *
+     * @var string
+     * @access public
+     */
+    public $_hints = 'h4_index';
+
+    /**
      * Sorts array.
      *
      * @var array
@@ -393,6 +403,21 @@ class Mongo_db
             }
         }
 
+        return $this;
+    }
+
+    /**
+     * Set hint index name
+     *
+     * Forces mongo to use this index, instead of going down the list of indexes and performing table scans.
+     *
+     * @param string $index_name Name of index
+     *
+     * @access public
+     * @return object
+     */
+    public function hint($index_name = '') {
+        $this->_hints = $index_name;
         return $this;
     }
 
@@ -911,6 +936,7 @@ class Mongo_db
         $cursor = $this->_dbhandle
             ->{$collection}
             ->find($this->wheres, $this->_selects)
+            ->hint($this->_hints)
             ->limit($this->_limit)
             ->skip($this->_offset)
             ->sort($this->_sorts);
@@ -921,7 +947,7 @@ class Mongo_db
         // Return the raw cursor if wanted
         if ($return_cursor === TRUE)
         {
-            return $cursor;
+            return $cursor->explain();
         }
 
         $documents = array();
