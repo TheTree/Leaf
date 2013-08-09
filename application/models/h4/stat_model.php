@@ -546,9 +546,8 @@ class Stat_model extends IBOT_Model {
     public function insert_flag($gt, $ip) {
         $this->db
             ->insert('ci_flagged', array(
-                'SeoGamertag' => $gt['SeoGamertag'],
-                'Gamertag' => $gt['Gamertag'],
-                'Id'    => $gt['id'],
+                'SeoGamertag' => $gt[H4::SEO_GAMERTAG],
+                'Gamertag' => $gt[H4::GAMERTAG],
                 'ip_address' => $ip
             ));
     }
@@ -1040,21 +1039,23 @@ class Stat_model extends IBOT_Model {
 
     /**
      * _get_one
-     *
      * If you are only grabbing one record Mongo will assign it $array[0], but we just want $array
      * so this removes the [0] and returns it without the id.
      *
      * @param        $resp
      * @param string $field
+     * @param bool   $drop
      * @return array|bool
      */
-    private function _get_one(&$resp, $field = '') {
+    private function _get_one(&$resp, $field = '', $drop = TRUE) {
         if (is_array($resp) && count($resp) == 1) {
             $resp = $resp[0];
         }
 
         if (isset($resp[$field])) {
-            unset($resp['_id']);
+            if ($drop) {
+                unset($resp['_id']);
+            }
             return $resp;
         } else {
             return FALSE;

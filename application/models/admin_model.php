@@ -109,8 +109,8 @@ class Admin_model extends IBOT_Model {
      */
     public function get_flagged_users() {
         $resp = $this->db
-            ->select('Count(`id`) as amt,`Gamertag`,`SeoGamertag`',FALSE)
-            ->group_by("id")
+            ->select('Count(`SeoGamertag`) as amt,`Gamertag`,`SeoGamertag`',FALSE)
+            ->group_by("SeoGamertag")
             ->order_by("amt", "desc")
             ->order_by("SeoGamertag", "asc")
             ->get('ci_flagged');

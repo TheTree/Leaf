@@ -12,7 +12,7 @@ class Home extends IBOT_Controller {
     }
 
     function index() {
-        $this->form_validation->set_rules('gamertag', 'Gamertag', 'required|max_length[15]|xss_clean');
+        $this->form_validation->set_rules('gamertag', 'Gamertag', 'required|max_length[15]|xss_clean|trim');
 
         if ($this->form_validation->run() == FALSE) {
             $this->session->set_flashdata('errors', validation_errors());
