@@ -294,13 +294,17 @@ class Stat_model extends IBOT_Model {
      * @return bool
      */
     public function get_max_id() {
-        $this->db->select_max('id','max');
-        $resp = $this->db->get('ci_gamertags');
-
-        $resp = $resp->row_array();
-
-        if (isset($resp['max'])) {
-            return $resp['max'];
+        $resp = $this->mongo_db
+            ->aggregate('h4_gamertags', [
+                '$group'    => [
+                    '_id'   => "",
+                    'last'   => [
+                        '$max'  => "$" . "_id"
+                    ]
+                ]
+            ]);
+        if (isset($resp[0]['last'])) {
+            return $resp[0]['last'];
         } else {
             return FALSE;
         }
@@ -315,35 +319,15 @@ class Stat_model extends IBOT_Model {
      * @return boolean
      */
     public function cron_gamertag($start, $max) {
-        $resp = $this->db
-                ->select('HashedGamertag,TotalGameplay,id,InactiveCounter,Gamertag,SeoGamertag')
-                ->limit(intval($max),intval($start))
-                ->order_by("id", "asc")
-                ->get_where('ci_gamertags', array(
-                    'Status'    => intval(0),
-                    'Expiration <' => time(),
-                    'InactiveCounter <' => INACTIVE_COUNTER
-                ));
+        $resp = $this->mongo_db
+                ->select([H4::HASHED_GAMERTAG,H4::TOTAL_GAMEPLAY, H4::INACTIVE_COUNTER, H4::GAMERTAG, H4::SEO_GAMERTAG])
+                ->limit(intval($max))
+                ->order_by(['$natural' => "asc"])
+                ->where_lt(H4::EXPIRATION, intval(time()))
+                ->where_lt(H4::INACTIVE_COUNTER, intval(INACTIVE_COUNTER))
+                ->where(H4::STATUS, intval(0))
+                ->get('h4_gamertags');
         
-        $resp = $resp->result_array();
-        
-        if (is_array($resp)) {
-            return $resp;
-        } else {
-            return FALSE;
-        }
-    }
-
-    public function transfer_mongo($start, $max) {
-        $resp = $this->db
-            ->select('Status,SeoGamertag,HashedGamertag,Gamertag,id')
-            ->limit(intval($max),intval($start))
-            ->order_by("id", "asc")
-            ->where("Status !=", intval(3))
-            ->get("ci_gamertags");
-
-        $resp = $resp->result_array();
-
         if (is_array($resp)) {
             return $resp;
         } else {
