@@ -127,6 +127,7 @@ class Cron_task extends IBOT_Controller {
 
             foreach ($resp as $item) {
                 print "Running: " . $item['Gamertag'] . "\n";
+                $item['TotalGameplay'] = (isset($item['TotalGameplay']) ? intval($item['TotalGameplay']) : intval(1));
 
                 // check for FAILED msg
                 $new_record = $this->h4_lib->get_profile($item['Gamertag'], FALSE, TRUE, $item['SeoGamertag']);
@@ -137,7 +138,7 @@ class Cron_task extends IBOT_Controller {
                     print $item['SeoGamertag'] . " is marked at MISSING. \n";
                 } else {
                     print $item['Gamertag'] . " loaded fine :( \n";
-                    print $item['Gamertag'] . " was at " . $item['InactiveCounter'] . "\n";
+                    $this->stat_m->delete_missing_record($item['SeoGamertag']);
 
                     if ($item['TotalGameplay'] != $new_record['TotalGameplay']) {
                         print $item['Gamertag'] . " has had an TotalGameplay Change. Reset InactiveCounter \n";
