@@ -1060,7 +1060,10 @@ class H4_Lib {
      * @internal param $data
      */
     public function return_csr_v2($leaderboard, $csr) {
-        //$csr = msgpack_unpack(utf8_decode($csr));
+        if (!is_array($csr)) {
+            $csr = msgpack_unpack(utf8_decode($csr));
+        }
+
         $rtr_arr = array();
         $playlists = $this->get_playlists();
 
