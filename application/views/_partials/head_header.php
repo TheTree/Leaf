@@ -6,8 +6,6 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="description" content="<? if (isset($meta['description'])): ?><?= $meta['description']; ?><? else: ?>Halo 4 Stat Tracking provided by LeafApp, including Halo 4 CSR <? endif; ?>">
     <?= link_tag('assets/css/bootstrap/bootstrap.min.css'); ?>
-    <?= link_tag('assets/css/bootstrap/bootstrap-responsive.min.css'); ?>
-    <?= link_tag('assets/css/bootstrap/bootswatch.css'); ?>
     <?= link_tag('assets/css/default.css'); ?>
     <?= link_tag('assets/css/csr.css'); ?>
     <script>
@@ -36,5 +34,4 @@
     <script src="<?= base_url('assets/js/csrf_autoload.js'); ?>" type="text/javascript"></script>
     <script src="<?= base_url('assets/js/bootstrap/bootstrap.min.js'); ?>" type="text/javascript"></script>
     <script src="<?= base_url('assets/js/bootstrap/jquery.smooth-scroll.min.js'); ?>" type="text/javascript"></script>
-    <script src="<?= base_url('assets/js/bootstrap/bootswatch.js'); ?>" type="text/javascript"></script>
 </head>

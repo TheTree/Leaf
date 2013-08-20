@@ -8,13 +8,13 @@
     });
 </script>
 <? endif; ?>
-<img src="<?= $data['SpartanURL']; ?>" width="211px" height="418px" class="img-polaroid" />
+<img src="<?= $data['SpartanURL']; ?>" width="211px" height="418px" class="img-thumbnail img-responsive" />
 <!-- InactiveCounter: <?= $data[H4::INACTIVE_COUNTER]; ?> -->
 <!-- Status: <?= $data[H4::STATUS]; ?> -->
 <!-- ApiVersion: <?= $data[H4::API_VERSION]; ?> -->
-<div class="well well-large btn btn-primary pad10 w150">
-    <div class="pagination-centered">
-        <img src="<?= $this->h4_lib->return_image_url('Rank', $data[H4::RANK], 'large'); ?>" />
+<div class="btn-default btn pad10">
+    <div class="text-center">
+        <img src="<?= $this->h4_lib->return_image_url('Rank', $data[H4::RANK], 'large'); ?>" class="img-responsive" />
         <?= $data[H4::SPECIALIZATION]; ?> - <?= $data[H4::SPECIALIZATION_LEVEL]; ?>
     </div>
 </div>

@@ -1,6 +1,6 @@
 <? if ($data[H4::SKILL_DATA] != FALSE && count($data[H4::SKILL_DATA]) > 0): ?>
     <strong>Playlist Ranks</strong>
-    <div class="well well-large">
+    <div class="well well-lg">
         <div id="csr_switch" class="top_right">
             <div class="hidden">
                 <ul class="nav nav-tabs" id="csr-tabs">
@@ -35,7 +35,7 @@
                 </table>
             </div>
             <div class="tab-pane" id="old-csr">
-                <div class="pagination-centered">
+                <div class="text-center">
                     <? foreach ($data[H4::SKILL_DATA] as $csr): ?>
                         <? if ($csr['SkillRank'] > 0): ?>
                             <span data-toggle="tooltip" data-html="true"
