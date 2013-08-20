@@ -425,9 +425,9 @@ class H4_Lib {
             case Category::CAMPAIGN:
                 return 'warning';
             case Category::SPARTAN_OPS:
-                return 'inverse';
-            case Category::WAR_GAMES:
                 return 'info';
+            case Category::WAR_GAMES:
+                return 'primary';
             default:
                 return '';
         }
@@ -442,7 +442,7 @@ class H4_Lib {
      */
     public function set_badge(&$resp) {
         if (isset($resp[H4::BADGE])) {
-            $resp[H4::BADGE] = '<span class="badge badge-' . (isset($resp[H4::BADGE_COLOR]) ? $resp[H4::BADGE_COLOR] : "info") . '">' . $resp[H4::BADGE] . '</span>&nbsp;';
+            $resp[H4::BADGE] = '<span class="label label-' . (isset($resp[H4::BADGE_COLOR]) ? $resp[H4::BADGE_COLOR] : "info") . '">' . $resp[H4::BADGE] . '</span>&nbsp;';
             return;
         }
         $resp[H4::BADGE] = '';
@@ -1205,13 +1205,13 @@ class H4_Lib {
     public function get_banned_type($status) {
         switch ($status) {
             case 0:
-                return '<span class="badge">Not banned</span>';
+                return '<span class="label">Not banned</span>';
 
             case CHEATING_PLAYER:
-                return '<span class="badge badge-important">Cheater</span>';
+                return '<span class="label label-important">Cheater</span>';
 
             case BOOSTING_PLAYER:
-                return '<span class="badge badge-warning">Booster</span>';
+                return '<span class="label label-warning">Booster</span>';
         }
     }
 

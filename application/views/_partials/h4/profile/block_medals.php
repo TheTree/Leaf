@@ -1,7 +1,7 @@
-<div class="visible-desktop visible-tablet">
+<div class="visible-lg visible-md">
     <strong>Medals</strong>
-    <div class="well well-large medal_height">
-        <div class="pagination-centered">
+    <div class="well well-lg medal_height">
+        <div class="text-center">
             <ul class="nav nav-tabs" id="MedalTabs">
                 <? foreach ($data[H4::MEDAL_DATA] as $medal): ?>
                     <li class=""><a href="#Medal_<?= $medal['Name']; ?>" data-toggle="tab"><?= $medal['Name']; ?></a></li>
@@ -32,7 +32,7 @@
         });
     </script>
 </div>
-<div class="visible-phone">
+<div class="visible-sm">
     <div class="alert alert-info">
         More detailed stats available on desktop :)
     </div>

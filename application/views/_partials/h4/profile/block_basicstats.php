@@ -1,6 +1,6 @@
 <strong>Basic Stats</strong>
-<div class="well well-large">
-    <ul class="unstyled">
+<div class="well well-lg">
+    <ul class="list-unstyled">
         <li>
             <span class="row_title">Total Wins</span>
             <span class="row_data"><?= number_format($data[H4::TOTAL_GAME_WINS]); ?></span>
@@ -71,7 +71,7 @@
             <span class="row_data"><?= number_format($data[H4::TOTAL_CHALLENGES_COMPLETED]); ?></span>
         </li>
         <li>
-            <span class="row_title">Commendation Progress</span>
+            <span class="row_title">Commendations</span>
             <span class="row_data"><?= number_format($data[H4::TOTAL_COMMENDATION_PROGRESS] * 100); ?>%</span>
         </li>
         <li>

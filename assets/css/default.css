@@ -1,8 +1,11 @@
+body {
+    padding-top: 70px;
+}
 .row_title {
     display: inline-block;
     float: left;
     font-weight: bold;
-    padding-right: 10px;
+    padding-right: 8px;
     text-align: right;
     width: 155px;
 }

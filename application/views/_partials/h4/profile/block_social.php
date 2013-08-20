@@ -1,9 +1,9 @@
-<div class="visible-desktop visible-tablet">
+<div class="visible-lg visible-md">
     <br /><br />
         <strong>Social</strong>
-        <div class="well well-large">
-            <div class="visible-desktop">
-                <a href="http://branchapp.co/halo4/servicerecord/<?= $data['BranchGamertag']; ?>?u=profile"><span class="badge badge-info">View Profile on Branch</span></a>
+        <div class="well well-lg">
+            <div class="visible-lg">
+                <a href="http://branchapp.co/halo4/servicerecord/<?= $data['BranchGamertag']; ?>?u=profile"><span class="label label-info">View Profile on Branch</span></a>
                 <br />
                 <hr>
             </div>
