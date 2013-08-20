@@ -225,7 +225,7 @@ class H4_Lib {
             $ins_arr = array();
             if (is_array($resp)) {
                 foreach($resp['Playlists'] as $playlist) {
-                    if ($playlist['ModeId'] == 3) {
+                    if ($playlist['ModeId'] == 3 && $playlist['IsCurrent'] === TRUE) {
                         $ins_arr[$playlist['Id']] = array(
                             'Id' => $playlist['Id'],
                             'Name' => $playlist['Name'],

@@ -5,15 +5,22 @@
  *
  * Used to record the IDs for future help
  *
+ * 90           - Infinity Challenge Slayer
+ * 91           - Infinity Challenge CTF
+ * 92           - Infinity Challenge Regicide
+ * 93           - Infinity Challenge Dominion
  * 95           - Global Challenge
  * 96           - Global Challenge
  * 97           - Global Challenge
+ * 98           - Global Challenge
+ * 99           - Global Challenge
  * 100          - Infinity Slayer
  * 101          - Big Team Infinity Slayer
  * 102          - Dominion
  * 103          - Regicide
  * 104          - Flood
  * 105          - Capture The Flag
+ * 109          - Team Slayer Pro
  * 113          - Team Snipers
  * 115          - SWAT
  * 116          - Multi-Team
@@ -47,7 +54,7 @@ $config['h4_enabled']   = TRUE;
  *
  * Holds playlist ids for individual CSR playlists
  */
-$config['h4_individual_csr'] = [101,104,100,116,103,128,115,126,113,135,96,98];
+$config['h4_individual_csr'] = [101,104,100,116,103,128,115,126,113,135];
 
 /**
  * h4_team_csr
