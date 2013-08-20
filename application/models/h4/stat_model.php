@@ -1022,6 +1022,20 @@ class Stat_model extends IBOT_Model {
     }
 
     /**
+     * check_csr_column
+     * @param $column
+     * @return bool
+     */
+    public function check_csr_column($column) {
+       $fields = $this->db->list_fields('ci_csr');
+
+        if (in_array($column, $fields)) {
+            return TRUE;
+        }
+        return FALSE;
+    }
+
+    /**
      * _get_one
      * If you are only grabbing one record Mongo will assign it $array[0], but we just want $array
      * so this removes the [0] and returns it without the id.

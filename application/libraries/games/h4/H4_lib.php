@@ -243,6 +243,15 @@ class H4_Lib {
             $this->_ci->stat_m->empty_playlists();
             $this->_ci->stat_m->insert_playlists($ins_arr);
 
+            // lets update `ci_csr`
+            //foreach($ins_arr as $key => $value) {
+            //
+            //    // lets check if we exist
+            //    if ($this->_ci->stat_m->check_csr_column($key) !== TRUE) {
+            //
+            //    }
+            //}
+
             // dump into cache
             $this->_ci->cache->write(json_encode($ins_arr), 'playlists');
             return $ins_arr;

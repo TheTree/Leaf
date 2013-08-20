@@ -33,6 +33,7 @@
  * 128          - Rumble Pit
  * 134          - Big Team Skirmish
  * 135          - Legendary Slayer
+ * 137          - Champions Bundle DLC
  */
 
 
@@ -54,7 +55,7 @@ $config['h4_enabled']   = TRUE;
  *
  * Holds playlist ids for individual CSR playlists
  */
-$config['h4_individual_csr'] = [101,104,100,116,103,128,115,126,113,135];
+$config['h4_individual_csr'] = [101,104,100,116,103,128,115,126,113,135,137];
 
 /**
  * h4_team_csr
