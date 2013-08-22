@@ -23,39 +23,20 @@ class Cron_task extends IBOT_Controller {
 
         // check our previous and max
         $_previous = $this->cache->get('cron_lastid');
-        $_max = $this->cache->get('cron_maxid');
+        $_max      = $this->cache->get('cron_maxid');
 
-        print "Cache Last_ID: " . $_previous . "\n";
-        print "Cache Max_ID: " . $_max . "\n";
+        print "Raw Max: " . $_max . "\n";
+        print "Raw Previous: " . $_previous . "\n";
 
-        // this hacky block of code just sets the max to whatever was passed, or resets to a random
-        // MongoId which will then fail another future check
-        if (strlen($_max) > 10) {
-            $_max = new MongoId($_max);
-        } else {
-            $_max = new MongoId();
+        // check maxes
+        if (intval($_max) <= intval($_previous)) {
+            $_max = $this->stat_m->count_gamertags();
+            $this->cache->write(intval($_max), 'cron_maxid');
+            $_previous = intval(0);
         }
 
-        // if we have no previous mark, then lets set our MongoId to the first record ever
-        // inserted into the db (which I grabbed manually via Mongo shell)
-        if (!is_object($_previous)) {
-            $_previous = new MongoId("51fe919189a38eed24d960af");
-        }
-
-        if ($_previous->getTimestamp() >= $_max->getTimestamp()) {
-            $_max = 0;
-        }
-        
-        // check if its null
-        if (intval($_max) == 0 || intval($_previous) == 0) {
-            $_max = $this->stat_m->get_max_id();
-            $this->cache->write($_max, 'cron_maxid');
-            
-            $_previous = new MongoId("51fe919189a38eed24d960af");
-        }
-
-        print "Previous: " . $_previous . "\n";
         print "Max: " . $_max . "\n";
+        print "Previous: " . $_previous . "\n";
         
          // Lets load eh 10 people who are expired
         $results = $this->stat_m->cron_gamertag($_previous, intval(5));
@@ -74,7 +55,7 @@ class Cron_task extends IBOT_Controller {
                 // check if they can be loaded
                 if ($new_record == FALSE) {
                     $this->stat_m->update_account($result[H4::HASHED_GAMERTAG], array(
-                        H4::INACTIVE_COUNTER => intval($result[H4::HASHED_GAMERTAG] + 1)
+                        H4::INACTIVE_COUNTER => intval($result[H4::INACTIVE_COUNTER] + 1)
                     ));
 
                     $flag = TRUE;
@@ -104,11 +85,11 @@ class Cron_task extends IBOT_Controller {
             }
             
             // store new data
-            $this->cache->write($result['_id'], 'cron_lastid');
-            print "Wrote: " . $result['_id'] . " to cache. \n";
+            $this->cache->write(($_previous + 5), 'cron_lastid');
+            print "Wrote: " . ($_previous + 5) . " to cache. \n";
         } else {
-            $this->cache->write(new MongoId(), 'cron_lastid');
-            return $this->update_gamertags();
+            $this->cache->write(($_previous + 5), 'cron_lastid');
+            print "Skipping this iteration.";
         }
     }
 

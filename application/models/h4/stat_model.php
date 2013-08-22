@@ -280,10 +280,10 @@ class Stat_model extends IBOT_Model {
     public function count_gamertags($active = FALSE) {
         
         if ($active) {
-            $this->db->where("Expiration <", time());
+            $this->mongo_db->where_lt(H4::EXPIRATION, time());
         }
         
-        return $this->db->count_all_results('ci_gamertags');
+        return $this->mongo_db->count('h4_gamertags');
     }
 
     /**
@@ -321,8 +321,9 @@ class Stat_model extends IBOT_Model {
     public function cron_gamertag($start, $max) {
         $resp = $this->mongo_db
                 ->select([H4::HASHED_GAMERTAG,H4::TOTAL_GAMEPLAY, H4::INACTIVE_COUNTER, H4::GAMERTAG, H4::SEO_GAMERTAG])
+                ->offset(intval($start))
                 ->limit(intval($max))
-                ->order_by(['$natural' => "asc"])
+                //->order_by(['$natural' => "asc"])
                 ->where_lt(H4::EXPIRATION, intval(time()))
                 ->where_lt(H4::INACTIVE_COUNTER, intval(INACTIVE_COUNTER))
                 ->where(H4::STATUS, intval(0))
