@@ -75,8 +75,6 @@ $route['h4/playlists/recache']      = "h4/profile/redo_playlists";
 $route['h4/star/(:any)']            = "h4/profile/star/$1";
 $route['h4/flag/(:any)']            = "h4/moderate/flagged/$1";
 
-
-
 //-------------------------------------------------------
 // END: Halo 4
 //-------------------------------------------------------
