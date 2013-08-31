@@ -1,12 +1,12 @@
 <div class="row">
-   <h1><?= isset($data[H4::BADGE]) ? $data[H4::BADGE] : ""; ?><?= urldecode($gamertag); ?><small><?= $data[H4::SERVICE_TAG]; ?></small>
+   <h1><?= isset($data[H4::BADGE]) ? "&nbsp;" . $data[H4::BADGE] : ""; ?><?= urldecode($gamertag); ?><small>&nbsp;<?= $data[H4::SERVICE_TAG]; ?></small>
         <? if ($data[H4::STATUS] == 0): ?>
-            <a href="<?= base_url('h4/flag/' . $data[H4::SEO_GAMERTAG]); ?>" data-toggle="tooltop" data-html="true"
+            <a href="<?= base_url('h4/flag/' . $data[H4::SEO_GAMERTAG]); ?>" data-toggle="tooltip" data-html="true"
                title="Flag <strong><?= $data[H4::GAMERTAG]; ?></strong> as a Cheater/Booster?" rel="tooltip"
-               data-placement="right" onclick="return confirm('Are you sure you wish to flag <?= $data[H4::GAMERTAG]; ?> ?');"><i class="icon-flag"></i></a>
+               data-placement="right" onclick="return confirm('Are you sure you wish to flag <?= $data[H4::GAMERTAG]; ?>?');"><span class="btn-sm glyphicon glyphicon-flag"></span></a>
         <? endif; ?>
             <a href="<?= base_url('h4/star/' . $data[H4::SEO_GAMERTAG]); ?>" data-toggle="tooltip" data-html="true"
-               title="Star <strong><?= $data[H4::GAMERTAG]; ?></strong>" rel="tooltip" data-placement="right"><i class="icon-star"></i></a>
+               title="Star <strong><?= $data[H4::GAMERTAG]; ?></strong>" rel="tooltip" data-placement="right"><span class="btn-sm glyphicon glyphicon-star"></span></a>
     </h1>
 </div>
 <div class="row">
