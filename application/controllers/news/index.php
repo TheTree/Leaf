@@ -25,7 +25,7 @@ class Index extends IBOT_Controller {
         $config['per_page'] = intval(4);
         $config['use_page_numbers'] = FALSE;
         $config['uri_segment'] = 2;
-        $config['full_tag_open'] = '<div class="pagination pagination-centered"><ul>';
+        $config['full_tag_open'] = '<div class="text-center"><ul class="pagination">';
         $page = ($this->uri->segment(2)) ? $this->uri->segment(2) : 0;
 
         // run query again, cached w/ limit
