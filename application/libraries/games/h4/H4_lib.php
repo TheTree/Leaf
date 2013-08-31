@@ -442,7 +442,7 @@ class H4_Lib {
      */
     public function set_badge(&$resp) {
         if (isset($resp[H4::BADGE])) {
-            $resp[H4::BADGE] = '<span class="label label-' . (isset($resp[H4::BADGE_COLOR]) ? $resp[H4::BADGE_COLOR] : "info") . '">' . $resp[H4::BADGE] . '</span>&nbsp;';
+            $resp[H4::BADGE] = '<span class="label label-static-size label-' . (isset($resp[H4::BADGE_COLOR]) ? $resp[H4::BADGE_COLOR] : "info") . '">' . $resp[H4::BADGE] . '</span>&nbsp;';
             return;
         }
         $resp[H4::BADGE] = '';

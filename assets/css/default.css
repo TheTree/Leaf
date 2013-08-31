@@ -66,6 +66,10 @@ csr-legend {
     text-decoration: underline;
     color: #555;
 }
+.label-static-size {
+    font-size: 12px;
+    padding: .1em .3em .2em;
+}
 @media (max-width: 500px) {
     .row_title {
         width: 135px;
