@@ -67,7 +67,7 @@
             <span class="row_data"><?= number_format($data[H4::TOTAL_LOADOUT_ITEMS_PURCHASED]); ?></span>
         </li>
         <li>
-            <span class="row_title">Challenges Completed</span>
+            <span class="row_title">Challenges Done</span>
             <span class="row_data"><?= number_format($data[H4::TOTAL_CHALLENGES_COMPLETED]); ?></span>
         </li>
         <li>
