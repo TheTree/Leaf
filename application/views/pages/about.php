@@ -1,5 +1,5 @@
-<div class="row-fluid">
-    <div class="span7">
+<div class="row">
+    <div class="col-md-8">
         <h2>History</h2>
         <div class="well well-large">
             <p class="lead">tsk tsk 343. Where is your API?</p>
@@ -16,7 +16,7 @@
             Once an account has 40 re-caches, that didn't change anything. We deem that account "frozen", and thus don't update it automatically.
             <br /><br />
             <strong>I have a complaint/bug! </strong><br />
-            <a href="https://github.com/iBotPeaches/Leaf/issues">I use GitHub for problems. Go here to report one.</a>
+            <a href="https://github.com/TheTree/Leaf/issues">I use GitHub for problems. Go here to report one.</a>
             <br /><br />
             <strong>Whats up with the tooltips everywhere?</strong><br />
             I like them.
@@ -25,7 +25,7 @@
             meh. Tweet me. We can add more stuff.
             <br /><br />
             <strong>Can I have the source? </strong><br />
-            <a href="https://github.com/iBotPeaches/Leaf" rel="nofollow">GitHub</a>
+            <a href="https://github.com/TheTree/Leaf" rel="nofollow">GitHub</a>
             <br /><br />
             <strong>Can you swim in spent fuel water? </strong><br />
             I've got no clue. These <a href="http://what-if.xkcd.com/29/">guys</a> do though.
@@ -34,11 +34,11 @@
         <br />
         
     </div>
-    <div class="span5">
+    <div class="col-md-4">
         <h2>me</h2>
         <div class="well well-large">
-            <div class="pagination-centered">
-                <img src="http://www.gravatar.com/avatar/<?= md5("ibotpeaches@gmail.com"); ?>?s=200" class="img-polaroid" />
+            <div class="text-center">
+                <img src="http://www.gravatar.com/avatar/<?= md5("ibotpeaches@gmail.com"); ?>?s=200" class="img-thumbnail img-responsive" />
                 <br /><br />
                 <a href="https://twitter.com/iBotPeaches" class="twitter-follow-button" data-show-count="false">Follow @iBotPeaches</a>
                 <script>!function(d, s, id) {
@@ -54,8 +54,8 @@
         </div>
         <h4>What made Leaf?</h4>
         <div class="well well-large">
-                <ul class="unstyled">
-                    <li><a href="http://twitter.github.com/bootstrap/" target="_blank" rel="nofollow">Bootstrap</a> -> JS/CSS Framework</li>
+                <ul class="list-unstyled">
+                    <li><a href="http://getbootstrap.com/" target="_blank" rel="nofollow">Bootstrap</a> -> JS/CSS Framework</li>
                     <li><a href="http://ellislab.com/codeigniter" target="_blank" rel="nofollow">Code Igniter</a> -> PHP Framework</li>
                     <li><a href="http://bootswatch.com/cosmo/" target="_blank" rel="nofollow">Cosmo</a> -> Metro</li>
                     <li><a href="http://jquery.com/" target="_blank" rel="nofollow">jQuery</a> -> JS Library</li>
@@ -67,7 +67,7 @@
         </div>
         <h4>The Tree</h4>
         <div class="well well-large">
-            <ul class="unstyled">
+            <ul class="list-unstyled">
                 <li><a href="http://branchapp.co">Branch</a> <small>(ßeta)</small></li>
                 <li><a href="http://leafapp.co">Leaf</a></li>
                 <li><a href="http://rootapp.co">Root</a> <small>(tba)</small></li>
