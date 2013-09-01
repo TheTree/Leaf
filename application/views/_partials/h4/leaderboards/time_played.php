@@ -1,5 +1,4 @@
 <? if ($stats['Data']['time_played'] != false): ?>
-    <div class="well">
     <table class="table table-bordered table-striped">
         <thead>
         <tr>
