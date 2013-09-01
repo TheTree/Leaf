@@ -1,7 +1,7 @@
 <div class="page-header">
     <h1>Leaf News</h1>
 </div>
-<div class="row-fluid">
+<div class="row">
 <? if (is_array($news) && count($news) > 0): ?>
     <? foreach ($news as $article): ?>
         <article>

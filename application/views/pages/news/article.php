@@ -1,6 +1,6 @@
 <br />
-<div class="row-fluid">
-    <div class="span12">
+<div class="row">
+    <div class="col-md-12">
         <? if ($article == false): ?>
             <div class="alert alert-info"><strong>Hey!</strong> We couldn't find this news article. </div>
         <? else: ?>
@@ -14,8 +14,8 @@
         <? endif; ?>
     </div>
 </div>
-<div class="row-fluid">
-    <div class="span12">
+<div class="row">
+    <div class="col-md-12">
         <div id="disqus_thread"></div>
         <script type="text/javascript">
             var disqus_shortname = 'leafapp';
