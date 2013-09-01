@@ -70,6 +70,20 @@ csr-legend {
     font-size: 12px;
     padding: .1em .3em .2em;
 }
+.nav-sidebar {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-shadow: 0 1px 0 #fff;
+    background-color: #f7f7f7;
+    border-radius: 5px 5px 5px 5px;
+}
+.nav-sidebar li > a {
+    padding: 5px 20px;
+    display: block;
+    color: #333;
+}
 @media (max-width: 500px) {
     .row_title {
         width: 135px;

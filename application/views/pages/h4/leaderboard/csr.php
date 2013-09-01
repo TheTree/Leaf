@@ -1,17 +1,14 @@
 <br />
-<div class="row-fluid">
-    <div class="span3">
-        <div class="well">
-            <ul class="nav nav-list">
-                <li class="nav-header">Team CSR</li>
-                <li class="divider"></li>
+<div class="row">
+    <div class="col-md-3">
+        <div class="">
+            <ul class="nav nav-pills nav-stacked nav-sidebar">
                 <? foreach($csr_team as $item): ?>
                     <? if (isset($playlists[$item])) : ?>
                         <li class="<?= $this->utils->is_active($item . "_T", "100_I", 3); ?>"><a href="<?= base_url('h4/csr_leaderboards/' . $item . "_T"); ?>"><?= $playlists[$item]['Name'] ?></a></li>
                     <? endif; ?>
                 <? endforeach; ?>
-                <li class="nav-header">Individual CSR</li>
-                <li class="divider"></li>
+                <li class="nav-divider"></li>
                 <? foreach($csr_ind as $item): ?>
                     <? if (isset($playlists[$item])) : ?>
                         <li class="<?= $this->utils->is_active($item . "_I", "100_I", 3); ?>"><a href="<?= base_url('h4/csr_leaderboards/' . $item . "_I"); ?>"><?= $playlists[$item]['Name'] ?></a></li>
@@ -25,13 +22,14 @@
             </div>
         <? endif; ?>
     </div>
-    <div class="span9">
+    <div class="col-md-9">
         <? if (count($leaderboards) < 1): ?>
             <div class="alert alert-info">
                 <strong>Strange! </strong> We have 0 records for this playlist :(
             </div>
         <? else: ?>
-        <div class="well">
+        <legend><span class="label label-info label-static-size"><? if (in_array($playlist, $csr_team)): ?> Team<? else: ?> Individual<? endif; ?></span> <?= $playlist_name; ?></legend>
+        <div class="">
             <table class="table table-bordered table-striped">
                 <thead>
                 <tr>
