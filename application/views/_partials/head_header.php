@@ -33,5 +33,6 @@
     <![endif]-->
     <script src="<?= base_url('assets/js/csrf_autoload.js'); ?>" type="text/javascript"></script>
     <script src="<?= base_url('assets/js/bootstrap/bootstrap.min.js'); ?>" type="text/javascript"></script>
+    <script src="<?= base_url('assets/js/bootstrap/typeahead.min.js'); ?>" type="text/javascript"></script>
     <script src="<?= base_url('assets/js/bootstrap/jquery.smooth-scroll.min.js'); ?>" type="text/javascript"></script>
 </head>

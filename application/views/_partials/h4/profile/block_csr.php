@@ -1,6 +1,6 @@
 <? if ($data[H4::SKILL_DATA] != FALSE && count($data[H4::SKILL_DATA]) > 0): ?>
     <strong>Playlist Ranks</strong>
-    <div class="well well-lg">
+    <div class="well">
         <div id="csr_switch" class="top_right">
             <div class="hidden">
                 <ul class="nav nav-tabs" id="csr-tabs">
@@ -8,12 +8,12 @@
                     <li data-type="old" class=""><a href="#old-csr">Old CSR</a></li>
                 </ul>
             </div>
-            <i class="icon-th-large" data-toggle="tooltop" data-html="true" title="Switch CSR Look?" rel="tooltip" data-placement="top"></i>
+            <span class="glyphicon glyphicon-th-large" data-toggle="tooltip" data-html="true" title="Switch CSR Look?" rel="tooltip" data-placement="top"></span>
         </div>
         <br />
         <div class="tab-content">
             <div class="tab-pane active" id="new-csr">
-                <table class="table table-hover table-bordered table-condensed table-striped">
+                <table class="table table-hover table-condensed table-striped">
                     <thead>
                         <tr>
                             <th>Playlist</th>

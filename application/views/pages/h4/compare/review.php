@@ -2,7 +2,7 @@
     <div class="row-fluid">
         <br />
         <? if (isset($error_msg)): ?>
-            <div class="hero-unit">
+            <div class="jumbotron">
                 <h1>Welp! Error!</h1>
             </div>
             <div class="alert alert-error"><?= $error_msg; ?></div>
