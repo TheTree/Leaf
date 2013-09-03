@@ -55,7 +55,7 @@ class Compare extends IBOT_Controller {
         $this->load->library('games/h4/h4_compare',array('you' => $you, 'them' => $them));
 
         if ($this->h4_compare->get_error()) {
-            $this->template->build("pages/compare/review");
+            $this->template->build("pages/h4/compare/review");
         } else {
             $data = $this->h4_compare->compare();
 
