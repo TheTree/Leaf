@@ -32,4 +32,32 @@ class Index extends IBOT_Controller {
             ->set("error_msg", $_tmp)
             ->build("pages/error");
     }
+
+    function h4_profile_seo($gt) {
+        redirect('h4/record/' . $gt, 'location', 301);
+    }
+
+    function h4_leaderboard_seo($type) {
+        redirect('h4/csr_leaderboards/' . $type, 'location', 301);
+    }
+
+    function h4_compare($you, $them) {
+        redirect('h4/compare/' . $you . "/" . $them, 'location', 301);
+    }
+
+    function h4_compare_one_seo($you) {
+        redirect('h4/compare/' . $you, 'location', 301);
+    }
+
+    function h4_leaderboard_static_seo() {
+        redirect('h4/csr_leaderboards', 'location', 301);
+    }
+
+    function h4_top_ten_static_seo() {
+        redirect('h4/top_ten', 'location', 301);
+    }
+
+    function h4_compare_static_seo() {
+        redirect('h4/compare', 'location', 301);
+    }
 }

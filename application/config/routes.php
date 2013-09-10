@@ -39,8 +39,13 @@
 */
 
 // SEO
-$route['gt/(:any)']	    		= "h4/profile/gt/$1";
-$route['csr_leaderboards/(:any)'] 	= "h4/leaderboards/panel/$1/0";
+$route['gt/(:any)']	    		    = "index/h4_profile_seo/$1";
+$route['csr_leaderboards']          = "index/h4_leaderboard_static_seo";
+$route['top_ten']                   = "index/h4_top_ten_static_seo";
+$route['compare']                   = "index/h4_compare_static_seo";
+$route['csr_leaderboards/(:any)'] 	= "index/h4_leaderboard_seo/$1";
+$route['compare/(:any)']            = "index/h4_compare_one_seo/$1";
+$route['compare/(:any)/(:any)']     = "index/h4_compare_seo/$1/$2";
 
 // basic pages
 $route['about']             = "index/about";
@@ -78,8 +83,6 @@ $route['h4/playlists/recache']      = "h4/profile/redo_playlists";
 // star, unfreeze, mod
 $route['h4/star/(:any)']            = "h4/profile/star/$1";
 $route['h4/flag/(:any)']            = "h4/moderate/flagged/$1";
-
-
 
 //-------------------------------------------------------
 // END: Halo 4
