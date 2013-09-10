@@ -38,6 +38,10 @@
 |
 */
 
+// SEO
+$route['gt/(:any)']	    		= "h4/profile/gt/$1";
+$route['csr_leaderboards/(:any)'] 	= "h4/leaderboards/panel/$1/0";
+
 // basic pages
 $route['about']             = "index/about";
 $route['error']             = "index/error";
@@ -74,6 +78,8 @@ $route['h4/playlists/recache']      = "h4/profile/redo_playlists";
 // star, unfreeze, mod
 $route['h4/star/(:any)']            = "h4/profile/star/$1";
 $route['h4/flag/(:any)']            = "h4/moderate/flagged/$1";
+
+
 
 //-------------------------------------------------------
 // END: Halo 4
