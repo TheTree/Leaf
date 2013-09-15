@@ -43,7 +43,7 @@
 <? endif; ?>
 
 <h4>Create API Key</h4>
-<div class="well well-large">
+<div class="well well-lg">
     <?= form_open('backstage/keys', array('class' => 'form-horizontal')); ?>
         <?= form_hidden('submitted', TRUE); ?>
         <div class="control-group <? if (form_error('user') != null): ?>error<? endif; ?>">
