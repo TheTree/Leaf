@@ -8,7 +8,7 @@
     });
 </script>
 <? endif; ?>
-<img src="<?= $data['SpartanURL']; ?>" width="211px" height="418px" class="img-thumbnail img-responsive" />
+<img src="<?= $data['SpartanURL']; ?>?v=<?= $data[H4::TOTAL_GAMEPLAY]; ?>" width="211px" height="418px" class="img-thumbnail img-responsive" />
 <!-- InactiveCounter: <?= $data[H4::INACTIVE_COUNTER]; ?> -->
 <!-- Status: <?= $data[H4::STATUS]; ?> -->
 <!-- ApiVersion: <?= $data[H4::API_VERSION]; ?> -->
