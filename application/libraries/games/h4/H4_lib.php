@@ -1275,7 +1275,7 @@ class H4_Lib {
         if (is_dir(absolute_path("uploads/h4/spartans/" . $hashed))) {
             // only delete if $hashed is set
             if (strlen($hashed) > 10) {
-                delete_files(absolute_path('uploads/spartans/' . $hashed), TRUE);
+                delete_files(absolute_path('uploads/h4/spartans/' . $hashed), TRUE);
             }
         }
 
@@ -1286,7 +1286,7 @@ class H4_Lib {
         } else {
             // only delete if $hashed is set
             if (strlen($hashed) > 10) {
-                delete_files(absolute_path('uploads/spartans/' . $hashed), TRUE);
+                delete_files(absolute_path('uploads/h4/spartans/' . $hashed), TRUE);
             }
         }
 
