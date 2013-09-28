@@ -78,20 +78,20 @@ class H4_Compare {
 
         // check style
         if ($this->you['TotalPoints'] < 0) {
-            $this->you['TotalStyle'] = "badge-important";
+            $this->you['TotalStyle'] = "label-danger";
         } else if ($this->you['TotalPoints'] == 0) {
-            $this->you['TotalStyle'] = "";
+            $this->you['TotalStyle'] = "label-default";
         } else {
-            $this->you['TotalStyle'] = "badge-success";
+            $this->you['TotalStyle'] = "label-success";
         }
 
         // check them style
         if ($this->them['TotalPoints'] < 0) {
-            $this->them['TotalStyle'] = "badge-important";
+            $this->them['TotalStyle'] = "label-danger";
         } else if ($this->them['TotalPoints'] == 0) {
-            $this->them['TotalStyle'] = "";
+            $this->them['TotalStyle'] = "label-default";
         } else {
-            $this->them['TotalStyle'] = "badge-success";
+            $this->them['TotalStyle'] = "label-success";
         }
 
         $final_arr = array();
@@ -111,7 +111,7 @@ class H4_Compare {
             $final_arr['Looser'] = $this->them[H4::GAMERTAG];
             $final_arr['TweetWord'] = "won against";
         } else {
-            $final_arr['Style'] = "alert-error";
+            $final_arr['Style'] = "alert-danger";
             $final_arr['Status'] = 'L';
             $final_arr['Winner'] = $this->them[H4::GAMERTAG];
             $final_arr['Looser'] = $this->you[H4::GAMERTAG];
@@ -136,13 +136,13 @@ class H4_Compare {
     function them_num($num = 1) {
         $this->them_pts = intval($num);
         $this->them_overall += intval($num);
-        $this->them_style = "badge-success";
+        $this->them_style = "label-success";
     }
 
     function you_num($num = 1) {
         $this->you_pts = intval($num);
         $this->you_overall += intval($num);
-        $this->you_style = "badge-success";
+        $this->you_style = "label-success";
     }
 
     function tie($num = 1) {

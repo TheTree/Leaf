@@ -1,5 +1,5 @@
-<div class="container-fluid">
-    <div class="row-fluid">
+<div class="container">
+    <div class="row">
         <br />
         <? if (isset($error_msg)): ?>
             <div class="jumbotron">
@@ -17,12 +17,12 @@
             <tbody>
                 <tr>
                     <td>
-                        <div class="pagination-centered">
+                        <div class="text-center">
                             <img src="<?= $data['you']['SpartanSmallUrl']; ?>" />
                         </div>
                     </td>
                     <td>
-                        <div class="pagination-centered">
+                        <div class="text-center">
                             <img src="<?= $data['them']['SpartanSmallUrl']; ?>" />
                         </div>
                     </td>
@@ -30,8 +30,8 @@
             </tbody>
         </table>
         </div>
-        <div class="row-fluid">
-        <div class="span8">
+        <div class="row">
+        <div class="col-lg-8">
             <table class="table table-bordered table-hover">
                 <thead>
                     <tr>
@@ -48,16 +48,16 @@
                             <tr>
                                 <td><?= $item['Name']; ?></td>
                                 <td><?= $data['you'][$item['Field']]; ?></td>
-                                <td><span class="badge <?= $item['you']['style']; ?>"><?= $item['you']['pts']; ?></span></td>
+                                <td><span class="label label-default <?= $item['you']['style']; ?>"><?= $item['you']['pts']; ?></span></td>
                                 <td><?= $data['them'][$item['Field']]; ?></td>
-                                <td><span class="badge <?= $item['them']['style']; ?>"><?= $item['them']['pts']; ?></span></td>
+                                <td><span class="label label-default <?= $item['them']['style']; ?>"><?= $item['them']['pts']; ?></span></td>
                             </tr>
                         <? endif; ?>
                     <? endforeach; ?>
                 </tbody>
             </table>
         </div>
-        <div class="span4">
+        <div class="col-lg-4">
             <table class="table table-bordered table-hover">
                 <thead>
                     <tr>
@@ -68,20 +68,20 @@
                 <tbody>
                     <tr>
                         <td><?= $data['you'][H4::GAMERTAG]; ?></td>
-                        <td><span class="badge <?= $data['you']['TotalStyle']; ?>"><?= $data['you']['TotalPoints']; ?></span></td>
+                        <td><span class="label <?= $data['you']['TotalStyle']; ?>"><?= $data['you']['TotalPoints']; ?></span></td>
                     </tr>
                     <tr>
                         <td><?= $data['them'][H4::GAMERTAG]; ?></td>
-                        <td><span class="badge <?= $data['them']['TotalStyle']; ?>"><?= $data['them']['TotalPoints']; ?></span></td>
+                        <td><span class="label <?= $data['them']['TotalStyle']; ?>"><?= $data['them']['TotalPoints']; ?></span></td>
                     </tr>
                 </tbody>
             </table>
-            <?php if ($data['final']['Status'] == 'W'): ?>
+            <? if ($data['final']['Status'] == 'W'): ?>
                 <div class="alert <?= $data['final']['Style'] ?>">Winner: <strong><?= $data['you'][H4::GAMERTAG]; ?></strong></div>
-                <span class="badge badge-inverse">Loser: <strong><?= $data['them'][H4::GAMERTAG]; ?></strong></span>
+                <span class="label label-inverse">Loser: <strong><?= $data['them'][H4::GAMERTAG]; ?></strong></span>
             <? elseif ($data['final']['Status'] == 'L'): ?>
                 <div class="alert <?= $data['final']['Style'] ?>">Loser: <strong><?= $data['you'][H4::GAMERTAG]; ?></strong></div>
-                <span class="badge badge-success">Winner: <strong><?= $data['them'][H4::GAMERTAG]; ?></strong></span>
+                <span class="label label-success">Winner: <strong><?= $data['them'][H4::GAMERTAG]; ?></strong></span>
             <? else: ?>
                 <div class="alert alert-info">Tie: <strong><?= $data['you'][H4::GAMERTAG]; ?></strong></div>
                 <div class="alert alert-info">Tie: <strong><?= $data['them'][H4::GAMERTAG]; ?></strong></div>
