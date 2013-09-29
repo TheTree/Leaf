@@ -2,7 +2,9 @@
 
 $lang['ut_test_name']		= 'Test Name';
 $lang['ut_test_datatype']	= 'Test Datatype';
+$lang['ut_test_value']      = 'Expected Value';
 $lang['ut_res_datatype']	= 'Expected Datatype';
+$lang['ut_res_value']       = 'Test Value';
 $lang['ut_result']			= 'Result';
 $lang['ut_undefined']		= 'Undefined Test Name';
 $lang['ut_file']			= 'File Name';
