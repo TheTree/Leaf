@@ -1,6 +1,6 @@
 <div class="container">
-    <div class="row-fluid">
-        <div class="well span12">
+    <div class="row">
+        <div class="col-lg-12 well">
             <legend>Test Results</legend>
             <table class="table table-striped">
                 <thead>
