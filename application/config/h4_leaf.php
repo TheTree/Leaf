@@ -15,11 +15,12 @@
  * 98           - Global Challenge
  * 99           - Global Challenge
  * 100          - Infinity Slayer
- * 101          - Big Team Infinity Slayer
+ * 101          - Big Team Battle
  * 102          - Dominion
  * 103          - Regicide
  * 104          - Flood
  * 105          - Capture The Flag
+ * 108          - King of The Hill
  * 109          - Team Slayer Pro
  * 113          - Team Snipers
  * 115          - SWAT
@@ -56,14 +57,14 @@ $config['h4_enabled']   = TRUE;
  *
  * Holds playlist ids for individual CSR playlists
  */
-$config['h4_individual_csr'] = [101,104,100,116,103,128,115,126,113,135,137,138];
+$config['h4_individual_csr'] = [101,104,100,128,115,126,113,138,108];
 
 /**
  * h4_team_csr
  *
  * Holds playlist ids for team CSR playlists
  */
-$config['h4_team_csr'] = [105,102,117,121,123,119,134];
+$config['h4_team_csr'] = [105,102,117,121,123];
 
 /**
  * h4_max_rank
