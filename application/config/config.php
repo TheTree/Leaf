@@ -12,7 +12,7 @@ if (PHP_SAPI == 'cli') {
             $config['active_group'] = "live";
             break;
         case STAGE_URL:
-            $config['base_url'] = 'http://' . STAGE_URL . '/stats';
+            $config['base_url'] = 'http://' . STAGE_URL . '/caps';
             $config['active_group'] = "stage";
             break;
         case LOCAL_URL:
