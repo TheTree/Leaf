@@ -54,6 +54,10 @@ csr-legend {
 .margin3pxtop {
     margin-top: 3px;
 }
+.centered{
+    float: none;
+    margin: 0 auto;
+}
 .top_right {
     position: relative;
     float: right;

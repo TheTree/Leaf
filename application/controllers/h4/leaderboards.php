@@ -33,30 +33,30 @@ class Leaderboards extends IBOT_Controller {
         $stats = array();
 
         // start the list of data for affix
-        $stats['Items'] = ["KD Ratio", "Kills per Game", "Deaths per Game", "Assists per Game", "Headshots per Game", "Medals per Game", "Time Played", "Challenges Completed"];
+        $stats['Items'] = ["KD Ratio", "Kills", "Deaths", "Assists", "Headshots", "Medals", "Time Played", "Challenges Completed"];
 
         // get the actual data for the partials
-        $stats['Data']['kills_per_game']            = $this->cache->model('stat_m', 'get_top_10', array(H4::KILLS_PER_GAME_RATIO, 'DESC'), 1800);
-        $stats['Data']['deaths_per_game']           = $this->cache->model('stat_m', 'get_top_10', array(H4::DEATHS_PER_GAME_RATIO, 'ASC'), 1800);
+        $stats['Data']['kills']                     = $this->cache->model('stat_m', 'get_top_10', array(H4::KILLS_PER_GAME_RATIO, 'DESC'), 1800);
+        $stats['Data']['deaths']                    = $this->cache->model('stat_m', 'get_top_10', array(H4::DEATHS_PER_GAME_RATIO, 'ASC'), 1800);
         $stats['Data']['kd_ratio']                  = $this->cache->model('stat_m', 'get_top_10', array(H4::KD_RATIO, 'DESC'), 1800);
         $stats['Data']['time_played']               = $this->cache->model('stat_m', 'get_top_10', array(H4::TOTAL_GAMEPLAY, 'DESC'), 1800);
-        $stats['Data']['medals_per_game']           = $this->cache->model('stat_m', 'get_top_10', array(H4::MEDALS_PER_GAME_RATIO, 'DESC'), 1800);
+        $stats['Data']['medals']                    = $this->cache->model('stat_m', 'get_top_10', array(H4::MEDALS_PER_GAME_RATIO, 'DESC'), 1800);
         $stats['Data']['challenges_completed']      = $this->cache->model('stat_m', 'get_top_10', array(H4::TOTAL_CHALLENGES_COMPLETED, 'DESC'), 1800);
-        $stats['Data']['assists_per_game']          = $this->cache->model('stat_m', 'get_top_10', array(H4::ASSISTS_PER_GAME_RATIO, 'DESC'), 1800);
-        $stats['Data']['headshots_per_game']        = $this->cache->model('stat_m', 'get_top_10', array(H4::HEADSHOTS_PER_GAME_RATIO,'DESC'), 1800);
+        $stats['Data']['assists']                   = $this->cache->model('stat_m', 'get_top_10', array(H4::ASSISTS_PER_GAME_RATIO, 'DESC'), 1800);
+        $stats['Data']['headshots']                 = $this->cache->model('stat_m', 'get_top_10', array(H4::HEADSHOTS_PER_GAME_RATIO,'DESC'), 1800);
 
         $this->utils->description = "LeafApp .:. Leaderboards";
 
         // build w/ data
         $this->template
-            ->set_partial('kills_per_game', '_partials/h4/leaderboards/total_kills')
-            ->set_partial('deaths_per_game', '_partials/h4/leaderboards/total_deaths')
+            ->set_partial('kills', '_partials/h4/leaderboards/total_kills')
+            ->set_partial('deaths', '_partials/h4/leaderboards/total_deaths')
             ->set_partial('kd_ratio', '_partials/h4/leaderboards/kd_ratio')
             ->set_partial('time_played', '_partials/h4/leaderboards/time_played')
-            ->set_partial('medals_per_game', '_partials/h4/leaderboards/total_medals')
+            ->set_partial('medals', '_partials/h4/leaderboards/total_medals')
             ->set_partial('challenges_completed', '_partials/h4/leaderboards/challenges_completed')
-            ->set_partial('assists_per_game', '_partials/h4/leaderboards/total_assists')
-            ->set_partial('headshots_per_game', '_partials/h4/leaderboards/total_headshots')
+            ->set_partial('assists', '_partials/h4/leaderboards/total_assists')
+            ->set_partial('headshots', '_partials/h4/leaderboards/total_headshots')
             ->set("meta", $this->utils->return_meta())
             ->title("Leaf .:. Leaderboards")
             ->set("stats", $stats)

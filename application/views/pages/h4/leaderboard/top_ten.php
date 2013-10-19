@@ -1,8 +1,12 @@
 <br />
-<div class="subnav text-center">
-    <? foreach($stats['Items'] as $item): ?>
-        <a class="label label-static-size label-primary" href="#<?= strtolower(str_replace(" ", "_",$item)); ?>"><?= $item; ?></a>
-    <? endforeach; ?>
+<div class="container">
+    <div class="col-lg-9 centered">
+        <ul class="nav nav-pills">
+            <? foreach($stats['Items'] as $item): ?>
+                <li><a href="#<?= strtolower(str_replace(" ", "_",$item)); ?>"><?= $item; ?></a></li>
+            <? endforeach; ?>
+        </ul>
+    </div>
 </div>
 <div class="row">
     <? foreach($stats['Items'] as $item): ?>

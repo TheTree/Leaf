@@ -1,4 +1,4 @@
-<? if ($stats['Data']['kills_per_game'] != false): ?>
+<? if ($stats['Data']['kills'] != false): ?>
     <table class="table table-bordered table-striped">
         <thead>
         <tr>
@@ -8,7 +8,7 @@
         </tr>
         </thead>
         <tbody>
-        <? $x = 1; foreach ($stats['Data']['kills_per_game'] as $item): ?>
+        <? $x = 1; foreach ($stats['Data']['kills'] as $item): ?>
             <tr>
                 <td><?= $this->h4_lib->get_trophy($x); ?></td>
                 <td><a href="<?= base_url('h4/record/' . $item[H4::SEO_GAMERTAG]); ?>">
