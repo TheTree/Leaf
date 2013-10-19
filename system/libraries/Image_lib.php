@@ -1179,6 +1179,9 @@ class CI_Image_lib {
 		if ($wm_img_type === 3 && function_exists('imagealphablending'))
 		{
 			@imagealphablending($src_img, TRUE);
+            @imagesavealpha($src_img, TRUE);
+            $transparent = imagecolorallocatealpha($src_img, 0, 0, 0, 127);
+            imagefill($src_img, 0, 0, $transparent);
 		}
 
 		// Set RGB values for text and shadow
@@ -1194,7 +1197,7 @@ class CI_Image_lib {
 		else
 		{
 			// set our RGB value from above to be transparent and merge the images with the specified opacity
-			imagecolortransparent($wm_img, imagecolorat($wm_img, $this->wm_x_transp, $this->wm_y_transp));
+			//imagecolortransparent($wm_img, imagecolorat($wm_img, $this->wm_x_transp, $this->wm_y_transp));
 			imagecopymerge($src_img, $wm_img, $x_axis, $y_axis, 0, 0, $wm_width, $wm_height, $this->wm_opacity);
 		}
 
