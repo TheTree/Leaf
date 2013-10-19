@@ -15,9 +15,9 @@
                     <? foreach($badges as $badge): ?>
                         <tr>
                             <td><?= $badge[H4::GAMERTAG]; ?></td>
-                            <td><span class="badge badge-<?= $badge[H4::BADGE_COLOR]; ?>"><?= $badge[H4::BADGE]; ?></span></td>
+                            <td><span class="label label-<?= $badge[H4::BADGE_COLOR]; ?>"><?= $badge[H4::BADGE]; ?></span></td>
                             <td>
-                                <a href="#" class="btn btn-small btn-danger" onclick="return confirm('CONFIRM: Delete Badge?');">Delete</a>
+                                <a href="#" class="btn btn-sm btn-danger" onclick="return confirm('CONFIRM: Delete Badge?');">Delete</a>
                             </td>
                         </tr>
                     <? endforeach; ?>
