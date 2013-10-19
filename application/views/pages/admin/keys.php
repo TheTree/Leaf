@@ -24,13 +24,13 @@
                 <td><?= $key['pass']; ?></td>
                 <td>
                     <? if ($key['last_hit'] == 0): ?>
-                        <span class="badge badge-warning">not used yet</span>
+                        <span class="label label-warning">not used yet</span>
                     <? else: ?>
                         <?= timespan($key['last_hit']); ?>
                     <? endif; ?>
                 </td>
                 <td>
-                    <a href="<?= base_url('backstage/key_delete/' . intval($key['id'])); ?>" class="btn btn-small btn-danger"  onclick="return confirm('CONFIRM: API Key will cease to function. Are you sure?');" >Delete</a>
+                    <a href="<?= base_url('backstage/key_delete/' . intval($key['id'])); ?>" class="btn btn-sm btn-danger"  onclick="return confirm('CONFIRM: API Key will cease to function. Are you sure?');" >Delete</a>
                 </td>
             </tr>
         <? endforeach; ?>
@@ -44,17 +44,16 @@
 
 <h4>Create API Key</h4>
 <div class="well well-lg">
-    <?= form_open('backstage/keys', array('class' => 'form-horizontal')); ?>
+    <?= form_open('backstage/keys', array('class' => 'form-horizontal', 'role' => 'form')); ?>
         <?= form_hidden('submitted', TRUE); ?>
-        <div class="control-group <? if (form_error('user') != null): ?>error<? endif; ?>">
-            <div class="controls">
-                <div class="input-append">
-                    <input class="input-xxlarge" type="text" name="user" id="user" placeholder="user">
+        <div class="form-group <? if (form_error('user') != null): ?>has-error<? endif; ?>">
+            <div class="input-group">
+                <input class="form-control col-lg-11 input-xlarge" type="text" name="user" id="user" placeholder="user">
+                <span class="input-group-btn">
                     <button class="btn btn-primary" type="submit">Add key</button>
-                </div>
-                <? if (form_error('user') != null): ?><span class="help-inline"><?= form_error('user') ?></span><? endif; ?>
+                </span>
             </div>
+            <? if (form_error('user') != null): ?><span class="help-block"><?= form_error('user') ?></span><? endif; ?>
         </div>
-
     <?= form_close(); ?>
 </div>
