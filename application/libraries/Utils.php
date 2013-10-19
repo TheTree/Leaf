@@ -194,12 +194,14 @@ class Utils {
         // make sure all fields are present
         foreach(["seo_username","username","id","expire","authenticated"] as $item) {
             if (!isset($session_data[$item])) {
+                log_message('error', $item . " was not found in session.");
                 return $this->killoff_session($errors);
             }
         }
 
         // check for expiration
         if (intval($session_data['expire']) < time()) {
+            log_message('error', 'Session expired: ' . intval($session_data['expire']) . " is less than " . time());
             return $this->killoff_session($errors);
         } else {
             // we are validated, update and move on

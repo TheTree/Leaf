@@ -17,7 +17,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <button type="submit" class="btn">Sign In</button>
+                <button type="submit" class="btn btn-primary">Sign In</button>
             </div>
             <span class="badge badge-inverse">Pikmin 3 ♥</span>
         <?= form_close(); ?>
