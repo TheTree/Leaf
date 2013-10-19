@@ -98,7 +98,7 @@ class Index extends IBOT_Controller {
         $config['per_page'] = intval(6);
         $config['use_page_numbers'] = FALSE;
         $config['uri_segment'] = 4;
-        $config['full_tag_open'] = '<div class="pagination pagination-centered"><ul>';
+        $config['full_tag_open'] = '<div class="text-center"><ul class="pagination">';
         $page = ($this->uri->segment(4)) ? $this->uri->segment(4) : $page;
 
         // run query again, cached w/ limit
