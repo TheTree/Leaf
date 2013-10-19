@@ -20,6 +20,7 @@
  * 103          - Regicide
  * 104          - Flood
  * 105          - Capture The Flag
+ * 107          - Team Oddball
  * 108          - King of The Hill
  * 109          - Team Slayer Pro
  * 113          - Team Snipers
@@ -64,7 +65,7 @@ $config['h4_individual_csr'] = [100,101,104,108,113,115,126,128,138];
  *
  * Holds playlist ids for team CSR playlists
  */
-$config['h4_team_csr'] = [102,105,117,121,123];
+$config['h4_team_csr'] = [105,107,117,121,123];
 
 /**
  * h4_max_rank
