@@ -131,6 +131,7 @@ if (ENVIRONMENT != "production") {
 // default home
 $route['default_controller']    = "h4/home";
 $route['404_override']          = '';
+$route['translate_uri_dashes']  = FALSE;
 
 
 /* End of file routes.php */

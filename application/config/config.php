@@ -269,6 +269,8 @@ $config['encryption_key'] = 'fasd234a9sdfa9(@&#*(*@sdfasdfasdfa3rfasfasdfsdfa3r3
 | 'sess_time_to_update'		= how many seconds between CI refreshing Session Information
 |
 */
+$config['sess_driver']          = 'cookie';
+$config['sess_valid_drivers']   = [];
 $config['sess_cookie_name']		= 'ci_session';
 $config['sess_expiration']		= 7200;
 $config['sess_expire_on_close']	= FALSE;
