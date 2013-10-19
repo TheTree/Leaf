@@ -15,15 +15,18 @@ class Stat_model extends IBOT_Model {
      * 
      * Checking
      * @param type $hash
-     * @param type $data
+     * @param array $data
      * @return \type
      */
     public function update_or_insert_gamertag($hash, $data) {
 
-        // check for update
+        // check for update vs insertion of new account
         if (($_tmp = $this->account_exists($hash)) != FALSE) {
 
+            // make sure we have H4::TOTAL_GAMEPLAY. This lets us know we have a real account
             if (isset($_tmp[H4::TOTAL_GAMEPLAY]) && isset($data[H4::TOTAL_GAMEPLAY])) {
+
+                // If GAMEPLAY changed, they are active. Reset their counter.
                 if (floatval($_tmp[H4::TOTAL_GAMEPLAY]) != floatval($data[H4::TOTAL_GAMEPLAY])) {
                     $data[H4::INACTIVE_COUNTER] = 0;
 
@@ -42,10 +45,10 @@ class Stat_model extends IBOT_Model {
 
             // unset some temporarily, so we can add back on postback
             $unset_arra = array(
-                'Gamertag'          => $_tmp[H4::GAMERTAG],
-                'SeoGamertag'       => $_tmp[H4::SEO_GAMERTAG],
-                'HashedGamertag'    => $_tmp[H4::HASHED_GAMERTAG],
-                'Status'            => $_tmp[H4::STATUS]
+                H4::GAMERTAG        => $_tmp[H4::GAMERTAG],
+                H4::SEO_GAMERTAG    => $_tmp[H4::SEO_GAMERTAG],
+                H4::HASHED_GAMERTAG => $_tmp[H4::HASHED_GAMERTAG],
+                H4::STATUS          => $_tmp[H4::STATUS]
             );
 
             // remove these vars to prevent changing them in db
