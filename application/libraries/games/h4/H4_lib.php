@@ -589,8 +589,13 @@ class H4_Lib {
 
         // execute it
         $responses = $this->_ci->mcurl->execute();
-        $service_record = $this->check_status(json_decode($responses['service_record']['response'], TRUE),$parts['service_record']['url']);
-        $wargames_record = $this->check_status(json_decode($responses['wargames_record']['response'],TRUE), $parts['wargames_record']['url']);
+
+        // hacky assignment to get around references
+        $decoded_service = json_decode($responses['service_record']['response'], TRUE);
+        $decoded_wargames = json_decode($responses['wargames_record']['response'],TRUE);
+
+        $service_record = $this->check_status($decoded_service,$parts['service_record']['url']);
+        $wargames_record = $this->check_status($decoded_wargames, $parts['wargames_record']['url']);
 
         // cleanup multipart
         unset($responses);

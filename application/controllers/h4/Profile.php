@@ -113,7 +113,7 @@ class Profile extends IBOT_Controller {
             }
             
             // redirect out of here
-            redirect(base_url("h4/record/" . $data['SeoGamertag']));
+            redirect(base_url("h4/record/" . $seo_gamertag));
         } else {
             $this->utils->throw_error("NO_GAMERTAG_STORED");
         }
