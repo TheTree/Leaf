@@ -19,8 +19,9 @@
                             <td><?= $news_item['author']; ?></td>
                             <td><?= unix_to_human($news_item['date_posted']); ?></td>
                             <td>
-                                <a href="#" class="btn btn-small btn-info">Edit</a>
-                                <a href="#" class="btn btn-small btn-danger" onclick="return confirm('CONFIRM: Delete News Story?');">Delete</a>
+                                <!-- todo / actually make edit/delete work -->
+                                <a href="#" class="btn btn-sm btn-info">Edit</a>
+                                <a href="#" class="btn btn-sm btn-danger" onclick="return confirm('CONFIRM: Delete News Story?');">Delete</a>
                             </td>
                         </tr>
                     <? endforeach; ?>
