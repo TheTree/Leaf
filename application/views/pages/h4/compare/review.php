@@ -78,7 +78,7 @@
             </table>
             <? if ($data['final']['Status'] == 'W'): ?>
                 <div class="alert <?= $data['final']['Style'] ?>">Winner: <strong><?= $data['you'][H4::GAMERTAG]; ?></strong></div>
-                <span class="label label-inverse">Loser: <strong><?= $data['them'][H4::GAMERTAG]; ?></strong></span>
+                <span class="label label-default">Loser: <strong><?= $data['them'][H4::GAMERTAG]; ?></strong></span>
             <? elseif ($data['final']['Status'] == 'L'): ?>
                 <div class="alert <?= $data['final']['Style'] ?>">Loser: <strong><?= $data['you'][H4::GAMERTAG]; ?></strong></div>
                 <span class="label label-success">Winner: <strong><?= $data['them'][H4::GAMERTAG]; ?></strong></span>
