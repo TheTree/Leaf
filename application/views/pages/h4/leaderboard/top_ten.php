@@ -1,6 +1,6 @@
 <br />
 <div class="container">
-    <div class="col-lg-9 centered">
+    <div id="smoothy" class="col-lg-9 centered">
         <ul class="nav nav-pills">
             <? foreach($stats['Items'] as $item): ?>
                 <li><a href="#<?= strtolower(str_replace(" ", "_",$item)); ?>"><?= $item; ?></a></li>
@@ -22,6 +22,6 @@
 </div>
 <script type="text/javascript">
     $(document).ready(function() {
-        $('.subnav a').smoothScroll();
+        $('#smoothy a').smoothScroll();
     });
 </script>
