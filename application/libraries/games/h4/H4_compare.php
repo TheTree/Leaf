@@ -118,12 +118,43 @@ class H4_Compare {
             $final_arr['TweetWord'] = "lost to";
         }
 
-        return array(
+        $data =  array(
             'you' => $this->you,
             'them' => $this->them,
             'stats' => $rtr_arr,
             'final' => $final_arr
         );
+
+        // if we got this far, the completion of the comparison is done
+        // pass off to the mongo db to store the results
+        $this->dump_to_mongo($data);
+        return $data;
+    }
+
+    function dump_to_mongo($data) {
+
+        // check if this exact comparison is in db.
+        $extracted = [
+            'you_gt'        => $data['you'][H4::GAMERTAG],
+            'you_tag'       => $data['you'][H4::SERVICE_TAG],
+            'you_hashed'    => $data['you'][H4::HASHED_GAMERTAG],
+            'you_seo'       => $data['you'][H4::SEO_GAMERTAG],
+            'you_pts'       => $data['you']['TotalPoints'],
+            'you_badge'     => isset($data['you'][H4::BADGE]) ? $data['you'][H4::BADGE] : null,
+            'them_gt'       => $data['them'][H4::GAMERTAG],
+            'them_tag'      => $data['them'][H4::SERVICE_TAG],
+            'them_hashed'   => $data['them'][H4::HASHED_GAMERTAG],
+            'them_seo'      => $data['them'][H4::SEO_GAMERTAG],
+            'them_pts'      => $data['them']['TotalPoints'],
+            'them_badge'    => isset($data['them'][H4::BADGE]) ? $data['them'][H4::BADGE] : null,
+            'Status'        => $data['final']['Status'],
+            'TweetWord'     => $data['final']['TweetWord'],
+        ];
+
+        if (($_tmp = $this->_ci->stat_m->comparison_exists($extracted)) == FALSE) {
+           $this->_ci->stat_m->insert_comparison($extracted);
+        }
+        return FALSE;
     }
 
     function reset_function_vars() {

@@ -174,6 +174,7 @@ class Stat_model extends IBOT_Model {
         
         $this->mongo_db
                 ->set($data)
+                ->hint('h4_index')
                 ->where(H4::HASHED_GAMERTAG, $hash)
                 ->update('h4_gamertags');
 
@@ -192,6 +193,16 @@ class Stat_model extends IBOT_Model {
     }
 
     /**
+     * insert_comparison
+     *
+     * @param $data
+     */
+    public function insert_comparison($data) {
+        $this->mongo_db
+            ->insert('h4_comparisons', $data);
+    }
+
+    /**
      * account_exists
      * 
      * @param type $hash
@@ -202,11 +213,31 @@ class Stat_model extends IBOT_Model {
         // generate resp
         $resp = $this->mongo_db
                 ->select([H4::HASHED_GAMERTAG, H4::INACTIVE_COUNTER, H4::GAMERTAG, H4::SEO_GAMERTAG, H4::STATUS, H4::TOTAL_GAMEPLAY])
+            ->hint('h4_index')
                 ->get_where('h4_gamertags', array(
                     H4::HASHED_GAMERTAG => $hash
         ));
 
         return $this->_get_one($resp, H4::HASHED_GAMERTAG);
+    }
+
+    /**
+     * comparison_exists
+     * @param $data
+     *
+     * Adds record into `h4_comparison` checking for dupes
+     * @return array|bool
+     */
+    public function comparison_exists($data) {
+        $resp = $this->mongo_db
+                ->select(['Status'])
+                ->hint(NULL)
+                ->get_where('h4_comparisons', array(
+                    'you_hashed'     => $data['you_hashed'],
+                    'them_hashed'    => $data['them_hashed']
+            ));
+
+        return $this->_get_one($resp, 'Status');
     }
 
     /**
@@ -219,6 +250,7 @@ class Stat_model extends IBOT_Model {
     public function badge_exists($seo_gt) {
         $resp = $this->mongo_db
                 ->select([H4::GAMERTAG])
+                ->hint('h4_index')
                 ->where_exists(H4::BADGE)
                 ->where(H4::SEO_GAMERTAG, $seo_gt)
                 ->get('h4_gamertags');
@@ -236,6 +268,7 @@ class Stat_model extends IBOT_Model {
     public function get_status($seo_gamertag) {
         $resp = $this->mongo_db
                 ->select([H4::STATUS])
+                ->hint('h4_index')
                 ->get_where('h4_gamertags', array(
                     H4::SEO_GAMERTAG => $seo_gamertag
         ));
@@ -256,6 +289,7 @@ class Stat_model extends IBOT_Model {
         $resp = $this->mongo_db
                     ->where(H4::SEO_GAMERTAG, $seo_gt)
                     ->limit(1)
+                    ->hint('h4_index')
                     ->get('h4_gamertags');
 
         return $this->_get_one($resp, H4::HASHED_GAMERTAG);
@@ -286,7 +320,9 @@ class Stat_model extends IBOT_Model {
             $this->mongo_db->where_lt(H4::EXPIRATION, time());
         }
         
-        return $this->mongo_db->count('h4_gamertags');
+        return $this->mongo_db
+            ->hint('h4_index')
+            ->count('h4_gamertags');
     }
 
     /**
@@ -326,6 +362,7 @@ class Stat_model extends IBOT_Model {
                 ->select([H4::HASHED_GAMERTAG,H4::TOTAL_GAMEPLAY, H4::INACTIVE_COUNTER, H4::GAMERTAG, H4::SEO_GAMERTAG])
                 ->offset(intval($start))
                 ->limit(intval($max))
+                ->hint('h4_index')
                 //->order_by(['$natural' => "asc"])
                 ->where_lt(H4::EXPIRATION, intval(time()))
                 ->where_lt(H4::INACTIVE_COUNTER, intval(INACTIVE_COUNTER))
@@ -334,6 +371,31 @@ class Stat_model extends IBOT_Model {
         
         if (is_array($resp)) {
             return $resp;
+        } else {
+            return FALSE;
+        }
+    }
+
+    /**
+     * get_last_comparison
+     *
+     * Gets the last comparison via `h4_comparisons`
+     * @return array|bool
+     */
+    public function get_last_comparison() {
+        $resp = $this->mongo_db
+            ->select(['you_gt', 'you_hashed','you_seo', 'you_tag','you_pts', 'you_badge', 'them_gt','them_hashed','them_seo', 'them_tag', 'them_pts', 'them_badge','Status', 'TweetWord'])
+            ->hint(NULL)
+            ->order_by(['$natural' => "desc"])
+            ->limit(1)
+            ->get('h4_comparisons');
+
+        if (is_array($resp)) {
+            if (isset($resp[0])) {
+                return $resp[0];
+            } else {
+                return $resp;
+            }
         } else {
             return FALSE;
         }
@@ -349,6 +411,7 @@ class Stat_model extends IBOT_Model {
         $resp = $this->mongo_db
                 ->select(H4::EXPIRATION)
                 ->limit(1)
+                ->hint('h4_index')
                 ->where(H4::HASHED_GAMERTAG, $hashed)
                 ->where_lt(H4::INACTIVE_COUNTER, intval(INACTIVE_COUNTER))
                 ->get('h4_gamertags');
@@ -368,6 +431,7 @@ class Stat_model extends IBOT_Model {
         $resp = $this->mongo_db
                 ->select([H4::GAMERTAG, H4::SERVICE_TAG, H4::SEO_GAMERTAG, $field])
                 ->limit(10)
+                ->hint('h4_index')
                 ->order_by([$field => $asc])
                 ->where_gt(H4::TOTAL_GAMES_STARTED, intval(100))
                 ->where(H4::STATUS, intval(0))
@@ -390,6 +454,7 @@ class Stat_model extends IBOT_Model {
         $resp = $this->mongo_db
                 ->select([H4::GAMERTAG, H4::SEO_GAMERTAG, H4::RANK, H4::SERVICE_TAG])
                 ->order_by([ "_id" => -1])
+                ->hint('h4_index')
                 ->limit(5)
                 ->get('h4_gamertags');
 
@@ -418,6 +483,7 @@ class Stat_model extends IBOT_Model {
         $resp = $this->mongo_db
             ->select([H4::GAMERTAG])
             ->limit(25)
+            ->hint('h4_index')
             ->get('h4_gamertags');
 
         if (is_array($resp) && count($resp) > 0) {
@@ -542,13 +608,15 @@ class Stat_model extends IBOT_Model {
 
     /**
      * insert_badge
-     *
      * Inserts badge into `ci_badges`
+     *
      * @param $data
+     * @param $seo_gt
      */
     public function insert_badge($data, $seo_gt) {
         $this->mongo_db
             ->set($data)
+            ->hint('h4_index')
             ->where(H4::SEO_GAMERTAG, $seo_gt)
             ->update('h4_gamertags');
     }
@@ -575,6 +643,7 @@ class Stat_model extends IBOT_Model {
         $this->mongo_db
             ->set([H4::STATUS  => intval($status)])
             ->where(H4::SEO_GAMERTAG, $seo)
+            ->hint('h4_index')
             ->update('h4_gamertags');
 
         $this->db
@@ -609,6 +678,7 @@ class Stat_model extends IBOT_Model {
     public function get_gamertag_name($seo_gt) {
         $resp = $this->mongo_db
                 ->select([H4::GAMERTAG])
+                ->hint('h4_index')
                 ->get_where('h4_gamertags', array(
                 H4::SEO_GAMERTAG => $seo_gt
             ));
@@ -627,6 +697,7 @@ class Stat_model extends IBOT_Model {
     public function get_name_and_emblem($seo_gt) {
         $resp = $this->mongo_db
             ->select([H4::GAMERTAG,H4::SEO_GAMERTAG, H4::EMBLEM])
+            ->hint('h4_index')
             ->get_where('h4_gamertags', array(
                 H4::SEO_GAMERTAG => $seo_gt
             ));
@@ -645,6 +716,7 @@ class Stat_model extends IBOT_Model {
     public function get_name_and_kd($seo_gt) {
         $resp = $this->mongo_db
                 ->select([H4::GAMERTAG, H4::SEO_GAMERTAG, H4::KD_RATIO])
+                ->hint('h4_index')
                 ->get_where('h4_gamertags', array(
                 H4::SEO_GAMERTAG => $seo_gt
             ));
@@ -855,6 +927,7 @@ class Stat_model extends IBOT_Model {
     public function count_badges() {
         return $this->mongo_db
             ->where_exists(H4::BADGE)
+            ->hint('h4_index')
             ->count('h4_gamertags');
     }
 
@@ -953,6 +1026,7 @@ class Stat_model extends IBOT_Model {
         $resp = $this->mongo_db
                     ->select([H4::BADGE, H4::BADGE_COLOR, H4::SEO_GAMERTAG, H4::GAMERTAG])
                     ->where_exists(H4::BADGE)
+                    ->hint('h4_index')
                     ->offset(intval($start))
                     ->limit(intval($limit))
                     ->get("h4_gamertags");
