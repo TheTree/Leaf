@@ -22,7 +22,7 @@ class Index extends IBOT_Controller {
         $config = array();
         $config['base_url'] = base_url() . "news/";
         $config['total_rows'] = $this->news_m->count_news();
-        $config['per_page'] = intval(4);
+        $config['per_page'] = intval(3);
         $config['use_page_numbers'] = FALSE;
         $config['uri_segment'] = 2;
         $config['full_tag_open'] = '<div class="text-center"><ul class="pagination">';
