@@ -4,7 +4,7 @@
         <?= $last_compared['you_badge']; ?><span class="label label-default"><?= $last_compared['you_tag']; ?></span>
         <a href="<?= base_url('h4/record/' . $last_compared['you_seo']); ?>"><?= $last_compared['you_gt']; ?></a>
         &nbsp;<?= $last_compared['TweetWord']; ?>&nbsp;
-        <span class="label label-default"><?= $last_compared['them_tag']; ?></span><?= $last_compared['them_badge']; ?>
+        <?= $last_compared['them_badge']; ?><span class="label label-default"><?= $last_compared['them_tag']; ?></span>
         <a href="<?= base_url('h4/record/' . $last_compared['them_seo']); ?>"><?= $last_compared['them_gt']; ?></a>
         <span class="label label-success"><?= $last_compared['you_pts']; ?></span> to
         <span class="label label-success"><?= $last_compared['them_pts']; ?></span> points.
