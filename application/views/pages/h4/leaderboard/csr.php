@@ -56,7 +56,7 @@
                     <? $x++; endforeach; ?>
                 <? if (!search_big($leaderboards,$my[H4::GAMERTAG])): ?>
                     <? if (isset($my[$playlist]['Rank']) && $my[$playlist][$playlist] > 0): ?>
-                        <tr class="info">
+                        <tr class="active">
                             <td><?= $this->h4_lib->get_trophy($my[$playlist]['Rank']); ?></td>
                             <td><a style="color: #000; " href="<?= base_url('h4/record/' . $my[H4::SEO_GAMERTAG]); ?>"><?= $my[H4::GAMERTAG]; ?></a></td>
                             <td><span class="flair flair-CSR-<?= $my[$playlist][$playlist]; ?>"></span></td>
