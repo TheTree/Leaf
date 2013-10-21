@@ -7,5 +7,3 @@ class IBOT_Model extends CI_Model {
     }
 
 }
-
-?>

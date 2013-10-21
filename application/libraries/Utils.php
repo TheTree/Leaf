@@ -12,6 +12,8 @@ class Utils {
     public $description;
 
     function __construct() {
+
+        // must refer to CI as $this->_ci
         $this->_ci = & get_instance();
 
         // helper functions
@@ -110,7 +112,7 @@ class Utils {
     public function is_active($item, $default = "home", $url_num = 1) {
         $url_num = intval($url_num);
 
-        // get segment array
+        // get URL segments, check for $url_num variable
         $segs = $this->_ci->uri->segment_array();
         if(!isset($segs[$url_num]) || $this->_ci->uri->segment($url_num) == ""){
             $uri_string = $default;
@@ -118,6 +120,7 @@ class Utils {
             $uri_string = $this->_ci->uri->segment($url_num);
         }
 
+        // check if $item == the $url_num of the current URI String
         return strpos($uri_string, $item) !== FALSE ? 'active' : '';
     }
 
@@ -151,7 +154,7 @@ class Utils {
     /**
      * key_sort
      *
-     * Sorts associative array based on `SkillRank` to sort CSR's in decreasing #
+     * Sorts associative array based on `$this->sort_key` to sort values in decreasing #
      * @param $a
      * @param $b
      * @return int
@@ -162,6 +165,7 @@ class Utils {
         }
         return ($a[$this->get_sort_key()] < $b[$this->get_sort_key()] ? 1 : -1);
     }
+
     /**
      * get anti_dir_traversal
      *
@@ -190,19 +194,20 @@ class Utils {
         // make sure all fields are present
         foreach(["seo_username","username","id","expire","authenticated"] as $item) {
             if (!isset($session_data[$item])) {
+                log_message('error', $item . " was not found in session.");
                 return $this->killoff_session($errors);
             }
         }
 
         // check for expiration
         if (intval($session_data['expire']) < time()) {
+            log_message('error', 'Session expired: ' . intval($session_data['expire']) . " is less than " . time());
             return $this->killoff_session($errors);
         } else {
             // we are validated, update and move on
             $this->_ci->session->set_userdata('expire', intval(time() + HOUR_IN_SECONDS));
             return TRUE;
         }
-        return $this->killoff_session($errors);
     }
 
     /**

@@ -12,7 +12,7 @@ if (PHP_SAPI == 'cli') {
             $config['active_group'] = "live";
             break;
         case STAGE_URL:
-            $config['base_url'] = 'http://' . STAGE_URL . '/stats';
+            $config['base_url'] = 'http://' . STAGE_URL . '/caps';
             $config['active_group'] = "stage";
             break;
         case LOCAL_URL:
@@ -269,15 +269,17 @@ $config['encryption_key'] = 'fasd234a9sdfa9(@&#*(*@sdfasdfasdfa3rfasfasdfsdfa3r3
 | 'sess_time_to_update'		= how many seconds between CI refreshing Session Information
 |
 */
+$config['sess_driver']          = 'cookie';
+$config['sess_valid_drivers']   = [];
 $config['sess_cookie_name']		= 'ci_session';
-$config['sess_expiration']		= 7200;
+$config['sess_expiration']		= 999999999;
 $config['sess_expire_on_close']	= FALSE;
-$config['sess_encrypt_cookie']		= TRUE;
+$config['sess_encrypt_cookie']		= FALSE;
 $config['sess_use_database']		= TRUE;
 $config['sess_table_name']		= 'ci_sessions';
 $config['sess_match_ip']		= FALSE;
-$config['sess_match_useragent']	= TRUE;
-$config['sess_time_to_update']		= 300;
+$config['sess_match_useragent']	= FALSE;
+$config['sess_time_to_update']		= 3600;
 
 /*
 |--------------------------------------------------------------------------

@@ -1,27 +1,27 @@
-<div class="row-fluid">
-    <h1><?= isset($data[H4::BADGE]) ? $data[H4::BADGE] : ""; ?><?= urldecode($gamertag); ?> <small><?= $data[H4::SERVICE_TAG]; ?></small>
+<div class="row">
+   <h1><?= isset($data[H4::BADGE]) ? "&nbsp;" . $data[H4::BADGE] : ""; ?><?= urldecode($gamertag); ?><small>&nbsp;<?= $data[H4::SERVICE_TAG]; ?></small>
         <? if ($data[H4::STATUS] == 0): ?>
-            <a href="<?= base_url('h4/flag/' . $data[H4::SEO_GAMERTAG]); ?>" data-toggle="tooltop" data-html="true"
+            <a href="<?= base_url('h4/flag/' . $data[H4::SEO_GAMERTAG]); ?>" data-toggle="tooltip" data-html="true"
                title="Flag <strong><?= $data[H4::GAMERTAG]; ?></strong> as a Cheater/Booster?" rel="tooltip"
-               data-placement="right" onclick="return confirm('Are you sure you wish to flag <?= $data[H4::GAMERTAG]; ?> ?');"><i class="icon-flag"></i></a>
+               data-placement="right" onclick="return confirm('Are you sure you wish to flag <?= $data[H4::GAMERTAG]; ?>?');"><span class="btn-sm glyphicon glyphicon-flag"></span></a>
         <? endif; ?>
             <a href="<?= base_url('h4/star/' . $data[H4::SEO_GAMERTAG]); ?>" data-toggle="tooltip" data-html="true"
-               title="Star <strong><?= $data[H4::GAMERTAG]; ?></strong>" rel="tooltip" data-placement="right"><i class="icon-star"></i></a>
+               title="Star <strong><?= $data[H4::GAMERTAG]; ?></strong>" rel="tooltip" data-placement="right"><span class="btn-sm glyphicon glyphicon-star"></span></a>
     </h1>
 </div>
-<div class="row-fluid">
-    <div class="span3">
-        <div class="pagination-centered">
+<div class="row">
+    <div class="col-md-3">
+        <div class="text-center">
             <?= $template['_partials']['block_photo']; ?>
             <?= $template['_partials']['block_specs']; ?>
-            <div class="visible-desktop">
+            <div class="visible-lg">
                 <?= $template['_partials']['block_cheatertest']; ?>
                 <?= $template['_partials']['block_inactivetest']; ?>
             </div>
             <?= $template['_partials']['block_social']; ?>
         </div>
     </div>
-    <div class="span9">
+    <div class="col-md-9">
         <? if ($msg != false): ?>
             <div class="alert alert-info alert-close margin3pxtop">
                 <button type="button" class="close" data-dismiss="alert">×</button>
@@ -41,19 +41,20 @@
         <?= $template['_partials']['block_inactivetest']; ?>
         <?= $template['_partials']['block_progression']; ?>
     </div>
-    <div class="span5">
+    <div class="col-md-5">
         <section>
             <?= $template['_partials']['block_basicstats']; ?>
         </section>
     </div>
-    <div class="span4">
+    <div class="col-md-4">
         <aside>
             <?= $template['_partials']['block_favoriteweapon']; ?>
             <?= $template['_partials']['block_bestgame']; ?>
         </aside>
         <br />
     </div>
-    <div class="span9">
+    <br />
+    <div class="col-md-9">
         <?= $template['_partials']['block_csr']; ?>
         <?= $template['_partials']['block_medals']; ?>
         <?= $template['_partials']['block_cheatertest']; ?>

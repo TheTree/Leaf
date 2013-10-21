@@ -1,12 +1,11 @@
-<div class="visible-desktop visible-tablet">
+<div class="visible-lg visible-md">
     <strong>Most in a Game</strong>
-    <div class="well well-large">
-        <ul class="unstyled">
+    <div class="well well-lg">
+        <ul class="list-unstyled">
             <li>
                 <span class="row_title">Most Kills</span>
                 <span class="row_data">
                     <?= number_format($data[H4::BEST_GAME_TOTAL_KILLS]); ?>
-
                     <? if (BRANCH): ?>
                         <a class="hidden-phone hidden-table"
                            href="http://branchapp.co/halo4/servicerecord/<?= $data['BranchGamertag']; ?>/match/<?= $data[H4::BEST_GAME_TOTAL_KILLS_GAMEID]; ?>?u=game"

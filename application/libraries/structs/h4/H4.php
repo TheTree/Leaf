@@ -89,4 +89,8 @@ final class H4{
     const BADGE                             = '0x3d';
 
     const BADGE_COLOR                       = '0x3e';
+
+    const DAY                               = '0x3f';
+    const MONTH                             = '0x40';
+    const YEAR                              = '0x41';
 }

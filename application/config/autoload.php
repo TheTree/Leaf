@@ -53,9 +53,23 @@ $autoload['packages'] = array();
 */
 
 $autoload['libraries'] = array('/phil/template','/phil/cache','/phil/curl', #phil libs
-        'database','form_validation','session','encrypt','email','pagination','image_lib','games/h4/h4_lib', 'utils',
+        'database','form_validation','encrypt','email','pagination','image_lib','games/h4/h4_lib', 'utils',
         'db/mongo_db', 'structs/h4/h4');
 
+/*
+| -------------------------------------------------------------------
+|  Auto-load Drivers
+| -------------------------------------------------------------------
+| These classes are located in the system/libraries folder or in your
+| application/libraries folder within their own subdirectory. They
+| offer multiple interchangeable driver options.
+|
+| Prototype:
+|
+|	$autoload['drivers'] = array('session', 'cache');
+*/
+
+$autoload['drivers'] = array('session');
 
 /*
 | -------------------------------------------------------------------

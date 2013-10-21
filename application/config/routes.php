@@ -124,9 +124,14 @@ $route['removefreeze/(:any)']            = "stats/home/removefreeze/$1";
 $route['news/(:num)']                    = "news/index/index/$1";
 $route['news/view/(:any)']               = "news/index/view/$1";
 
+if (ENVIRONMENT != "production") {
+    $route['tests'] = "tests/index/tests";
+}
+
 // default home
 $route['default_controller']    = "h4/home";
 $route['404_override']          = '';
+$route['translate_uri_dashes']  = FALSE;
 
 
 /* End of file routes.php */

@@ -1,24 +1,15 @@
-<div class="well well-large">
-    <?= form_open('h4', array('class' => 'form-search')); ?>
-    <div class="control-group <? if (form_error('gamertag') != null): ?>error<? endif; ?>">
-        <input type="text" class="input-xlarge ajax-typeahead" autocomplete="off" name="gamertag" id="gamertag" placeholder="Enter your gamertag">
-        <button type="submit" class="btn btn-primary">Load Stats</button>
-        <? if (form_error('gamertag') != null): ?>
-            <span class="help-block"><?= form_error('gamertag') ?></span>
-        <? endif; ?>
+<div class="well well-lg">
+    <?= form_open('h4', array('class' => 'form-inline', 'role' => 'form')); ?>
+    <div class="input-group <? if (form_error('gamertag') != null): ?>has-error<? endif; ?>">
+        <input type="text" class="form-control" name="gamertag" id="gamertag" placeholder="Enter your gamertag">
+        <span class="input-group-btn btn-group">
+                <button type="submit" class="btn btn-primary" type="button">Load Stats</button>
+        </span>
     </div>
+    <? if (form_error('gamertag') != null): ?>
+        <span class="help-block"><?= form_error('gamertag') ?></span>
+    <? endif; ?>
     <?= form_close(); ?>
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('#gamertag').typeahead({
-                source: function(query, process) {
-                    return $.post('<?= base_url('ajax/gt/'); ?>' + "/" + query, {}, function(data) {
-                        return process(data);
-                    });
-                }
-            });
-        });
-    </script>
     <script type="text/javascript">
         var disqus_shortname = 'leafapp';
         (function () {

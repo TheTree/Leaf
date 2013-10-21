@@ -135,7 +135,7 @@ class Mongo_db
      * @var string
      * @access public
      */
-    public $_hints = 'h4_index';
+    public $_hints = NULL;
 
     /**
      * Sorts array.
@@ -933,13 +933,25 @@ class Mongo_db
             $this->_show_error('In order to retrieve documents from MongoDB, a collection name must be passed', 500);
         }
 
-        $cursor = $this->_dbhandle
-            ->{$collection}
-            ->find($this->wheres, $this->_selects)
-            ->hint($this->_hints)
-            ->limit($this->_limit)
-            ->skip($this->_offset)
-            ->sort($this->_sorts);
+        if ($this->_hints != NULL)
+        {
+            $cursor = $this->_dbhandle
+                ->{$collection}
+                ->find($this->wheres, $this->_selects)
+                ->hint($this->_hints)
+                ->limit($this->_limit)
+                ->skip($this->_offset)
+                ->sort($this->_sorts);
+        }
+        else
+        {
+            $cursor = $this->_dbhandle
+                ->{$collection}
+                ->find($this->wheres, $this->_selects)
+                ->limit($this->_limit)
+                ->skip($this->_offset)
+                ->sort($this->_sorts);
+        }
 
         // Clear
         $this->_clear($collection, 'get');

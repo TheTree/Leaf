@@ -78,20 +78,20 @@ class H4_Compare {
 
         // check style
         if ($this->you['TotalPoints'] < 0) {
-            $this->you['TotalStyle'] = "badge-important";
+            $this->you['TotalStyle'] = "label-danger";
         } else if ($this->you['TotalPoints'] == 0) {
-            $this->you['TotalStyle'] = "";
+            $this->you['TotalStyle'] = "label-default";
         } else {
-            $this->you['TotalStyle'] = "badge-success";
+            $this->you['TotalStyle'] = "label-success";
         }
 
         // check them style
         if ($this->them['TotalPoints'] < 0) {
-            $this->them['TotalStyle'] = "badge-important";
+            $this->them['TotalStyle'] = "label-danger";
         } else if ($this->them['TotalPoints'] == 0) {
-            $this->them['TotalStyle'] = "";
+            $this->them['TotalStyle'] = "label-default";
         } else {
-            $this->them['TotalStyle'] = "badge-success";
+            $this->them['TotalStyle'] = "label-success";
         }
 
         $final_arr = array();
@@ -111,19 +111,50 @@ class H4_Compare {
             $final_arr['Looser'] = $this->them[H4::GAMERTAG];
             $final_arr['TweetWord'] = "won against";
         } else {
-            $final_arr['Style'] = "alert-error";
+            $final_arr['Style'] = "alert-danger";
             $final_arr['Status'] = 'L';
             $final_arr['Winner'] = $this->them[H4::GAMERTAG];
             $final_arr['Looser'] = $this->you[H4::GAMERTAG];
             $final_arr['TweetWord'] = "lost to";
         }
 
-        return array(
+        $data =  array(
             'you' => $this->you,
             'them' => $this->them,
             'stats' => $rtr_arr,
             'final' => $final_arr
         );
+
+        // if we got this far, the completion of the comparison is done
+        // pass off to the mongo db to store the results
+        $this->dump_to_mongo($data);
+        return $data;
+    }
+
+    function dump_to_mongo($data) {
+
+        // check if this exact comparison is in db.
+        $extracted = [
+            'you_gt'        => $data['you'][H4::GAMERTAG],
+            'you_tag'       => $data['you'][H4::SERVICE_TAG],
+            'you_hashed'    => $data['you'][H4::HASHED_GAMERTAG],
+            'you_seo'       => $data['you'][H4::SEO_GAMERTAG],
+            'you_pts'       => $data['you']['TotalPoints'],
+            'you_badge'     => isset($data['you'][H4::BADGE]) ? $data['you'][H4::BADGE] : null,
+            'them_gt'       => $data['them'][H4::GAMERTAG],
+            'them_tag'      => $data['them'][H4::SERVICE_TAG],
+            'them_hashed'   => $data['them'][H4::HASHED_GAMERTAG],
+            'them_seo'      => $data['them'][H4::SEO_GAMERTAG],
+            'them_pts'      => $data['them']['TotalPoints'],
+            'them_badge'    => isset($data['them'][H4::BADGE]) ? $data['them'][H4::BADGE] : null,
+            'Status'        => $data['final']['Status'],
+            'TweetWord'     => $data['final']['TweetWord'],
+        ];
+
+        if (($_tmp = $this->_ci->stat_m->comparison_exists($extracted)) == FALSE) {
+           $this->_ci->stat_m->insert_comparison($extracted);
+        }
+        return FALSE;
     }
 
     function reset_function_vars() {
@@ -136,13 +167,13 @@ class H4_Compare {
     function them_num($num = 1) {
         $this->them_pts = intval($num);
         $this->them_overall += intval($num);
-        $this->them_style = "badge-success";
+        $this->them_style = "label-success";
     }
 
     function you_num($num = 1) {
         $this->you_pts = intval($num);
         $this->you_overall += intval($num);
-        $this->you_style = "badge-success";
+        $this->you_style = "label-success";
     }
 
     function tie($num = 1) {

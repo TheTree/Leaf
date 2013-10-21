@@ -10,8 +10,13 @@
 <? endif; ?>
 <div class="progress progress-striped">
     <? if ($data[H4::NEXT_RANK_START_XP] == 0): ?>
-        <div class="bar" style="width: 100%;"></div>
+        <div class="progress-bar progress-bar-info" style="width: 100%;"
+             role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
     <? else: ?>
-        <div class="bar" style="width: <?= floatval(($data[H4::XP] - $data[H4::RANK_START_XP]) / ($data[H4::NEXT_RANK_START_XP] - $data[H4::RANK_START_XP])) * 100; ?>%;"></div>
+        <div class="progress-bar progress-bar-info"
+             style="width: <?= floatval(($data[H4::XP] - $data[H4::RANK_START_XP]) / ($data[H4::NEXT_RANK_START_XP] - $data[H4::RANK_START_XP])) * 100; ?>%;"
+             role="progressbar"
+             aria-valuenow="<?= floatval(($data[H4::XP] - $data[H4::RANK_START_XP]) / ($data[H4::NEXT_RANK_START_XP] - $data[H4::RANK_START_XP])) * 100; ?>"
+             aria-valuemin="0" aria-valuemax="100"></div>
     <? endif; ?>
 </div>
