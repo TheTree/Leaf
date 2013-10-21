@@ -111,7 +111,7 @@ define("MISSING_PLAYER", 3);
  *
  * Used in incrementing changes to the core API, which forces a recache of everyone not at that API version
  */
-define("API_VERSION", 4);
+define("API_VERSION", 6);
 
 /**
  * INACTIVE_COUNTER

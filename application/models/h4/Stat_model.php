@@ -14,9 +14,9 @@ class Stat_model extends IBOT_Model {
      * update_or_insert_gamertag
      * 
      * Checking
-     * @param type $hash
+     * @param string $hash
      * @param array $data
-     * @return \type
+     * @return \array
      */
     public function update_or_insert_gamertag($hash, $data) {
 
@@ -57,6 +57,14 @@ class Stat_model extends IBOT_Model {
             unset($data[H4::SEO_GAMERTAG]);
             unset($data[H4::HASHED_GAMERTAG]);
             unset($data[H4::STATUS]);
+
+            // only unset the times if we don't have them
+            if (isset($_tmp[H4::DAY])) {
+                unset($data[H4::DAY]);
+                unset($data[H4::MONTH]);
+                unset($data[H4::YEAR]);
+            }
+
             $this->update_account($hash, $data);
         } else {
             $this->insert_account($data);
@@ -166,8 +174,8 @@ class Stat_model extends IBOT_Model {
     
     /**
      * update_account
-     * @param type $hash
-     * @param type $data
+     * @param string $hash
+     * @param array $data
      * @return boolean
      */
     public function update_account($hash, $data) {
@@ -205,20 +213,38 @@ class Stat_model extends IBOT_Model {
     /**
      * account_exists
      * 
-     * @param type $hash
+     * @param string $hash
      * @return array|bool
      */
     public function account_exists($hash) {
 
         // generate resp
         $resp = $this->mongo_db
-                ->select([H4::HASHED_GAMERTAG, H4::INACTIVE_COUNTER, H4::GAMERTAG, H4::SEO_GAMERTAG, H4::STATUS, H4::TOTAL_GAMEPLAY])
-            ->hint('h4_index')
+                ->select([H4::HASHED_GAMERTAG, H4::INACTIVE_COUNTER, H4::GAMERTAG, H4::SEO_GAMERTAG, H4::STATUS, H4::TOTAL_GAMEPLAY, H4::YEAR, H4::MONTH, H4::DAY])
+                ->hint('h4_index')
                 ->get_where('h4_gamertags', array(
                     H4::HASHED_GAMERTAG => $hash
         ));
 
         return $this->_get_one($resp, H4::HASHED_GAMERTAG);
+    }
+
+    /**
+     * get_install_time
+     *
+     * Tries to get Year, Month, Day from an account.
+     * @param $hash
+     * @return array|bool
+     */
+    public function get_install_time($hash) {
+        $resp = $this->mongo_db
+                ->select([H4::DAY, H4::MONTH, H4::YEAR])
+                ->hint('h4_index')
+                ->get_where('h4_gamertags', array(
+                    H4::HASHED_GAMERTAG => $hash
+            ));
+
+        return $this->_get_one($resp, H4::MONTH);
     }
 
     /**

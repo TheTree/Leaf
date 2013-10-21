@@ -612,8 +612,6 @@ class H4_Lib {
            }
         }
 
-        // lets do the URL work, and medal
-        $this->build_spartan_with_emblem($hashed, substr_replace($service_record['EmblemImageUrl']['AssetUrl'], "", -12), $gt);
         $medal_data = $this->get_medal_data($wargames_record['TotalMedalsStats']);
 
         // get skill stuff
@@ -702,8 +700,21 @@ class H4_Lib {
             H4::LAST_UPDATE                    => intval(time()),
             H4::INACTIVE_COUNTER               => intval(0),
             H4::STATUS                         => intval(0),
-            H4::API_VERSION                    => intval(API_VERSION)
+            H4::API_VERSION                    => intval(API_VERSION),
+            H4::DAY                            => date('d'),
+            H4::MONTH                          => date('m'),
+            H4::YEAR                           => date('Y')
         );
+
+        // Check if we have a previously set date and month
+        if (($time_check = $this->_ci->stat_m->get_install_time($hashed)) == FALSE) {
+            $time_check[H4::YEAR]       = $dump[H4::YEAR];
+            $time_check[H4::MONTH]      = $dump[H4::MONTH];
+            $time_check[H4::DAY]        = $dump[H4::DAY];
+        }
+
+        // lets do the URL work, and medal
+        $this->build_spartan_with_emblem($hashed, substr_replace($service_record['EmblemImageUrl']['AssetUrl'], "", -12), $gt, $time_check[H4::YEAR], $time_check[H4::MONTH], $time_check[H4::DAY]);
 
         //$this->_ci->mongo_db->add_index('h4_gamertags', array(
         //    H4::SEO_GAMERTAG       => 1,
@@ -802,13 +813,17 @@ class H4_Lib {
                 break;
 
             case "Spartan":
-                $path = "uploads/h4/spartans/" . $this->get_hashed_seo_gamertag($this->get_seo_gamertag($image));
+                $hashed_gt  = $this->get_hashed_seo_gamertag($this->get_seo_gamertag($image));
+                $time_check = $this->fix_times($this->_ci->stat_m->get_install_time($hashed_gt));
+                $path = "uploads/h4/spartans/" . $time_check[H4::YEAR] . "/" . $time_check[H4::MONTH] . "/" . $time_check[H4::DAY] . "/" . $hashed_gt;
                 $image_path = "/" . $size . "_spartan.png";
                 $url = str_replace("{SIZE}", $size, str_replace("{GAMERTAG}", urlencode($image), $urls['spartan_url']));
                 break;
 
             case "ProfileSpartan":
-                $path = "uploads/h4/spartans/" . $this->get_hashed_seo_gamertag($this->get_seo_gamertag($image));
+                $hashed_gt  = $this->get_hashed_seo_gamertag($this->get_seo_gamertag($image));
+                $time_check = $this->fix_times($this->_ci->stat_m->get_install_time($hashed_gt));
+                $path = "uploads/h4/spartans/" . $time_check[H4::YEAR] . "/" . $time_check[H4::MONTH] . "/" . $time_check[H4::DAY] . "/" . $hashed_gt;
                 $image_path = "/spartan.png";
                 $url = str_replace("{SIZE}", $size, str_replace("{GAMERTAG}", urlencode($image), $urls['spartan_url']));
                 break;
@@ -839,6 +854,23 @@ class H4_Lib {
                 return base_url($path . $image_path);
             }
         }
+    }
+
+    /**
+     * fix_times
+     *
+     * Sets default values due to poorly code script
+     * @todo remove
+     * @param $times
+     * @return mixed
+     */
+    private function fix_times($times) {
+        if (!isset($times[H4::MONTH])) {
+            $times[H4::DAY]     = date('d');
+            $times[H4::MONTH]   = date('m');
+            $times[H4::YEAR]    = date('Y');
+        }
+        return $times;
     }
 
     /**
@@ -1261,37 +1293,49 @@ class H4_Lib {
 
     /**
      * build_spartan_with_emblem
-     *
      * Used during recache/creation. Takes hashed $gt, and downloads / parses the emblem and Spartan Image.
      * They are then laid ontop of eachother (lol)
      *
-     * @param type $hashed
-     * @param type $emblem
-     * @param type $gamertag
+     * @param string $hashed
+     * @param string $emblem
+     * @param string $gamertag
+     * @param int  $year
+     * @param int  $month
+     * @param int  $day
      */
-    public function build_spartan_with_emblem($hashed, $emblem, $gamertag) {
+    public function build_spartan_with_emblem($hashed, $emblem, $gamertag, $year = 2012, $month = 01, $day = 01) {
 
         // load path helper, setup vars
         $this->_ci->load->helper("path");
-        $spartan_path = absolute_path('uploads/h4/spartans/' . $hashed) . "spartan.png";
-        $emblem_path = absolute_path('uploads/h4/spartans/' . $hashed . "/tmp/") . "emblem.png";
+        $spartan_dir    = absolute_path('uploads/h4/spartans/' . $year . "/" . $month . "/" . $day . "/" . $hashed);
+        $spartan_path   = $spartan_dir . "spartan.png";
+        $emblem_dir     = absolute_path('uploads/h4/spartans/' . $year . "/" . $month . "/" . $day . "/" . $hashed . "/tmp/");
+        $emblem_path    = $emblem_dir . "emblem.png";
 
         // delete old spartans
-        if (is_dir(absolute_path("uploads/h4/spartans/" . $hashed))) {
+        if (is_dir($spartan_dir)) {
             // only delete if $hashed is set
             if (strlen($hashed) > 10) {
-                delete_files(absolute_path('uploads/h4/spartans/' . $hashed), TRUE);
+                delete_files($spartan_dir, TRUE);
             }
         }
 
         // lets try and make a folder. check first :p
-        if (!(is_dir(absolute_path('uploads/h4/spartans/' . $hashed . "/tmp")))) {
-            mkdir(absolute_path('uploads/h4/spartans/' . $hashed . "/tmp"), 0777, TRUE);
-            write_file(absolute_path('uploads/h4/spartans/' . $hashed) . "index.html", $this->_ci->utils->get_anti_dir_trav());
+        if (!(is_dir($emblem_dir))) {
+            mkdir($emblem_dir, 0777, TRUE);
+            write_file($spartan_dir . "index.html", $this->_ci->utils->get_anti_dir_trav());
         } else {
             // only delete if $hashed is set
             if (strlen($hashed) > 10) {
-                delete_files(absolute_path('uploads/h4/spartans/' . $hashed), TRUE);
+                delete_files($spartan_dir, TRUE);
+            }
+        }
+
+        // Backward Code: Delete old images in h4/spartans/ once moved
+        if (is_dir(absolute_path('uploads/h4/spartans/' . $hashed))) {
+            if (strlen($hashed) > 10) {
+                delete_files(absolute_path('uploads/h4/spartans/' . $hashed));
+                rmdir(absolute_path('uploads/h4/spartans/' . $hashed));
             }
         }
 
@@ -1342,8 +1386,8 @@ class H4_Lib {
         }
 
         // delete tmp dir
-        delete_files(absolute_path('uploads/h4/spartans/' . $hashed . "/tmp/"), FALSE);
-        rmdir(absolute_path('uploads/h4/spartans/' . $hashed . "/tmp"));
+        delete_files($emblem_dir, FALSE);
+        rmdir($emblem_dir);
     }
 
     /**
