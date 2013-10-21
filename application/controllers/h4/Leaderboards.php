@@ -81,7 +81,7 @@ class Leaderboards extends IBOT_Controller {
         $config['per_page'] = intval(15);
         $config['use_page_numbers'] = TRUE;
         $config['uri_segment'] = 4;
-        $config['full_tag_open'] = '<div class="pagination pagination-centered"><ul>';
+        $config['full_tag_open'] = '<div class="text-center"><ul class="pagination">';
         $page = ($this->uri->segment(4)) ? $this->uri->segment(4) : 0;
 
         // run query again, cached w/ limit
