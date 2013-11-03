@@ -23,6 +23,7 @@
  * 107          - Team Oddball
  * 108          - King of The Hill
  * 109          - Team Slayer Pro
+ * 112          - Community Forge Playlist
  * 113          - Team Snipers
  * 115          - SWAT
  * 116          - Multi-Team
@@ -58,14 +59,14 @@ $config['h4_enabled']   = TRUE;
  *
  * Holds playlist ids for individual CSR playlists
  */
-$config['h4_individual_csr'] = [100,101,104,108,113,115,126,128,138];
+$config['h4_individual_csr'] = [100,101,104,108,112,113,115,126,128];
 
 /**
  * h4_team_csr
  *
  * Holds playlist ids for team CSR playlists
  */
-$config['h4_team_csr'] = [105,107,117,121,123];
+$config['h4_team_csr'] = [105,117,121,123];
 
 /**
  * h4_max_rank
