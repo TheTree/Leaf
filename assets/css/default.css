@@ -41,6 +41,9 @@ csr-legend {
 .block {
     display: inline-block;
 }
+.inline {
+    display: inline;
+}
 .medal_desc {
     display: inline-block;
     float: left;
