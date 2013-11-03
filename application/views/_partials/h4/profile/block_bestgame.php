@@ -8,7 +8,7 @@
                     <?= number_format($data[H4::BEST_GAME_TOTAL_KILLS]); ?>
                     <? if (BRANCH): ?>
                         <a class="hidden-phone hidden-table"
-                           href="http://branchapp.co/halo4/servicerecord/<?= $data['BranchGamertag']; ?>/match/<?= $data[H4::BEST_GAME_TOTAL_KILLS_GAMEID]; ?>?u=game"
+                           href="https://branchapp.co/halo4/servicerecord/<?= $data['BranchGamertag']; ?>/game/<?= $data[H4::BEST_GAME_TOTAL_KILLS_GAMEID]; ?>?u=game"
                            data-toggle="tooltip" data-html="true" title="View Game on Branch"
                            rel="tooltip" data-placement="top"><i class="icon-tag"></i></a>
                     <? endif; ?>
@@ -20,7 +20,7 @@
                     <?= number_format($data[H4::BEST_GAME_TOTAL_MEDALS]); ?>
                     <? if (BRANCH): ?>
                         <a class="hidden-phone hidden-table"
-                           href="http://branchapp.co/halo4/servicerecord/<?= $data['BranchGamertag']; ?>/match/<?= $data[H4::BEST_GAME_TOTAL_MEDALS_GAMEID]; ?>?u=game"
+                           href="https://branchapp.co/halo4/servicerecord/<?= $data['BranchGamertag']; ?>/game/<?= $data[H4::BEST_GAME_TOTAL_MEDALS_GAMEID]; ?>?u=game"
                            data-toggle="tooltip" data-html="true" title="View Game on Branch"
                            rel="tooltip" data-placement="top"><i class="icon-tag"></i></a>
                     <? endif; ?>
@@ -32,7 +32,7 @@
                     <?= number_format($data[H4::BEST_GAME_HEADSHOT_TOTAL]); ?>
                     <? if (BRANCH): ?>
                         <a class="hidden-phone hidden-table"
-                           href="http://branchapp.co/halo4/servicerecord/<?= $data['BranchGamertag']; ?>/match/<?= $data[H4::BEST_GAME_HEADSHOT_GAMEID]; ?>?u=game"
+                           href="https://branchapp.co/halo4/servicerecord/<?= $data['BranchGamertag']; ?>/game/<?= $data[H4::BEST_GAME_HEADSHOT_GAMEID]; ?>?u=game"
                            data-toggle="tooltip" data-html="true" title="View Game on Branch"
                            rel="tooltip" data-placement="top"><i class="icon-tag"></i></a>
                     <? endif; ?>
@@ -44,7 +44,7 @@
                     <?= number_format($data[H4::BEST_GAME_ASSASSINATION_TOTAL]); ?>
                     <? if (BRANCH): ?>
                         <a class="hidden-phone hidden-table"
-                           href="http://branchapp.co/halo4/servicerecord/<?= $data['BranchGamertag']; ?>/match/<?= $data[H4::BEST_GAME_ASSASSINATION_GAMEID]; ?>?u=game"
+                           href="https://branchapp.co/halo4/servicerecord/<?= $data['BranchGamertag']; ?>/game/<?= $data[H4::BEST_GAME_ASSASSINATION_GAMEID]; ?>?u=game"
                            data-toggle="tooltip" data-html="true" title="View Game on Branch"
                            rel="tooltip" data-placement="top"><i class="icon-tag"></i></a>
                     <? endif; ?>
@@ -56,7 +56,7 @@
                     <?= number_format($data[H4::BEST_GAME_KILL_DISTANCE]); ?><abbr title="meters">m</abbr>
                     <? if (BRANCH): ?>
                         <a class="hidden-phone hidden-table"
-                           href="http://branchapp.co/halo4/servicerecord/<?= $data['BranchGamertag']; ?>/match/<?= $data[H4::BEST_GAME_KILL_DISTANCE_GAMEID]; ?>?u=game"
+                           href="https://branchapp.co/halo4/servicerecord/<?= $data['BranchGamertag']; ?>/game/<?= $data[H4::BEST_GAME_KILL_DISTANCE_GAMEID]; ?>?u=game"
                            data-toggle="tooltip" data-html="true" title="View Game on Branch"
                            rel="tooltip" data-placement="top"><i class="icon-tag"></i></a>
                     <? endif; ?>
