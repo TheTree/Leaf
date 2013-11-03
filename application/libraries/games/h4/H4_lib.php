@@ -341,6 +341,7 @@ class H4_Lib {
                     $this->_ci->cache->delete('auth_spartan');
                     return $this->get_spartan_auth_key($count);
                 }  else {
+                    log_message('error', 'API Down ' . $key);
                     $this->_ci->utils->throw_error("API_AUTH_GONE");
                 }
             }
@@ -370,6 +371,7 @@ class H4_Lib {
                 $count++;
 
                 if ($count > 2) {
+                    log_message('error', 'API Down ' . $resp);
                     $this->_ci->utils->throw_error("API_AUTH_GONE");
                 } else {
                     $this->_ci->curl->simple_get($url . "/kill");
