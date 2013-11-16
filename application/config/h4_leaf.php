@@ -59,7 +59,7 @@ $config['h4_enabled']   = TRUE;
  *
  * Holds playlist ids for individual CSR playlists
  */
-$config['h4_individual_csr'] = [100,101,104,108,112,113,115,126,128];
+$config['h4_individual_csr'] = [100,101,104,113,115,126,128,138];
 
 /**
  * h4_team_csr
