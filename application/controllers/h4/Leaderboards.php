@@ -8,7 +8,7 @@ class Leaderboards extends IBOT_Controller {
     public $gt;
     public $my;
     public $playlists;
-    public $default_playlist = "100_I";
+    public $default_playlist = "100_T";
 
     public function __construct() {
         parent::__construct();

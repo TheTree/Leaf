@@ -66,7 +66,7 @@ $route['h4']                = "h4/home/index";
 $route['h4/stats']                  = "h4/home/index";
 $route['h4/compare']                = "h4/compare/index";
 $route['h4/top_ten']                = "h4/leaderboards/top_10";
-$route['h4/csr_leaderboards']       = "h4/leaderboards/panel/100_I/0";
+$route['h4/csr_leaderboards']       = "h4/leaderboards/panel/100_T/0";
 
 // variable pages
 $route['h4/compare/(:any)/(:any)']                  = "h4/compare/comparison/$1/$2";

@@ -5,13 +5,13 @@
             <ul class="nav nav-pills nav-stacked nav-sidebar">
                 <? foreach($csr_team as $item): ?>
                     <? if (isset($playlists[$item])) : ?>
-                        <li class="<?= $this->utils->is_active($item . "_T", "100_I", 3); ?>"><a href="<?= base_url('h4/csr_leaderboards/' . $item . "_T"); ?>"><?= $playlists[$item]['Name'] ?></a></li>
+                        <li class="<?= $this->utils->is_active($item . "_T", "100_T", 3); ?>"><a href="<?= base_url('h4/csr_leaderboards/' . $item . "_T"); ?>"><?= $playlists[$item]['Name'] ?></a></li>
                     <? endif; ?>
                 <? endforeach; ?>
                 <li class="nav-divider"></li>
                 <? foreach($csr_ind as $item): ?>
                     <? if (isset($playlists[$item])) : ?>
-                        <li class="<?= $this->utils->is_active($item . "_I", "100_I", 3); ?>"><a href="<?= base_url('h4/csr_leaderboards/' . $item . "_I"); ?>"><?= $playlists[$item]['Name'] ?></a></li>
+                        <li class="<?= $this->utils->is_active($item . "_I", "100_T", 3); ?>"><a href="<?= base_url('h4/csr_leaderboards/' . $item . "_I"); ?>"><?= $playlists[$item]['Name'] ?></a></li>
                     <? endif; ?>
                 <? endforeach; ?>
             </ul>
