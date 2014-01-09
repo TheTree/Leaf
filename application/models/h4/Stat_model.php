@@ -455,7 +455,7 @@ class Stat_model extends IBOT_Model {
     public function get_top_10($field, $asc) {
         
         $resp = $this->mongo_db
-                ->select([H4::GAMERTAG, H4::SERVICE_TAG, H4::SEO_GAMERTAG, $field])
+                ->select([H4::GAMERTAG, H4::SERVICE_TAG, H4::SEO_GAMERTAG, $field], ["_id"])
                 ->limit(10)
                 ->hint('h4_index')
                 ->order_by([$field => $asc])
@@ -478,7 +478,7 @@ class Stat_model extends IBOT_Model {
      */
     public function get_last_5() {
         $resp = $this->mongo_db
-                ->select([H4::GAMERTAG, H4::SEO_GAMERTAG, H4::RANK, H4::SERVICE_TAG])
+                ->select([H4::GAMERTAG, H4::SEO_GAMERTAG, H4::RANK, H4::SERVICE_TAG], ["_id"])
                 ->order_by([ "_id" => -1])
                 ->hint('h4_index')
                 ->limit(5)
@@ -507,7 +507,7 @@ class Stat_model extends IBOT_Model {
 
         // execute
         $resp = $this->mongo_db
-            ->select([H4::GAMERTAG])
+            ->select([H4::GAMERTAG], ["_id"])
             ->limit(25)
             ->hint('h4_index')
             ->get('h4_gamertags');
