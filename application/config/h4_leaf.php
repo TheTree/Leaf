@@ -38,6 +38,7 @@
  * 135          - Legendary Slayer
  * 137          - Champions Bundle DLC
  * 138          - Ricochet
+ * 147          - Big Team SWAT
  */
 
 
@@ -59,7 +60,7 @@ $config['h4_enabled']   = TRUE;
  *
  * Holds playlist ids for individual CSR playlists
  */
-$config['h4_individual_csr'] = [101,104,113,115,126,128,138];
+$config['h4_individual_csr'] = [101,104,113,115,126,128,138,147];
 
 /**
  * h4_team_csr
