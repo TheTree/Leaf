@@ -1,21 +1,37 @@
-## Laravel PHP Framework
+# LeafApp.co
+// @iBotPeaches
 
-[![Latest Stable Version](https://poser.pugx.org/laravel/framework/version.png)](https://packagist.org/packages/laravel/framework) [![Total Downloads](https://poser.pugx.org/laravel/framework/d/total.png)](https://packagist.org/packages/laravel/framework) [![Build Status](https://travis-ci.org/laravel/framework.png)](https://travis-ci.org/laravel/framework)
+Heres the sauce babes. Let me lay down some rules
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as authentication, routing, sessions, and caching.
+1.  If you take this and host your own website including my exact product without any changes. You're a dick.
 
-Laravel aims to make the development process a pleasing one for the developer without sacrificing application functionality. Happy developers make the best code. To this end, we've attempted to combine the very best of what we have seen in other web frameworks, including frameworks implemented in other languages, such as Ruby on Rails, ASP.NET MVC, and Sinatra.
+2.  If you take this and host your own website, and put ads on it. Not only are you breaking 343 Terms of Service, but you will have pissed me off beyond belief.
+3.  If you piss me off, I probably won't update Leaf anymore.
 
-Laravel is accessible, yet powerful, providing powerful tools needed for large, robust applications. A superb inversion of control container, expressive migration system, and tightly integrated unit testing support give you the tools you need to build any application with which you are tasked.
+## Requirements
 
-## Official Documentation
+1. PHP >= 5.4.x
+2. MySqli >= 5.5.x
+3. msgpack 0.5.5
+4. libcurl >= 7.30.0 (Required for bug fix relating to https redirects retaining POST)
 
-Documentation for the entire framework can be found on the [Laravel website](http://laravel.com/docs).
+<br /><br />
+> DON'T BE A DICK PUBLIC LICENSE
+> TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
-### Contributing To Laravel
+ 1. Do whatever you like with the original work, just don't be a dick.
 
-**All issues and pull requests should be filed on the [laravel/framework](http://github.com/laravel/framework) repository.**
+     Being a dick includes - but is not limited to - the following instances:
 
-### License
+	 1a. Outright copyright infringement - Don't just copy this and change the name.  
+	 1b. Selling the unmodified original with no work done what-so-ever, that's REALLY being a dick.  
+	 1c. Modifying the original work to contain hidden harmful content. That would make you a PROPER dick.  
 
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+ 2. If you become rich through modifications, related works/services, or supporting the original work,
+ share the love. Only a dick would make loads off this work and not buy the original works 
+ creator(s) a pint.
+ 
+ 3. Code is provided with no warranty. Using somebody else's code and bitching when it goes wrong makes 
+ you a DONKEY dick. Fix the problem yourself. A non-dick would submit the fix back.
+
+ Source: https://github.com/philsturgeon/dbad
