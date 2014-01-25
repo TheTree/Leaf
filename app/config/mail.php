@@ -54,7 +54,7 @@ return array(
 	|
 	*/
 
-	'from' => array('address' => 'info@leafapp.co', 'name' => 'Leafapp'),
+	'from' => array('address' => null, 'name' => null),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -80,7 +80,7 @@ return array(
 	|
 	*/
 
-	'username' => 'connor.tumbleson+mandril@gmail.com',
+	'username' => null,
 
 	/*
 	|--------------------------------------------------------------------------
@@ -93,7 +93,7 @@ return array(
 	|
 	*/
 
-	'password' => '_srlAy4jZAP6XEnogYPQCg',
+	'password' => null,
 
 	/*
 	|--------------------------------------------------------------------------
