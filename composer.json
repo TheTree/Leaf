@@ -6,7 +6,7 @@
 	"require": {
 		"laravel/framework": "4.1.*",
 		"jenssegers/mongodb": "*",
-		"unikent/curl": "dev-master"
+		"jyggen/curl": "dev-master"
 	},
 	"autoload": {
 		"classmap": [
