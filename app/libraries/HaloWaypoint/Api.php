@@ -44,7 +44,7 @@ class Api {
 	 * @throws \Whoops\Example\Exception
 	 * @return string
 	 */
-	private function getSpartanAuthKey()
+	public function getSpartanAuthKey()
 	{
 		if (Cache::has('SpartanAuthKey'))
 		{
