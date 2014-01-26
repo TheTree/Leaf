@@ -2,22 +2,31 @@
 
 namespace HaloWaypoint;
 
+use Illuminate\Support\Facades\Cache as Cache;
+use jyggen\Curl as MCurl;
+
 class Api
 {
-	private $curl;
+	private $url = "https://stats.svc.halowaypoint.com";
 
-	private $url = "@todo put url";
+	private $lang = "english";
 
-	function __construct() {
-		$this->curl = new \Curl;
-	}
+	private $game = "h4";
 
 	/**
 	 * @return array
 	 */
-	public static function getChallenges()
+	public function getChallenges()
 	{
-
+		if (Cache::has('CurrentChallenges'))
+		{
+			// check it
+		}
+		else
+		{
+			$response = self::grabUrl("challenges", false);
+			Cache::put('CurrentChallenges', $response, 60 * 31);
+		}
 	}
 
 	/**
@@ -35,7 +44,22 @@ class Api
 		}
 	}
 
-	private function setHeaders($auth = false)
+	private function getUrl($endpoint)
+	{
+		return $this->url . "/" . $this->lang . "/" . $this->game . "/" . $endpoint;
+	}
+
+	private function checkStatus($response)
+	{
+		if (isset($response->StatusCode) && intval($response->StatusCode) == intval(1))
+		{
+			return $response;
+		}
+
+		return false;
+	}
+
+	private function getHeaders($auth = false)
 	{
 		if ($auth)
 		{
@@ -53,7 +77,42 @@ class Api
 			];
 		}
 
-		$this->curl->option('HTTPHEADER', $header_array);
+		return $header_array;
+	}
+
+	private function grabUrl($endpoint, $auth = false, $execute = true)
+	{
+		$url = $this->getUrl($endpoint);
+		$headers = $this->getHeaders($auth);
+
+		$request = new MCurl\Request($url);
+		$request->setOption(CURLOPT_HTTPHEADER, $headers);
+		$request->setOption(CURLOPT_SSL_VERIFYPEER, false);
+		$request->setOption(CURLOPT_SSL_VERIFYHOST, false);
+
+		if ($execute === false)
+		{
+			return [
+				'headers' => [
+					CURLOPT_HTTPHEADER => $headers
+				],
+				'url'   => $url
+			];
+		}
+		else
+		{
+			$request->execute();
+
+			if ($request->isSuccessful())
+			{
+				$response = $request->getResponse()->getContent();
+				return $this->checkStatus(json_decode($response));
+			}
+			else
+			{
+				return false;
+			}
+		}
 	}
 
 }
