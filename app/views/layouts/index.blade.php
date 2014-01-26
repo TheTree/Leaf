@@ -3,10 +3,11 @@
 @section('content')
 	<div class="container">
 		<div class="row">
-			<div class="col-md-7">
+			<br /><br />
+			<div class="col-md-{{{ $main_size or '7' }}}">
 				@yield('main')
 			</div>
-			<div class="col-md-5">
+			<div class="col-md-{{{ $sidebar_size or '5' }}}">
 				@yield('sidebar')
 			</div>
 		</div>

@@ -14,4 +14,10 @@ class HomeController extends BaseController {
 			->with('challenges', Utils::prettifyChallenges($api->getChallenges()));
 	}
 
+	public function about()
+	{
+		return View::make('pages.about')
+			->with('main_size', 8)
+			->with('sidebar_size', 4);
+	}
 }
