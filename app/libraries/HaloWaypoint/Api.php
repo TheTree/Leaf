@@ -2,12 +2,15 @@
 
 namespace HaloWaypoint;
 
-use Illuminate\Support\Facades\Cache as Cache;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Config;
 use jyggen\Curl as MCurl;
+use Whoops\Example\Exception;
 
 class Api
 {
 	private $url = "https://stats.svc.halowaypoint.com";
+	private $auth = "https://settings.svc.halowaypoint.com/RegisterClientService.svc/spartantoken/wlid";
 
 	private $lang = "english";
 
@@ -21,15 +24,25 @@ class Api
 		if (Cache::has('CurrentChallenges'))
 		{
 			// check it
+			$response = Cache::get('CurrentChallenges');
+
+			if (time() > strtotime($response->Challenges['0']->EndDate, true))
+			{
+				Cache::forget('CurrentChallenges');
+				return $this->getChallenges();
+			}
+			return $response->Challenges;
 		}
 		else
 		{
-			$response = self::grabUrl("challenges", false);
+			$response = $this->grabUrl("challenges", false);
 			Cache::put('CurrentChallenges', $response, 60 * 31);
+			return $response->Challenges;
 		}
 	}
 
 	/**
+	 * @throws \Whoops\Example\Exception
 	 * @return string
 	 */
 	private function getSpartanAuthKey()
@@ -40,7 +53,48 @@ class Api
 		}
 		else
 		{
-			return "@todo get spartan key";
+			$url = Config::get('secret.SpartanAuthUrl');
+			$request = new MCurl\Request($url);
+
+			$request->execute();
+
+			if ($request->isSuccessful())
+			{
+				$response = json_decode($request->getResponse()->getContent());
+
+				if (time() > intval($response->expiresIn))
+				{
+					return $this->getSpartanAuthKey();
+				}
+				else
+				{
+					// at this point, we have a WLID AuthenticationToken
+					// we must use this against the RegisterService of 343
+					// to get a SpartanToken, which lasts for an hour
+					// which we can use against authenticated api calls
+					$request = new MCurl\Request($this->auth);
+					$request->setOption(CURLOPT_HTTPHEADER, [
+							'Accept: application/json',
+							'X-343-Authorization-WLID: ' . 'v1=' . $response->accessToken
+						]);
+					$request->setOption(CURLOPT_SSL_VERIFYPEER, false);
+					$request->setOption(CURLOPT_SSL_VERIFYHOST, false);
+					$request->execute();
+
+					if ($request->isSuccessful())
+					{
+						$response = $request->getResponse()->getContent();
+						Cache::put('SpartanAuthKey', $response, 60);
+						return json_decode($response)->SpartanToken;
+					}
+
+					throw new Exception('Authorization URL is down');
+				}
+			}
+			else
+			{
+				throw new Exception('SpartanToken URL is down');
+			}
 		}
 	}
 
