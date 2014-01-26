@@ -13,6 +13,12 @@
 
 Route::get('/', 'HomeController@index');
 
-Route::get('/news', 'NewsController@index');
+Route::get('about', 'HomeController@about');
 
-Route::get('/about', 'HomeController@about');
+Route::resource('news', 'NewsController');
+
+Route::resource('csr_leaderboards', 'CsrLeaderboardsController');
+
+Route::resource('top_ten', 'TopTenController');
+
+Route::resource('compare', 'CompareController');

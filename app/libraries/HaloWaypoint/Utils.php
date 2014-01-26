@@ -4,8 +4,7 @@ namespace HaloWaypoint;
 
 use Library\Helpers;
 
-class Utils
-{
+class Utils {
 	public static function getBadgeColor($id)
 	{
 		switch($id)

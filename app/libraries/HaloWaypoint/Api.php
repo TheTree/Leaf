@@ -7,8 +7,7 @@ use Illuminate\Support\Facades\Config;
 use jyggen\Curl as MCurl;
 use Whoops\Example\Exception;
 
-class Api
-{
+class Api {
 	private $url = "https://stats.svc.halowaypoint.com";
 	private $auth = "https://settings.svc.halowaypoint.com/RegisterClientService.svc/spartantoken/wlid";
 

@@ -11,7 +11,8 @@ class HomeController extends BaseController {
 	{
 		$api = new Api();
 		return View::make('pages.homepage.halofour_index')
-			->with('challenges', Utils::prettifyChallenges($api->getChallenges()));
+			->with('challenges', Utils::prettifyChallenges($api->getChallenges()))
+			->with('title', 'Leafapp .:. Halo Stats');
 	}
 
 	public function about()

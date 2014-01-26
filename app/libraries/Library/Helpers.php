@@ -2,8 +2,7 @@
 
 namespace Library;
 
-class Helpers
-{
+class Helpers {
 	/**
 	 * A function for making time periods readable
 	 *
