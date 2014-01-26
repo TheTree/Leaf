@@ -5,17 +5,22 @@
 	"license": "MIT",
 	"require": {
 		"laravel/framework": "4.1.*",
-		"jenssegers/mongodb": "*"
+		"jenssegers/mongodb": "*",
+		"bca/curl": "2.*"
 	},
 	"autoload": {
 		"classmap": [
 			"app/commands",
 			"app/controllers",
 			"app/models",
+            "app/libraries",
 			"app/database/migrations",
 			"app/database/seeds",
 			"app/tests/TestCase.php"
-		]
+		],
+        "psr-0": {
+            "HaloWaypoint" : "app/libraries"
+        }
 	},
 	"scripts": {
 		"post-install-cmd": [
