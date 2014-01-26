@@ -1,10 +1,17 @@
 <?php
 
+use HaloWaypoint\Api;
+
 class HomeController extends BaseController {
 
-	public function indexPage()
+	protected $layout = "layouts.index";
+
+	public function index()
 	{
-		return View::make('index');
+		$api = new Api();
+
+		$challenges = $api->getChallenges();
+		$this->layout->content = View::make('index');
 	}
 
 }

@@ -1,5 +1,9 @@
-@extends('layouts.master')
+@extends('layouts.index')
 
-@section('content')
+@section('main')
 <p>This is my body content.</p>
+@stop
+
+@section('sidebar')
+<p>sidebar</p>
 @stop

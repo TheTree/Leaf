@@ -11,4 +11,6 @@
 |
 */
 
-Route::get('/', 'HomeController@indexPage');
+Route::get('/', 'HomeController@index');
+
+Route::get('/news', 'NewsController@index');
