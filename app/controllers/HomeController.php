@@ -1,6 +1,7 @@
 <?php
 
 use HaloWaypoint\Api;
+use HaloWaypoint\Utils;
 
 class HomeController extends BaseController {
 
@@ -9,9 +10,8 @@ class HomeController extends BaseController {
 	public function index()
 	{
 		$api = new Api();
-
-		$challenges = $api->getChallenges();
-		$this->layout->content = View::make('index');
+		return View::make('pages.homepage.halofour_index')
+			->with('challenges', Utils::prettifyChallenges($api->getChallenges()));
 	}
 
 }
