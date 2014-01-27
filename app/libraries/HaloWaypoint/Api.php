@@ -10,6 +10,7 @@ use Whoops\Example\Exception;
 class Api {
 	private $url = "https://stats.svc.halowaypoint.com";
 	private $auth = "https://settings.svc.halowaypoint.com/RegisterClientService.svc/spartantoken/wlid";
+	private $presence = "https://presence.svc.halowaypoint.com";
 
 	private $lang = "english";
 
@@ -34,9 +35,41 @@ class Api {
 		}
 		else
 		{
-			$response = $this->grabUrl("challenges", false);
-			Cache::put('CurrentChallenges', $response, 60 * 31);
+			$response = $this->grabUrl("challenges", "default", false);
+			Cache::put('CurrentChallenges', $response, 60 * 24);
 			return $response->Challenges;
+		}
+	}
+
+	public function getPlaylists()
+	{
+		if (Cache::has('CurrentPlaylists'))
+		{
+			return Cache::get('CurrentPlaylists');
+		}
+		else
+		{
+			$response = $this->grabUrl("playlists", "presence", true);
+
+			// we only care about playlists that are in matchmaking (id 3)
+			// and active (isCurrent). So lets trash the rest.
+			// For the ones, we do want. Lets remove the Map/Game list, we
+			// don't use those portions and it accounts for a lot of space.
+			foreach($response->Playlists as $key => $playlist)
+			{
+				if (!($playlist->ModeId == 3 && $playlist->IsCurrent === true))
+				{
+					unset($response->Playlists[$key]);
+				}
+				else
+				{
+					unset($response->Playlists[$key]->GameVariants);
+					unset($response->Playlists[$key]->MapVariants);
+				}
+			}
+
+			Cache::put('CurrentPlaylists', $response->Playlists, 60 * 24);
+			return $response->Playlists;
 		}
 	}
 
@@ -82,9 +115,9 @@ class Api {
 
 					if ($request->isSuccessful())
 					{
-						$response = $request->getResponse()->getContent();
+						$response = json_decode($request->getResponse()->getContent());
 						Cache::put('SpartanAuthKey', $response, 60);
-						return json_decode($response)->SpartanToken;
+						return $response->SpartanToken;
 					}
 
 					throw new Exception('Authorization URL is down');
@@ -97,14 +130,22 @@ class Api {
 		}
 	}
 
-	private function getUrl($endpoint)
+	private function getUrl($endpoint, $type = "default")
 	{
-		return $this->url . "/" . $this->lang . "/" . $this->game . "/" . $endpoint;
+		switch ($type)
+		{
+			case "presence":
+				return $this->presence . "/" . $this->lang . "/" . $this->game . "/" . $endpoint;
+
+			default:
+				return $this->url . "/" . $this->lang . "/" . $this->game . "/" . $endpoint;
+
+		}
 	}
 
 	private function checkStatus($response)
 	{
-		if (isset($response->StatusCode) && intval($response->StatusCode) == intval(1))
+		if (isset($response->StatusCode))
 		{
 			return $response;
 		}
@@ -133,9 +174,9 @@ class Api {
 		return $header_array;
 	}
 
-	private function grabUrl($endpoint, $auth = false, $execute = true)
+	private function grabUrl($endpoint, $type = "default", $auth = false, $execute = true)
 	{
-		$url = $this->getUrl($endpoint);
+		$url = $this->getUrl($endpoint, $type);
 		$headers = $this->getHeaders($auth);
 
 		$request = new MCurl\Request($url);
