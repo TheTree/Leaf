@@ -28,6 +28,21 @@ class Gamertag extends Eloquent {
 		return self::unpack_msg($value);
 	}
 
+	public function set0x1dAttribute($value)
+	{
+		return self::pack_msg($value);
+	}
+
+	public function set0x25Attribute($value)
+	{
+		return self::pack_msg($value);
+	}
+
+	public function set0x27Attribute($value)
+	{
+		return self::pack_msg($value);
+	}
+
 	/**
 	 * Decodes utf8 strings from MongoDB and unpacks back into an array from msgpack
 	 *
@@ -37,5 +52,16 @@ class Gamertag extends Eloquent {
 	private function unpack_msg($value)
 	{
 		return msgpack_unpack(utf8_decode($value));
+	}
+
+	/**
+	 * Encodes an array into UTF8, then msgpack's it.
+	 *
+	 * @param $value
+	 * @return mixed
+	 */
+	private function pack_msg($value)
+	{
+		return msgpack_pack(utf8_encode($value));
 	}
 }
