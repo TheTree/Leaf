@@ -57,14 +57,14 @@ class Api {
 			// don't use those portions and it accounts for a lot of space.
 			foreach($response->Playlists as $key => $playlist)
 			{
-				if (!($playlist->ModeId == 3 && $playlist->IsCurrent === true))
-				{
-					unset($response->Playlists[$key]);
-				}
-				else
+				if ($playlist->ModeId == 3 && $playlist->IsCurrent === true)
 				{
 					unset($response->Playlists[$key]->GameVariants);
 					unset($response->Playlists[$key]->MapVariants);
+				}
+				else
+				{
+					unset($response->Playlists[$key]);
 				}
 			}
 
