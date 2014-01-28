@@ -5,6 +5,7 @@ namespace HaloWaypoint;
 use Library\Helpers;
 
 class Utils {
+
 	public static function getBadgeColor($id)
 	{
 		switch($id)
@@ -30,5 +31,31 @@ class Utils {
 		}
 
 		return $challenges;
+	}
+
+	/**
+	 *
+	 * Takes a gamertag and converts it to a seo compatible name to be used in URLs
+	 *
+	 * @param $gamertag
+	 * @return mixed
+	 */
+	public static function makeSeoGamertag($gamertag)
+	{
+		return preg_replace('/\s+/', '_', strtolower(urldecode(trim($gamertag))));
+	}
+
+	/**
+	 *
+	 * Takes a lowercase seo gamertag and converts it for use in Api
+	 *
+	 * ex: ibotpeaches_v5 -> ibotpeaches%20v5
+	 *
+	 * @param $seoGamertag
+	 * @return mixed
+	 */
+	public static function makeApiSafeGamertag($seoGamertag)
+	{
+		return trim(rawurlencode(str_replace('_', ' ', $seoGamertag)));
 	}
 }

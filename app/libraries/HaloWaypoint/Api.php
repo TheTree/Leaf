@@ -2,9 +2,12 @@
 
 namespace HaloWaypoint;
 
+use HaloFour\Gamertag;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use jyggen\Curl as MCurl;
+use Symfony\Component\HttpFoundation\Request;
 use Whoops\Example\Exception;
 
 class Api {
@@ -73,6 +76,71 @@ class Api {
 		}
 	}
 
+	public function getGamertagData($seoGamertag, $force = false)
+	{
+		if (($record = $this->getGamertagDataViaCache($seoGamertag)) === false || $force === false)
+		{
+			$safeGamertag = Utils::makeApiSafeGamertag($seoGamertag);
+
+			// at this point our secondary cache does not have this record
+			// its entirely possible this record doesn't exist.
+			// Lets hit the API, grab the data to see if this account exists
+			$service_record = $this->grabUrl($safeGamertag, "service", false, false);
+			$wargames_record = $this->grabUrl($safeGamertag, "wargames", true, false);
+
+			$request_service = new MCurl\Request($service_record['url']);
+			$request_wargames = new MCurl\Request($wargames_record['url']);
+
+			$request_service->setOption(CURLOPT_HTTPHEADER, $service_record['headers']);
+			$request_wargames->setOption(CURLOPT_HTTPHEADER, $wargames_record['headers']);
+
+			$dispatcher = new MCurl\Dispatcher();
+			$dispatcher->add($request_service);
+			$dispatcher->add($request_wargames);
+			$dispatcher->execute();
+
+			if ($request_service->isSuccessful() && $request_wargames->isSuccessful())
+			{
+				// we have all the data now. We still need to grab the emblems
+				// and Spartan picture, but for the most part we are done here.
+
+			}
+			else
+			{
+				App::abort(404, Lang::get('errors.gt_not_found', ['gamertag' => $seoGamertag]));
+
+			}
+		}
+		else
+		{
+			// lets see if this data needs to be rehashed
+			return $this->getGamertagData($seoGamertag, true);
+			dd($record);
+		}
+	}
+
+	private function getGamertagDataViaApi($seoGamertag)
+	{
+
+	}
+
+	/**
+	 * @param $seoGamertag
+	 * @return bool
+	 */
+	private function getGamertagDataViaCache($seoGamertag)
+	{
+		try
+		{
+			$record = Gamertag::where('SeoGamertag', $seoGamertag)->firstOrFail();
+		}
+		catch (ModelNotFoundException $ex)
+		{
+			return false;
+		}
+		return $record;
+	}
+
 	/**
 	 * @throws \Whoops\Example\Exception
 	 * @return string
@@ -116,10 +184,11 @@ class Api {
 					if ($request->isSuccessful())
 					{
 						$response = json_decode($request->getResponse()->getContent());
-						Cache::put('SpartanAuthKey', $response, 60);
+						Cache::put('SpartanAuthKey', $response, 50);
 						return $response->SpartanToken;
 					}
 
+					Cache::forget('SpartanAuthKey');
 					throw new Exception('Authorization URL is down');
 				}
 			}
@@ -136,6 +205,12 @@ class Api {
 		{
 			case "presence":
 				return $this->presence . "/" . $this->lang . "/" . $this->game . "/" . $endpoint;
+
+			case "service":
+				return $this->url . "/" . $this->lang . "/players/" . $endpoint . "/" . $this->game . "/servicerecord";
+
+			case "wargames":
+				return $this->url . "/" . $this->lang . "/players/" . $endpoint . "/" . $this->game . "/servicerecord/wargames";
 
 			default:
 				return $this->url . "/" . $this->lang . "/" . $this->game . "/" . $endpoint;
@@ -187,9 +262,7 @@ class Api {
 		if ($execute === false)
 		{
 			return [
-				'headers' => [
-					CURLOPT_HTTPHEADER => $headers
-				],
+				'headers' => $headers,
 				'url'   => $url
 			];
 		}
