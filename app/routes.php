@@ -13,12 +13,18 @@
 
 Route::get('/', 'HomeController@index');
 
+// homepage POST routes
+Route::post('/', 'HomeController@addGamertag');
+
+// halo 4 related links
+Route::get('h4/record/{gamertag}', 'ProfileController@index');
+
 Route::get('about', 'HomeController@about');
 
 Route::resource('news', 'NewsController');
 
-Route::resource('csr_leaderboards', 'CsrLeaderboardsController');
+Route::any('csr_leaderboards', 'CsrLeaderboardsController@index');
 
-Route::resource('top_ten', 'TopTenController');
+Route::any('top_ten', 'TopTenController@index');
 
-Route::resource('compare', 'CompareController');
+Route::any('compare', 'CompareController@index');
