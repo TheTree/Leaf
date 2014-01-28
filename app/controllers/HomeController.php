@@ -2,6 +2,7 @@
 
 use HaloWaypoint\Api;
 use HaloWaypoint\Utils;
+use Illuminate\Support\Facades\Validator;
 
 class HomeController extends BaseController {
 
@@ -20,5 +21,21 @@ class HomeController extends BaseController {
 		return View::make('pages.about')
 			->with('main_size', 8)
 			->with('sidebar_size', 4);
+	}
+
+	public function addGamertag()
+	{
+		$validator = Validator::make(Input::all(), [
+				'gamertag' => 'required|min:1|max:15|alpha_num'
+			]);
+
+		if ($validator->fails())
+		{
+			return Redirect::to('')->withErrors($validator);
+		}
+		else
+		{
+			return Redirect::to('h4/record/' . Utils::makeSeoGamertag(Input::get('gamertag')));
+		}
 	}
 }
