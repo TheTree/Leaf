@@ -1,7 +1,12 @@
 @extends('layouts.index')
 
 @section('main')
-	<p>This is my body content.</p>
+	<br />
+	@include('includes.blocks.homepage.topblock')
+	@include('includes.blocks.homepage.news_blip')
+	@include('includes.blocks.homepage.add_gamertag')
+	@include('includes.blocks.homepage.last_comparison')
+	@include('includes.blocks.homepage.new_accounts')
 @stop
 
 @section('sidebar')
