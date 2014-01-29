@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use jyggen\Curl as MCurl;
-use Symfony\Component\HttpFoundation\Request;
 use Whoops\Example\Exception;
 
 class Api {
@@ -78,6 +77,7 @@ class Api {
 
 	public function getGamertagData($seoGamertag, $force = false)
 	{
+		// @todo check if API requests are disabled (only pull from cache)
 		if (($record = $this->getGamertagDataViaCache($seoGamertag)) === false || $force === false)
 		{
 			$safeGamertag = Utils::makeApiSafeGamertag($seoGamertag);
@@ -103,10 +103,16 @@ class Api {
 			{
 				// we have all the data now. We still need to grab the emblems
 				// and Spartan picture, but for the most part we are done here.
+				$record = Utils::prepAndStoreApiData(
+					$seoGamertag,
+					json_decode($request_service->getResponse()->getContent()),
+					json_decode($request_wargames->getResponse()->getContent())
+				);
 
 			}
 			else
 			{
+				// @todo add entry into the missing table
 				App::abort(404, Lang::get('errors.gt_not_found', ['gamertag' => $seoGamertag]));
 
 			}
