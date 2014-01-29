@@ -1,6 +1,7 @@
 <?php
 
-use \HaloFour\Gamertag as GamertagModel;
+use \HaloFour\Gamertag as Gamertag;
+use Illuminate\Support\Facades\Artisan;
 
 class GamertagTest extends TestCase {
 
@@ -9,16 +10,18 @@ class GamertagTest extends TestCase {
 	public function setUp()
 	{
 		parent::setUp();
-		self::$record = GamertagModel::findOrFail('51edd8efa8fff1f61e74e6e8');
+		Artisan::call('db:seed');
+
+		self::$record = Gamertag::where('SeoGamertag', 'ibotpeaches_v5')->firstOrFail();
 	}
 
 	public function testRecord()
 	{
-		$this->assertEquals('iBotPeaches v5', self::$record['0x15']);
+		$this->assertEquals('iBotPeaches v5', self::$record['Gamertag']);
 	}
 
 	public function testUnpack()
 	{
-		$this->assertEquals(true, is_array(self::$record['0x27']));
+		//$this->assertEquals(true, is_array(self::$record['0x27']));
 	}
 }
