@@ -1,6 +1,4 @@
-<?php
-
-namespace HaloFour;
+<?php namespace HaloFour;
 
 use Jenssegers\Mongodb\Model as Eloquent;
 

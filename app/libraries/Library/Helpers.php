@@ -1,6 +1,4 @@
-<?php
-
-namespace Library;
+<?php namespace Library;
 
 class Helpers {
 	/**

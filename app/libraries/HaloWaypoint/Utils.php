@@ -1,6 +1,4 @@
-<?php
-
-namespace HaloWaypoint;
+<?php namespace HaloWaypoint;
 
 use HaloFour\Gamertag;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
