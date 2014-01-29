@@ -8,13 +8,14 @@ use jyggen\Curl as MCurl;
 
 class WLIDAuthenticationFailedException extends \Exception {}
 class SpartanTokenFailedException extends \Exception {}
+class APIEndpointFailedException extends \Exception {}
 
 class Api {
 	private $url = "https://stats.svc.halowaypoint.com";
 	private $auth = "https://settings.svc.halowaypoint.com/RegisterClientService.svc/spartantoken/wlid";
 	private $presence = "https://presence.svc.halowaypoint.com";
 
-	private $lang = "english";
+	private $lang = "en-US";
 
 	private $game = "h4";
 
@@ -38,6 +39,8 @@ class Api {
 		else
 		{
 			$response = $this->grabUrl("challenges", "default", false);
+			if ($response === false) throw new APIEndpointFailedException();
+
 			Cache::put('CurrentChallenges', $response, 60 * 24);
 			return $response->Challenges;
 		}
@@ -52,6 +55,7 @@ class Api {
 		else
 		{
 			$response = $this->grabUrl("playlists", "presence", true);
+			if (!isset($response->Playlists)) throw new APIEndpointFailedException();
 
 			// we only care about playlists that are in matchmaking (id 3)
 			// and active (isCurrent). So lets trash the rest.
@@ -103,10 +107,11 @@ class Api {
 			{
 				// we have all the data now. We still need to grab the emblems
 				// and Spartan picture, but for the most part we are done here.
+				$service_record = $this->decodeResponse($request_service);
+				$wargames_record = $this->decodeResponse($request_wargames);
+
 				$record = Utils::prepAndStoreApiData(
-					$seoGamertag,
-					json_decode($request_service->getResponse()->getContent()),
-					json_decode($request_wargames->getResponse()->getContent())
+					$seoGamertag, $service_record, $wargames_record
 				);
 
 			}
@@ -167,7 +172,7 @@ class Api {
 
 			if ($request->isSuccessful())
 			{
-				$response = json_decode($request->getResponse()->getContent());
+				$response = $this->decodeResponse($request);
 
 				if (time() > intval($response->expiresIn))
 				{
@@ -190,7 +195,7 @@ class Api {
 
 					if ($request->isSuccessful())
 					{
-						$response = json_decode($request->getResponse()->getContent());
+						$response = $this->decodeResponse($request);
 						Cache::put('SpartanAuthKey', $response, 50);
 						return $response->SpartanToken;
 					}
@@ -233,6 +238,29 @@ class Api {
 		}
 
 		return false;
+	}
+
+	private function decodeResponse($data)
+	{
+		if (is_array($data))
+		{
+			foreach($data as $key => $item)
+			{
+				if ($item instanceof MCurl\Request)
+				{
+					$data[$key] = json_decode($item->getResponse()->getContent());
+				}
+			}
+		}
+		else
+		{
+			if ($data instanceof MCurl\Request)
+			{
+				$data = json_decode($data->getResponse()->getContent());
+			}
+		}
+
+		return $data;
 	}
 
 	private function getHeaders($auth = false)
@@ -279,8 +307,8 @@ class Api {
 
 			if ($request->isSuccessful())
 			{
-				$response = $request->getResponse()->getContent();
-				return $this->checkStatus(json_decode($response));
+				$response = $this->decodeResponse($request);
+				return $this->checkStatus($response);
 			}
 			else
 			{
