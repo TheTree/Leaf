@@ -10,38 +10,25 @@ class Gamertag extends Eloquent {
 
 	public $timestamps = false;
 
-	protected $guarded = ['0x00', '0x15', '0x16', '0x18', '0x2a', '0x3d', '0x3e', '0x3f', '0x40', '0x41'];
-
+	protected $guarded = ['_id', 'SeoGamertag', 'Date', 'Month', 'Year'];
 
 	public function get0x1dAttribute($value)
 	{
 		return self::unpack_msg($value);
 	}
 
-	public function get0x25Attribute($value)
+	public function setSpecializationAttribute($value)
 	{
-		return self::unpack_msg($value);
+		$this->attributes['Specialization'] = $this->getCurrentSpecialization($value, "Name");
+		$this->attributes['SpecializationLevel'] = $this->getCurrentSpecialization($value, "Level");
 	}
 
-	public function get0x27Attribute($value)
+	public function setKDRatioAttribute($value)
 	{
-		return self::unpack_msg($value);
+		$this->attributes['KDRatio'] = floatval($value);
+		//$this->attributes['KADRatio'] = round()
 	}
 
-	public function set0x1dAttribute($value)
-	{
-		return self::pack_msg($value);
-	}
-
-	public function set0x25Attribute($value)
-	{
-		return self::pack_msg($value);
-	}
-
-	public function set0x27Attribute($value)
-	{
-		return self::pack_msg($value);
-	}
 
 	/**
 	 * Decodes utf8 strings from MongoDB and unpacks back into an array from msgpack
@@ -63,5 +50,18 @@ class Gamertag extends Eloquent {
 	private function pack_msg($value)
 	{
 		return msgpack_pack(utf8_encode($value));
+	}
+
+	private function getCurrentSpecialization($data, $type = "Name")
+	{
+		foreach($data as $spec)
+		{
+			if ($spec->IsCurrent === true)
+			{
+				return $spec->$type;
+			}
+		}
+
+		return "None";
 	}
 }
