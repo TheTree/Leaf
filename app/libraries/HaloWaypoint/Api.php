@@ -5,7 +5,9 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use jyggen\Curl as MCurl;
-use Whoops\Example\Exception;
+
+class WLIDAuthenticationFailedException extends \Exception {}
+class SpartanTokenFailedException extends \Exception {}
 
 class Api {
 	private $url = "https://stats.svc.halowaypoint.com";
@@ -146,9 +148,10 @@ class Api {
 	}
 
 	/**
-	 * @throws \Whoops\Example\Exception
-	 * @return string
-	 */
+	* @throws SpartanTokenFailedException
+	* @throws WLIDAuthenticationFailedException
+	* @return string
+	*/
 	public function getSpartanAuthKey()
 	{
 		if (Cache::has('SpartanAuthKey'))
@@ -193,12 +196,12 @@ class Api {
 					}
 
 					Cache::forget('SpartanAuthKey');
-					throw new Exception('Authorization URL is down');
+					throw new SpartanTokenFailedException();
 				}
 			}
 			else
 			{
-				throw new Exception('SpartanToken URL is down');
+				throw new WLIDAuthenticationFailedException();
 			}
 		}
 	}

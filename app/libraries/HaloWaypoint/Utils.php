@@ -85,7 +85,6 @@ class Utils {
 			'KDRatio'                       => $service->GameModes[2]->KDRatio
 		];
 
-
 		try
 		{
 			$gamertag = Gamertag::where('SeoGamertag', $seoGamertag)->firstOrFail();
