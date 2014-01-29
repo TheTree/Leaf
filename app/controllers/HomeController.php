@@ -41,7 +41,7 @@ class HomeController extends BaseController {
 	public function addGamertag()
 	{
 		$validator = $this->validator->make($this->request->all(), [
-				'gamertag' => 'required|min:1|max:15|alpha_num'
+				'gamertag' => 'required|min:1|max:15'
 			]);
 
 		if ($validator->fails())
