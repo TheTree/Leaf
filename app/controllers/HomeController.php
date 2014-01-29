@@ -2,30 +2,45 @@
 
 use HaloWaypoint\Api;
 use HaloWaypoint\Utils;
-use Illuminate\Support\Facades\Validator;
+
+use Illuminate\Http\Request as Request;
+use Illuminate\Validation\Factory as Validator;
+use Illuminate\View\Environment as View;
+use Illuminate\Support\Facades\Redirect;
 
 class HomeController extends BaseController {
 
 	protected $layout = "layouts.index";
 
+	protected $request;
+	protected $validator;
+	protected $view;
+
+	public function __construct(Request $request, Validator $validator, View $view)
+	{
+		$this->request = $request;
+		$this->validator = $validator;
+		$this->view = $view;
+	}
+
 	public function index()
 	{
 		$api = new Api();
-		return View::make('pages.homepage.halofour_index')
+		return $this->view->make('pages.homepage.halofour_index')
 			->with('challenges', Utils::prettifyChallenges($api->getChallenges()))
 			->with('title', 'Leafapp .:. Halo Stats');
 	}
 
 	public function about()
 	{
-		return View::make('pages.about')
+		return $this->view->make('pages.about')
 			->with('main_size', 8)
 			->with('sidebar_size', 4);
 	}
 
 	public function addGamertag()
 	{
-		$validator = Validator::make(Input::all(), [
+		$validator = $this->validator->make($this->request->all(), [
 				'gamertag' => 'required|min:1|max:15|alpha_num'
 			]);
 
@@ -35,7 +50,7 @@ class HomeController extends BaseController {
 		}
 		else
 		{
-			return Redirect::to('h4/record/' . Utils::makeSeoGamertag(Input::get('gamertag')));
+			return Redirect::to('h4/record/' . Utils::makeSeoGamertag($this->request->get('gamertag')));
 		}
 	}
 }
