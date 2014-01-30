@@ -80,13 +80,18 @@ class Utils {
 			'SeoGamertag'                   => $seoGamertag,
 			'Gamertag'                      => $service->Gamertag,
 			'Rank'                          => $service->RankName,
+			'SpartanPoints'                 => $service->SpartanPoints,
+			'Emblem'                        => $service->EmblemImageUrl->AssetUrl, #strip tital
 			'TotalCommendationProgress'     => $service->TotalCommendationProgress,
+			'TotalChallengesCompleted'      => $service->TotalChallengesCompleted,
 			'TotalLoadoutItemsPurchased'    => $service->TotalLoadoutItemsPurchased,
+			'TotalGameWins'                 => $service->GameModes[2]->TotalGamesWon,
+			'TotalGamesStarted'             => $service->GameModes[2]->TotalGamesStarted,
+			'TotalGameQuits'                => $service->GameModes[2]->TotalGamesStarted - $service->GameModes[2]->TotalGamesCompleted,
 			'TotalMedals'                   => $service->GameModes[2]->TotalMedals,
 			'TotalGameplay'                 => $service->GameModes[2]->TotalDuration,
 			'TotalKills'                    => $service->GameModes[2]->TotalKills,
 			'TotalDeaths'                   => $service->GameModes[2]->TotalDeaths,
-			'TotalGamesStarted'             => $service->GameModes[2]->TotalGamesStarted,
 			'TotalMedalStats'               => $wargames->TotalMedalsStats,
 			'TotalBetrayals'                => $wargames->TotalBetrayals,
 			'TotalSuicides'                 => $wargames->TotalSuicides,
@@ -107,6 +112,9 @@ class Utils {
 			'Expiration'                    => Carbon::now()->addWeek()->timestamp,
 			'KDRatio'                       => $service->GameModes[2]->KDRatio,
 			'Xp'                            => $service->XP,
+			'TotalSkillStats'               => $service->SkillRanks,
+			'RankStartXp'                   => $service->RankStartXP,
+			'NextRankStartXp'               => $service->NextRankStartXP,
 			'APIVersion'                    => Config::get('leaf.HaloFourApiVersion')
 		];
 
@@ -121,6 +129,7 @@ class Utils {
 			// lets set some default guides
 			$data['InactiveCounter'] = intval(0);
 			$data['Path'] = date('Y') . "/" . date('m') . "/" . date('d');
+			$data['Status'] = intval(0);
 		}
 
 		foreach($data as $key => $value)

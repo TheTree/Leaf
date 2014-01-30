@@ -8,11 +8,16 @@ class Gamertag extends Eloquent {
 
 	protected $softDelete = true;
 
-	protected $guarded = ['_id', 'SeoGamertag', 'Date', 'Month', 'Year'];
+	protected $guarded = ['_id', 'SeoGamertag', 'Date', 'Month', 'Year', 'Status'];
 
-	public function get0x1dAttribute($value)
+	public function getTotalMedalStatsAttribute($value)
 	{
-		return self::unpack_msg($value);
+		return $this->unpackMsg($value);
+	}
+
+	public function getTotalSkillStatsAttribute($value)
+	{
+		return $this->unpackMsg($value);
 	}
 
 	public function setSpecializationAttribute($value)
@@ -23,7 +28,7 @@ class Gamertag extends Eloquent {
 
 	public function setTotalGameplayAttribute($value)
 	{
-		$this->attributes['TotalGameplay'] = strtotime($value, true);
+		$this->attributes['TotalGameplay'] = $this->adjustDate($value);
 	}
 
 	public function setKDRatioAttribute($value)
@@ -34,7 +39,17 @@ class Gamertag extends Eloquent {
 
 	public function setTotalMedalStatsAttribute($value)
 	{
-		$this->attributes['TotalMedalStats'] = $this->pack_msg($value);
+		$this->attributes['TotalMedalStats'] = $this->packMsg($value);
+	}
+
+	public function setTotalSkillStatsAttribute($value)
+	{
+		$this->attributes['TotalSkillStats'] = $this->packMsg($this->setCurrentSkills($value));
+	}
+
+	public function setEmblemAttribute($value)
+	{
+		$this->attributes['Emblem'] = substr_replace($value, "", -12);
 	}
 
 
@@ -45,7 +60,7 @@ class Gamertag extends Eloquent {
 	 * @param $value
 	 * @return mixed
 	 */
-	private function unpack_msg($value)
+	private function unpackMsg($value)
 	{
 		return msgpack_unpack(utf8_decode($value));
 	}
@@ -56,10 +71,28 @@ class Gamertag extends Eloquent {
 	 * @param $value
 	 * @return mixed
 	 */
-	private function pack_msg($value)
+	private function packMsg($value)
 	{
-		return msgpack_pack($value);
+		return utf8_encode(msgpack_pack($value));
 	}
+
+	/**
+	 * Takes DD.HH.MM.SS (days.hours.minutes.seconds)
+	 * and converts to unix timestamp
+	 *
+	 * @param $value
+	 * @return int
+	 */
+	private function adjustDate($value)
+	{
+		if (preg_match('/(?P<days>[0-9]*).(?P<hours>[0-9]*):(?P<minutes>[0-9]*):(?P<seconds>[0-9]*)/', $value, $regs))
+		{
+			return (($regs['days'] * 86400) + ($regs['hours'] * 3600) + ($regs['minutes'] * 60) + $regs['seconds']);
+		}
+
+		return 0;
+	}
+
 
 	private function getCurrentSpecialization($data, $type = "Name")
 	{
@@ -72,5 +105,17 @@ class Gamertag extends Eloquent {
 		}
 
 		return "None";
+	}
+
+	private function setCurrentSkills($skills)
+	{
+		foreach($skills as $key => $skill)
+		{
+			unset($skills[$key]->PlaylistName);
+			unset($skills[$key]->PlaylistDescription);
+			unset($skills[$key]->PlaylistImageUrl);
+		}
+
+		return $skills;
 	}
 }
