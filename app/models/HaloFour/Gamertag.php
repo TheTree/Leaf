@@ -34,7 +34,7 @@ class Gamertag extends Eloquent {
 	public function setKDRatioAttribute($value)
 	{
 		$this->attributes['KDRatio'] = floatval($value);
-		//$this->attributes['KADRatio'] = round()
+		$this->attributes['KADRatio'] = round(($this->attributes['TotalKills'] + $this->attributes['TotalAssists']) / $this->attributes['TotalDeaths'], 2);
 	}
 
 	public function setTotalMedalStatsAttribute($value)
@@ -50,6 +50,56 @@ class Gamertag extends Eloquent {
 	public function setEmblemAttribute($value)
 	{
 		$this->attributes['Emblem'] = substr_replace($value, "", -12);
+	}
+
+	public function setTotalGameQuitsAttribute($value)
+	{
+		$this->attributes['TotalGameQuits'] = $value - $this->attributes['TotalGamesCompleted'];
+	}
+
+	public function setQuitPercentageAttribute($value)
+	{
+		$this->attributes['QuitPercentage'] = round($this->attributes['TotalGameQuits'] / $value, 2);
+	}
+
+	public function setWinPercentageAttribute($value)
+	{
+		$this->attributes['WinPercentage'] = round($value / $this->attributes['TotalGamesStarted'], 2);
+	}
+
+	public function setMedalsPerGameRatioAttribute($value)
+	{
+		$this->attributes['MedalsPerGameRatio'] = round($value / $this->attributes['TotalGamesStarted'], 2);
+	}
+
+	public function setDeathsPerGameRatioAttribute($value)
+	{
+		$this->attributes['DeathsPerGameRatio'] = round($value / $this->attributes['TotalGamesStarted'], 2);
+	}
+
+	public function setKillsPerGameRatioAttribute($value)
+	{
+		$this->attributes['KillsPerGameRatio'] = round($value / $this->attributes['TotalGamesStarted'], 2);
+	}
+
+	public function setBetrayalsPerGameRatioAttribute($value)
+	{
+		$this->attributes['BetrayalsPerGameRatio'] = round($value / $this->attributes['TotalGamesStarted'], 2);
+	}
+
+	public function setSuicidesPerGameRatioAttribute($value)
+	{
+		$this->attributes['SuicidesPerGameRatio'] = round($value / $this->attributes['TotalGamesStarted'], 2);
+	}
+
+	public function setAssistsPerGameRatioAttribute($value)
+	{
+		$this->attributes['AssistsPerGameRatio'] = round($value / $this->attributes['TotalGamesStarted'], 2);
+	}
+
+	public function setHeadshotsPerGameRatioAttribute($value)
+	{
+		$this->attributes['HeadshotsPerGameRatio'] = round($value / $this->attributes['TotalGamesStarted'], 2);
 	}
 
 

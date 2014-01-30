@@ -8,10 +8,14 @@ class GamertagMongoSeeder extends Seeder {
 	{
 		DB::collection('h4_gamertags')->delete();
 
-		Gamertag::create([
-			'Gamertag'  => 'iBotPeaches v5',
-			'SeoGamertag' => 'ibotpeaches_v5'
-		]);
+		Gamertag::create(
+			[
+				'Gamertag' => 'iBotPeaches v5',
+				'SeoGamertag' => 'ibotpeaches_v5',
+				'KDRatio' => 1.67,
+				'KADRatio'  => 2.26,
+			]
+		);
 
 	}
 }

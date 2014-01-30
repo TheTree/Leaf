@@ -72,6 +72,11 @@ class Utils {
 	 */
 	public static function prepAndStoreApiData($seoGamertag, $service, $wargames)
 	{
+		if ($service->GameModes[2]->TotalGamesStarted == 0)
+		{
+			return false;
+		}
+
 		// while we can leverage the use of Models greatly, we have two major
 		// dumps of data here. So we can't blindly send them both.
 		// We could use `upsert` of MongoDB, but it doesn't play nice with
@@ -81,13 +86,14 @@ class Utils {
 			'Gamertag'                      => $service->Gamertag,
 			'Rank'                          => $service->RankName,
 			'SpartanPoints'                 => $service->SpartanPoints,
-			'Emblem'                        => $service->EmblemImageUrl->AssetUrl, #strip tital
+			'Emblem'                        => $service->EmblemImageUrl->AssetUrl,
 			'TotalCommendationProgress'     => $service->TotalCommendationProgress,
 			'TotalChallengesCompleted'      => $service->TotalChallengesCompleted,
 			'TotalLoadoutItemsPurchased'    => $service->TotalLoadoutItemsPurchased,
 			'TotalGameWins'                 => $service->GameModes[2]->TotalGamesWon,
+			'TotalGamesCompleted'           => $service->GameModes[2]->TotalGamesCompleted,
 			'TotalGamesStarted'             => $service->GameModes[2]->TotalGamesStarted,
-			'TotalGameQuits'                => $service->GameModes[2]->TotalGamesStarted - $service->GameModes[2]->TotalGamesCompleted,
+			'TotalGameQuits'                => $service->GameModes[2]->TotalGamesStarted,
 			'TotalMedals'                   => $service->GameModes[2]->TotalMedals,
 			'TotalGameplay'                 => $service->GameModes[2]->TotalDuration,
 			'TotalKills'                    => $service->GameModes[2]->TotalKills,
@@ -95,6 +101,8 @@ class Utils {
 			'TotalMedalStats'               => $wargames->TotalMedalsStats,
 			'TotalBetrayals'                => $wargames->TotalBetrayals,
 			'TotalSuicides'                 => $wargames->TotalSuicides,
+			'FavoriteWeaponId'              => $service->FavoriteWeaponId,
+			'FavoriteWeaponTotalKills'      => $service->FavoriteWeaponTotalKills,
 			'BestGameTotalKills'            => $wargames->BestGameTotalKills,
 			'BestGameTotalMedals'           => $wargames->BestGameTotalMedals,
 			'BestGameTotalHeadshots'        => $wargames->BestGameHeadshotTotal,
@@ -105,6 +113,7 @@ class Utils {
 			'BestGameTotalHeadshotsId'      => $wargames->BestGameHeadshotTotalGameId,
 			'BestGameTotalAssassinationsId' => $wargames->BestGameAssassinationTotalGameId,
 			'BestGameKillDistanceId'        => $wargames->BestGameKillDistanceGameId,
+			'AveragePersonalScore'          => $service->GameModes[2]->AveragePersonalScore,
 			'ServiceTag'                    => $service->ServiceTag,
 			'TotalHeadshots'                => $wargames->TotalHeadshots,
 			'TotalAssists'                  => $wargames->TotalAssists,
@@ -115,6 +124,15 @@ class Utils {
 			'TotalSkillStats'               => $service->SkillRanks,
 			'RankStartXp'                   => $service->RankStartXP,
 			'NextRankStartXp'               => $service->NextRankStartXP,
+			'MedalsPerGameRatio'            => $service->GameModes[2]->TotalMedals,
+			'DeathsPerGameRatio'            => $service->GameModes[2]->TotalDeaths,
+			'KillsPerGameRatio'             => $service->GameModes[2]->TotalKills,
+			'BetrayalsPerGameRatio'         => $wargames->TotalBetrayals,
+			'SuicidesPerGameRatio'          => $wargames->TotalSuicides,
+			'AssistsPerGameRatio'           => $wargames->TotalAssists,
+			'HeadshotsPerGameRatio'         => $wargames->TotalHeadshots,
+			'WinPercentage'                 => $service->GameModes[2]->TotalGamesWon,
+			'QuitPercentage'                => $service->GameModes[2]->TotalGamesStarted,
 			'APIVersion'                    => Config::get('leaf.HaloFourApiVersion')
 		];
 

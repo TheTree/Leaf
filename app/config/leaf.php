@@ -11,5 +11,15 @@ return array(
 	|
 	*/
 
-	'HaloFourApiVersion'    => intval(1)
+	'HaloFourApiVersion'    => intval(1),
+
+	/*
+	|--------------------------------------------------------------------------
+	| Halo Four API Enabled
+	|--------------------------------------------------------------------------
+	|
+	| Determines if we can make calls to the API.
+	|
+	*/
+	'HaloFourApiEnabled'    => true,
 );
