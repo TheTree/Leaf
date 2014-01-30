@@ -10,7 +10,7 @@ class GamertagTest extends TestCase {
 	public function setUp()
 	{
 		parent::setUp();
-		Artisan::call('db:seed');
+		Artisan::call('db:seed', ['--class' => 'DatabaseSeeder', '--env' => 'testing']);
 
 		self::$record = Gamertag::where('SeoGamertag', 'ibotpeaches_v5')->firstOrFail();
 	}

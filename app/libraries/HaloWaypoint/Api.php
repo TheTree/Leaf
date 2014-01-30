@@ -20,6 +20,7 @@ class Api {
 	private $game = "h4";
 
 	/**
+	 * @throws APIEndpointFailedException
 	 * @return array
 	 */
 	public function getChallenges()
@@ -110,10 +111,8 @@ class Api {
 				$service_record = $this->decodeResponse($request_service);
 				$wargames_record = $this->decodeResponse($request_wargames);
 
-				$record = Utils::prepAndStoreApiData(
-					$seoGamertag, $service_record, $wargames_record
-				);
-
+				$record = Utils::prepAndStoreApiData($seoGamertag, $service_record, $wargames_record);
+				dd($record);
 			}
 			else
 			{

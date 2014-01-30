@@ -6,7 +6,7 @@ class Gamertag extends Eloquent {
 
 	protected $collection = "h4_gamertags";
 
-	public $timestamps = false;
+	protected $softDelete = true;
 
 	protected $guarded = ['_id', 'SeoGamertag', 'Date', 'Month', 'Year'];
 
@@ -21,11 +21,22 @@ class Gamertag extends Eloquent {
 		$this->attributes['SpecializationLevel'] = $this->getCurrentSpecialization($value, "Level");
 	}
 
+	public function setTotalGameplayAttribute($value)
+	{
+		$this->attributes['TotalGameplay'] = strtotime($value, true);
+	}
+
 	public function setKDRatioAttribute($value)
 	{
 		$this->attributes['KDRatio'] = floatval($value);
 		//$this->attributes['KADRatio'] = round()
 	}
+
+	public function setTotalMedalStatsAttribute($value)
+	{
+		$this->attributes['TotalMedalStats'] = $this->pack_msg($value);
+	}
+
 
 
 	/**
@@ -47,7 +58,7 @@ class Gamertag extends Eloquent {
 	 */
 	private function pack_msg($value)
 	{
-		return msgpack_pack(utf8_encode($value));
+		return msgpack_pack($value);
 	}
 
 	private function getCurrentSpecialization($data, $type = "Name")
