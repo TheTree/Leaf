@@ -1,7 +1,10 @@
 <?php namespace HaloWaypoint;
 
 use HaloFour\Gamertag;
+use HaloFour\Playlist;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Cache;
 use Library\Helpers;
 use Carbon\Carbon;
 
@@ -77,12 +80,34 @@ class Utils {
 			'SeoGamertag'                   => $seoGamertag,
 			'Gamertag'                      => $service->Gamertag,
 			'Rank'                          => $service->RankName,
-			'TotalCommendationProgress'     => floatval($service->TotalCommendationProgress),
-			'TotalLoadoutItemsPurchased'    => intval($service->TotalLoadoutItemsPurchased),
-			'TotalMedals'                   => intval($service->GameModes[2]->TotalMedals),
+			'TotalCommendationProgress'     => $service->TotalCommendationProgress,
+			'TotalLoadoutItemsPurchased'    => $service->TotalLoadoutItemsPurchased,
+			'TotalMedals'                   => $service->GameModes[2]->TotalMedals,
+			'TotalGameplay'                 => $service->GameModes[2]->TotalDuration,
+			'TotalKills'                    => $service->GameModes[2]->TotalKills,
+			'TotalDeaths'                   => $service->GameModes[2]->TotalDeaths,
+			'TotalGamesStarted'             => $service->GameModes[2]->TotalGamesStarted,
+			'TotalMedalStats'               => $wargames->TotalMedalsStats,
+			'TotalBetrayals'                => $wargames->TotalBetrayals,
+			'TotalSuicides'                 => $wargames->TotalSuicides,
+			'BestGameTotalKills'            => $wargames->BestGameTotalKills,
+			'BestGameTotalMedals'           => $wargames->BestGameTotalMedals,
+			'BestGameTotalHeadshots'        => $wargames->BestGameHeadshotTotal,
+			'BestGameTotalAssassinations'   => $wargames->BestGameAssassinationTotal,
+			'BestGameKillDistance'          => $wargames->BestGameKillDistance,
+			'BestGameTotalKillsId'          => $wargames->BestGameTotalKillsGameId,
+			'BestGameTotalMedalsId'         => $wargames->BestGameTotalMedalsGameId,
+			'BestGameTotalHeadshotsId'      => $wargames->BestGameHeadshotTotalGameId,
+			'BestGameTotalAssassinationsId' => $wargames->BestGameAssassinationTotalGameId,
+			'BestGameKillDistanceId'        => $wargames->BestGameKillDistanceGameId,
+			'ServiceTag'                    => $service->ServiceTag,
+			'TotalHeadshots'                => $wargames->TotalHeadshots,
+			'TotalAssists'                  => $wargames->TotalAssists,
 			'Specialization'                => $service->Specializations,
-			'Expiration'                    => intval(Carbon::now()->addWeek()->timestamp),
-			'KDRatio'                       => $service->GameModes[2]->KDRatio
+			'Expiration'                    => Carbon::now()->addWeek()->timestamp,
+			'KDRatio'                       => $service->GameModes[2]->KDRatio,
+			'Xp'                            => $service->XP,
+			'APIVersion'                    => Config::get('leaf.HaloFourApiVersion')
 		];
 
 		try
@@ -92,6 +117,10 @@ class Utils {
 		catch(ModelNotFoundException $ex)
 		{
 			$gamertag = new Gamertag;
+
+			// lets set some default guides
+			$data['InactiveCounter'] = intval(0);
+			$data['Path'] = date('Y') . "/" . date('m') . "/" . date('d');
 		}
 
 		foreach($data as $key => $value)
@@ -102,5 +131,73 @@ class Utils {
 		$gamertag->save();
 
 		return $data;
+	}
+
+	public static function updatePlaylists($force = false)
+	{
+		// if we want to re-pull from 343 servers. Lets just clear out the cache
+		// this will force a pull and update the dB accordingly
+		if ($force === true)
+		{
+			Cache::forget('CurrentPlaylists');
+		}
+
+		$api = new Api();
+		$playlists = $api->getPlaylists();
+
+		if (is_array($playlists))
+		{
+			Playlist::deleteAllPlaylists();
+
+			foreach($playlists as $playlist)
+			{
+				$record = Utils::getIndividualPlaylist($playlist->Id);
+
+				if ($record instanceof Playlist)
+				{
+					$record->setAttribute('Name', $playlist->Name);
+					$record->setAttribute('Id', $playlist->Id);
+
+					if ($record->getAttribute('Type') == null)
+					{
+						$record->setAttribute('Type', 'Unknown');
+					}
+
+					$record->save();
+					$record->restore();
+				}
+
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * @param $id
+	 * @param bool $create
+	 * @return bool|Playlist
+	 */
+	private static function getIndividualPlaylist($id, $create = true)
+	{
+		try
+		{
+			$playlist = Playlist::WithTrashed()->where('Id', $id)->firstOrFail();
+		}
+		catch(ModelNotFoundException $ex)
+		{
+			if ($create)
+			{
+				$playlist = new Playlist;
+			}
+		}
+
+		if (isset($playlist))
+		{
+			return $playlist;
+		}
+
+		return false;
 	}
 }
