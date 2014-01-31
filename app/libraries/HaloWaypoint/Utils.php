@@ -139,6 +139,18 @@ class Utils {
 		try
 		{
 			$gamertag = Gamertag::where('SeoGamertag', $seoGamertag)->firstOrFail();
+
+			// a quick check to see if their stats are actually changing
+			// this allows us to prevent re-caching old accounts, thus wasting
+			// bandwidth for me and 343.
+			if ($gamertag->TotalGameplay == $service->GameModes[2]->TotalDuration)
+			{
+				$data['InactiveCounter'] += 1;
+			}
+			else
+			{
+				$data['InactiveCounter'] = 0;
+			}
 		}
 		catch(ModelNotFoundException $ex)
 		{
