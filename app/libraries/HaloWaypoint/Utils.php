@@ -172,11 +172,17 @@ class Utils {
 
 		Utils::updateSpartanImage($gamertag->SeoGamertag, $gamertag->SeoGamertag, $gamertag->Emblem, $gamertag->Path);
 
+		if ($gamertag->Status == 0)
+		{
+			Utils::updateCsrData($gamertag->Gamertag, $gamertag->KDRatio, $gamertag->TotalSkillStats);
+		}
+
 		return $data;
 	}
 
 	public static function updatePlaylists($force = false)
 	{
+		$force = boolval($force);
 		// if we want to re-pull from 343 servers. Lets just clear out the cache
 		// this will force a pull and update the dB accordingly
 		if ($force === true)
@@ -198,6 +204,7 @@ class Utils {
 				if ($record instanceof Playlist)
 				{
 					$record->setAttribute('Name', $playlist->Name);
+					$record->setAttribute('SeoName', Helpers::seoFriendlyUrl($playlist->Name));
 					$record->setAttribute('Id', $playlist->Id);
 
 					if ($record->getAttribute('Type') == null)
@@ -208,9 +215,9 @@ class Utils {
 					$record->save();
 					$record->restore();
 				}
-
-				return true;
 			}
+
+			return true;
 		}
 
 		return false;
@@ -243,6 +250,24 @@ class Utils {
 		return false;
 	}
 
+	/**
+	 * @param $slug
+	 * @return bool
+	 */
+	public static function getIndividualPlaylistViaSlug($slug)
+	{
+		try
+		{
+			$playlist = Playlist::where('SeoName', $slug)->firstOrFail();
+		}
+		catch(ModelNotFoundException $ex)
+		{
+			return false;
+		}
+
+		return $playlist;
+	}
+
 	private static function updateSpartanImage($gt, $seo, $emblem, $path)
 	{
 		$api = new Api();
@@ -267,8 +292,8 @@ class Utils {
 
 		if ($image_data !=  false)
 		{
-			file_put_contents($items['spartan'], $image_data['spartan']);
-			file_put_contents($items['emblem'], $image_data['emblem']);
+			File::put($items['spartan'], $image_data['spartan']);
+			File::put($items['emblem'], $image_data['emblem']);
 		}
 		else
 		{
@@ -276,5 +301,11 @@ class Utils {
 		}
 
 		return $items;
+	}
+
+	private static function updateCsrData($gamertag, $kd_ratio, $csr)
+	{
+		$leaderboards = new Leaderboards();
+		return $leaderboards->updateCsrData($gamertag, $kd_ratio, $csr);
 	}
 }

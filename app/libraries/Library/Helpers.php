@@ -89,4 +89,9 @@ class Helpers {
 
 		return implode(', ', $string);
 	}
+
+	public static function seoFriendlyUrl($val)
+	{
+		return(str_replace(' ', '-', strtolower($val)));
+	}
 }
