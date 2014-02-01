@@ -12,16 +12,16 @@ class GamertagTest extends TestCase {
 		parent::setUp();
 		Artisan::call('db:seed', ['--class' => 'DatabaseSeeder', '--env' => 'testing']);
 
-		self::$record = Gamertag::where('SeoGamertag', 'ibotpeaches_v5')->firstOrFail();
+		self::$record = Gamertag::where('SeoGamertag', 'pyrosquirrell')->firstOrFail();
 	}
 
 	public function testRecord()
 	{
-		$this->assertEquals('iBotPeaches v5', self::$record['Gamertag']);
+		$this->assertEquals('PyroSquirrell', self::$record['Gamertag']);
 	}
 
 	public function testUnpack()
 	{
-		//$this->assertEquals(true, is_array(self::$record['0x27']));
+		$this->assertEquals(true, is_object(self::$record->getAttribute('TotalSkillStats')));
 	}
 }
