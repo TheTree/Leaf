@@ -146,11 +146,14 @@ class Gamertag extends Eloquent {
 
 	private function getCurrentSpecialization($data, $type = "Name")
 	{
-		foreach($data as $spec)
+		if (is_array($data))
 		{
-			if ($spec->IsCurrent === true)
+			foreach($data as $spec)
 			{
-				return $spec->$type;
+				if ($spec->IsCurrent === true)
+				{
+					return $spec->$type;
+				}
 			}
 		}
 
@@ -159,11 +162,14 @@ class Gamertag extends Eloquent {
 
 	private function setCurrentSkills($skills)
 	{
-		foreach($skills as $key => $skill)
+		if (is_array($skills))
 		{
-			unset($skills[$key]->PlaylistName);
-			unset($skills[$key]->PlaylistDescription);
-			unset($skills[$key]->PlaylistImageUrl);
+			foreach($skills as $key => $skill)
+			{
+				unset($skills[$key]->PlaylistName);
+				unset($skills[$key]->PlaylistDescription);
+				unset($skills[$key]->PlaylistImageUrl);
+			}
 		}
 
 		return $skills;
