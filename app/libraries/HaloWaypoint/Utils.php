@@ -5,6 +5,7 @@ use HaloFour\Playlist;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\File;
 use Library\Helpers;
 use Carbon\Carbon;
 
@@ -169,6 +170,8 @@ class Utils {
 
 		$gamertag->save();
 
+		Utils::updateSpartanImage($gamertag->SeoGamertag, $gamertag->SeoGamertag, $gamertag->Emblem, $gamertag->Path);
+
 		return $data;
 	}
 
@@ -238,5 +241,40 @@ class Utils {
 		}
 
 		return false;
+	}
+
+	private static function updateSpartanImage($gt, $seo, $emblem, $path)
+	{
+		$api = new Api();
+		$location = Helpers::getStorageLocation($path, $seo, true);
+		$items = [
+			'emblem' => $location . "emblem.png",
+			'spartan' =>  $location . "spartan.png"
+		];
+
+		// clean up old files (emblems, spartans)
+		// remove them so we can pull new ones
+		foreach($items as $item)
+		{
+			if (File::exists($item))
+			{
+				File::delete($item);
+			}
+		}
+
+		// time to get the images now
+		$image_data = $api->getEmblemAndSpartanImage($seo, $emblem);
+
+		if ($image_data !=  false)
+		{
+			file_put_contents($items['spartan'], $image_data['spartan']);
+			file_put_contents($items['emblem'], $image_data['emblem']);
+		}
+		else
+		{
+			return false;
+		}
+
+		return $items;
 	}
 }

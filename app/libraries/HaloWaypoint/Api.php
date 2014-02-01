@@ -13,9 +13,11 @@ class APIEndpointFailedException extends \Exception {}
 class APIDisabledException extends \Exception {}
 
 class Api {
-	private $url = "https://stats.svc.halowaypoint.com";
-	private $auth = "https://settings.svc.halowaypoint.com/RegisterClientService.svc/spartantoken/wlid";
-	private $presence = "https://presence.svc.halowaypoint.com";
+	private $url = 'https://stats.svc.halowaypoint.com';
+	private $auth = 'https://settings.svc.halowaypoint.com/RegisterClientService.svc/spartantoken/wlid';
+	private $presence = 'https://presence.svc.halowaypoint.com';
+	private $spartan = 'https://spartans.svc.halowaypoint.com/players/%1$s/h4/spartans/fullbody?target=%2$s';
+	private $emblem = 'https://emblems.svc.halowaypoint.com/h4/emblems/%s?size=%d';
 
 	private $lang = "en-US";
 
@@ -106,7 +108,7 @@ class Api {
 	 */
 	public function getGamertagData($seoGamertag, $force = false)
 	{
-		if (($record = $this->getGamertagDataViaCache($seoGamertag)) === false || $force === true)
+		if (($record = $this->getGamertagDataViaCache($seoGamertag)) === false || $force === false)
 		{
 			if (Config::get('leaf.HaloFourApiEnabled') === false)
 			{
@@ -184,6 +186,39 @@ class Api {
 			return false;
 		}
 		return $record;
+	}
+
+	/**
+	 *
+	 * Returns image data of Emblem and SpartanImage from $seoGamertag and $emblem
+	 *
+	 * @param $seoGamertag
+	 * @param $emblem
+	 * @param int $emblem_size
+	 * @param string $spartan_size
+	 * @return array|bool
+	 */
+	public function getEmblemAndSpartanImage($seoGamertag, $emblem, $emblem_size = 80, $spartan_size = "medium")
+	{
+		$cleanGamertag = Utils::makeApiSafeGamertag($seoGamertag);
+
+		$spartan_request = new MCurl\Request(sprintf($this->spartan, $cleanGamertag, $spartan_size));
+		$emblem_request = new MCurl\Request(sprintf($this->emblem, $emblem, $emblem_size));
+
+		$dispatcher = new MCurl\Dispatcher();
+		$dispatcher->add($spartan_request);
+		$dispatcher->add($emblem_request);
+		$dispatcher->execute();
+
+		if ($spartan_request->isSuccessful() && $emblem_request->isSuccessful())
+		{
+			return [
+				'spartan' => $spartan_request->getResponse()->getContent(),
+				'emblem' => $emblem_request->getResponse()->getContent()
+			];
+		}
+
+		return false;
 	}
 
 	/**

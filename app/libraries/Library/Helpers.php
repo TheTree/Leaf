@@ -1,6 +1,32 @@
 <?php namespace Library;
 
+use Illuminate\Support\Facades\File;
+
 class Helpers {
+
+	/**
+	 * Returns the storage location of graphics, in full filepath
+	 *
+	 * @param $location
+	 * @param $seo
+	 * @param bool $create if directories should be created
+	 * @return string
+	 */
+	public static function getStorageLocation($location, $seo, $create = true)
+	{
+		$path = public_path("uploads" . "/" . $location . "/" . $seo);
+
+		if ($create)
+		{
+			if (!File::isDirectory($path))
+			{
+				File::makeDirectory($path, 0777, true);
+			}
+		}
+
+		return str_finish($path, '/');
+	}
+
 	/**
 	 * A function for making time periods readable
 	 *
