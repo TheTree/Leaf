@@ -1,8 +1,17 @@
 <?php
 
+use Illuminate\View\Environment as View;
+
 class ProfileController extends \BaseController {
 
 	protected $layout = "layouts.index";
+
+	protected $view;
+
+	public function __construct(View $view)
+	{
+		$this->view = $view;
+	}
 
 	/**
 	 * Display a listing of the resource.
@@ -14,7 +23,7 @@ class ProfileController extends \BaseController {
 	{
 		$api = new \HaloWaypoint\Api();
 		$record = $api->getGamertagData($seoGamertag);
-		$this->layout->content = View::make('pages.halofour.profile');
+		$this->layout->content = $this->view->make('pages.halofour.profile');
 	}
 
 }
