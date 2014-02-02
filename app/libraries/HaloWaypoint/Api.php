@@ -58,52 +58,6 @@ class Api {
 	}
 
 	/**
-	 * @return mixed
-	 * @throws APIDisabledException
-	 * @throws APIEndpointFailedException
-	 */
-	public function getPlaylists()
-	{
-		// um wtf is this used for. I already wrote this in Utils::
-		die('r u used anywhere?');
-
-		if (Cache::has('CurrentPlaylists'))
-		{
-			return Cache::get('CurrentPlaylists');
-		}
-		else
-		{
-			if (Config::get('leaf.HaloFourApiEnabled') === false)
-			{
-				throw new APIDisabledException();
-			}
-
-			$response = $this->grabUrl("playlists", "presence", true);
-			if (!isset($response->Playlists)) throw new APIEndpointFailedException();
-
-			// we only care about playlists that are in matchmaking (id 3)
-			// and active (isCurrent). So lets trash the rest.
-			// For the ones, we do want. Lets remove the Map/Game list, we
-			// don't use those portions and it accounts for a lot of space.
-			foreach($response->Playlists as $key => $playlist)
-			{
-				if ($playlist->ModeId == 3 && $playlist->IsCurrent === true)
-				{
-					unset($response->Playlists[$key]->GameVariants);
-					unset($response->Playlists[$key]->MapVariants);
-				}
-				else
-				{
-					unset($response->Playlists[$key]);
-				}
-			}
-
-			Cache::put('CurrentPlaylists', $response->Playlists, 60 * 24);
-			return $response->Playlists;
-		}
-	}
-
-	/**
 	 * @param $seoGamertag
 	 * @param bool $force
 	 * @throws APIDisabledException
@@ -111,7 +65,7 @@ class Api {
 	 */
 	public function getGamertagData($seoGamertag, $force = false)
 	{
-		if (($record = $this->getGamertagDataViaCache($seoGamertag)) === false || $force === false)
+		if (($record = $this->getGamertagDataViaCache($seoGamertag)) === false || $force === true)
 		{
 			if (Config::get('leaf.HaloFourApiEnabled') === false)
 			{
