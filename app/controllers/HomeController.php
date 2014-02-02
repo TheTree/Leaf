@@ -2,6 +2,7 @@
 
 use HaloWaypoint\Api;
 use HaloWaypoint\Utils;
+use HaloFour\Gamertag;
 
 use Illuminate\Http\Request as Request;
 use Illuminate\Validation\Factory as Validator;
@@ -27,6 +28,7 @@ class HomeController extends BaseController {
 	{
 		$api = new Api();
 		return $this->view->make('pages.homepage.halofour_index')
+			->with('latest', Gamertag::getLastXGamertags(5))
 			->with('challenges', Utils::prettifyChallenges($api->getChallenges()))
 			->with('title', 'Leafapp .:. Halo Stats');
 	}

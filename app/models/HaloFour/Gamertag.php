@@ -10,6 +10,11 @@ class Gamertag extends Eloquent {
 
 	protected $guarded = ['_id', 'SeoGamertag', 'Date', 'Month', 'Year', 'Status'];
 
+	public static function getLastXGamertags($count = 5)
+	{
+		return Gamertag::orderBy('created_at', 'desc')->take($count)->select(['SeoGamertag','Rank','KDRatio','Gamertag'])->get()->toArray();
+	}
+
 	public function getTotalMedalStatsAttribute($value)
 	{
 		return $this->unpackMsg($value);
