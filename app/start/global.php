@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 /*
 |--------------------------------------------------------------------------
 | Register The Laravel Class Loader
@@ -55,6 +56,11 @@ App::error(function(Exception $exception, $code)
 App::error(function(ModelNotFoundException $e)
 {
 	return Response::make('Oops. @todo neat 404 page.', 404);
+});
+
+App::error(function(NotFoundHttpException $e)
+{
+	return Response::make('Oops. @todo 404 page.', 404);
 });
 
 /*

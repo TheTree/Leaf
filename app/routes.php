@@ -23,8 +23,9 @@ Route::get('about', 'HomeController@about');
 
 Route::resource('news', 'NewsController');
 
-Route::any('csr_leaderboards', 'CsrLeaderboardsController@index');
+Route::get('csr_leaderboards', 'CsrLeaderboardsController@index');
 Route::get('csr_leaderboards/{playlist}', 'CsrLeaderboardsController@playlist');
+Route::get('csr_leaderboards/{playlist}/{page}', 'CsrLeaderboardsController@playlist');
 
 Route::any('top_ten', 'TopTenController@index');
 

@@ -64,6 +64,9 @@ class Api {
 	 */
 	public function getPlaylists()
 	{
+		// um wtf is this used for. I already wrote this in Utils::
+		die('r u used anywhere?');
+
 		if (Cache::has('CurrentPlaylists'))
 		{
 			return Cache::get('CurrentPlaylists');
