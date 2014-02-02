@@ -88,9 +88,7 @@ class Leaderboards {
 		// 8.0001681, which means CSR 8, 1.68 kd.
 		$number_pair = Leaderboards::decodeNumber($pair['MergedKD']);
 
-		$part_2 = substr($number_pair[1], 0, -1) * $this->zeros;
-		$last_digit = substr($number_pair[1], -1);
-		echo $last_digit . "\n";
+		$part_2 = round($number_pair[1] * $this->zeros, 2);
 
 		// the last digit (1), means we move the
 		// decimal point (1) point to the left
@@ -111,7 +109,6 @@ class Leaderboards {
 		// to [1] and [.46], this helps us determine
 		// the differences between huge and small kd's
 		$number_pair = Leaderboards::decodeNumber($kd);
-		$leading_digit = $this->countDigits($number_pair[0]);
 
 		// now we take those values and divide by zeros
 		// this should not affect the place of CSR
@@ -127,29 +124,8 @@ class Leaderboards {
 		// now in the front-end, we have both CSR/KD
 		// at our disposal even though Redis stored
 		// it as one value.
-		$fo =  ($csr + $part_1 + $part_2) . $leading_digit;
-		echo $fo . "\n";
+		$fo =  ($csr + $part_1 + $part_2);
 		return (string) $fo;
-	}
-
-	private function countDigits($number)
-	{
-		if ($number === 0)
-		{
-			return 0;
-		}
-		else if ($number > 0 && $number < 10)
-		{
-			return 1;
-		}
-		else if ($number > 10 && $number < 100)
-		{
-			return 2;
-		}
-		else if ($number > 100 && $number < 1000)
-		{
-			return 3;
-		}
 	}
 
 	private function decodeNumber($number, $return_unsigned = false)

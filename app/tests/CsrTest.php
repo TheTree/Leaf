@@ -43,7 +43,7 @@ class CsrTest extends TestCase {
 		{
 			foreach($response as $item)
 			{
-				$this->assertEquals($item['KDRatio'], $numbers[$item['Gamertag']][1]);
+				$this->assertEquals(floatval($item['KDRatio']), floatval($numbers[$item['Gamertag']][1]));
 			}
 		}
 		else
