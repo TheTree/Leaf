@@ -51,4 +51,43 @@ class CsrTest extends TestCase {
 			$this->assertEquals(true, false);
 		}
 	}
+
+	public function testOrder()
+	{
+		$numbers = [
+			'5' => [$this->leaderboards->mergeCsrWithKd(44, 10.46), 10.46],
+			'8' => [$this->leaderboards->mergeCsrWithKd(21, 1.46), 1.46],
+			'0' => [$this->leaderboards->mergeCsrWithKd(50, 10.46), 10.46],
+			'1' => [$this->leaderboards->mergeCsrWithKd(50, 2.46), 2.46],
+			'4' => [$this->leaderboards->mergeCsrWithKd(50, .46), .46],
+			'2' => [$this->leaderboards->mergeCsrWithKd(50, 1.46), 1.46],
+			'3' => [$this->leaderboards->mergeCsrWithKd(50, 1.45), 1.45],
+			'6' => [$this->leaderboards->mergeCsrWithKd(44, 2.46), 2.46],
+			'7' => [$this->leaderboards->mergeCsrWithKd(42, 1.46), 1.46],
+			'9' => [$this->leaderboards->mergeCsrWithKd(6, .46), .46]
+		];
+
+		foreach($numbers as $user => $number)
+		{
+			$this->redis->zadd($this->prefix . 001, $number[0], $user);
+		}
+
+		$response = $this->leaderboards->getTopGamertagsInPlaylist(001);
+
+		if (is_array($response))
+		{
+			// we have a random group of leaderboards above, that should
+			// (after redis) be 0-9. We will simply check the index vs
+			// the gamertag in order and they should check if they
+			// were storted correctly
+			foreach($response as $key => $item)
+			{
+				$this->assertEquals(intval($key), intval($item['Gamertag']));
+			}
+		}
+		else
+		{
+			$this->assertEquals(true, false);
+		}
+	}
 }
