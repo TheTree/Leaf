@@ -2,11 +2,13 @@
 
 use HaloWaypoint\Utils;
 use HaloWaypoint\Leaderboards;
+use HaloFour\Playlist;
+
 use Illuminate\View\Environment as View;
 
 class CsrLeaderboardsController extends \BaseController {
 
-	protected $layout = "layouts.index";
+	protected $layout = "layouts.halofour.csr";
 
 	private $default_slug = 'team-slayer';
 
@@ -31,6 +33,7 @@ class CsrLeaderboardsController extends \BaseController {
 	{
 		$leaderboards = new Leaderboards();
 		$playlist = Utils::getIndividualPlaylistViaSlug($slug);
+		$playlists = Playlist::All();
 
 		if ($playlist === false)
 		{
@@ -39,9 +42,10 @@ class CsrLeaderboardsController extends \BaseController {
 		else
 		{
 		   	// contact redis to get our data
-			$foo = $leaderboards->getTopGamertagsInPlaylist($playlist->Id, 15.0, (float) $page);
-			dd($foo);
-			$this->layout->content = $this->view->make('pages.halofour.csr_leaderboards');
+			$results = $leaderboards->getTopGamertagsInPlaylist($playlist->Id, 15.0, (float) $page);
+			$this->layout->content = $this->view->make('pages.halofour.csr_leaderboards')
+				->with('results', $results)
+				->with('playlists', $playlists);
 		}
 	}
 }

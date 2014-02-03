@@ -109,7 +109,7 @@ class Api {
 	 */
 	public function getGamertagData($seoGamertag, $force = false)
 	{
-		if (($record = $this->getGamertagDataViaCache($seoGamertag)) === false || $force === false)
+		if (($record = $this->getGamertagDataViaCache($seoGamertag)) === false || $force === true)
 		{
 			if (Config::get('leaf.HaloFourApiEnabled') === false)
 			{
