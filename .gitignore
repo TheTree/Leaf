@@ -9,3 +9,4 @@ composer.lock
 Thumbs.db
 *.iml
 /app/config/production/*.php
+/public/uploads/*
