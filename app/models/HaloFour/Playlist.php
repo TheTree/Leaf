@@ -28,4 +28,31 @@ class Playlist extends Eloquent {
 			$playlist->delete();
 		}
 	}
+
+	public function getNameAttribute($value)
+	{
+		return " " . $value;
+	}
+
+	public function setTypeAttribute($value)
+	{
+		switch($value)
+		{
+			case "Team":
+				$style = "info";
+				break;
+
+			case "Individual":
+				$style = "primary";
+				break;
+
+			default:
+			case "Unknown":
+				$style = "default";
+				break;
+		}
+
+		$this->attributes['Type'] = $value;
+		$this->attributes['TypeStyle'] = "label-" . $style;
+	}
 }
