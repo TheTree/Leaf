@@ -9,4 +9,5 @@ composer.lock
 Thumbs.db
 *.iml
 /app/config/production/*.php
+/app/config/secret.php
 /public/uploads/*
