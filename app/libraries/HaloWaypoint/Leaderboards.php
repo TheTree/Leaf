@@ -98,8 +98,9 @@ class Leaderboards {
 		// thus CSR 8 and 1.68 kd.
 		return [
 			'Gamertag' => $pair['Gamertag'],
-			'KDRatio' => $part_2,
-			'CSR' => $number_pair[0]
+			'SeoGamertag' => Utils::makeSeoGamertag($pair['Gamertag']),
+			'KdRatio' => $part_2,
+			'Csr' => $number_pair[0]
 		];
 	}
 

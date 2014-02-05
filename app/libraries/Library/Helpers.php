@@ -5,6 +5,17 @@ use Illuminate\Support\Facades\File;
 class Helpers {
 
 	/**
+	 * Turns CSR into the flair, made by Reddit user
+	 *
+	 * @param $value
+	 * @return string
+	 */
+	public static function getFlair($value)
+	{
+		return '<span class="flair flair-CSR-' . intval($value) . '"></span>';
+	}
+
+	/**
 	 * Returns medals and cleaned up places so
 	 *
 	 * 1,2,3,4 => Gold, Silver, Bronze, 4th

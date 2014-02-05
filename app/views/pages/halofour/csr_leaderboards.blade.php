@@ -1,5 +1,9 @@
 @extends('layouts.halofour.csr')
 
+@section('extra_css')
+	{{ HTML::style('css/csr-flairs.css') }}
+@stop
+
 @section('sidebar')
 <br />
  	<ul class="nav nav-pills nav-stacked nav-sidebar">
@@ -25,9 +29,9 @@
 				@foreach($results as $user)
 					<tr>
 						<td>{{ $user['Place'] }}</td>
-						<td>{{ $user['Gamertag'] }}</td>
-						<td>{{ $user['CSR'] }}</td>
-						<td>{{ $user['KDRatio'] }}</td>
+						<td><a href="{{ URL::to('h4/record/' . $user['SeoGamertag']) }}">{{ $user['Gamertag'] }}</a></td>
+						<td>{{ $user['CsrFlair'] }}</td>
+						<td>{{ $user['KdRatio'] }}</td>
 					</tr>
 				@endforeach
 			</tbody>

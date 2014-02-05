@@ -50,6 +50,7 @@ class Utils {
 			$x = 0;
 			foreach($data as $key => $user)
 			{
+				$data[$key]['CsrFlair'] = Helpers::getFlair($user['Csr']);
 				$data[$key]['Place'] = Helpers::getTrophy(++$x * $page);
 			}
 		}

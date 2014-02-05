@@ -8,6 +8,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	{{ HTML::style('css/bootstrap.min.css') }}
 	{{ HTML::style('css/default.css') }}
+	@yield('extra_css', '')
 </head>
 <body>
 	<!--[if lt IE 8]>
@@ -21,5 +22,6 @@
 	</div>
 	{{ HTML::script('js/jquery-1.11.0.min.js') }}
 	{{ HTML::script('js/bootstrap.min.js') }}
+	@yield('extra_js' , '')
 </body>
 </html>
