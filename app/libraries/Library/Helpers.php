@@ -5,6 +5,33 @@ use Illuminate\Support\Facades\File;
 class Helpers {
 
 	/**
+	 * Returns medals and cleaned up places so
+	 *
+	 * 1,2,3,4 => Gold, Silver, Bronze, 4th
+	 *
+	 * @param $value
+	 * @return string
+	 */
+	public static function getTrophy($value)
+	{
+		$trophy_url = '<img title="%1$s" src="' . asset('img/trophies/%2$s') . '" />';
+		switch($value)
+		{
+			case 1:
+				return sprintf($trophy_url, $value . "st", 'trophy_gold.png');
+
+			case 2:
+				return sprintf($trophy_url, $value . "nd", 'trophy_silver.png');
+
+			case 3:
+				return sprintf($trophy_url, $value . "rd", 'trophy_bronze.png');
+
+			default:
+				return number_format($value) . "<sup>th</sup>";
+		}
+	}
+
+	/**
 	 * Returns the storage location of graphics, in full filepath
 	 *
 	 * @param $location

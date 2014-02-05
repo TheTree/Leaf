@@ -43,8 +43,9 @@ class CsrLeaderboardsController extends \BaseController {
 		{
 		   	// contact redis to get our data
 			$results = $leaderboards->getTopGamertagsInPlaylist($playlist->Id, 15.0, (float) $page);
+
 			$this->layout->content = $this->view->make('pages.halofour.csr_leaderboards')
-				->with('results', $results)
+				->with('results', Utils::createLeaderboardRanks($results, $page))
 				->with('playlists', $playlists)
 				->with('active', $playlist);
 		}

@@ -38,6 +38,25 @@ class Utils {
 		return $challenges;
 	}
 
+	public static function createLeaderboardRanks(array $data = array(), $page = 0)
+	{
+		if ($page === 0)
+		{
+			$page = 1;
+		}
+
+		if (is_array($data))
+		{
+			$x = 0;
+			foreach($data as $key => $user)
+			{
+				$data[$key]['Place'] = Helpers::getTrophy(++$x * $page);
+			}
+		}
+
+		return $data;
+	}
+
 	/**
 	 *
 	 * Takes a gamertag and converts it to a seo compatible name to be used in URLs
