@@ -12,3 +12,7 @@
     display: block;
     color: #333;
 }
+.label-static-size {
+    font-size: 12px;
+    padding: .1em .3em .2em;
+}
