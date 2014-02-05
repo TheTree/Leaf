@@ -16,7 +16,7 @@
 					@foreach($latest as $player)
 						<tr>
 							<td><a href="{{ URL::to('h4/record/' . $player['SeoGamertag']) }}">{{ $player['Gamertag'] }}</a></td>
-							<td>{{ $player['Rank'] }}</td>
+							<td>SR-{{ $player['Rank'] }}</td>
 							<td>{{ $player['KDRatio'] }}</td>
 						</tr>
 					@endforeach

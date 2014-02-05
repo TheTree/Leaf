@@ -33,7 +33,7 @@ class CsrLeaderboardsController extends \BaseController {
 	{
 		$leaderboards = new Leaderboards();
 		$playlist = Utils::getIndividualPlaylistViaSlug($slug);
-		$playlists = Playlist::All();
+		$playlists = Playlist::orderBy('Name', 'asc')->get();
 
 		if ($playlist === false)
 		{
@@ -45,7 +45,8 @@ class CsrLeaderboardsController extends \BaseController {
 			$results = $leaderboards->getTopGamertagsInPlaylist($playlist->Id, 15.0, (float) $page);
 			$this->layout->content = $this->view->make('pages.halofour.csr_leaderboards')
 				->with('results', $results)
-				->with('playlists', $playlists);
+				->with('playlists', $playlists)
+				->with('active', $playlist);
 		}
 	}
 }

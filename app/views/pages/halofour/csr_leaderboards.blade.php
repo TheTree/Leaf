@@ -1,10 +1,15 @@
-@extends('layouts.index')
+@extends('layouts.halofour.csr')
 
 @section('sidebar')
-ye sidebar for playlists
+<br />
+ 	<ul class="nav nav-pills nav-stacked nav-sidebar">
+	    @foreach($playlists as $playlist)
+	        <li class=""><a href="{{ URL::to('csr_leaderboards/' . $playlist['SeoName']) }}">{{ $playlist['Name'] }}</a></li>
+	    @endforeach
+ 	</ul>
 @stop
 
 @section('main')
-records for that playlist
+	<legend>{{ $active['Name'] }}</legend>
 @stop
 

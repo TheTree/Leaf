@@ -7,6 +7,7 @@
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	{{ HTML::style('css/bootstrap.min.css') }}
+	{{ HTML::style('css/default.css') }}
 </head>
 <body>
 	<!--[if lt IE 8]>
