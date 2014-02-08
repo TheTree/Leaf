@@ -1,4 +1,4 @@
-@if (isset($latest) && is_array($latest))
+@if (isset($latest) && is_array($latest) && count($latest) > 0)
 	<div class="panel panel-default">
 		<div class="panel-heading">
 			<h3 class="panel-title">New Accounts</h3>
@@ -24,5 +24,9 @@
 			</table>
 		</div>
 	</div>
-
+@else
+	<div class="alert alert-info">
+		<strong>uh oh</strong>
+		<p>We don't have any accounts.</p>
+	</div>
 @endif
