@@ -106,7 +106,8 @@ return array(
 		'Illuminate\Validation\ValidationServiceProvider',
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
-        'Jenssegers\Mongodb\MongodbServiceProvider',
+		'Jenssegers\Mongodb\MongodbServiceProvider',
+		'Profiler\ProfilerServiceProvider',
 
 	),
 
@@ -173,7 +174,8 @@ return array(
 		'URL'             => 'Illuminate\Support\Facades\URL',
 		'Validator'       => 'Illuminate\Support\Facades\Validator',
 		'View'            => 'Illuminate\Support\Facades\View',
-        'Moloquent'       => 'Jenssegers\Mongodb\Model',
+		'Moloquent'       => 'Jenssegers\Mongodb\Model',
+		'Profiler'        => 'Profiler\Facades\Profiler',
 
     ),
 

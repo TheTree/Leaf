@@ -6,7 +6,8 @@
 	"require": {
 		"laravel/framework": "4.1.*",
 		"jenssegers/mongodb": "*",
-		"jyggen/curl": "dev-master"
+		"jyggen/curl": "dev-master",
+		"loic-sharma/profiler": "1.1.*"
 	},
 	"autoload": {
 		"classmap": [
