@@ -25,7 +25,7 @@ class H4Gamertags extends Migration {
 	 */
 	public function down()
 	{
-		Schema::dropIfExists('h4_gamertags');
+		Schema::drop('h4_gamertags');
 	}
 
 }

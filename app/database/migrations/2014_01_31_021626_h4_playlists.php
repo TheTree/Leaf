@@ -25,7 +25,7 @@ class H4Playlists extends Migration {
 	 */
 	public function down()
 	{
-		Schema::dropIfExists('h4_playlists');
+		Schema::drop('h4_playlists');
 	}
 
 }
