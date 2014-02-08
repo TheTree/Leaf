@@ -30,10 +30,8 @@ class Api {
 	 */
 	public function getChallenges()
 	{
-		if (Cache::has('CurrentChallenges'))
+		if (($response = Cache::get('CurrentChallenges', false)) !== false)
 		{
-			// check it
-			$response = Cache::get('CurrentChallenges');
 
 			if (time() > strtotime($response->Challenges['0']->EndDate, true))
 			{
