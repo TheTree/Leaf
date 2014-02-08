@@ -63,9 +63,9 @@ class Api {
 	public function getPlaylists()
 	{
 
-		if (Cache::has('CurrentPlaylists'))
+		if (($response = Cache::has('CurrentPlaylists', false)) !== false)
 		{
-			return Cache::get('CurrentPlaylists');
+			return $response;
 		}
 		else
 		{

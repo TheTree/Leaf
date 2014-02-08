@@ -32,8 +32,8 @@ class CsrLeaderboardsController extends \BaseController {
 	public function playlist($slug = 'team-slayer', $page = 0)
 	{
 		$leaderboards = new Leaderboards();
-		$playlist = Utils::getIndividualPlaylistViaSlug($slug);
 		$playlists = Playlist::orderBy('Name', 'asc')->get();
+		$playlist = Utils::findIndividualPlaylistViaSlug($playlists, $slug);
 
 		if ($playlist === false)
 		{

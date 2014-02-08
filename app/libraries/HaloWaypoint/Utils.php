@@ -2,6 +2,7 @@
 
 use HaloFour\Gamertag;
 use HaloFour\Playlist;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Cache;
@@ -286,6 +287,27 @@ class Utils {
 		}
 
 		return $playlist;
+	}
+
+	/**
+	 * @param $response
+	 * @param $slug
+	 * @return bool
+	 */
+	public static function findIndividualPlaylistViaSlug($response, $slug)
+	{
+		if ($response instanceof Collection)
+		{
+			foreach($response as $playlist)
+			{
+				if ($playlist->SeoName == $slug)
+				{
+					return $playlist;
+				}
+			}
+		}
+
+		return false;
 	}
 
 	private static function updateSpartanImage($gt, $seo, $emblem, $path)
