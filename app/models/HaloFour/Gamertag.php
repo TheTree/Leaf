@@ -12,7 +12,7 @@ class Gamertag extends Eloquent {
 
 	public static function getLastXGamertags($count = 5)
 	{
-		return Gamertag::orderBy('created_at', 'desc')->take($count)->select(['SeoGamertag','Rank','KDRatio','Gamertag'])->get()->toArray();
+		return Gamertag::orderBy('created_at', 'desc')->take($count)->select(['SeoGamertag','Rank','KDRatio','Gamertag'])->remember(10)->get()->toArray();
 	}
 
 	public function getTotalMedalStatsAttribute($value)
