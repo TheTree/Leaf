@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Log;
+use Jenssegers\Mongodb\Model as Eloquent;
 
 class DatabaseSeeder extends Seeder {
 
@@ -17,11 +18,13 @@ class DatabaseSeeder extends Seeder {
 		if (App::environment() == "testing")
 		{
 			$this->call('GamertagMongoSeeder');
-			Log::info('Gamertag collection seeded!');
+			$this->call('AdminsMongoSeeder');
+			$this->call('PlaylistMongoSeeder');
 		}
 		else
 		{
-			Log::alert('Seeding only allowed in `testing`.');
+			$this->call('AdminsMongoSeeder');
+			$this->call('PlaylistMongoSeeder');
 		}
 	}
 
