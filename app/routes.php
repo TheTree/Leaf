@@ -17,8 +17,7 @@ Route::get('/', 'HomeController@index');
 Route::post('/', 'HomeController@addGamertag');
 
 // acp
-Route::get('backstage', 'BackstageController@index');
-Route::post('backstage', 'BackstageController@postIndex');
+Route::controller('backstage', 'BackstageController');
 
 // halo 4 related links
 Route::get('h4/record/{gamertag}', 'ProfileController@index');

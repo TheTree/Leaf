@@ -1,5 +1,7 @@
 <?php
 
+use Users\Admin;
+use Illuminate\Support\Facades\Validator as Validator;
 use Illuminate\View\Environment as View;
 
 class BackstageController extends \BaseController {
@@ -18,14 +20,26 @@ class BackstageController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function index()
+	public function getIndex()
 	{
 		$this->layout->content = $this->view->make('pages.backstage.gate');
 	}
 
 	public function postIndex()
 	{
-		dd($_POST);
+		if (($validator = Admin::check(Input::all())) === true)
+		{
+
+		}
+		else
+		{
+			return Redirect::back()->withErrors($validator);
+		}
+	}
+
+	public function missingMethods($parameters = array())
+	{
+		App::abort(404);
 	}
 
 }
