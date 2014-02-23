@@ -19,12 +19,10 @@ class DatabaseSeeder extends Seeder {
 		{
 			$this->call('GamertagMongoSeeder');
 			$this->call('AdminsMongoSeeder');
-			$this->call('PlaylistMongoSeeder');
 		}
 		else
 		{
 			$this->call('AdminsMongoSeeder');
-			$this->call('PlaylistMongoSeeder');
 		}
 	}
 
