@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class Admins extends Migration {
@@ -14,7 +13,7 @@ class Admins extends Migration {
 	{
 		Schema::create('admins', function($collection)
 			{
-				$collection->index('Email');
+				$collection->index('email');
 			});
 	}
 
