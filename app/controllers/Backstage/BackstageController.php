@@ -1,7 +1,7 @@
 <?php
 
 use Users\Admin;
-use Illuminate\Support\Facades\Validator as Validator;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Environment as View;
 
 class BackstageController extends \BaseController {
@@ -12,6 +12,7 @@ class BackstageController extends \BaseController {
 
 	public function __construct(View $view)
 	{
+		$this->beforeFilter('csrf', ['on' => 'post']);
 		$this->view = $view;
 	}
 
@@ -22,6 +23,11 @@ class BackstageController extends \BaseController {
 	 */
 	public function getIndex()
 	{
+		if (Auth::check())
+		{
+			return Redirect::intended("backstage/dashboard");
+		}
+
 		$this->layout->content = $this->view->make('pages.backstage.gate');
 	}
 
@@ -29,11 +35,21 @@ class BackstageController extends \BaseController {
 	{
 		if (($validator = Admin::check(Input::all())) === true)
 		{
-
+			if (Auth::attempt(['email' => Input::get('email'), 'password' => Input::get('password')], true))
+			{
+				return Redirect::intended('backstage/dashboard');
+			}
+			else
+			{
+				return Redirect::back()
+					->with('flash_error', 'The email/password was incorrect.')
+					->withInput();
+			}
 		}
 		else
 		{
-			return Redirect::back()->withErrors($validator);
+			return Redirect::back()
+				->withErrors($validator);
 		}
 	}
 

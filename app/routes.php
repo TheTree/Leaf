@@ -17,6 +17,7 @@ Route::get('/', 'HomeController@index');
 Route::post('/', 'HomeController@addGamertag');
 
 // acp
+Route::controller('backstage/dashboard', 'DashboardController');
 Route::controller('backstage', 'BackstageController');
 
 // halo 4 related links
@@ -26,9 +27,9 @@ Route::get('about', 'HomeController@about');
 
 Route::resource('news', 'NewsController');
 
-Route::get('csr_leaderboards', 'CsrLeaderboardsController@index');
-Route::get('csr_leaderboards/{playlist}', 'CsrLeaderboardsController@playlist');
 Route::get('csr_leaderboards/{playlist}/{page}', 'CsrLeaderboardsController@playlist');
+Route::get('csr_leaderboards/{playlist}', 'CsrLeaderboardsController@playlist');
+Route::get('csr_leaderboards', 'CsrLeaderboardsController@index');
 
 Route::any('top_ten', 'TopTenController@index');
 
