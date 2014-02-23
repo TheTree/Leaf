@@ -7,7 +7,7 @@
 	<div class="form-group {{{ $errors->has('email') ? 'has-error' : ''}}}">
 		<label for="email" class="col-sm-2 control-label">Email</label>
 		<div class="col-sm-10">
-			{{ Form::text('gamertag', '', ['placeholder' => 'Email', 'class' => 'form-control', 'type' => 'email']) }}
+			{{ Form::text('email', '', ['placeholder' => 'Email', 'class' => 'form-control', 'type' => 'email']) }}
 		</div>
 	</div>
 	<div class="form-group {{{ $errors->has('password') ? 'has-error' : ''}}}">
