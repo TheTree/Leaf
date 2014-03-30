@@ -342,9 +342,9 @@ class H4_Lib {
             }
 
             // count
-            if (strlen($key) > 150) {
+            if (is_array($key) && count($key) > 3) {
                 $this->_ci->cache->write(json_encode($key), 'auth_spartan', 3000);
-                return json_decode($key,TRUE)['SpartanToken'];
+                return $key['SpartanToken'];
             } else {
                 $count++;
 
