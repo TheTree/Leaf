@@ -333,7 +333,9 @@ class H4_Lib {
             // check expiration key
             if (isset($key['expiresIn'])) {
                 if (time() > intval($key['expiresIn'])) {
-                    return $this->get_spartan_auth_key($count);
+                    if ($count < 2) {
+                        return $this->get_spartan_auth_key($count);
+                    }
                 }
             } else {
                 $key['expiresIn'] = intval(time() + 3300);
