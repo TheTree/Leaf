@@ -327,51 +327,24 @@ class H4_Lib {
             $url =  $this->_ci->config->item('sekrit_url') . "/" . $this->_ci->config->item('serkit_key_1') . "/" .
                 $this->_ci->config->item('serkit_key_2') . "/" . $this->_ci->config->item('serkit_key_3');
 
-            $get_url = "https://settings.svc.halowaypoint.com/RegisterClientService.svc/spartantoken/wlid";
-
             // get key via sekrit site
             $key = json_decode($this->_ci->curl->simple_get($url),TRUE);
 
-            // check key
-            if (!is_array($key)) {
-                $count++;
-
-                // if its looped more than 2 times, we didn't find a key :(
-                if ($count < 2) {
-                    $this->_ci->cache->delete('auth_spartan');
-                    return $this->get_spartan_auth_key($count);
-                }  else {
-                    log_message('error', 'API Down ' . $key);
-                    $this->_ci->utils->throw_error("API_AUTH_GONE");
-                }
-            }
 
             // check expiration key
             if (time() > intval($key['expiresIn'])) {
                 return $this->get_spartan_auth_key($count);
             }
 
-            // lets grab it
-            $this->_ci->curl->option('HTTPHEADER', array(
-                'Accept: application/json',
-                'X-343-Authorization-WLID: ' ."v1=" . $key['accessToken']));
-
-            $this->_ci->curl->option(CURLOPT_SSL_VERIFYPEER, '0');
-            $this->_ci->curl->option(CURLOPT_SSL_VERIFYHOST, '0');
-            $this->_ci->curl->option(CURLOPT_CAPATH,'cacert.pem');
-
-            // lets make this URL
-            $resp = $this->_ci->curl->simple_get($get_url);
-
             // count
-            if (strlen($resp) > 150) {
-                $this->_ci->cache->write($resp, 'auth_spartan', 3000);
-                return json_decode($resp,TRUE)['SpartanToken'];
+            if (strlen($key) > 150) {
+                $this->_ci->cache->write($key, 'auth_spartan', 3000);
+                return json_decode($key,TRUE)['SpartanToken'];
             } else {
                 $count++;
 
                 if ($count > 2) {
-                    log_message('error', 'API Down ' . $resp);
+                    log_message('error', 'API Down ' . $key);
                     $this->_ci->utils->throw_error("API_AUTH_GONE");
                 } else {
                     $this->_ci->curl->simple_get($url . "/kill");
@@ -381,7 +354,6 @@ class H4_Lib {
         } else {
             return $_tmp['SpartanToken'];
         }
-
     }
 
     /**
