@@ -330,15 +330,18 @@ class H4_Lib {
             // get key via sekrit site
             $key = json_decode($this->_ci->curl->simple_get($url),TRUE);
 
-
             // check expiration key
-            if (time() > intval($key['expiresIn'])) {
-                return $this->get_spartan_auth_key($count);
+            if (isset($key['expiresIn'])) {
+                if (time() > intval($key['expiresIn'])) {
+                    return $this->get_spartan_auth_key($count);
+                }
+            } else {
+                $key['expiresIn'] = intval(time() + 3300);
             }
 
             // count
             if (strlen($key) > 150) {
-                $this->_ci->cache->write($key, 'auth_spartan', 3000);
+                $this->_ci->cache->write(json_encode($key), 'auth_spartan', 3000);
                 return json_decode($key,TRUE)['SpartanToken'];
             } else {
                 $count++;
