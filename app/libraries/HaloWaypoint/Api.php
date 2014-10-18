@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Carbon\Carbon;
-use jyggen\Curl as MCurl;
+use Jyggen\Curl as MCurl;
 
 class WLIDAuthenticationFailedException extends \Exception {}
 class SpartanTokenFailedException extends \Exception {}

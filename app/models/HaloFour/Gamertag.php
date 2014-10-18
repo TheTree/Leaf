@@ -1,12 +1,12 @@
 <?php namespace HaloFour;
 
+use Jenssegers\Mongodb\Eloquent\SoftDeletingTrait;
 use Jenssegers\Mongodb\Model as Eloquent;
 
 class Gamertag extends Eloquent {
+	use SoftDeletingTrait;
 
 	protected $collection = "h4_gamertags";
-
-	protected $softDelete = true;
 
 	protected $guarded = ['_id', 'SeoGamertag', 'Date', 'Month', 'Year', 'Status'];
 

@@ -4,7 +4,7 @@ use HaloWaypoint\Utils;
 use HaloWaypoint\Leaderboards;
 use HaloFour\Playlist;
 
-use Illuminate\View\Environment as View;
+use Illuminate\View\Factory as View;
 
 class CsrLeaderboardsController extends \BaseController {
 

@@ -6,7 +6,7 @@ use HaloFour\Gamertag;
 
 use Illuminate\Http\Request as Request;
 use Illuminate\Validation\Factory as Validator;
-use Illuminate\View\Environment as View;
+use Illuminate\View\Factory as View;
 use Illuminate\Support\Facades\Redirect;
 
 class HomeController extends BaseController {

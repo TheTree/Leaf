@@ -2,7 +2,7 @@
 
 use Users\Admin;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\View\Environment as View;
+use Illuminate\View\Factory as View;
 
 class BackstageController extends \BaseController {
 

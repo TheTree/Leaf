@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\View\Environment as View;
+use Illuminate\View\Factory as View;
 
 class DashboardController extends \BaseController {
 

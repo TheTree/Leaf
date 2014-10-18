@@ -67,6 +67,8 @@ return array(
 
 	'key' => 'TBo8xIZolDaNCFnSmHXNdspHuw3IUCda',
 
+	'cipher' => MCRYPT_RIJNDAEL_128,
+
 	/*
 	|--------------------------------------------------------------------------
 	| Autoloaded Service Providers
@@ -107,7 +109,6 @@ return array(
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
 		'Jenssegers\Mongodb\MongodbServiceProvider',
-		'Profiler\ProfilerServiceProvider',
 
 	),
 
@@ -175,7 +176,6 @@ return array(
 		'Validator'       => 'Illuminate\Support\Facades\Validator',
 		'View'            => 'Illuminate\Support\Facades\View',
 		'Moloquent'       => 'Jenssegers\Mongodb\Model',
-		'Profiler'        => 'Profiler\Facades\Profiler',
 
     ),
 
